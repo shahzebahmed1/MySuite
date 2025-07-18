@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point on the Bow - Luxury Condominium Living</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Modern Dual-Pill Navigation -->
+    <nav class="modern-navbar" id="modernNavbar">
+        <div class="navbar-container">
+            <!-- Navigation Links Pill -->
+            <div class="nav-pill" id="navPill">
+                <div class="nav-pill-background">
+                    <div class="glass-inner"></div>
+                </div>
+                <div class="navbar-links" id="navbarLinks">
+                    <a href="#home" class="nav-link" data-index="0">
+                        <span>Home</span>
+                        <div class="link-underline"></div>
+                    </a>
+                    <a href="#amenities" class="nav-link" data-index="1">
+                        <span>Amenities</span>
+                        <div class="link-underline"></div>
+                    </a>
+                    <a href="#location" class="nav-link" data-index="2">
+                        <span>Location</span>
+                        <div class="link-underline"></div>
+                    </a>
+                    <a href="#contact" class="nav-link" data-index="3">
+                        <span>Contact</span>
+                        <div class="link-underline"></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- CTA Button Pill -->
+            <div class="cta-pill" id="ctaPill">
+                <div class="cta-pill-background">
+                    <div class="glass-inner"></div>
+                </div>
+                <div class="navbar-cta" id="navbarCta">
+                    <a href="login.html" class="cta-button">
+                        <span class="cta-text">
+                            <i class="fas fa-user"></i> Resident Portal
+                        </span>
+                        <div class="cta-overlay"></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="mobile-menu-trigger" id="mobileMenuTrigger">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile menu overlay -->
+        <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-links">
+                    <a href="#home" class="mobile-nav-link" data-index="0">Home</a>
+                    <a href="#amenities" class="mobile-nav-link" data-index="1">Amenities</a>
+                    <a href="#location" class="mobile-nav-link" data-index="2">Location</a>
+                    <a href="#contact" class="mobile-nav-link" data-index="3">Contact</a>
+                </div>
+                <div class="mobile-menu-cta">
+                    <a href="login.html" class="mobile-cta-button">
+                        <i class="fas fa-user"></i> Resident Portal
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Background Video -->
+    <section id="home" class="hero">
+        <div class="video-background">
+            <video autoplay muted loop playsinline>
+                <source src="public/assets/PointOnTheBowBannerDarkBlur2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-logo-container">
+                    <div class="hero-logo-wrapper">
+                        <img src="public/assets/logo-white.png" alt="Point on the Bow" class="hero-logo">
+                        <div class="logo-glow"></div>
+                        <div class="logo-particles">
+                            <div class="particle particle-1"></div>
+                            <div class="particle particle-2"></div>
+                            <div class="particle particle-3"></div>
+                            <div class="particle particle-4"></div>
+                            <div class="particle particle-5"></div>
+                            <div class="particle particle-6"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="hero-subtitle">Experience unparalleled luxury in Calgary's premier condominium development. Where elegance meets comfort at the heart of the Bow River.</p>
+                <div class="hero-buttons">
+                    <a href="#amenities" class="btn btn-primary">Explore Amenities</a>
+                    <a href="#contact" class="btn btn-secondary">Schedule Tour</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-dot"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <h3>Riverside Views</h3>
+                    <p>Breathtaking panoramic views of the Bow River and Calgary's stunning skyline.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3>Premium Amenities</h3>
+                    <p>State-of-the-art fitness center, spa, and rooftop terrace for residents.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Prime Location</h3>
+                    <p>Minutes from downtown Calgary with easy access to shopping and dining.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>24/7 Security</h3>
+                    <p>Round-the-clock concierge and security services for peace of mind.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Amenities Section -->
+    <section id="amenities" class="amenities">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">World-Class Amenities</h2>
+                <p class="section-subtitle">Discover the exceptional lifestyle that awaits you</p>
+            </div>
+            <div class="amenities-grid">
+                <div class="amenity-item">
+                    <div class="amenity-image">
+                        <i class="fas fa-swimming-pool"></i>
+                    </div>
+                    <h4>Indoor Pool & Spa</h4>
+                    <p>Year-round swimming with panoramic city views</p>
+                </div>
+                <div class="amenity-item">
+                    <div class="amenity-image">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h4>Private Dining</h4>
+                    <p>Elegant dining room for private events</p>
+                </div>
+                <div class="amenity-item">
+                    <div class="amenity-image">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h4>Business Center</h4>
+                    <p>Modern workspace with meeting facilities</p>
+                </div>
+                <div class="amenity-item">
+                    <div class="amenity-image">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h4>Valet Parking</h4>
+                    <p>Secure underground parking with valet service</p>
+                </div>
+                <div class="amenity-item">
+                    <div class="amenity-image">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4>Rooftop Garden</h4>
+                    <p>Landscaped terrace with outdoor seating</p>
+                </div>
+                <div class="amenity-item">
+                    <div class="amenity-image">
+                        <i class="fas fa-wine-glass"></i>
+                    </div>
+                    <h4>Wine Cellar</h4>
+                    <p>Temperature-controlled private wine storage</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location" class="location">
+        <div class="container">
+            <div class="location-content">
+                <div class="location-text">
+                    <h2>Prime Downtown Location</h2>
+                    <p>Point on the Bow offers the perfect balance of urban convenience and riverside tranquility. Located in the heart of Calgary's vibrant downtown core, residents enjoy easy access to:</p>
+                    <ul class="location-features">
+                        <li><i class="fas fa-check"></i> Stephen Avenue Walk</li>
+                        <li><i class="fas fa-check"></i> Prince's Island Park</li>
+                        <li><i class="fas fa-check"></i> Calgary Tower</li>
+                        <li><i class="fas fa-check"></i> Bow River Pathway</li>
+                        <li><i class="fas fa-check"></i> Plus 15 Skywalk System</li>
+                        <li><i class="fas fa-check"></i> Shopping & Dining</li>
+                    </ul>
+                </div>
+                <div class="location-map">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>Interactive Map</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-subtitle">Ready to make Point on the Bow your new home?</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Phone</h4>
+                            <p>(403) 555-0123</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>info@pointonthebow.ca</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Address</h4>
+                            <p>123 Bow River Crescent<br>Calgary, AB T2P 2M5</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Hours</h4>
+                            <p>Mon-Fri: 9AM-6PM<br>Weekends: 10AM-4PM</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Your Phone">
+                    </div>
+                    <div class="form-group">
+                        <select name="interest" required>
+                            <option value="">Select Interest</option>
+                            <option value="purchase">Purchase Information</option>
+                            <option value="tour">Schedule a Tour</option>
+                            <option value="rent">Rental Information</option>
+                            <option value="other">Other Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Your Message" rows="5"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="public/assets/point-on-the-bow-logo-grey.png" alt="Point on the Bow">
+                </div>
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="#amenities">Amenities</a>
+                    <a href="#location">Location</a>
+                    <a href="#contact">Contact</a>
+                    <a href="login.html">Resident Portal</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Point on the Bow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html> 
