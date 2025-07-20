@@ -366,6 +366,8 @@ function loadRecentAnnouncements() {
 // Global variables for announcements
 let allAnnouncements = [];
 let currentAnnouncementTab = 'recent';
+let currentAnnouncementPage = 1;
+const ANNOUNCEMENTS_PER_PAGE = 9;
 
 // Initialize announcements section
 function initializeAnnouncementsSection() {
@@ -398,6 +400,7 @@ async function loadAllAnnouncements() {
         const result = await mockDB.getAnnouncements();
         if (result.success) {
             allAnnouncements = result.announcements;
+            updateAllAnnouncementCounts();
             displayAnnouncementsByTab();
         } else {
             announcementsContainer.innerHTML = `
@@ -423,56 +426,120 @@ async function loadAllAnnouncements() {
 // Display announcements by tab
 function displayAnnouncementsByTab() {
     let filteredAnnouncements = [...allAnnouncements];
-
-    // Filter by tab (recent vs older)
+    const now = new Date();
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
+    // Filter by tab
     if (currentAnnouncementTab === 'recent') {
         filteredAnnouncements = filteredAnnouncements.filter(a => 
-            new Date(a.createdAt) >= thirtyDaysAgo && !a.archived
+            new Date(a.createdAt) >= thirtyDaysAgo && !a.archived && !a.draft && !a.scheduled
         );
     } else if (currentAnnouncementTab === 'older') {
         filteredAnnouncements = filteredAnnouncements.filter(a => 
-            new Date(a.createdAt) < thirtyDaysAgo || a.archived
+            (new Date(a.createdAt) < thirtyDaysAgo || a.archived) && !a.draft && !a.scheduled
         );
+    } else if (currentAnnouncementTab === 'scheduled') {
+        filteredAnnouncements = filteredAnnouncements.filter(a => 
+            a.scheduled && new Date(a.scheduledFor) > now
+        );
+    } else if (currentAnnouncementTab === 'drafts') {
+        filteredAnnouncements = filteredAnnouncements.filter(a => a.draft);
     }
 
-    // Sort by date (newest first)
-    filteredAnnouncements.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    // Sort by appropriate date field
+    if (currentAnnouncementTab === 'scheduled') {
+        filteredAnnouncements.sort((a, b) => new Date(a.scheduledFor) - new Date(b.scheduledFor));
+    } else {
+        filteredAnnouncements.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    // Reset to page 1 when switching tabs
+    currentAnnouncementPage = 1;
+    
+    // Store filtered announcements globally for pagination
+    window.currentFilteredAnnouncements = filteredAnnouncements;
 
     displayAnnouncements(filteredAnnouncements);
+    updateAnnouncementCounts(filteredAnnouncements.length);
 }
 
-// Display announcements
+// Display announcements with pagination
 function displayAnnouncements(announcements) {
     const announcementsContainer = document.getElementById('announcementsContainer');
     if (!announcementsContainer) return;
 
     if (announcements.length === 0) {
+        let emptyMessage = '';
+        let emptyIcon = 'fa-bullhorn';
+        
+        switch(currentAnnouncementTab) {
+            case 'recent':
+                emptyMessage = 'No recent announcements in the last 30 days.';
+                break;
+            case 'older':
+                emptyMessage = 'No older announcements found.';
+                break;
+            case 'scheduled':
+                emptyMessage = 'No scheduled announcements.';
+                emptyIcon = 'fa-calendar-check';
+                break;
+            case 'drafts':
+                emptyMessage = 'No draft announcements.';
+                emptyIcon = 'fa-file-alt';
+                break;
+            default:
+                emptyMessage = 'No announcements found.';
+        }
+        
         announcementsContainer.innerHTML = `
             <div class="empty-state">
-                <i class="fas fa-bullhorn"></i>
+                <i class="fas ${emptyIcon}"></i>
                 <h3>No Announcements Found</h3>
-                <p>${currentAnnouncementTab === 'recent' ? 'No recent announcements in the last 30 days.' : 'No older announcements found.'}</p>
+                <p>${emptyMessage}</p>
             </div>
         `;
         return;
     }
 
+    // Calculate pagination
+    const totalPages = Math.ceil(announcements.length / ANNOUNCEMENTS_PER_PAGE);
+    const startIndex = (currentAnnouncementPage - 1) * ANNOUNCEMENTS_PER_PAGE;
+    const endIndex = startIndex + ANNOUNCEMENTS_PER_PAGE;
+    const paginatedAnnouncements = announcements.slice(startIndex, endIndex);
+
     const userRole = sessionStorage.getItem('role') || localStorage.getItem('role');
     const canEdit = mockDB.hasPermission(userRole, ROLES.PROPERTY_MANAGER);
 
-    announcementsContainer.innerHTML = announcements.map(announcement => {
+    // Build announcements HTML
+    const announcementsHTML = paginatedAnnouncements.map(announcement => {
         const date = new Date(announcement.createdAt);
+        const scheduledDate = announcement.scheduledFor ? new Date(announcement.scheduledFor) : null;
+        
+        // Determine which date to show based on tab
+        let displayDate = date;
+        let dateIcon = 'fa-calendar';
+        let dateLabel = '';
+        
+        if (currentAnnouncementTab === 'scheduled' && scheduledDate) {
+            displayDate = scheduledDate;
+            dateIcon = 'fa-calendar-check';
+            dateLabel = 'Scheduled for: ';
+        } else if (announcement.draft) {
+            dateLabel = 'Draft created: ';
+            dateIcon = 'fa-file-alt';
+        }
         
         return `
-            <div class="announcement-card">
+            <div class="announcement-card ${announcement.draft ? 'draft-card' : ''} ${announcement.scheduled ? 'scheduled-card' : ''}">
                 <div class="announcement-header">
                     <div class="announcement-meta">
+                        ${announcement.draft ? '<span class="badge badge-draft"><i class="fas fa-file-alt"></i> Draft</span>' : ''}
+                        ${announcement.scheduled && currentAnnouncementTab === 'scheduled' ? '<span class="badge badge-scheduled"><i class="fas fa-clock"></i> Scheduled</span>' : ''}
                         <span class="announcement-date">
-                            <i class="fas fa-calendar"></i>
-                            ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            <i class="fas ${dateIcon}"></i>
+                            ${dateLabel}${displayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            ${currentAnnouncementTab === 'scheduled' ? ' at ' + displayDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : ''}
                         </span>
                     </div>
                     ${canEdit ? `
@@ -488,15 +555,157 @@ function displayAnnouncements(announcements) {
                 </div>
                 <h3 class="announcement-title">${announcement.title}</h3>
                 <div class="announcement-content">${announcement.content}</div>
-                <div class="announcement-footer">
-                    <span class="announcement-author">
-                        <i class="fas fa-user"></i>
-                        ${announcement.createdBy}
-                    </span>
-                </div>
             </div>
         `;
     }).join('');
+
+    // Wrap announcements in grid container
+    const gridHTML = `<div class="announcements-grid">${announcementsHTML}</div>`;
+
+    // Build pagination HTML
+    const paginationHTML = totalPages > 1 ? `
+        <div class="announcements-pagination">
+            <button class="pagination-btn" onclick="changeAnnouncementPage('prev')" ${currentAnnouncementPage === 1 ? 'disabled' : ''}>
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            
+            ${generatePageNumbers(currentAnnouncementPage, totalPages)}
+            
+            <button class="pagination-btn" onclick="changeAnnouncementPage('next')" ${currentAnnouncementPage === totalPages ? 'disabled' : ''}>
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <span class="pagination-info">
+                Showing ${startIndex + 1}-${Math.min(endIndex, announcements.length)} of ${announcements.length}
+            </span>
+        </div>
+    ` : '';
+
+    // Combine grid and pagination
+    announcementsContainer.innerHTML = gridHTML + paginationHTML;
+
+    // Store current filtered announcements for pagination
+    window.currentFilteredAnnouncements = announcements;
+}
+
+// Generate page numbers for pagination
+function generatePageNumbers(currentPage, totalPages) {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+        // Show all pages if total is less than max
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+    } else {
+        // Always show first page
+        pageNumbers.push(1);
+        
+        // Calculate range around current page
+        let start = Math.max(2, currentPage - 1);
+        let end = Math.min(totalPages - 1, currentPage + 1);
+        
+        // Add ellipsis if needed
+        if (start > 2) {
+            pageNumbers.push('...');
+        }
+        
+        // Add middle pages
+        for (let i = start; i <= end; i++) {
+            pageNumbers.push(i);
+        }
+        
+        // Add ellipsis if needed
+        if (end < totalPages - 1) {
+            pageNumbers.push('...');
+        }
+        
+        // Always show last page
+        pageNumbers.push(totalPages);
+    }
+    
+    return pageNumbers.map(page => {
+        if (page === '...') {
+            return '<span class="pagination-ellipsis">...</span>';
+        }
+        return `
+            <button class="pagination-btn page-number ${page === currentPage ? 'active' : ''}" 
+                    onclick="goToAnnouncementPage(${page})">
+                ${page}
+            </button>
+        `;
+    }).join('');
+}
+
+// Change announcement page
+function changeAnnouncementPage(direction) {
+    const totalPages = Math.ceil(window.currentFilteredAnnouncements.length / ANNOUNCEMENTS_PER_PAGE);
+    
+    if (direction === 'prev' && currentAnnouncementPage > 1) {
+        currentAnnouncementPage--;
+    } else if (direction === 'next' && currentAnnouncementPage < totalPages) {
+        currentAnnouncementPage++;
+    }
+    
+    displayAnnouncements(window.currentFilteredAnnouncements);
+    
+    // Scroll to top of announcements section
+    document.getElementById('announcements-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Go to specific announcement page
+function goToAnnouncementPage(page) {
+    currentAnnouncementPage = page;
+    displayAnnouncements(window.currentFilteredAnnouncements);
+    
+    // Scroll to top of announcements section
+    document.getElementById('announcements-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Update announcement counts in tabs
+function updateAnnouncementCounts(currentTabCount) {
+    // Update the current tab count
+    const currentTabElement = document.querySelector(`.tab-btn[data-tab="${currentAnnouncementTab}"] .tab-count`);
+    if (currentTabElement) {
+        currentTabElement.textContent = currentTabCount;
+    }
+}
+
+// Update all announcement tab counts
+function updateAllAnnouncementCounts() {
+    const now = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    // Count recent announcements
+    const recentCount = allAnnouncements.filter(a => 
+        new Date(a.createdAt) >= thirtyDaysAgo && !a.archived && !a.draft && !a.scheduled
+    ).length;
+    
+    // Count older announcements
+    const olderCount = allAnnouncements.filter(a => 
+        (new Date(a.createdAt) < thirtyDaysAgo || a.archived) && !a.draft && !a.scheduled
+    ).length;
+    
+    // Count scheduled announcements
+    const scheduledCount = allAnnouncements.filter(a => 
+        a.scheduled && new Date(a.scheduledFor) > now
+    ).length;
+    
+    // Count draft announcements
+    const draftsCount = allAnnouncements.filter(a => a.draft).length;
+    
+    // Update counts in UI
+    const recentCountEl = document.getElementById('recentCount');
+    const olderCountEl = document.getElementById('olderCount');
+    const scheduledCountEl = document.getElementById('scheduledCount');
+    const draftsCountEl = document.getElementById('draftsCount');
+    
+    if (recentCountEl) recentCountEl.textContent = recentCount;
+    if (olderCountEl) olderCountEl.textContent = olderCount;
+    if (scheduledCountEl) scheduledCountEl.textContent = scheduledCount;
+    if (draftsCountEl) draftsCountEl.textContent = draftsCount;
 }
 
 // Load upcoming events

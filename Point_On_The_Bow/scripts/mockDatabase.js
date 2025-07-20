@@ -770,7 +770,7 @@ const ANNOUNCEMENTS = [
         title: "New Parcel Locker System",
         content: "We're pleased to announce the installation of a new smart parcel locker system in the lobby. Starting January 20th, all packages will be securely stored in these lockers. You'll receive an email/text with a unique code to retrieve your packages 24/7. This will enhance security and convenience for all residents.",
         createdBy: 1,
-        createdAt: "2025-01-10T11:15:00Z",
+        createdAt: "2025-07-10T11:15:00Z",
         active: true,
         priority: "medium",
         category: "Building Operations"
@@ -824,6 +824,342 @@ const ANNOUNCEMENTS = [
         active: true,
         priority: "medium",
         category: "Building Operations"
+    },
+    
+    // Additional Recent Announcements (within last 30 days from July 18, 2025)
+    {
+        id: 13,
+        title: "Gym Equipment Maintenance Schedule",
+        content: "Our fitness center equipment will undergo routine maintenance on July 25th from 6 AM to 12 PM. The gym will remain open, but some equipment may be temporarily unavailable. We apologize for any inconvenience and thank you for your patience as we ensure all equipment remains in excellent condition.",
+        createdBy: 1,
+        createdAt: "2025-07-10T09:00:00Z",
+        active: true,
+        priority: "medium",
+        category: "Amenities"
+    },
+    {
+        id: 14,
+        title: "New Concierge Service Hours",
+        content: "Effective August 1st, our concierge desk will extend service hours to better serve residents. New hours: Monday-Friday 7 AM - 11 PM, Saturday-Sunday 8 AM - 10 PM. The overnight security team will continue to be available for emergencies outside these hours.",
+        createdBy: 1,
+        createdAt: "2025-07-15T11:30:00Z",
+        active: true,
+        priority: "high",
+        category: "Building Operations"
+    },
+    {
+        id: 15,
+        title: "Pet Policy Reminder",
+        content: "A friendly reminder about our pet policy: All pets must be registered with management, kept on leash in common areas, and owners must clean up after their pets immediately. Pet waste stations are available at all building exits. Let's keep our community clean and enjoyable for everyone!",
+        createdBy: 1,
+        createdAt: "2025-07-08T14:15:00Z",
+        active: true,
+        priority: "low",
+        category: "Rules & Regulations"
+    },
+    {
+        id: 16,
+        title: "Parking Garage Lighting Upgrade Complete",
+        content: "The LED lighting upgrade in our parking garage is now complete! The new lighting provides better visibility and safety while reducing energy consumption by 60%. Motion sensors have been installed in all areas for additional energy savings. Thank you for your patience during the installation.",
+        createdBy: 1,
+        createdAt: "2025-07-12T16:00:00Z",
+        active: true,
+        priority: "low",
+        category: "Maintenance"
+    },
+    {
+        id: 17,
+        title: "Water Shut-Off Notice - Tower B",
+        content: "Essential plumbing repairs require a water shut-off for Tower B units on July 30th from 9 AM to 2 PM. Affected units: B01-B15 on all floors. Please store water for essential needs. We apologize for the inconvenience and will work to complete repairs as quickly as possible.",
+        createdBy: 1,
+        createdAt: "2025-07-16T10:00:00Z",
+        active: true,
+        priority: "high",
+        category: "Maintenance"
+    },
+    {
+        id: 18,
+        title: "Community BBQ Event Success",
+        content: "Thank you to everyone who attended our summer BBQ event last Saturday! Over 150 residents joined us for food and fellowship. Special thanks to our social committee for organizing this wonderful community gathering. Stay tuned for our next event in August!",
+        createdBy: 1,
+        createdAt: "2025-07-14T09:30:00Z",
+        active: true,
+        priority: "low",
+        category: "Community"
+    },
+    {
+        id: 19,
+        title: "Electric Vehicle Charging Stations Update",
+        content: "Installation of 10 new EV charging stations in P2 is progressing on schedule. The stations will be operational by August 15th. Registration for charging spots will open August 1st on a first-come, first-served basis. Monthly fee: $75. Contact management for more information.",
+        createdBy: 1,
+        createdAt: "2025-07-07T13:45:00Z",
+        active: true,
+        priority: "medium",
+        category: "Amenities"
+    },
+    {
+        id: 20,
+        title: "Balcony Inspection Program",
+        content: "Annual balcony inspections will begin August 1st. Our certified inspectors will check for safety issues and needed repairs. You will receive 48-hour notice before your unit inspection. No action required from residents. This is part of our commitment to building safety and maintenance.",
+        createdBy: 1,
+        createdAt: "2025-07-09T11:00:00Z",
+        active: true,
+        priority: "medium",
+        category: "Maintenance"
+    },
+    {
+        id: 21,
+        title: "Lost & Found Items",
+        content: "Several items have been turned in to the concierge desk this week: 2 sunglasses, 1 set of house keys, a smartphone (Samsung), and a blue water bottle. Please contact the concierge if any of these items belong to you.",
+        createdBy: 4,
+        createdAt: "2025-07-11T15:20:00Z",
+        active: true,
+        priority: "low",
+        category: "General"
+    },
+    {
+        id: 22,
+        title: "Pool Hours Extended for Summer",
+        content: "Due to popular demand, pool hours are extended for the summer season! New hours: 6 AM - 11 PM daily. Please remember to shower before entering, no glass containers, and children under 12 must be supervised. Enjoy your swim!",
+        createdBy: 1,
+        createdAt: "2025-07-06T08:30:00Z",
+        active: true,
+        priority: "medium",
+        category: "Amenities"
+    },
+    
+    // Scheduled Announcements (future dated from July 18, 2025)
+    {
+        id: 23,
+        title: "Annual Fire Alarm Testing",
+        content: "Mandatory fire alarm testing will be conducted throughout the building on August 15th from 9 AM to 5 PM. You may hear intermittent alarms during this time. This is only a test - no evacuation required unless instructed by staff. Calgary Fire Department will be on site.",
+        createdBy: 1,
+        createdAt: "2025-07-10T10:00:00Z",
+        scheduled: true,
+        scheduledFor: "2025-08-15T09:00:00Z",
+        active: false,
+        priority: "high",
+        category: "Safety"
+    },
+    {
+        id: 24,
+        title: "Pool Closure for Maintenance",
+        content: "The swimming pool and hot tub will be closed for annual maintenance from September 1-7. This includes draining, cleaning, re-grouting, and equipment servicing. The pool deck will also be resurfaced during this time. We apologize for any inconvenience.",
+        createdBy: 1,
+        createdAt: "2025-07-08T14:00:00Z",
+        scheduled: true,
+        scheduledFor: "2025-09-01T08:00:00Z",
+        active: false,
+        priority: "medium",
+        category: "Amenities"
+    },
+    {
+        id: 25,
+        title: "Fall Festival Planning Meeting",
+        content: "Join us for our fall festival planning meeting on August 20th at 7 PM in the party room. We'll discuss activities, food vendors, and entertainment for our annual fall celebration. Light refreshments will be served. All residents welcome!",
+        createdBy: 1,
+        createdAt: "2025-07-12T11:00:00Z",
+        scheduled: true,
+        scheduledFor: "2025-08-20T19:00:00Z",
+        active: false,
+        priority: "low",
+        category: "Community"
+    },
+    {
+        id: 26,
+        title: "Condo Fee Adjustment Notice",
+        content: "As approved in the mid-year budget review, condo fees will increase by 2.5% effective October 1st. This modest increase will help maintain our reserve fund and cover rising operational costs. Detailed breakdown available at the management office.",
+        createdBy: 1,
+        createdAt: "2025-07-15T09:00:00Z",
+        scheduled: true,
+        scheduledFor: "2025-09-15T08:00:00Z",
+        active: false,
+        priority: "high",
+        category: "Financial"
+    },
+    {
+        id: 27,
+        title: "Halloween Party",
+        content: "Save the date! Our annual Halloween party will be held on October 31st at 6 PM in the party room. Activities include costume contest, trick-or-treating for kids, and spooky refreshments! RSVP to the concierge by October 20th.",
+        createdBy: 1,
+        createdAt: "2025-07-14T13:00:00Z",
+        scheduled: true,
+        scheduledFor: "2025-10-01T10:00:00Z",
+        active: false,
+        priority: "low",
+        category: "Events"
+    },
+    {
+        id: 28,
+        title: "Window Washing Schedule - Fall 2025",
+        content: "Professional window washing will take place September 15-20. Schedule: Tower A (Sep 15-16), Tower B (Sep 17-18), Common areas (Sep 19-20). Please ensure balcony doors are unlocked and remove items from balcony railings during your scheduled days.",
+        createdBy: 1,
+        createdAt: "2025-07-11T10:30:00Z",
+        scheduled: true,
+        scheduledFor: "2025-09-01T09:00:00Z",
+        active: false,
+        priority: "medium",
+        category: "Maintenance"
+    },
+    {
+        id: 29,
+        title: "Budget Planning Meeting",
+        content: "The 2026 budget planning meeting will be held on November 15th at 7 PM in the board room. All residents are invited to provide input on capital projects and priorities for the coming year. Financial statements will be available for review.",
+        createdBy: 2,
+        createdAt: "2025-07-13T14:00:00Z",
+        scheduled: true,
+        scheduledFor: "2025-11-01T10:00:00Z",
+        active: false,
+        priority: "high",
+        category: "Governance"
+    },
+    {
+        id: 30,
+        title: "Holiday Decorating Committee",
+        content: "Calling all volunteers! Join our holiday decorating committee to help transform our building for the festive season. First meeting August 25th at 7 PM. We need creative minds and helping hands!",
+        createdBy: 1,
+        createdAt: "2025-07-10T15:45:00Z",
+        scheduled: true,
+        scheduledFor: "2025-08-10T10:00:00Z",
+        active: false,
+        priority: "low",
+        category: "Events"
+    },
+    {
+        id: 31,
+        title: "Emergency Generator Testing",
+        content: "Annual emergency generator testing scheduled for August 30th from 10 AM - 2 PM. You may experience brief power interruptions. This is essential maintenance to ensure backup power reliability during outages.",
+        createdBy: 1,
+        createdAt: "2025-07-09T11:30:00Z",
+        scheduled: true,
+        scheduledFor: "2025-08-25T09:00:00Z",
+        active: false,
+        priority: "medium",
+        category: "Maintenance"
+    },
+    {
+        id: 32,
+        title: "Roof Deck Closure for Repairs",
+        content: "The roof deck will be closed September 10-14 for waterproofing repairs and furniture replacement. We apologize for the inconvenience. The upgraded deck will feature new lounge furniture and improved lighting.",
+        createdBy: 1,
+        createdAt: "2025-07-07T16:00:00Z",
+        scheduled: true,
+        scheduledFor: "2025-09-05T08:00:00Z",
+        active: false,
+        priority: "high",
+        category: "Maintenance"
+    },
+    
+    // Draft Announcements
+    {
+        id: 33,
+        title: "New Visitor Management System",
+        content: "We're implementing a new digital visitor management system. Visitors will pre-register online and receive QR codes for building access. This will streamline the check-in process and enhance security. Training sessions for residents will be scheduled.",
+        createdBy: 1,
+        createdAt: "2025-07-12T10:00:00Z",
+        draft: true,
+        active: false,
+        priority: "medium",
+        category: "Technology"
+    },
+    {
+        id: 34,
+        title: "Renovation Guidelines Update",
+        content: "Updated renovation guidelines are being prepared. Key changes include: new hours for noisy work (9 AM - 5 PM only), mandatory contractor insurance requirements, and improved debris disposal procedures. Full guidelines will be available soon.",
+        createdBy: 1,
+        createdAt: "2025-07-11T14:30:00Z",
+        draft: true,
+        active: false,
+        priority: "medium",
+        category: "Rules & Regulations"
+    },
+    {
+        id: 35,
+        title: "Bike Room Reorganization",
+        content: "The bike storage room will be reorganized with new vertical racks to increase capacity by 50%. All bikes must be registered and tagged. Unregistered bikes will be removed after 30 days notice. Registration forms available at concierge.",
+        createdBy: 1,
+        createdAt: "2025-07-10T11:15:00Z",
+        draft: true,
+        active: false,
+        priority: "low",
+        category: "Amenities"
+    },
+    {
+        id: 36,
+        title: "Emergency Preparedness Workshop",
+        content: "Join Calgary Emergency Management for a free preparedness workshop. Learn about: 72-hour kits, evacuation procedures, and emergency communication. Date and time TBD based on instructor availability.",
+        createdBy: 1,
+        createdAt: "2025-07-09T09:45:00Z",
+        draft: true,
+        active: false,
+        priority: "medium",
+        category: "Safety"
+    },
+    {
+        id: 37,
+        title: "Pest Control Annual Service",
+        content: "Annual preventive pest control service dates being finalized. Treatment will focus on common areas, garbage rooms, and parkade. Individual units available upon request for additional fee. Safe, pet-friendly products will be used.",
+        createdBy: 1,
+        createdAt: "2025-07-08T15:00:00Z",
+        draft: true,
+        active: false,
+        priority: "low",
+        category: "Maintenance"
+    },
+    {
+        id: 38,
+        title: "Security Camera Upgrade Phase 2",
+        content: "Phase 2 of our security camera upgrade will add cameras to all stairwells and storage areas. New cameras feature HD resolution, night vision, and 30-day cloud storage. Installation timeline pending board approval.",
+        createdBy: 1,
+        createdAt: "2025-07-13T13:20:00Z",
+        draft: true,
+        active: false,
+        priority: "high",
+        category: "Security"
+    },
+    {
+        id: 39,
+        title: "Amenity Booking System Tutorial",
+        content: "Video tutorials for our new amenity booking system are being created. Topics include: account setup, making bookings, cancellation policy, and payment options. Videos will be available on our website and at concierge.",
+        createdBy: 1,
+        createdAt: "2025-07-14T10:10:00Z",
+        draft: true,
+        active: false,
+        priority: "low",
+        category: "Technology"
+    },
+    {
+        id: 40,
+        title: "Green Initiative Program",
+        content: "Launching new sustainability initiatives: composting program, battery recycling stations, and energy reduction challenges. Volunteer green team being formed. Interested residents can sign up at concierge.",
+        createdBy: 1,
+        createdAt: "2025-07-07T12:00:00Z",
+        draft: true,
+        active: false,
+        priority: "medium",
+        category: "Sustainability"
+    },
+    {
+        id: 41,
+        title: "Insurance Claim Procedures",
+        content: "Reminder about insurance claim procedures: Document all damage immediately, contact management within 24 hours, obtain incident report from concierge. Your personal insurance is primary; building insurance covers common areas only.",
+        createdBy: 1,
+        createdAt: "2025-07-06T16:30:00Z",
+        draft: true,
+        active: false,
+        priority: "medium",
+        category: "Insurance"
+    },
+    {
+        id: 42,
+        title: "Lobby Renovation Concepts",
+        content: "Interior designer has prepared 3 lobby renovation concepts for board review. Resident input sessions to be scheduled once board selects preferred options. Renovation would include new furniture, lighting, and artwork.",
+        createdBy: 2,
+        createdAt: "2025-07-15T11:45:00Z",
+        draft: true,
+        active: false,
+        priority: "low",
+        category: "Improvements"
     }
 ];
 
