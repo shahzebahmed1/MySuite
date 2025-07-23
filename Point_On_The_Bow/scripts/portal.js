@@ -1,3 +1,80 @@
+// Mock data replacements for removed database
+const mockData = {
+    // Placeholder data
+    announcements: [
+        {
+            id: 1,
+            title: "Welcome to Point on the Bow",
+            content: "We're excited to have you as part of our community. Please explore all the features available in your resident portal.",
+            createdAt: new Date().toISOString(),
+            status: 'published'
+        },
+        {
+            id: 2,
+            title: "Amenity Booking System",
+            content: "Book our amenities easily through the portal. Check availability and make reservations for the gym, party room, and more.",
+            createdAt: new Date(Date.now() - 86400000).toISOString(),
+            status: 'published'
+        }
+    ],
+    boardMembers: [
+        { name: "John Smith", position: "President", email: "president@pointonthebow.ca", phone: "403-555-0001" },
+        { name: "Jane Doe", position: "Vice President", email: "vp@pointonthebow.ca", phone: "403-555-0002" }
+    ],
+    boardMeetings: [],
+    documents: [],
+    absences: [],
+    tasks: [],
+    milestones: [],
+    services: [],
+    taxiRequests: [],
+    tips: [],
+    newsletters: []
+};
+
+// Mock database replacement functions
+const mockDB = {
+    getAnnouncements: () => Promise.resolve({ success: true, announcements: mockData.announcements }),
+    createAnnouncement: () => Promise.resolve({ success: true, message: "Feature disabled - Supabase integration pending" }),
+    deleteAnnouncement: () => Promise.resolve({ success: true }),
+    getBoardMembers: () => Promise.resolve({ success: true, members: mockData.boardMembers }),
+    getBoardMeetings: () => Promise.resolve({ success: true, meetings: mockData.boardMeetings }),
+    createBoardMeeting: () => Promise.resolve({ success: true }),
+    getDocuments: () => Promise.resolve(mockData.documents),
+    getDocumentFolders: () => Promise.resolve([]),
+    uploadDocument: () => Promise.resolve({ success: true }),
+    getExtendedAbsences: () => Promise.resolve(mockData.absences),
+    createExtendedAbsence: () => Promise.resolve({ success: true }),
+    cancelExtendedAbsence: () => Promise.resolve({ success: true }),
+    deleteExtendedAbsence: () => Promise.resolve({ success: true }),
+    getTasks: () => Promise.resolve(mockData.tasks),
+    createTask: () => Promise.resolve({ success: true }),
+    deleteTask: () => Promise.resolve({ success: true }),
+    getMilestones: () => Promise.resolve(mockData.milestones),
+    createMilestone: () => Promise.resolve({ success: true }),
+    getSponsoredServices: () => Promise.resolve(mockData.services),
+    getTaxiRequests: () => Promise.resolve(mockData.taxiRequests),
+    createTaxiRequest: () => Promise.resolve({ success: true }),
+    updateTaxiRequest: () => Promise.resolve({ success: true }),
+    getAnonymousTips: () => Promise.resolve(mockData.tips),
+    createAnonymousTip: () => Promise.resolve({ success: true }),
+    updateAnonymousTip: () => Promise.resolve({ success: true }),
+    getNewsletters: () => Promise.resolve(mockData.newsletters),
+    createNewsletter: () => Promise.resolve({ success: true }),
+    sendNewsletter: () => Promise.resolve({ success: true }),
+    hasPermission: () => true, // All users have all permissions now
+    getUserById: () => ({ firstName: "Manager", lastName: "User", unitNumber: "Office" })
+};
+
+// Role constants for compatibility
+const ROLES = {
+    PROPERTY_MANAGER: 'user',
+    BOARD_MEMBER: 'user',
+    LEAD_CONCIERGE: 'user',
+    CONCIERGE: 'user',
+    RESIDENT: 'user'
+};
+
 // Check authentication on page load
 window.addEventListener('DOMContentLoaded', () => {
     const isAuthenticated = sessionStorage.getItem('isAuthenticated') || localStorage.getItem('isAuthenticated');
@@ -8,13 +85,13 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
     }
     
-    // Get user data from session/local storage
+    // Get user data from session storage
     const userData = {
-        email: sessionStorage.getItem('email') || localStorage.getItem('email'),
-        firstName: sessionStorage.getItem('firstName') || localStorage.getItem('firstName'),
-        lastName: sessionStorage.getItem('lastName') || localStorage.getItem('lastName'),
-        role: sessionStorage.getItem('role') || localStorage.getItem('role'),
-        unitNumber: sessionStorage.getItem('unitNumber') || localStorage.getItem('unitNumber')
+        email: sessionStorage.getItem('email') || 'manager@pointonthebow.ca',
+        firstName: sessionStorage.getItem('firstName') || 'Manager',
+        lastName: sessionStorage.getItem('lastName') || 'User',
+        role: 'user',
+        unitNumber: sessionStorage.getItem('unitNumber') || 'Office'
     };
     
     const isNewUser = sessionStorage.getItem('isNewUser');
@@ -28,7 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     
     if (userRoleEl) {
-        userRoleEl.textContent = mockDB.getRoleDisplayName(userData.role);
+        userRoleEl.textContent = 'User';
     }
     
     // Update user email elements
@@ -37,8 +114,7 @@ window.addEventListener('DOMContentLoaded', () => {
         el.textContent = userData.email;
     });
     
-    // Apply role-based access control
-    applyRoleBasedAccess(userData.role);
+    // All users have the same access now
     
     // Enhanced loading screen with progress animation
     const loadingScreen = document.getElementById('loading-screen');
@@ -61,11 +137,8 @@ function handleLogout() {
     // Clear all session storage
     sessionStorage.clear();
     
-    // Clear all local storage user data
-    const userKeys = ['isAuthenticated', 'email', 'firstName', 'lastName', 'role', 'unitNumber', 'id'];
-    userKeys.forEach(key => {
-        localStorage.removeItem(key);
-    });
+    // Clear authentication flag from local storage
+    localStorage.removeItem('isAuthenticated');
     
     // Redirect to login page
     window.location.href = 'login.html';
@@ -208,115 +281,35 @@ navLinks.forEach(link => {
     }
 });
 
-// Apply role-based access control
-function applyRoleBasedAccess(userRole) {
-    // Remove any existing role classes
-    document.body.classList.remove('admin-user', 'manager-user', 'board-member-user', 'concierge-user', 'lead-concierge-user', 'resident-user');
-    
-    // Add role-specific class to body for CSS-based visibility
-    if (userRole === 'property_manager') {
-        document.body.classList.add('manager-user');
-    } else if (userRole === 'board_member') {
-        document.body.classList.add('board-member-user');
-    } else if (userRole === 'lead_concierge') {
-        document.body.classList.add('lead-concierge-user');
-        document.body.classList.add('admin-user');
-    } else if (userRole === 'concierge') {
-        document.body.classList.add('concierge-user');
-        document.body.classList.add('admin-user');
-    } else if (userRole === 'resident') {
-        document.body.classList.add('resident-user');
-    }
-    
-    // Get all role-specific elements
-    const adminElements = document.querySelectorAll('.admin-only');
-    const managerElements = document.querySelectorAll('.manager-only');
-    const boardMemberElements = document.querySelectorAll('.board-member-only');
-    
-    // Hide/show elements based on role
-    adminElements.forEach(el => {
-        if (mockDB.hasPermission(userRole, 'concierge')) {
-            el.style.display = '';
-        } else {
-            el.style.display = 'none';
-        }
-    });
-    
-    managerElements.forEach(el => {
-        if (userRole === 'property_manager') {
-            el.style.display = '';
-        } else {
-            el.style.display = 'none';
-        }
-    });
-    
-    boardMemberElements.forEach(el => {
-        if (mockDB.hasPermission(userRole, 'board_member')) {
-            el.style.display = '';
-        } else {
-            el.style.display = 'none';
-        }
-    });
-    
-    // Special handling for specific features
-    if (userRole === 'resident') {
-        // Residents can't see certain admin sections
-        const adminSections = document.querySelectorAll('#resident-database-section, #incident-reports-section');
-        adminSections.forEach(section => {
-            if (section) section.style.display = 'none';
-        });
-    }
-}
+// All users now have the same access - no role-based restrictions
 
-// Initialize dashboard with role-specific content
+// Initialize dashboard
 function initializeDashboard(userData) {
-    // Update quick stats based on role
+    // Update stats for all users
     const statsGrid = document.getElementById('statsGrid');
     if (statsGrid) {
-        let statsHTML = '';
-        
-        // Common stats for all users
-        statsHTML += `
+        let statsHTML = `
             <div class="stat-item">
                 <i class="fas fa-home"></i>
                 <div class="stat-value">Unit ${userData.unitNumber}</div>
                 <div class="stat-label">Your Unit</div>
             </div>
+            <div class="stat-item">
+                <i class="fas fa-wrench"></i>
+                <div class="stat-value">3</div>
+                <div class="stat-label">Service Requests</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-calendar-check"></i>
+                <div class="stat-value">2</div>
+                <div class="stat-label">Active Bookings</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-box"></i>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Packages Today</div>
+            </div>
         `;
-        
-        // Role-specific stats
-        if (mockDB.hasPermission(userData.role, ROLES.CONCIERGE)) {
-            statsHTML += `
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <div class="stat-value">245</div>
-                    <div class="stat-label">Total Residents</div>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-box"></i>
-                    <div class="stat-value">12</div>
-                    <div class="stat-label">Packages Today</div>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-wrench"></i>
-                    <div class="stat-value">5</div>
-                    <div class="stat-label">Open Requests</div>
-                </div>
-            `;
-        } else {
-            statsHTML += `
-                <div class="stat-item">
-                    <i class="fas fa-calendar-check"></i>
-                    <div class="stat-value">2</div>
-                    <div class="stat-label">Active Bookings</div>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-box"></i>
-                    <div class="stat-value">1</div>
-                    <div class="stat-label">Packages Waiting</div>
-                </div>
-            `;
-        }
         
         statsGrid.innerHTML = statsHTML;
     }
@@ -327,10 +320,8 @@ function initializeDashboard(userData) {
     // Load upcoming events
     loadUpcomingEvents();
     
-    // Load updates for admin users
-    if (mockDB.hasPermission(userData.role, ROLES.CONCIERGE)) {
-        loadDashboardUpdates();
-    }
+    // Load dashboard updates for all users
+    loadDashboardUpdates();
     
     // Load board data when board section is accessed
     loadBoardData();
@@ -340,25 +331,39 @@ function initializeDashboard(userData) {
 function loadRecentAnnouncements() {
     const announcementsEl = document.getElementById('recentAnnouncements');
     if (announcementsEl) {
-        mockDB.getAnnouncements().then(result => {
-            if (result.success) {
-                const recentAnnouncements = result.announcements.slice(0, 3); // Show only 3 most recent
-                announcementsEl.innerHTML = recentAnnouncements.map(announcement => {
-                    const date = new Date(announcement.createdAt);
-                    return `
-                        <div class="announcement-item">
-                            <div class="announcement-date">${date.toLocaleDateString('en-US', { 
-                                month: 'short', 
-                                day: 'numeric', 
-                                year: 'numeric' 
-                            })}</div>
-                            <div class="announcement-title">${announcement.title}</div>
-                            <div class="announcement-preview">${announcement.content.substring(0, 100)}...</div>
-                        </div>
-                    `;
-                }).join('');
+        // Display placeholder announcements
+        const placeholderAnnouncements = [
+            {
+                title: "Welcome to Point on the Bow",
+                content: "We're excited to have you as part of our community. Please explore all the features available in your resident portal.",
+                createdAt: new Date().toISOString()
+            },
+            {
+                title: "Amenity Booking System",
+                content: "Book our amenities easily through the portal. Check availability and make reservations for the gym, party room, and more.",
+                createdAt: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                title: "Service Requests",
+                content: "Submit maintenance requests directly through the portal. Our team will address your concerns promptly.",
+                createdAt: new Date(Date.now() - 172800000).toISOString()
             }
-        });
+        ];
+        
+        announcementsEl.innerHTML = placeholderAnnouncements.map(announcement => {
+            const date = new Date(announcement.createdAt);
+            return `
+                <div class="announcement-item">
+                    <div class="announcement-date">${date.toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric', 
+                        year: 'numeric' 
+                    })}</div>
+                    <div class="announcement-title">${announcement.title}</div>
+                    <div class="announcement-preview">${announcement.content.substring(0, 100)}...</div>
+                </div>
+            `;
+        }).join('');
     }
 }
 
@@ -797,6 +802,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('portalSidebar');
     
+    // Category dropdown functionality
+    const categoryHeaders = document.querySelectorAll('.category-header');
+    
+    categoryHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const category = header.getAttribute('data-category');
+            const dropdown = document.getElementById(`${category}-dropdown`);
+            
+            // Toggle expanded state
+            header.classList.toggle('expanded');
+            dropdown.classList.toggle('expanded');
+            
+            // Store state in localStorage
+            const isExpanded = header.classList.contains('expanded');
+            localStorage.setItem(`category-${category}`, isExpanded);
+        });
+    });
+    
+    // Restore category states from localStorage
+    categoryHeaders.forEach(header => {
+        const category = header.getAttribute('data-category');
+        let isExpanded = localStorage.getItem(`category-${category}`);
+        
+        // Default expanded states for first time users
+        if (isExpanded === null) {
+            // Building Services and Communication expanded by default
+            isExpanded = (category === 'building-services' || category === 'communication');
+            localStorage.setItem(`category-${category}`, isExpanded);
+        } else {
+            isExpanded = isExpanded === 'true';
+        }
+        
+        if (isExpanded) {
+            header.classList.add('expanded');
+            document.getElementById(`${category}-dropdown`).classList.add('expanded');
+        }
+    });
+    
     // Navigation functionality
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -812,6 +855,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetNavLink = document.querySelector(`.nav-link[data-section="${targetSection}"]`);
         if (targetNavLink) {
             targetNavLink.parentElement.classList.add('active');
+            
+            // Expand parent category if collapsed
+            const parentDropdown = targetNavLink.closest('.category-dropdown');
+            if (parentDropdown && !parentDropdown.classList.contains('expanded')) {
+                parentDropdown.classList.add('expanded');
+                const categoryId = parentDropdown.id.replace('-dropdown', '');
+                const categoryHeader = document.querySelector(`[data-category="${categoryId}"]`);
+                if (categoryHeader) {
+                    categoryHeader.classList.add('expanded');
+                    localStorage.setItem(`category-${categoryId}`, 'true');
+                }
+            }
         }
         
         // Show target section
@@ -850,9 +905,71 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sidebar toggle
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
+            sidebar.classList.toggle('show');
         });
     }
+    
+    // Dropdown menu functionality
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const parentItem = toggle.closest('.nav-item');
+            const isExpanded = parentItem.classList.contains('expanded');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.nav-item.has-dropdown').forEach(item => {
+                if (item !== parentItem) {
+                    item.classList.remove('expanded');
+                }
+            });
+            
+            // Toggle current dropdown
+            parentItem.classList.toggle('expanded');
+            
+            // Save expanded state to localStorage
+            const dropdownStates = JSON.parse(localStorage.getItem('dropdownStates') || '{}');
+            const dropdownId = toggle.querySelector('span').textContent;
+            dropdownStates[dropdownId] = !isExpanded;
+            localStorage.setItem('dropdownStates', JSON.stringify(dropdownStates));
+        });
+    });
+    
+    // Restore dropdown states from localStorage
+    const savedDropdownStates = JSON.parse(localStorage.getItem('dropdownStates') || '{}');
+    dropdownToggles.forEach(toggle => {
+        const dropdownId = toggle.querySelector('span').textContent;
+        if (savedDropdownStates[dropdownId]) {
+            toggle.closest('.nav-item').classList.add('expanded');
+        }
+    });
+    
+    // Handle clicks on dropdown menu items
+    const dropdownMenuLinks = document.querySelectorAll('.dropdown-menu .nav-link');
+    dropdownMenuLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Navigate to the section
+            const section = link.getAttribute('data-section');
+            if (section) {
+                navigateToSection(section);
+            }
+            
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            link.closest('.nav-item').classList.add('active');
+            
+            // Keep parent dropdown expanded
+            const parentDropdown = link.closest('.nav-item.has-dropdown');
+            if (parentDropdown) {
+                parentDropdown.classList.add('active');
+            }
+        });
+    });
     
     // Update date and time
     updateDateTime();
@@ -1020,11 +1137,9 @@ function displayUpcomingMeetings(meetings) {
                 </div>
                 
                 <div class="meeting-actions">
-                    ${mockDB.hasPermission(sessionStorage.getItem('role'), ROLES.BOARD_MEMBER) ? 
-                        `<button class="btn btn-secondary btn-small" onclick="editMeeting(${meeting.id})">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>` : ''
-                    }
+                    <button class="btn btn-secondary btn-small" onclick="editMeeting(${meeting.id})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
                     <button class="btn btn-secondary btn-small" onclick="viewMeetingDetails(${meeting.id})">
                         <i class="fas fa-eye"></i> View Details
                     </button>
@@ -1085,11 +1200,9 @@ function displayPreviousMeetings(meetings) {
                     <button class="btn btn-secondary btn-small" onclick="viewMeetingDetails(${meeting.id})">
                         <i class="fas fa-file-alt"></i> View Minutes
                     </button>
-                    ${mockDB.hasPermission(sessionStorage.getItem('role'), ROLES.BOARD_MEMBER) ? 
-                        `<button class="btn btn-secondary btn-small" onclick="downloadMinutes(${meeting.id})">
-                            <i class="fas fa-download"></i> Download
-                        </button>` : ''
-                    }
+                    <button class="btn btn-secondary btn-small" onclick="downloadMinutes(${meeting.id})">
+                        <i class="fas fa-download"></i> Download
+                    </button>
                 </div>
             </div>
         `;
@@ -2398,17 +2511,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Extended Absence Functionality
 function initializeExtendedAbsence() {
-    const userRole = sessionStorage.getItem('role') || localStorage.getItem('role');
-    const userId = sessionStorage.getItem('id') || localStorage.getItem('id');
-    
-    // Check if user has access to Extended Absence
-    const allowedRoles = ['concierge', 'lead_concierge', 'property_manager', 'resident', 'board_member'];
-    if (!allowedRoles.includes(userRole)) {
-        // Hide the navigation item for unauthorized roles
-        const navItem = document.getElementById('extended-absence-nav');
-        if (navItem) navItem.style.display = 'none';
-        return;
-    }
+    // All users have access to Extended Absence feature
 
     const newAbsenceBtn = document.getElementById('newAbsenceBtn');
     const tabBtns = document.querySelectorAll('.absence-tabs .tab-btn');
@@ -2461,25 +2564,12 @@ function switchAbsenceTab(targetTab) {
 
 async function loadExtendedAbsenceData() {
     try {
-        const userRole = sessionStorage.getItem('role') || localStorage.getItem('role');
-        const userId = sessionStorage.getItem('id') || localStorage.getItem('id');
-        const staffRoles = ['concierge', 'lead_concierge', 'property_manager'];
-        
         let absences = await mockDB.getExtendedAbsences();
-        
-        // Filter absences for residents and board members - only show their own
-        if (!staffRoles.includes(userRole)) {
-            absences = absences.filter(a => a.userId === parseInt(userId));
-        }
         
         updateAbsenceStats(absences);
         
-        // Load appropriate initial tab
-        if (staffRoles.includes(userRole)) {
-            loadCurrentAbsences();
-        } else {
-            loadActiveAbsences();
-        }
+        // Load current absences by default
+        loadCurrentAbsences();
     } catch (error) {
         console.error('Error loading absence data:', error);
         showNotification('Error loading absence data', 'error');
@@ -2505,22 +2595,13 @@ function updateAbsenceStats(absences) {
 
 async function loadCurrentAbsences() {
     try {
-        const userRole = sessionStorage.getItem('role') || localStorage.getItem('role');
-        const userId = sessionStorage.getItem('id') || localStorage.getItem('id');
-        const staffRoles = ['concierge', 'lead_concierge', 'property_manager'];
-        
         let absences = await mockDB.getExtendedAbsences();
-        
-        // Filter for residents and board members
-        if (!staffRoles.includes(userRole)) {
-            absences = absences.filter(a => a.userId === parseInt(userId));
-        }
         
         const now = new Date();
         const currentAbsences = absences.filter(a => 
             new Date(a.startDate) <= now && new Date(a.endDate) >= now && a.status !== 'cancelled'
         );
-        displayAbsences(currentAbsences, 'currentAbsenceList', 'current', staffRoles.includes(userRole));
+        displayAbsences(currentAbsences, 'currentAbsenceList', 'current', true);
     } catch (error) {
         console.error('Error loading current absences:', error);
     }
@@ -2546,22 +2627,13 @@ async function loadActiveAbsences() {
 
 async function loadUpcomingAbsences() {
     try {
-        const userRole = sessionStorage.getItem('role') || localStorage.getItem('role');
-        const userId = sessionStorage.getItem('id') || localStorage.getItem('id');
-        const staffRoles = ['concierge', 'lead_concierge', 'property_manager'];
-        
         let absences = await mockDB.getExtendedAbsences();
-        
-        // Filter for residents and board members
-        if (!staffRoles.includes(userRole)) {
-            absences = absences.filter(a => a.userId === parseInt(userId));
-        }
         
         const now = new Date();
         const upcomingAbsences = absences.filter(a => 
             new Date(a.startDate) > now && a.status !== 'cancelled'
         );
-        displayAbsences(upcomingAbsences, 'upcomingAbsenceList', 'upcoming', staffRoles.includes(userRole));
+        displayAbsences(upcomingAbsences, 'upcomingAbsenceList', 'upcoming', true);
     } catch (error) {
         console.error('Error loading upcoming absences:', error);
     }
@@ -2569,22 +2641,13 @@ async function loadUpcomingAbsences() {
 
 async function loadAbsenceHistory() {
     try {
-        const userRole = sessionStorage.getItem('role') || localStorage.getItem('role');
-        const userId = sessionStorage.getItem('id') || localStorage.getItem('id');
-        const staffRoles = ['concierge', 'lead_concierge', 'property_manager'];
-        
         let absences = await mockDB.getExtendedAbsences();
-        
-        // Filter for residents and board members
-        if (!staffRoles.includes(userRole)) {
-            absences = absences.filter(a => a.userId === parseInt(userId));
-        }
         
         const now = new Date();
         const pastAbsences = absences.filter(a => 
             new Date(a.endDate) < now || a.status === 'cancelled'
         );
-        displayAbsences(pastAbsences, 'historyAbsenceList', 'past', staffRoles.includes(userRole));
+        displayAbsences(pastAbsences, 'historyAbsenceList', 'past', true);
     } catch (error) {
         console.error('Error loading absence history:', error);
     }

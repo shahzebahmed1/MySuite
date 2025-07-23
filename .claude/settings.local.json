@@ -11,7 +11,9 @@
       "Bash(node:*)",
       "Bash(rm:*)",
       "Bash(ls:*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(cd:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }

@@ -113,58 +113,38 @@ loginForm.addEventListener('submit', async (e) => {
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
     submitButton.disabled = true;
     
-    try {
-        // Authenticate using mock database
-        const result = await mockDB.authenticateUser(email, password);
+    // Hardcoded authentication for manager@pointonthebow.ca
+    if (email.toLowerCase() === 'manager@pointonthebow.ca' && password === 'manager123') {
+        // Store minimal user session
+        sessionStorage.setItem('isAuthenticated', 'true');
+        sessionStorage.setItem('email', email);
+        sessionStorage.setItem('firstName', 'Manager');
+        sessionStorage.setItem('lastName', 'User');
+        sessionStorage.setItem('role', 'user');
+        sessionStorage.setItem('unitNumber', 'Office');
         
-        if (result.success) {
-            // Store user session
-            const userData = {
-                id: result.user.id,
-                email: result.user.email,
-                firstName: result.user.firstName,
-                lastName: result.user.lastName,
-                role: result.user.role,
-                unitNumber: result.user.unitNumber,
-                isAuthenticated: 'true'
-            };
-            
-            // Store in session storage
-            Object.keys(userData).forEach(key => {
-                sessionStorage.setItem(key, userData[key]);
-            });
-            
-            // If remember me is checked, also store in local storage
-            if (rememberMe) {
-                Object.keys(userData).forEach(key => {
-                    localStorage.setItem(key, userData[key]);
-                });
-            }
-            
-            // Show success message
-            submitButton.innerHTML = '<i class="fas fa-check"></i> Success!';
-            submitButton.style.backgroundColor = '#10b981';
-            
-            // Redirect to portal after short delay
-            setTimeout(() => {
-                window.location.href = 'portal.html';
-            }, 1000);
-            
-        } else {
-            // Show error message
-            submitButton.innerHTML = originalText;
-            submitButton.disabled = false;
-            submitButton.style.backgroundColor = '';
-            
-            // Display error
-            showError(result.error || 'Login failed. Please try again.');
+        // If remember me is checked, also store in local storage
+        if (rememberMe) {
+            localStorage.setItem('isAuthenticated', 'true');
         }
-    } catch (error) {
-        console.error('Login error:', error);
+        
+        // Show success message
+        submitButton.innerHTML = '<i class="fas fa-check"></i> Success!';
+        submitButton.style.backgroundColor = '#10b981';
+        
+        // Redirect to portal after short delay
+        setTimeout(() => {
+            window.location.href = 'portal.html';
+        }, 1000);
+        
+    } else {
+        // Show error message
         submitButton.innerHTML = originalText;
         submitButton.disabled = false;
         submitButton.style.backgroundColor = '';
-        showError('An error occurred. Please try again.');
+        
+        // Display error
+        showError('Invalid email or password. Please try again.');
     }
 });
 
@@ -189,53 +169,21 @@ registrationForm.addEventListener('submit', async (e) => {
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
     submitButton.disabled = true;
     
-    try {
-        // Create user data object
-        const userData = {
-            firstName: formData.get('firstName'),
-            lastName: formData.get('lastName'),
-            email: document.getElementById('registerEmail').value,
-            unitNumber: formData.get('unitNumber'),
-            phone: formData.get('phone'),
-            password: password
-        };
-        
-        // Register using mock database
-        const result = await mockDB.createUser(userData);
-        
-        if (result.success) {
-            // Show success message
-            submitButton.innerHTML = '<i class="fas fa-check"></i> Account created!';
-            submitButton.style.backgroundColor = '#10b981';
-            showSuccess(result.message);
-            
-            // Reset form
-            registrationForm.reset();
-            
-            // Switch back to login form after delay
-            setTimeout(() => {
-                registrationFormContainer.style.display = 'none';
-                loginFormContainer.style.display = 'block';
-                loginFeatures.style.display = 'block';
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
-                submitButton.style.backgroundColor = '';
-            }, 2000);
-            
-        } else {
-            // Show error
-            submitButton.innerHTML = originalText;
-            submitButton.disabled = false;
-            submitButton.style.backgroundColor = '';
-            showError(result.error || 'Registration failed. Please try again.');
-        }
-    } catch (error) {
-        console.error('Registration error:', error);
-        submitButton.innerHTML = originalText;
-        submitButton.disabled = false;
-        submitButton.style.backgroundColor = '';
-        showError('An error occurred. Please try again.');
-    }
+    // Registration is disabled - show message
+    submitButton.innerHTML = originalText;
+    submitButton.disabled = false;
+    submitButton.style.backgroundColor = '';
+    showError('Registration is currently disabled. Please contact management for access.');
+    
+    // Reset form
+    registrationForm.reset();
+    
+    // Switch back to login form after delay
+    setTimeout(() => {
+        registrationFormContainer.style.display = 'none';
+        loginFormContainer.style.display = 'block';
+        loginFeatures.style.display = 'block';
+    }, 2000);
 });
 
 // Check if user came from register.html

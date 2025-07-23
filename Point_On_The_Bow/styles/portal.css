@@ -619,6 +619,85 @@
     display: block; /* Ensure block layout */
 }
 
+/* Category Styles */
+.nav-category {
+    width: 100%;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    user-select: none;
+}
+
+.category-header:hover {
+    background: rgba(201, 169, 110, 0.08);
+    color: var(--accent-color);
+}
+
+.category-header i:first-child {
+    font-size: 1rem;
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+}
+
+.category-header span {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.category-toggle {
+    margin-left: auto;
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.category-header.expanded .category-toggle {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Styles */
+.category-dropdown {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+}
+
+.category-dropdown.expanded {
+    max-height: 500px; /* Adjust based on content */
+}
+
+.category-dropdown .nav-item {
+    margin-bottom: 0;
+}
+
+.category-dropdown .nav-link {
+    padding-left: 3rem; /* Indent child items */
+    font-size: 0.9rem;
+}
+
+/* Hide admin category when not admin */
+.nav-category.admin-only {
+    display: none !important;
+}
+
+.admin-user .nav-category.admin-only {
+    display: block !important;
+}
+
 .nav-link {
     display: flex;
     align-items: center;
@@ -725,10 +804,39 @@
 }
 
 .dashboard-card h3 {
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1rem 0;
     color: var(--text-dark);
     font-size: 1.1rem;
     font-weight: 600;
+}
+
+/* Set specific height for stats, announcements, and actions cards */
+.stats-card,
+.announcements-card,
+.actions-card {
+    height: 270px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-card .stats-grid,
+.announcements-card .announcements-list,
+.actions-card .quick-actions {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Compact padding for height-restricted cards */
+.stats-card,
+.announcements-card,
+.actions-card {
+    padding: 1.25rem;
+}
+
+/* Ensure card headers in restricted height cards are compact */
+.announcements-card .card-header {
+    margin-bottom: 1rem;
 }
 
 .card-header {
@@ -757,12 +865,12 @@
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .stat-item {
     text-align: center;
-    padding: 1rem 0.5rem;
+    padding: 0.5rem 0.25rem;
     background: var(--secondary-color);
     border-radius: 8px;
 }
@@ -775,9 +883,10 @@
 }
 
 .stat-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-light);
     margin-top: 0.25rem;
+    line-height: 1.2;
 }
 
 /* Quick Actions */
