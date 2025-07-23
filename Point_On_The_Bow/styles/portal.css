@@ -619,6 +619,15 @@
     display: block; /* Ensure block layout */
 }
 
+/* Separator Line */
+.nav-separator {
+    display: block;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 1rem 1.5rem;
+    list-style: none;
+}
+
 /* Category Styles */
 .nav-category {
     width: 100%;
