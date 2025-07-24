@@ -809,36 +809,60 @@ document.addEventListener('DOMContentLoaded', () => {
         header.addEventListener('click', () => {
             const category = header.getAttribute('data-category');
             const dropdown = document.getElementById(`${category}-dropdown`);
-            
-            // Toggle expanded state
-            header.classList.toggle('expanded');
-            dropdown.classList.toggle('expanded');
-            
-            // Store state in localStorage
             const isExpanded = header.classList.contains('expanded');
-            localStorage.setItem(`category-${category}`, isExpanded);
+            
+            // Close all other dropdowns first
+            categoryHeaders.forEach(otherHeader => {
+                if (otherHeader !== header) {
+                    const otherCategory = otherHeader.getAttribute('data-category');
+                    const otherDropdown = document.getElementById(`${otherCategory}-dropdown`);
+                    otherHeader.classList.remove('expanded');
+                    otherDropdown.classList.remove('expanded');
+                    localStorage.setItem(`category-${otherCategory}`, false);
+                }
+            });
+            
+            // Toggle current dropdown
+            if (!isExpanded) {
+                header.classList.add('expanded');
+                dropdown.classList.add('expanded');
+                localStorage.setItem(`category-${category}`, true);
+            } else {
+                header.classList.remove('expanded');
+                dropdown.classList.remove('expanded');
+                localStorage.setItem(`category-${category}`, false);
+            }
         });
     });
     
-    // Restore category states from localStorage
+    // Restore category states from localStorage (only one at a time)
+    let expandedCategory = null;
     categoryHeaders.forEach(header => {
         const category = header.getAttribute('data-category');
-        let isExpanded = localStorage.getItem(`category-${category}`);
+        const isExpanded = localStorage.getItem(`category-${category}`) === 'true';
         
-        // Default expanded states for first time users
-        if (isExpanded === null) {
-            // Building Services and Communication expanded by default
-            isExpanded = (category === 'building-services' || category === 'communication');
-            localStorage.setItem(`category-${category}`, isExpanded);
-        } else {
-            isExpanded = isExpanded === 'true';
-        }
-        
-        if (isExpanded) {
+        if (isExpanded && !expandedCategory) {
+            expandedCategory = category;
             header.classList.add('expanded');
             document.getElementById(`${category}-dropdown`).classList.add('expanded');
+        } else {
+            // Ensure all others are closed
+            header.classList.remove('expanded');
+            document.getElementById(`${category}-dropdown`).classList.remove('expanded');
+            localStorage.setItem(`category-${category}`, false);
         }
     });
+    
+    // If no category is expanded, expand Building Services by default
+    if (!expandedCategory) {
+        const buildingServicesHeader = document.querySelector('[data-category="building-services"]');
+        const buildingServicesDropdown = document.getElementById('building-services-dropdown');
+        if (buildingServicesHeader && buildingServicesDropdown) {
+            buildingServicesHeader.classList.add('expanded');
+            buildingServicesDropdown.classList.add('expanded');
+            localStorage.setItem('category-building-services', true);
+        }
+    }
     
     // Navigation functionality
     navLinks.forEach(link => {
