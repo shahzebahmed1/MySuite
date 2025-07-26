@@ -1,10 +1,12 @@
 /* Portal Specific Styles */
 
 .portal-page {
-    background: #f8f9fa;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    min-height: 100vh;
     font-family: 'Inter', sans-serif;
     margin: 0;
     overflow-x: hidden;
+    padding: 1rem;
 }
 
 /* Admin-only, manager-only, and board-member-only elements are hidden by default */
@@ -395,99 +397,31 @@
     }
 }
 
-/* Portal Header */
-.portal-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    background: var(--primary-color);
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+/* Sidebar toggle removed */
 
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.sidebar-toggle {
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: var(--transition);
-}
-
-.sidebar-toggle:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.portal-logo {
-    height: 35px;
-}
-
-.portal-title-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 0.5rem;
-}
-
-.portal-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 0.15rem;
-}
-
-.portal-datetime {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.2;
-}
-
-.portal-datetime span {
-    white-space: nowrap;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
+/* Portal title and datetime removed - styles no longer needed */
 
 .notification-icon {
     position: relative;
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0.5rem;
-    border-radius: 50%;
+    border-radius: 6px;
     transition: var(--transition);
+    color: #1a1a1a;
 }
 
 .notification-icon:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: #f3f4f6;
+    color: #374151;
 }
 
 .notification-badge {
     position: absolute;
     top: 0;
     right: 0;
-    background: #ff4757;
-    color: var(--white);
+    background: #ef4444;
+    color: #ffffff;
     font-size: 0.7rem;
     padding: 2px 6px;
     border-radius: 10px;
@@ -507,18 +441,19 @@
 }
 
 .user-menu:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: #f3f4f6;
 }
 
 .user-avatar {
     width: 35px;
     height: 35px;
-    background: var(--accent-color);
+    background: #3b82f6;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1rem;
+    color: #ffffff;
 }
 
 .user-info {
@@ -530,11 +465,12 @@
 .user-name {
     font-weight: 600;
     font-size: 0.9rem;
+    color: #000000;
 }
 
 .user-role {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: #374151;
     text-transform: capitalize;
 }
 
@@ -583,14 +519,17 @@
 /* Portal Sidebar */
 .portal-sidebar {
     position: fixed;
-    top: 70px;
-    left: 0;
+    top: 1rem;
+    left: 1rem;
     width: 280px;
-    height: calc(100vh - 70px);
-    background: var(--white);
-    border-right: 1px solid #e3e3e3;
+    height: calc(100vh - 2rem);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
     z-index: 900;
     transition: transform 0.3s ease;
 }
@@ -599,15 +538,30 @@
     transform: translateX(-100%);
 }
 
+/* Sidebar Header with Centered Logo */
+.sidebar-header {
+    padding: 1.5rem 1rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-logo {
+    height: 60px;
+    width: auto;
+}
+
 .sidebar-content {
-    padding: 1rem 0;
+    padding: 0;
     width: 100%; /* Ensure full width usage */
 }
 
 .nav-menu {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 0 1rem 0;
     width: 100%; /* Ensure full width */
     display: flex;
     flex-direction: column; /* Force vertical layout */
@@ -649,8 +603,8 @@
 }
 
 .category-header:hover {
-    background: rgba(201, 169, 110, 0.08);
-    color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.1);
+    color: #1a1a1a;
 }
 
 .category-header i:first-child {
@@ -725,14 +679,16 @@
 }
 
 .nav-link:hover {
-    background: rgba(201, 169, 110, 0.1);
-    color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.1);
+    color: #1a1a1a;
 }
 
 .nav-item.active .nav-link {
-    background: rgba(201, 169, 110, 0.15);
-    color: var(--accent-color);
-    border-right-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.9);
+    color: #1a1a1a;
+    border-radius: 20px;
+    margin: 0 0.5rem;
+    border-right: none;
 }
 
 .nav-link i {
@@ -750,15 +706,37 @@
 
 /* Main Content */
 .portal-main {
-    margin-left: 280px;
-    margin-top: 70px;
+    position: fixed;
+    top: 1rem;
+    left: calc(280px + 2rem);
+    right: 1rem;
+    height: calc(100vh - 2rem);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     padding: 2rem;
-    min-height: calc(100vh - 70px);
-    transition: margin-left 0.3s ease;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+}
+
+/* Main Header with User Controls */
+.main-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 1rem;
+}
+
+.main-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .portal-main.expanded {
-    margin-left: 0;
+    left: 1rem;
 }
 
 .content-section {
@@ -1498,7 +1476,7 @@
     }
     
     .portal-main {
-        margin-left: 260px;
+        left: calc(260px + 2rem);
     }
 }
 
@@ -1511,11 +1489,11 @@
     
     .portal-sidebar.show {
         transform: translateX(0); /* Show when toggle is clicked */
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Add shadow when overlay */
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow when overlay */
     }
     
     .portal-main {
-        margin-left: 0; /* No margin when sidebar is hidden */
+        left: 1rem; /* No sidebar offset when sidebar is hidden */
     }
     
     .dashboard-grid {
@@ -1528,11 +1506,21 @@
 }
 
 @media (max-width: 768px) {
-    .portal-header {
-        padding: 0 1rem;
+    .portal-page {
+        padding: 0.5rem;
+    }
+    
+    .portal-sidebar {
+        top: 0.5rem;
+        left: 0.5rem;
+        height: calc(100vh - 1rem);
     }
     
     .portal-main {
+        top: 0.5rem;
+        left: 0.5rem;
+        right: 0.5rem;
+        height: calc(100vh - 1rem);
         padding: 1rem;
     }
     
@@ -3650,7 +3638,7 @@
 
 /* Bulk Actions Bar */
 .bulk-actions-bar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
     color: white;
     padding: 15px 20px;
     margin-bottom: 20px;
@@ -3719,7 +3707,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
     color: white;
     border-radius: 50%;
     font-weight: 600;
@@ -3932,7 +3920,7 @@
 }
 
 .onboarding-progress {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
     padding: 20px;
     color: white;
     text-align: center;
@@ -4041,7 +4029,7 @@
 }
 
 .welcome-message {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
     padding: 25px;
     border-radius: 12px;
     color: white;
@@ -5384,7 +5372,7 @@
 }
 
 .modern-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%) !important;
     padding: 2rem !important;
     border-bottom: none !important;
     color: white;
@@ -5404,7 +5392,7 @@
 }
 
 .modal.wizard-modal .modal-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%) !important;
 }
 
 .modal-title {
@@ -5564,7 +5552,7 @@
 }
 
 .modern-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%) !important;
     border: none !important;
     padding: 0.75rem 2rem !important;
     font-weight: 600 !important;
@@ -7141,7 +7129,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(90deg, #2d3748, #1a202c);
 }
 
 .milestone-card:hover {
@@ -7160,7 +7148,7 @@
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(135deg, #2d3748, #1a202c);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7201,7 +7189,7 @@
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(90deg, #2d3748, #1a202c);
     border-radius: 0.25rem;
     transition: width 0.3s ease;
 }
@@ -7312,7 +7300,7 @@
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(135deg, #2d3748, #1a202c);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7705,7 +7693,7 @@
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(135deg, #2d3748, #1a202c);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -799,7 +799,6 @@ forms.forEach(form => {
 document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-link[data-section]');
     const sections = document.querySelectorAll('.content-section');
-    const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('portalSidebar');
     
     // Category dropdown functionality
@@ -810,17 +809,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const category = header.getAttribute('data-category');
             const dropdown = document.getElementById(`${category}-dropdown`);
             const isExpanded = header.classList.contains('expanded');
-            
-            // Close all other dropdowns first
-            categoryHeaders.forEach(otherHeader => {
-                if (otherHeader !== header) {
-                    const otherCategory = otherHeader.getAttribute('data-category');
-                    const otherDropdown = document.getElementById(`${otherCategory}-dropdown`);
-                    otherHeader.classList.remove('expanded');
-                    otherDropdown.classList.remove('expanded');
-                    localStorage.setItem(`category-${otherCategory}`, false);
-                }
-            });
             
             // Toggle current dropdown
             if (!isExpanded) {
@@ -835,34 +823,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Restore category states from localStorage (only one at a time)
-    let expandedCategory = null;
+    // Ensure all dropdowns start closed by default
     categoryHeaders.forEach(header => {
         const category = header.getAttribute('data-category');
-        const isExpanded = localStorage.getItem(`category-${category}`) === 'true';
-        
-        if (isExpanded && !expandedCategory) {
-            expandedCategory = category;
-            header.classList.add('expanded');
-            document.getElementById(`${category}-dropdown`).classList.add('expanded');
-        } else {
-            // Ensure all others are closed
-            header.classList.remove('expanded');
-            document.getElementById(`${category}-dropdown`).classList.remove('expanded');
-            localStorage.setItem(`category-${category}`, false);
-        }
+        header.classList.remove('expanded');
+        document.getElementById(`${category}-dropdown`).classList.remove('expanded');
+        // Clear any old localStorage settings
+        localStorage.removeItem(`category-${category}`);
     });
-    
-    // If no category is expanded, expand Building Services by default
-    if (!expandedCategory) {
-        const buildingServicesHeader = document.querySelector('[data-category="building-services"]');
-        const buildingServicesDropdown = document.getElementById('building-services-dropdown');
-        if (buildingServicesHeader && buildingServicesDropdown) {
-            buildingServicesHeader.classList.add('expanded');
-            buildingServicesDropdown.classList.add('expanded');
-            localStorage.setItem('category-building-services', true);
-        }
-    }
     
     // Navigation functionality
     navLinks.forEach(link => {
@@ -928,12 +896,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Sidebar toggle
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
-        });
-    }
+    // Sidebar toggle removed - no longer needed
     
     // Dropdown menu functionality
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
@@ -997,9 +960,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Update date and time
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
+    // Date and time removed from sidebar
     
     // Handle "View All" links
     const viewAllLinks = document.querySelectorAll('a[data-section]');
@@ -1011,22 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Update date and time display
-function updateDateTime() {
-    const dateEl = document.getElementById('currentDate');
-    const timeEl = document.getElementById('currentTime');
-    
-    if (dateEl && timeEl) {
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        dateEl.textContent = now.toLocaleDateString('en-US', options);
-        timeEl.textContent = now.toLocaleTimeString('en-US', { 
-            hour: 'numeric', 
-            minute: '2-digit',
-            second: '2-digit'
-        });
-    }
-}
+// Date and time display function removed
 
 // Load board of directors data
 async function loadBoardData() {
