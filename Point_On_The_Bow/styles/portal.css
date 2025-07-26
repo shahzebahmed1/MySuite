@@ -521,7 +521,7 @@
     position: fixed;
     top: 1rem;
     left: 1rem;
-    width: 280px;
+    width: 259px;
     height: calc(100vh - 2rem);
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(15px);
@@ -544,6 +544,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 1rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -551,6 +552,13 @@
 .sidebar-logo {
     height: 60px;
     width: auto;
+}
+.sidebar-powered-by {
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.5);
+    margin-top: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 0.03em;
 }
 
 .sidebar-content {
@@ -708,7 +716,7 @@
 .portal-main {
     position: fixed;
     top: 1rem;
-    left: calc(280px + 2rem);
+    left: calc(259px + 2rem);
     right: 1rem;
     height: calc(100vh - 2rem);
     background: rgba(255, 255, 255, 0.6);
@@ -1472,18 +1480,18 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
     .portal-sidebar {
-        width: 260px; /* Slightly smaller on medium screens */
+        width: 240px; /* Slightly smaller on medium screens */
     }
     
     .portal-main {
-        left: calc(260px + 2rem);
+        left: calc(240px + 2rem);
     }
 }
 
 @media (max-width: 1024px) {
     .portal-sidebar {
         transform: translateX(-100%);
-        width: 280px; /* Keep full width when shown */
+        width: 259px; /* Keep full width when shown */
         z-index: 1001; /* Above other content */
     }
     
@@ -1552,7 +1560,7 @@
     
     /* Ensure sidebar takes full width on mobile when shown */
     .portal-sidebar {
-        width: 280px;
+        width: 259px;
         max-width: 85vw; /* Don't exceed 85% of viewport width */
     }
 }
