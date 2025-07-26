@@ -577,8 +577,9 @@
 
 .nav-item {
     margin-bottom: 0;
-    width: 100%; /* Full width for each item */
-    display: block; /* Ensure block layout */
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
 }
 
 /* Separator Line */
@@ -670,33 +671,50 @@
 }
 
 .nav-link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.75rem;
     padding: 0.4rem 1.5rem;
     color: var(--text-dark);
     text-decoration: none;
-    transition: var(--transition);
-    border-right: 3px solid transparent;
+    transition: all 0.2s ease;
+    border: none;
     font-weight: 500;
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Include padding in width calculation */
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide any overflow */
-    text-overflow: ellipsis; /* Show ellipsis for long text */
+    width: auto;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    outline: none;
+    border-radius: 20px;
+}
+
+.nav-link:focus {
+    outline: none;
+}
+
+.nav-link:focus-visible {
+    outline: 2px solid rgba(91, 155, 213, 0.5);
+    outline-offset: 2px;
+    border-radius: 20px;
 }
 
 .nav-link:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #1a1a1a;
+    border: none;
 }
 
 .nav-item.active .nav-link {
-    background: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, rgba(91, 155, 213, 0.15) 0%, rgba(112, 169, 220, 0.15) 50%, rgba(137, 184, 227, 0.15) 100%);
     color: #1a1a1a;
     border-radius: 20px;
     margin: 0 0.5rem;
     border-right: none;
+    width: auto;
+    display: inline-flex;
+    box-shadow: 0 2px 8px rgba(91, 155, 213, 0.2);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .nav-link i {
