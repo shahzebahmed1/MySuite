@@ -799,7 +799,6 @@ forms.forEach(form => {
 document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-link[data-section]');
     const sections = document.querySelectorAll('.content-section');
-    const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('portalSidebar');
     
     // Category dropdown functionality
@@ -928,12 +927,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Sidebar toggle
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
-        });
-    }
     
     // Dropdown menu functionality
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');

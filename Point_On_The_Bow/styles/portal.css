@@ -395,78 +395,37 @@
     }
 }
 
-/* Portal Header */
-.portal-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    background: var(--primary-color);
-    color: var(--white);
+/* Portal Header - Removed */
+
+/* New Sidebar Header */
+.sidebar-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--white);
+    text-align: center;
+}
+
+.sidebar-logo {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto 0.25rem;
+}
+
+.powered-by-text {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin: 0;
+    font-style: italic;
+    text-align: center;
+}
+
+.sidebar-user-section {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
     gap: 1rem;
-}
-
-.sidebar-toggle {
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: var(--transition);
-}
-
-.sidebar-toggle:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.portal-logo {
-    height: 35px;
-}
-
-.portal-title-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 0.5rem;
-}
-
-.portal-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 0.15rem;
-}
-
-.portal-datetime {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.2;
-}
-
-.portal-datetime span {
-    white-space: nowrap;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
 }
 
 .notification-icon {
@@ -479,7 +438,11 @@
 }
 
 .notification-icon:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.notification-icon i {
+    color: var(--text-dark);
 }
 
 .notification-badge {
@@ -507,7 +470,7 @@
 }
 
 .user-menu:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .user-avatar {
@@ -530,11 +493,12 @@
 .user-name {
     font-weight: 600;
     font-size: 0.9rem;
+    color: var(--text-dark);
 }
 
 .user-role {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-light);
     text-transform: capitalize;
 }
 
@@ -583,20 +547,16 @@
 /* Portal Sidebar */
 .portal-sidebar {
     position: fixed;
-    top: 70px;
+    top: 0;
     left: 0;
-    width: 280px;
-    height: calc(100vh - 70px);
+    width: 250px;
+    height: 100vh;
     background: var(--white);
     border-right: 1px solid #e3e3e3;
     overflow-y: auto;
     overflow-x: hidden; /* Prevent horizontal scrolling */
     z-index: 900;
     transition: transform 0.3s ease;
-}
-
-.portal-sidebar.collapsed {
-    transform: translateX(-100%);
 }
 
 .sidebar-content {
@@ -750,10 +710,9 @@
 
 /* Main Content */
 .portal-main {
-    margin-left: 280px;
-    margin-top: 70px;
+    margin-left: 250px;
     padding: 2rem;
-    min-height: calc(100vh - 70px);
+    min-height: 100vh;
     transition: margin-left 0.3s ease;
 }
 
@@ -778,6 +737,86 @@
     gap: 1rem;
 }
 
+/* Dashboard section header with user menu */
+.section-header.with-user-menu {
+    align-items: flex-start;
+}
+
+.header-content {
+    flex: 1;
+}
+
+.header-user-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.welcome-banner .notification-icon {
+    position: relative;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.welcome-banner .notification-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.welcome-banner .notification-icon i {
+    color: var(--white);
+}
+
+.welcome-banner .user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.welcome-banner .user-menu:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.welcome-banner .user-avatar {
+    width: 35px;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.welcome-banner .user-avatar i {
+    color: var(--white);
+    font-size: 1rem;
+}
+
+.welcome-banner .user-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--white);
+}
+
+.welcome-banner .user-role {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: capitalize;
+}
+
+.welcome-banner .notification-badge {
+    background: var(--accent-color);
+    color: var(--primary-color);
+}
+
 .section-header h1 {
     font-size: 2rem;
     color: var(--text-dark);
@@ -794,6 +833,108 @@
     display: flex;
     gap: 0.75rem;
     align-items: center;
+}
+
+/* Welcome Banner */
+.welcome-banner {
+    background-image: url('../public/assets/welcomebannerbackground.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.banner-user-controls {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 3;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-greeting {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem 0;
+    color: var(--white);
+}
+
+
+.welcome-stats {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.welcome-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.welcome-stat i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+}
+
+.stat-number {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.welcome-decoration {
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.welcome-decoration::before {
+    content: '';
+    position: absolute;
+    right: -30px;
+    top: 80px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
 }
 
 /* Dashboard Grid */
@@ -1494,18 +1635,18 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
     .portal-sidebar {
-        width: 260px; /* Slightly smaller on medium screens */
+        width: 230px; /* Slightly smaller on medium screens */
     }
     
     .portal-main {
-        margin-left: 260px;
+        margin-left: 230px;
     }
 }
 
 @media (max-width: 1024px) {
     .portal-sidebar {
         transform: translateX(-100%);
-        width: 280px; /* Keep full width when shown */
+        width: 250px; /* Keep full width when shown */
         z-index: 1001; /* Above other content */
     }
     
@@ -1528,10 +1669,6 @@
 }
 
 @media (max-width: 768px) {
-    .portal-header {
-        padding: 0 1rem;
-    }
-    
     .portal-main {
         padding: 1rem;
     }
@@ -1539,6 +1676,42 @@
     .section-header {
         flex-direction: column;
         align-items: flex-start;
+    }
+    
+    .section-header.with-user-menu {
+        flex-direction: column;
+    }
+    
+    .header-user-controls {
+        margin-top: 1rem;
+        align-self: flex-end;
+    }
+    
+    /* Welcome banner responsive */
+    .welcome-banner {
+        padding: 1.5rem;
+        padding-top: 4rem;
+    }
+    
+    .banner-user-controls {
+        top: 1rem;
+        right: 1rem;
+    }
+    
+    .welcome-greeting {
+        font-size: 1.4rem;
+    }
+    
+    .welcome-stats {
+        gap: 1.5rem;
+    }
+    
+    .welcome-stat i {
+        font-size: 1.2rem;
+    }
+    
+    .welcome-decoration {
+        display: none;
     }
     
     .content-grid {
@@ -1564,7 +1737,7 @@
     
     /* Ensure sidebar takes full width on mobile when shown */
     .portal-sidebar {
-        width: 280px;
+        width: 250px;
         max-width: 85vw; /* Don't exceed 85% of viewport width */
     }
 }

@@ -53,46 +53,13 @@
         </div>
     </div>
 
-    <!-- Portal Header -->
-    <header class="portal-header">
-        <div class="header-left">
-            <button class="sidebar-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <img src="public/assets/logo-white.png" alt="Point on the Bow" class="portal-logo">
-            <div class="portal-title-section">
-                <span class="portal-title">Resident Portal</span>
-                <div class="portal-datetime admin-only" id="portalDateTime">
-                    <span id="currentDate">Loading...</span>
-                    <span id="currentTime">Loading...</span>
-                </div>
-            </div>
-        </div>
-        <div class="header-right">
-            <div class="notification-icon">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge" id="notificationBadge">0</span>
-            </div>
-            <div class="user-menu">
-                <div class="user-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="user-info">
-                    <span class="user-name" id="userName">Loading...</span>
-                    <span class="user-role" id="userRole">...</span>
-                </div>
-                <div class="user-dropdown">
-                    <a href="#" id="profileLink"><i class="fas fa-user-cog"></i> Profile</a>
-                    <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
-                    <a href="index.html"><i class="fas fa-home"></i> Main Website</a>
-                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
-            </div>
-        </div>
-    </header>
 
     <!-- Sidebar Navigation -->
     <nav class="portal-sidebar" id="portalSidebar">
+        <div class="sidebar-header">
+            <img src="public/assets/logo-black.png" alt="Point on the Bow" class="sidebar-logo">
+            <p class="powered-by-text">Powered by MySuite</p>
+        </div>
         <div class="sidebar-content">
             <ul class="nav-menu">
                 <!-- Board of Directors (at the top) -->
@@ -286,9 +253,51 @@
         
         <!-- Dashboard Section -->
         <section id="dashboard-section" class="content-section active">
-            <div class="section-header">
-                <h1>Dashboard</h1>
-                <p>Welcome to your Point on the Bow resident portal</p>
+
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <div class="banner-user-controls">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">0</span>
+                    </div>
+                    <div class="user-menu">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" id="userName">Loading...</span>
+                            <span class="user-role" id="userRole">...</span>
+                        </div>
+                        <div class="user-dropdown">
+                            <a href="#" id="profileLink"><i class="fas fa-user-cog"></i> Profile</a>
+                            <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
+                            <a href="index.html"><i class="fas fa-home"></i> Main Website</a>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="welcome-content">
+                    <h2 class="welcome-greeting">Good Afternoon Mr. Mulrain</h2>
+                    <div class="welcome-stats">
+                        <div class="welcome-stat">
+                            <i class="fas fa-calendar-check"></i>
+                            <span class="stat-number" id="todayDate">Loading...</span>
+                            <span class="stat-label">Today</span>
+                        </div>
+                        <div class="welcome-stat">
+                            <i class="fas fa-bell"></i>
+                            <span class="stat-number" id="unreadCount">0</span>
+                            <span class="stat-label">New Updates</span>
+                        </div>
+                        <div class="welcome-stat">
+                            <i class="fas fa-tools"></i>
+                            <span class="stat-number" id="activeRequests">0</span>
+                            <span class="stat-label">Active Requests</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="welcome-decoration"></div>
             </div>
 
             <div class="dashboard-grid">
