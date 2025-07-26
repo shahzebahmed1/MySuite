@@ -904,6 +904,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadAllAnnouncements();
                 } else if (targetSection === 'board-directors') {
                     loadBoardData();
+                } else if (targetSection === 'service-requests') {
+                    initializeServiceRequests();
                 }
             }
         });
@@ -4248,6 +4250,179 @@ function useNewsletterTemplate(templateId) {
     showNotification('Template loaded successfully', 'success');
 }
 
+// ===== SERVICE REQUESTS FUNCTIONALITY =====
+function initializeServiceRequests() {
+    // Initialize tab functionality
+    const serviceTabs = document.querySelectorAll('.service-tabs .tab-btn');
+    const serviceContents = document.querySelectorAll('.service-content .tab-content');
+    
+    serviceTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs and contents
+            serviceTabs.forEach(t => t.classList.remove('active'));
+            serviceContents.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            tab.classList.add('active');
+            
+            // Update the sliding background position
+            const tabName = tab.getAttribute('data-tab');
+            const tabsContainer = tab.closest('.service-tabs');
+            if (tabsContainer) {
+                tabsContainer.setAttribute('data-active', tabName);
+            }
+            
+            // Show corresponding content
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        });
+    });
+    
+    // Initialize new service request button
+    const newServiceRequestBtn = document.getElementById('newServiceRequestBtn');
+    if (newServiceRequestBtn) {
+        newServiceRequestBtn.addEventListener('click', () => {
+            showCreateServiceRequestModal();
+        });
+    }
+    
+    // Load service requests data
+    loadServiceRequests();
+}
+
+function loadServiceRequests() {
+    // This would typically fetch from a database
+    // For now, we'll use mock data
+    const activeRequests = [
+        {
+            id: 'SR-2024-001',
+            title: 'Kitchen Sink Leak',
+            description: 'There\'s a persistent leak under the kitchen sink. Water is dripping from the pipe connection.',
+            category: 'Plumbing',
+            priority: 'High',
+            status: 'in-progress',
+            assignedTo: 'John D.',
+            progress: 60,
+            createdDate: 'Nov 15, 2024'
+        },
+        {
+            id: 'SR-2024-002',
+            title: 'Bedroom AC Not Cooling',
+            description: 'The air conditioning unit in the master bedroom is running but not cooling properly.',
+            category: 'HVAC',
+            priority: 'Medium',
+            status: 'scheduled',
+            scheduledDate: 'Nov 22, 10:00 AM',
+            createdDate: 'Nov 18, 2024'
+        }
+    ];
+    
+    // Populate active requests (example shown in HTML)
+    // You would typically generate these cards dynamically
+}
+
+function showCreateServiceRequestModal() {
+    const modalHTML = `
+        <div class="modal-overlay" id="createServiceRequestModal">
+            <div class="modal-container modal-large">
+                <div class="modal-header">
+                    <h2>Submit Service Request</h2>
+                    <button class="modal-close" onclick="closeModal('createServiceRequestModal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="serviceRequestForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="requestTitle">Request Title*</label>
+                        <input type="text" id="requestTitle" name="title" required placeholder="Brief description of the issue">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="requestCategory">Category*</label>
+                            <select id="requestCategory" name="category" required>
+                                <option value="">Select category</option>
+                                <option value="plumbing">Plumbing</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="hvac">HVAC</option>
+                                <option value="appliance">Appliance</option>
+                                <option value="general">General Maintenance</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="requestPriority">Priority*</label>
+                            <select id="requestPriority" name="priority" required>
+                                <option value="">Select priority</option>
+                                <option value="emergency">Emergency (24 hours)</option>
+                                <option value="high">High (2-3 days)</option>
+                                <option value="medium">Medium (1 week)</option>
+                                <option value="low">Low (2+ weeks)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="requestDescription">Description*</label>
+                        <textarea id="requestDescription" name="description" rows="4" required 
+                                  placeholder="Please provide detailed information about the issue"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="requestLocation">Location in Unit</label>
+                        <input type="text" id="requestLocation" name="location" placeholder="e.g., Master bedroom, Kitchen">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="requestAccess">Access Instructions</label>
+                        <textarea id="requestAccess" name="access" rows="2" 
+                                  placeholder="Any special instructions for accessing the area?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="permission" value="true">
+                            Permission to enter unit if I'm not home
+                        </label>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('createServiceRequestModal')">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('modalContainer').innerHTML = modalHTML;
+    
+    // Handle form submission
+    document.getElementById('serviceRequestForm').addEventListener('submit', handleServiceRequestSubmit);
+}
+
+function handleServiceRequestSubmit(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const requestData = Object.fromEntries(formData.entries());
+    
+    // Here you would typically send the data to your backend
+    console.log('Service request submitted:', requestData);
+    
+    // Show success notification
+    showNotification('Service request submitted successfully!', 'success');
+    
+    // Close modal
+    closeModal('createServiceRequestModal');
+    
+    // Refresh the service requests list
+    loadServiceRequests();
+}
+
 // ===== SECTION INITIALIZATION =====
 // Add these to the existing section initialization logic
 document.addEventListener('DOMContentLoaded', () => {
@@ -4258,7 +4433,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
                 if (node.classList && node.classList.contains('content-section')) {
-                    if (node.id === 'tasks-milestones-section' && node.classList.contains('active')) {
+                    if (node.id === 'service-requests-section' && node.classList.contains('active')) {
+                        initializeServiceRequests();
+                    } else if (node.id === 'tasks-milestones-section' && node.classList.contains('active')) {
                         initializeTasksMilestones();
                     } else if (node.id === 'sponsored-services-section' && node.classList.contains('active')) {
                         initializeSponsoredServices();
