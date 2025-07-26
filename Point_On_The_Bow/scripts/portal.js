@@ -795,11 +795,40 @@ forms.forEach(form => {
     });
 });
 
+// Initialize welcome banner
+function initializeWelcomeBanner() {
+    const greetingElement = document.querySelector('.welcome-greeting');
+    const dateElement = document.getElementById('welcomeDate');
+    
+    if (greetingElement && dateElement) {
+        // Get current hour
+        const hour = new Date().getHours();
+        let greeting = 'Good morning';
+        
+        if (hour >= 12 && hour < 17) {
+            greeting = 'Good afternoon';
+        } else if (hour >= 17) {
+            greeting = 'Good evening';
+        }
+        
+        // Update greeting
+        greetingElement.innerHTML = `${greeting}, <span id="userFirstName">Mr. Mulrain</span>!`;
+        
+        // Update date
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date().toLocaleDateString('en-US', options);
+        dateElement.textContent = today;
+    }
+}
+
 // Handle navigation between sections
 document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-link[data-section]');
     const sections = document.querySelectorAll('.content-section');
     const sidebar = document.getElementById('portalSidebar');
+    
+    // Initialize welcome banner
+    initializeWelcomeBanner();
     
     // Category dropdown functionality
     const categoryHeaders = document.querySelectorAll('.category-header');

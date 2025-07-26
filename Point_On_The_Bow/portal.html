@@ -251,16 +251,38 @@
     </nav>
 
     <!-- Main Content Area -->
-    <main class="portal-main" id="portalMain">
+    <main class="portal-content" id="portalMain">
         
         <!-- Dashboard Section -->
         <section id="dashboard-section" class="content-section active">
-            <div class="section-header">
-                <h1>Dashboard</h1>
-                <p>Welcome to your Point on the Bow resident portal</p>
-            </div>
-
             <div class="dashboard-grid">
+                <!-- First Row -->
+                <!-- Welcome Banner - spans 2 columns -->
+                <div class="welcome-banner dashboard-span-2">
+                    <div class="welcome-content">
+                        <h2 class="welcome-greeting">Good morning, <span id="userFirstName">Mr. Mulrain</span>!</h2>
+                        <p class="welcome-date" id="welcomeDate"></p>
+                    </div>
+                </div>
+
+                <!-- Weather Card -->
+                <div class="dashboard-card weather-card">
+                    <h3>Weather</h3>
+                    <div class="weather-content" id="weatherContent">
+                        <div class="weather-main">
+                            <div class="weather-temp">-5°C</div>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                        </div>
+                        <div class="weather-details">
+                            <p class="weather-description">Partly Cloudy</p>
+                            <p class="weather-location">Calgary, AB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Row -->
                 <!-- Quick Stats -->
                 <div class="dashboard-card stats-card">
                     <h3>Quick Stats</h3>
@@ -307,8 +329,9 @@
                     </div>
                 </div>
 
-                <!-- Calendar/Events -->
-                <div class="dashboard-card calendar-card">
+                <!-- Third Row -->
+                <!-- Calendar/Events - spans full width -->
+                <div class="dashboard-card calendar-card dashboard-span-3">
                     <div class="card-header">
                         <h3>Upcoming Events</h3>
                         <a href="#" data-section="events">View All</a>

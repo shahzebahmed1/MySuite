@@ -1,7 +1,6 @@
 /* Portal Specific Styles */
 
 .portal-page {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
     margin: 0;
@@ -523,10 +522,10 @@
     left: 1rem;
     width: 259px;
     height: calc(100vh - 2rem);
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(15px);
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: none;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
     overflow-x: hidden;
@@ -731,20 +730,13 @@
 }
 
 /* Main Content */
-.portal-main {
-    position: fixed;
-    top: 1rem;
-    left: calc(259px + 2rem);
-    right: 1rem;
-    height: calc(100vh - 2rem);
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(15px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+.portal-content {
+    margin-left: calc(259px + 2rem);
+    margin-right: 1rem;
+    margin-top: 1rem;
+    min-height: calc(100vh - 2rem);
     padding: 2rem;
-    overflow-y: auto;
-    transition: left 0.3s ease;
+    transition: margin-left 0.3s ease;
 }
 
 /* Main Header with User Controls */
@@ -761,8 +753,8 @@
     gap: 1.5rem;
 }
 
-.portal-main.expanded {
-    left: 1rem;
+.portal-content.expanded {
+    margin-left: 1rem;
 }
 
 .content-section {
@@ -800,20 +792,146 @@
     align-items: center;
 }
 
+/* Welcome Banner */
+.welcome-banner {
+    width: 100%;
+    height: 180px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-span-2 {
+    grid-column: span 2;
+}
+
+.dashboard-span-3 {
+    grid-column: span 3;
+}
+
+.welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../public/assets/horizonal-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.85;
+    filter: blur(3px);
+    transform: scale(1.1);
+    z-index: 0;
+}
+
+.welcome-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
+    z-index: 1;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+    padding: 3rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.welcome-greeting {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-date {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
 /* Dashboard Grid */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin-bottom: 2rem;
 }
 
+/* Weather Card Styles */
+.weather-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.weather-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+}
+
+.weather-main {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.weather-temp {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.weather-icon {
+    font-size: 2.5rem;
+    color: #5e9dd9;
+}
+
+.weather-details {
+    text-align: right;
+}
+
+.weather-description {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0 0 0.25rem 0;
+}
+
+.weather-location {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin: 0;
+}
+
 .dashboard-card {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e3e3e3;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .dashboard-card h3 {
@@ -1501,8 +1619,8 @@
         width: 240px; /* Slightly smaller on medium screens */
     }
     
-    .portal-main {
-        left: calc(240px + 2rem);
+    .portal-content {
+        margin-left: calc(240px + 2rem);
     }
 }
 
@@ -1518,12 +1636,20 @@
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow when overlay */
     }
     
-    .portal-main {
-        left: 1rem; /* No sidebar offset when sidebar is hidden */
+    .portal-content {
+        margin-left: 1rem; /* No sidebar offset when sidebar is hidden */
     }
     
     .dashboard-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .dashboard-span-2 {
+        grid-column: span 1;
+    }
+    
+    .dashboard-span-3 {
+        grid-column: span 1;
     }
     
     .content-area {
@@ -1542,11 +1668,11 @@
         height: calc(100vh - 1rem);
     }
     
-    .portal-main {
-        top: 0.5rem;
-        left: 0.5rem;
-        right: 0.5rem;
-        height: calc(100vh - 1rem);
+    .portal-content {
+        margin-top: 0.5rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        min-height: calc(100vh - 1rem);
         padding: 1rem;
     }
     
@@ -1594,6 +1720,22 @@
     
     .dashboard-card {
         padding: 1rem;
+    }
+    
+    .welcome-banner {
+        height: 150px;
+    }
+    
+    .welcome-content {
+        padding: 2rem;
+    }
+    
+    .welcome-greeting {
+        font-size: 2rem;
+    }
+    
+    .welcome-date {
+        font-size: 1rem;
     }
     
     .quick-actions {
