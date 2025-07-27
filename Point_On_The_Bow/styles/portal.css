@@ -842,7 +842,7 @@
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 12px;
-    padding: 2rem;
+    padding: 1rem 1.5rem;
     margin-bottom: 1.5rem;
     color: var(--white);
     position: relative;
@@ -863,7 +863,7 @@
 
 .banner-user-controls {
     position: absolute;
-    top: 1.5rem;
+    top: 1rem;
     right: 1.5rem;
     display: flex;
     align-items: center;
@@ -877,9 +877,9 @@
 }
 
 .welcome-greeting {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 600;
-    margin: 0 0 1.5rem 0;
+    margin: 0;
     color: var(--white);
 }
 
@@ -1689,8 +1689,8 @@
     
     /* Welcome banner responsive */
     .welcome-banner {
-        padding: 1.5rem;
-        padding-top: 4rem;
+        padding: 0.75rem 1rem;
+        padding-top: 2.5rem;
     }
     
     .banner-user-controls {
@@ -1699,7 +1699,7 @@
     }
     
     .welcome-greeting {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
     
     .welcome-stats {
