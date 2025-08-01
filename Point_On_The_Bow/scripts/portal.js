@@ -155,6 +155,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    // Sidebar logout button
+    const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
+    if (sidebarLogoutBtn) {
+        sidebarLogoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleLogout();
+        });
+    }
+    
     // Handle back to home links
     const homeLinks = document.querySelectorAll('a[href="index.html"]');
     homeLinks.forEach(link => {
@@ -384,11 +393,19 @@ function initializeAnnouncementsSection() {
     
     // Set up tab listeners
     const tabBtns = document.querySelectorAll('.announcement-tabs .tab-btn');
+    const tabsContainer = document.querySelector('.announcement-tabs');
+    
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             currentAnnouncementTab = btn.getAttribute('data-tab');
             tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            
+            // Update the data-active attribute for the sliding effect
+            if (tabsContainer) {
+                tabsContainer.setAttribute('data-active', currentAnnouncementTab);
+            }
+            
             displayAnnouncementsByTab();
         });
     });
@@ -671,7 +688,7 @@ function goToAnnouncementPage(page) {
 // Update announcement counts in tabs
 function updateAnnouncementCounts(currentTabCount) {
     // Update the current tab count
-    const currentTabElement = document.querySelector(`.tab-btn[data-tab="${currentAnnouncementTab}"] .tab-count`);
+    const currentTabElement = document.querySelector(`.tab-btn[data-tab="${currentAnnouncementTab}"] .tab-badge`);
     if (currentTabElement) {
         currentTabElement.textContent = currentTabCount;
     }
@@ -905,6 +922,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadBoardData();
                 } else if (targetSection === 'service-requests') {
                     initializeServiceRequests();
+                } else if (targetSection === 'amenity-bookings') {
+                    initializeAmenityBookings();
                 }
             }
         });
@@ -4446,3 +4465,146 @@ document.addEventListener('DOMContentLoaded', () => {
 
     observer.observe(document.body, { childList: true, subtree: true });
 });
+
+// ===== AMENITY BOOKINGS FUNCTIONALITY =====
+
+// Fake booking data
+const fakeBookings = [
+    // Current month bookings (December 2024)
+    { date: '2024-12-05', amenity: 'pool', bookedBy: 'Unit 301' },
+    { date: '2024-12-05', amenity: 'social-room', bookedBy: 'Unit 405' },
+    { date: '2024-12-07', amenity: 'pool', bookedBy: 'Unit 102' },
+    { date: '2024-12-08', amenity: 'terrace', bookedBy: 'Unit 202' },
+    { date: '2024-12-10', amenity: 'pool', bookedBy: 'Unit 506' },
+    { date: '2024-12-10', amenity: 'social-room', bookedBy: 'Unit 304' },
+    { date: '2024-12-12', amenity: 'social-room', bookedBy: 'Unit 301' },
+    { date: '2024-12-12', amenity: 'terrace', bookedBy: 'Unit 404' },
+    { date: '2024-12-14', amenity: 'pool', bookedBy: 'Unit 203' },
+    { date: '2024-12-14', amenity: 'terrace', bookedBy: 'Unit 507' },
+    { date: '2024-12-15', amenity: 'pool', bookedBy: 'Unit 202' },
+    { date: '2024-12-16', amenity: 'social-room', bookedBy: 'Unit 105' },
+    { date: '2024-12-18', amenity: 'social-room', bookedBy: 'Unit 303' },
+    { date: '2024-12-19', amenity: 'pool', bookedBy: 'Unit 406' },
+    { date: '2024-12-20', amenity: 'terrace', bookedBy: 'Unit 505' },
+    { date: '2024-12-21', amenity: 'pool', bookedBy: 'Unit 204' },
+    { date: '2024-12-21', amenity: 'social-room', bookedBy: 'Unit 302' },
+    { date: '2024-12-22', amenity: 'pool', bookedBy: 'Unit 401' },
+    { date: '2024-12-23', amenity: 'terrace', bookedBy: 'Unit 103' },
+    { date: '2024-12-25', amenity: 'social-room', bookedBy: 'Unit 201' },
+    { date: '2024-12-26', amenity: 'pool', bookedBy: 'Unit 504' },
+    { date: '2024-12-27', amenity: 'terrace', bookedBy: 'Unit 205' },
+    { date: '2024-12-28', amenity: 'pool', bookedBy: 'Unit 303' },
+    { date: '2024-12-28', amenity: 'social-room', bookedBy: 'Unit 402' },
+    { date: '2024-12-30', amenity: 'terrace', bookedBy: 'Unit 406' },
+    { date: '2024-12-31', amenity: 'social-room', bookedBy: 'Unit 101' },
+    // Next month bookings (January 2025)
+    { date: '2025-01-02', amenity: 'pool', bookedBy: 'Unit 301' },
+    { date: '2025-01-03', amenity: 'terrace', bookedBy: 'Unit 204' },
+    { date: '2025-01-05', amenity: 'social-room', bookedBy: 'Unit 404' },
+    { date: '2025-01-07', amenity: 'pool', bookedBy: 'Unit 102' },
+    { date: '2025-01-08', amenity: 'terrace', bookedBy: 'Unit 505' },
+    { date: '2025-01-10', amenity: 'social-room', bookedBy: 'Unit 303' },
+    { date: '2025-01-12', amenity: 'pool', bookedBy: 'Unit 201' }
+];
+
+// User's upcoming bookings
+const userBookings = [
+    { 
+        id: 1,
+        date: '2024-12-15', 
+        amenity: 'pool', 
+        time: '2:00 PM - 4:00 PM',
+        amenityName: 'Swimming Pool'
+    },
+    { 
+        id: 2,
+        date: '2024-12-22', 
+        amenity: 'social-room', 
+        time: '6:00 PM - 10:00 PM',
+        amenityName: 'Social Room'
+    }
+];
+
+function initializeAmenityBookings() {
+    // Static July 2025 calendar
+    const reserveBtn = document.getElementById('newBookingBtn');
+    
+    if (reserveBtn) {
+        reserveBtn.addEventListener('click', showAmenityBookingModal);
+    }
+    
+    // Display upcoming bookings
+    displayUpcomingBookings();
+}
+
+
+function displayUpcomingBookings() {
+    const bookingList = document.getElementById('upcomingBookings');
+    if (!bookingList) return;
+    
+    if (userBookings.length === 0) {
+        bookingList.innerHTML = '<p class="no-bookings">No upcoming reservations</p>';
+        return;
+    }
+    
+    bookingList.innerHTML = userBookings.map(booking => {
+        const date = new Date(booking.date);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        
+        return `
+            <div class="booking-item">
+                <div class="booking-info">
+                    <div class="booking-icon ${booking.amenity}">
+                        <i class="fas ${getAmenityIcon(booking.amenity)}"></i>
+                    </div>
+                    <div class="booking-details">
+                        <h4>${booking.amenityName}</h4>
+                        <p>${formattedDate} • ${booking.time}</p>
+                    </div>
+                </div>
+                <div class="booking-actions">
+                    <button class="booking-action-btn" onclick="editBooking(${booking.id})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="booking-action-btn cancel" onclick="cancelBooking(${booking.id})">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function getAmenityIcon(amenity) {
+    const icons = {
+        'pool': 'fa-swimming-pool',
+        'social-room': 'fa-users',
+        'terrace': 'fa-sun'
+    };
+    return icons[amenity] || 'fa-calendar';
+}
+
+function showAmenityBookingModal() {
+    showNotification('Reserve Amenity modal would open here', 'info');
+}
+
+function editBooking(bookingId) {
+    showNotification(`Edit booking ${bookingId}`, 'info');
+}
+
+function cancelBooking(bookingId) {
+    if (confirm('Are you sure you want to cancel this reservation?')) {
+        showNotification('Reservation cancelled successfully', 'success');
+        // Remove from userBookings array
+        const index = userBookings.findIndex(b => b.id === bookingId);
+        if (index > -1) {
+            userBookings.splice(index, 1);
+            displayUpcomingBookings();
+        }
+    }
+}

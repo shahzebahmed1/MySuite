@@ -244,6 +244,17 @@
                         <span>Suggestion Box</span>
                     </a>
                 </li>
+                
+                <!-- Separator Line -->
+                <li class="nav-separator"></li>
+                
+                <!-- Logout Button -->
+                <li class="nav-item">
+                    <a href="#" id="sidebarLogoutBtn" class="nav-link logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -285,7 +296,6 @@
                         <span class="weather-description">Partly Cloudy</span>
                     </div>
                 </div>
-                <div class="welcome-decoration"></div>
             </div>
 
             <div class="dashboard-grid">
@@ -383,14 +393,14 @@
 
 
             <!-- Announcement Tabs -->
-            <div class="announcement-tabs">
+            <div class="announcement-tabs" data-active="recent">
                 <button class="tab-btn active" data-tab="recent">
-                    <i class="fas fa-clock"></i> Recent (Last 30 Days)
-                    <span class="tab-count" id="recentCount">0</span>
+                    <i class="fas fa-clock"></i> Recent
+                    <span class="tab-badge" id="recentCount">0</span>
                 </button>
                 <button class="tab-btn" data-tab="older">
-                    <i class="fas fa-history"></i> Older Announcements
-                    <span class="tab-count" id="olderCount">0</span>
+                    <i class="fas fa-history"></i> Older
+                    <span class="tab-badge" id="olderCount">0</span>
                 </button>
                 <button class="tab-btn manager-only" data-tab="scheduled">
                     <i class="fas fa-calendar-check"></i> Scheduled
@@ -408,8 +418,93 @@
         </section>
 
         <section id="amenity-bookings-section" class="content-section">
-            <div class="calendar-booking-container" id="calendar-booking-container">
-                <!-- Calendar-based booking interface will be loaded here -->
+            <div class="section-header">
+                <h1>Amenity Bookings</h1>
+                <p>Reserve building amenities for your exclusive use</p>
+                <div class="section-actions">
+                    <button class="btn btn-primary" id="newBookingBtn">
+                        <i class="fas fa-plus"></i> New Booking
+                    </button>
+                </div>
+            </div>
+
+            <div class="amenity-booking-container">
+                <div class="booking-calendar">
+                    <div class="calendar-header">
+                        <h2>July 2025</h2>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div class="weekday">Sun</div>
+                        <div class="weekday">Mon</div>
+                        <div class="weekday">Tue</div>
+                        <div class="weekday">Wed</div>
+                        <div class="weekday">Thu</div>
+                        <div class="weekday">Fri</div>
+                        <div class="weekday">Sat</div>
+                    </div>
+                    <div class="calendar-days">
+                        <div class="calendar-day other-month">29</div>
+                        <div class="calendar-day other-month">30</div>
+                        <div class="calendar-day">1</div>
+                        <div class="calendar-day">2</div>
+                        <div class="calendar-day">3</div>
+                        <div class="calendar-day">4</div>
+                        <div class="calendar-day">5</div>
+                        <div class="calendar-day">6</div>
+                        <div class="calendar-day">7</div>
+                        <div class="calendar-day">8</div>
+                        <div class="calendar-day">9</div>
+                        <div class="calendar-day">10</div>
+                        <div class="calendar-day">11</div>
+                        <div class="calendar-day">12</div>
+                        <div class="calendar-day">13</div>
+                        <div class="calendar-day">14</div>
+                        <div class="calendar-day">15</div>
+                        <div class="calendar-day">16</div>
+                        <div class="calendar-day">17</div>
+                        <div class="calendar-day">18</div>
+                        <div class="calendar-day">19</div>
+                        <div class="calendar-day">20</div>
+                        <div class="calendar-day">21</div>
+                        <div class="calendar-day">22</div>
+                        <div class="calendar-day">23</div>
+                        <div class="calendar-day">24</div>
+                        <div class="calendar-day">25</div>
+                        <div class="calendar-day">26</div>
+                        <div class="calendar-day today">27</div>
+                        <div class="calendar-day">28</div>
+                        <div class="calendar-day has-booking">
+                            29
+                            <div class="booking-info">Pool Reserved</div>
+                            <div class="booking-info">Social Room Reserved</div>
+                            <div class="booking-info">Terrace Reserved</div>
+                            <div class="booking-info">Party Room Reserved</div>
+                            <div class="booking-info">Gym Reserved</div>
+                            <div class="booking-info">BBQ Area Reserved</div>
+                        </div>
+                        <div class="calendar-day">30</div>
+                        <div class="calendar-day">31</div>
+                        <div class="calendar-day other-month">1</div>
+                        <div class="calendar-day other-month">2</div>
+                    </div>
+                </div>
+                
+                <div class="upcoming-bookings-sidebar">
+                    <h3>Your Upcoming Bookings</h3>
+                    <div class="booking-list">
+                        <div class="booking-item">
+                            <div class="booking-date">Jul 30</div>
+                            <div class="booking-details">
+                                <h4>Party Room</h4>
+                                <p>2:00 PM - 6:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="empty-bookings">
+                            <i class="fas fa-calendar-times"></i>
+                            <p>No upcoming bookings</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -772,41 +867,25 @@
                 </div>
 
                 <!-- Absence Requests Tabs -->
-                <div class="absence-tabs">
-                    <div class="tabs-header staff-tabs">
-                        <button class="tab-btn active" data-tab="current">Current Absences</button>
-                        <button class="tab-btn" data-tab="upcoming">Upcoming</button>
-                        <button class="tab-btn" data-tab="history">History</button>
-                    </div>
-                    
-                    <div class="tabs-header resident-tabs">
-                        <button class="tab-btn active" data-tab="active">Active</button>
-                        <button class="tab-btn" data-tab="history">History</button>
-                    </div>
+                <div class="absence-tabs" data-active="active">
+                    <button class="tab-btn active" data-tab="active">
+                        <i class="fas fa-plane-departure"></i> Active
+                    </button>
+                    <button class="tab-btn" data-tab="history">
+                        <i class="fas fa-history"></i> History
+                    </button>
+                </div>
 
-                    <!-- Current/Active Absences Tab -->
-                    <div class="tab-content active" id="current-tab">
-                        <div class="absence-list" id="currentAbsenceList">
-                            <!-- Current absences will be loaded dynamically -->
-                        </div>
-                    </div>
-                    
-                    <!-- Active Tab (Residents) -->
-                    <div class="tab-content" id="active-tab">
+                <div class="absence-content">
+                    <!-- Active Absences Tab -->
+                    <div class="tab-content active" id="active-absences-tab">
                         <div class="absence-list" id="activeAbsenceList">
                             <!-- Active absences will be loaded dynamically -->
                         </div>
                     </div>
 
-                    <!-- Upcoming Absences Tab (Staff Only) -->
-                    <div class="tab-content" id="upcoming-tab">
-                        <div class="absence-list" id="upcomingAbsenceList">
-                            <!-- Upcoming absences will be loaded dynamically -->
-                        </div>
-                    </div>
-
                     <!-- History Tab -->
-                    <div class="tab-content" id="history-tab">
+                    <div class="tab-content" id="history-absences-tab">
                         <div class="absence-list" id="historyAbsenceList">
                             <!-- Past absences will be loaded dynamically -->
                         </div>
