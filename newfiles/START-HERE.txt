@@ -1,0 +1,15 @@
+MySuite dashboard — start here
+
+1. Extract this entire ZIP into a NEW empty folder.
+2. Open index.html in your browser.
+3. Keep styles.css, app.js, and assets/ beside index.html.
+
+File types:
+index.html — HTML source, starting with <!doctype html>
+styles.css — plain CSS source, starting with :root
+app.js — JavaScript source; its opening comment is followed by executable code
+assets/*.png — the only image files
+
+No install or build command is required. Weather is sample data. The footer lighting selector switches morning, afternoon, evening and night images.
+
+If opening index.html shows an unstyled page, check that styles.css is in the same extracted folder. Do not open a file from inside the ZIP. Do not rename an image to .html or .css.
