@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Technician</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-time="afternoon">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <div class="building"><i data-icon="building"></i><span>The Point on the Bow<small>Technician portal</small></span></div>
+    <nav>
+      <a class="nav-item active" aria-current="page" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="#"><i data-icon="wrench"></i>Work orders</a>
+      <a class="nav-item" href="#"><i data-icon="toolbox"></i>Parts</a>
+      <a class="nav-item" href="#"><i data-icon="activity"></i>Systems</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="clipboard"></i>Completed</a>
+      <a class="nav-item" href="#"><i data-icon="send"></i>Notes</a>
+    </nav>
+    <div class="sidebar-bottom"><span class="avatar small">MT</span><div>Marcus Torres<small>Building Technician</small></div><i data-icon="chevron"></i></div>
+  </aside>
+  <main>
+    <header class="welcome">
+      <div class="welcome-copy">
+        <p class="eyebrow">TECHNICIAN PORTAL</p>
+        <h1>Hello, Marcus</h1>
+        <div class="resident-meta"><span>Building Technician</span><span class="meta-dot">·</span><span>The Point on the Bow</span><span class="meta-dot">·</span><span class="badge">On shift</span></div>
+        <p class="welcome-note">Your assigned work for today.</p>
+      </div>
+      <div class="window-weather" role="group" aria-label="Outside weather">
+        <span class="window-weather-temperature">3°C</span>
+        <span class="window-weather-condition">Sunny</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button>
+        <button class="avatar" aria-label="View Marcus's profile" data-action="profile">MT</button>
+      </div>
+    </header>
+    <section class="dashboard" aria-label="Technician dashboard">
+
+      <!-- Today's work orders -->
+      <article class="card work-orders" id="work-orders">
+        <div class="card-heading"><h2><i data-icon="wrench"></i>Today’s work orders</h2><span class="count">3 assigned</span></div>
+        <button class="queue-row" data-action="job-m4821">
+          <span class="queue-meta"><strong>#M-4821 · Suite 1204</strong><small>Kitchen sink leak · Priority</small></span>
+          <span class="badge status">In progress</span>
+          <i data-icon="chevron"></i>
+        </button>
+        <button class="queue-row" data-action="job-m4820">
+          <span class="queue-meta"><strong>#M-4820 · Suite 312</strong><small>HVAC noise · Inspection</small></span>
+          <span class="badge assigned-badge">Assigned</span>
+          <i data-icon="chevron"></i>
+        </button>
+        <button class="queue-row" data-action="job-m4819">
+          <span class="queue-meta"><strong>#M-4819 · Suite 709</strong><small>Door intercom · Pending parts</small></span>
+          <span class="badge pending-badge">Pending</span>
+          <i data-icon="chevron"></i>
+        </button>
+        <div class="card-footer">Demo work orders · Connect your CMMS for live assignments.</div>
+      </article>
+
+      <!-- Active job -->
+      <article class="card active-job" id="active-job">
+        <div class="card-heading"><h2><i data-icon="activity"></i>Active job</h2><span class="tiny-label">IN PROGRESS</span></div>
+        <p class="overline">#M-4821</p>
+        <h3>Kitchen sink leak</h3>
+        <p class="muted">Suite 1204 · Alex Morgan · Access: resident home after 1:00 PM</p>
+        <ul class="job-steps">
+          <li><i data-icon="check"></i> Arrived on site</li>
+          <li><i data-icon="check"></i> Diagnosed supply line</li>
+          <li class="current">Replace compression fitting</li>
+        </ul>
+        <div class="card-bottom">
+          <button class="button outline" data-action="job-m4821">View details</button>
+          <button class="button" data-action="complete-job">Mark complete</button>
+        </div>
+      </article>
+
+      <!-- Parts / materials -->
+      <article class="card parts" id="parts">
+        <div class="card-heading"><h2><i data-icon="toolbox"></i>Parts &amp; materials</h2></div>
+        <div class="parts-row">
+          <span class="parts-info"><strong>1/2&quot; compression fitting</strong><small>For #M-4821 · Checked out</small></span>
+          <span class="badge status">On hand</span>
+        </div>
+        <div class="parts-row">
+          <span class="parts-info"><strong>Intercom handset board</strong><small>For #M-4819 · On order</small></span>
+          <span class="badge pending-badge">Ordered</span>
+        </div>
+        <div class="parts-row">
+          <span class="parts-info"><strong>HVAC filter (MERV-13)</strong><small>Stock · Mechanical room</small></span>
+          <span class="badge assigned-badge">In stock</span>
+        </div>
+        <div class="card-footer">Demo inventory · Connect your parts system for live stock.</div>
+      </article>
+
+      <!-- Building systems -->
+      <article class="card systems" id="systems">
+        <div class="card-heading"><h2><i data-icon="building"></i>Building systems</h2><span class="tiny-label">STATUS</span></div>
+        <div class="system-row">
+          <span class="system-info"><strong>HVAC — tower A</strong><small>Normal operation</small></span>
+          <span class="sys-dot ok" aria-label="OK"></span>
+        </div>
+        <div class="system-row">
+          <span class="system-info"><strong>Elevators 1–3</strong><small>All cars in service</small></span>
+          <span class="sys-dot ok" aria-label="OK"></span>
+        </div>
+        <div class="system-row">
+          <span class="system-info"><strong>Booster pumps</strong><small>Pressure within range</small></span>
+          <span class="sys-dot ok" aria-label="OK"></span>
+        </div>
+        <div class="system-row warn-row">
+          <span class="system-info"><strong>Parking exhaust fan</strong><small>Vibration advisory · Inspect this week</small></span>
+          <span class="sys-dot warn" aria-label="Advisory"></span>
+        </div>
+        <button class="button outline full" data-action="systems-detail" style="margin-top:14px">View system log</button>
+      </article>
+
+      <!-- Completed today -->
+      <article class="card completed" id="completed">
+        <div class="card-heading"><h2><i data-icon="check"></i>Completed today</h2><span class="count">2 done</span></div>
+        <div class="done-row">
+          <span class="tile-icon"><i data-icon="check"></i></span>
+          <span class="done-info"><strong>#M-4815 · Suite 508</strong><small>Light fixture replace · 9:40 AM</small></span>
+        </div>
+        <div class="done-row">
+          <span class="tile-icon"><i data-icon="check"></i></span>
+          <span class="done-info"><strong>#M-4817 · Common area</strong><small>Corridor thermostat · 11:15 AM</small></span>
+        </div>
+        <div class="card-footer">Demo completions · Connect your CMMS for live history.</div>
+      </article>
+
+      <!-- Notes to manager -->
+      <article class="card tech-notes" id="tech-notes">
+        <div class="card-heading"><h2><i data-icon="send"></i>Note to manager</h2></div>
+        <p class="muted">Send a quick handoff about a job, part delay, or building issue.</p>
+        <form id="tech-note-form">
+          <label class="sr-only" for="tech-note-input">Note text</label>
+          <textarea id="tech-note-input" name="note" placeholder="e.g. Intercom board ETA Friday — Suite 709 on hold…" rows="3" required></textarea>
+          <button class="button full" type="submit"><i data-icon="send"></i>Send demo note</button>
+        </form>
+        <p class="ai-caption">Demo only · Connect your messaging or ticketing service before sending real notes.</p>
+      </article>
+
+    </section>
+    <footer class="page-footer">
+      <span>MySuite · Technician portal.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>

@@ -1,0 +1,144 @@
+/* MySuite — Resident dashboard card styles.
+   Requires shared/tokens.css and shared/base.css. */
+
+/* ── Dashboard grid ───────────────────────────────────────── */
+.dashboard {
+  position:relative;
+  display:grid;
+  grid-template-columns:1.04fr 1.06fr 1fr;
+  gap:18px;
+  padding-top:2px
+}
+
+/* ── Announcements card ───────────────────────────────────── */
+.announcement {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  width:100%;
+  padding:16px 0;
+  background:transparent;
+  border:0;
+  text-align:left;
+  border-top:1px solid var(--line)
+}
+.announcement>span:nth-child(2) { flex:1; min-width:0 }
+.announcement>svg { width:16px; color:#917c67 }
+.announcement strong { display:block; font-size:14px; font-weight:650 }
+.announcement small { display:block; font-size:11px; line-height:1.5; color:#716454; margin-top:3px }
+.announcement em { display:block; font-size:7px; font-weight:600; letter-spacing:.7px; font-style:normal; color:#9a8a7b; margin-top:9px }
+
+/* ── Amenity card ─────────────────────────────────────────── */
+.pool-photo { width:100%; height:112px; object-fit:cover; border-radius:12px; display:block; margin-bottom:7px }
+.amenity-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; gap:8px }
+.amenity-row+.amenity-row { border-top:1px solid var(--line); padding-bottom:0 }
+.amenity-row>span { display:flex; gap:11px; align-items:center; font-size:13px }
+.amenity-row svg { color:var(--caramel); width:22px }
+
+/* ── Calendar card ────────────────────────────────────────── */
+.calendar { padding:23px 19px }
+.calendar .card-heading { margin-bottom:15px; gap:3px }
+.calendar h2 { font-size:16px; gap:9px }
+.calendar-controls { display:flex }
+.calendar-controls .icon-button { padding:4px }
+.calendar-controls svg { width:15px; height:18px }
+.weekdays,.calendar-days { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; gap:2px }
+.weekdays { font-size:10px; color:#8a674b; margin-bottom:7px }
+.calendar-days button,.calendar-days>span { height:29px; display:flex; align-items:center; justify-content:center; font-size:11px; border:0; background:none; border-radius:9px; min-width:0 }
+.calendar-days button:hover { background:#eee1d1 }
+.calendar-days .event-day { background:#ffdfb2; color:#5b3a20; font-weight:650 }
+.calendar-days .board-day { background:var(--caramel); color:white }
+.calendar-events { border-top:1px solid var(--line); padding-top:11px; margin-top:12px; display:grid; gap:7px; min-height:50px }
+.calendar-events button { border:0; background:none; text-align:left; font-size:10px; display:flex; gap:9px; align-items:center; padding:0 }
+.event-dot { height:7px; width:7px; background:var(--caramel); border-radius:50%; display:inline-block; flex-shrink:0 }
+.event-dot.light { background:#efbd7b }
+
+/* ── Maintenance / vote / meeting sizing ──────────────────── */
+.maintenance,.vote,.meeting { min-height:221px }
+
+/* ── Vote card ────────────────────────────────────────────── */
+.vote .card-heading { margin-bottom:15px }
+.vote h3 { margin-bottom:3px }
+.vote-progress { display:flex; align-items:center; gap:10px; margin:15px 0; font-size:10px }
+.progress-track { height:7px; background:#ece0d3; border-radius:20px; flex:1; overflow:hidden }
+.progress-track span { display:block; width:72%; height:100%; background:linear-gradient(90deg,#b78049,#a66b38); border-radius:20px }
+.vote .button { min-height:36px }
+
+/* ── Meeting card ─────────────────────────────────────────── */
+.meeting-date { display:flex; align-items:center; gap:8px; font-size:12px; margin:14px 0 20px }
+.meeting-date svg { height:17px; width:17px }
+
+/* ── Shop card ────────────────────────────────────────────── */
+.shop {
+  grid-column:1 / 2;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(90deg,#fffcf8 10%,#fffcf8d9 40%,#fffcf800 80%),url('../assets/fob.png') center/cover;
+  min-height:214px
+}
+.shop-content { position:relative; max-width:90% }
+.shop h2 { margin-bottom:14px }
+.shop h3 { font:500 21px/1.25 Georgia,serif; margin-bottom:8px }
+.shop .muted { font-size:9px }
+.shop .button { margin-top:15px; font-size:11px }
+
+/* ── AI assistant card ────────────────────────────────────── */
+.assistant { grid-column:2 / 4; display:flex; flex-direction:column; justify-content:center; padding:24px 26px }
+.assistant-title { display:flex; gap:13px; align-items:center; margin-bottom:20px }
+.assistant-title .tiny-label { margin-left:auto }
+.sparkle svg { height:35px; width:35px; color:var(--caramel); fill:#a66b3810 }
+.assistant h2 { font-size:21px; margin-bottom:4px }
+.assistant form { display:flex; border:1px solid #d6c2af; padding:6px; border-radius:12px; background:#fffefa; gap:5px }
+.assistant input { background:transparent; border:0; min-width:0; width:100%; padding:8px 12px; font-size:12px; color:var(--espresso); border-radius:7px }
+.assistant input::placeholder { color:#aa998a }
+.send { padding:8px; width:39px; flex-shrink:0 }
+.ai-caption { font-size:9px; color:#9b8b7b; margin-top:11px }
+.ai-answer { background:#f4ecdf; padding:13px; border-radius:10px; font-size:12px; line-height:1.7; margin-bottom:14px }
+
+/* ── Responsive: 1600px+ ──────────────────────────────────── */
+@media(min-width:1600px) {
+  .pool-photo { height:145px }
+  .calendar-days button,.calendar-days>span { height:33px }
+  .announcement { padding-block:21px }
+  .dashboard { gap:22px }
+  .shop { min-height:235px }
+}
+
+/* ── Responsive: ≤1200px ──────────────────────────────────── */
+@media(max-width:1200px) {
+  .dashboard { grid-template-columns:1fr 1fr; gap:16px }
+  .calendar { grid-column:2; grid-row:2 / 4 }
+  .maintenance { grid-column:1; grid-row:2 }
+  .vote { grid-column:1; grid-row:3 }
+  .meeting { grid-column:1; grid-row:4 }
+  .shop { grid-column:2; grid-row:4 }
+  .assistant { grid-column:1 / 3 }
+  .calendar-days button,.calendar-days>span { height:48px }
+  .calendar .card-heading { margin-bottom:27px }
+  .calendar-events { margin-top:25px }
+  .assistant-title .tiny-label { display:none }
+  .announcement small { font-size:11px }
+}
+
+/* ── Responsive: ≤560px ───────────────────────────────────── */
+@media(max-width:560px) {
+  .dashboard { display:flex; flex-direction:column; gap:14px }
+  .calendar { order:3 }
+  .maintenance { order:4 }
+  .vote { order:5 }
+  .meeting { order:6 }
+  .shop { order:7; min-height:224px }
+  .assistant { order:8 }
+  .calendar-days button,.calendar-days>span { height:36px }
+  .calendar .card-heading { margin-bottom:18px }
+  .calendar-events { margin-top:16px }
+  .pool-photo { height:155px }
+  .announcement strong { font-size:15px }
+  .announcement small { font-size:12px }
+  .maintenance,.vote,.meeting { min-height:0 }
+  .meeting-date { margin-block:14px }
+  .assistant-title { margin-bottom:16px }
+  .assistant input { padding-left:6px; font-size:12px }
+  .ai-caption { font-size:8px }
+  .shop .muted { font-size:10px }
+}

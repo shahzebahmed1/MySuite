@@ -1,0 +1,136 @@
+/* MySuite — Manager dashboard card styles.
+   Requires shared/tokens.css and shared/base.css. */
+
+/* ── Dashboard grid ───────────────────────────────────────── */
+.dashboard {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:18px;
+  padding-top:2px
+}
+
+/* ── KPI strip ────────────────────────────────────────────── */
+.kpis { grid-column:1 / -1 }
+.kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:4px }
+.kpi-tile {
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px 18px;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  cursor:pointer;
+  transition:background .15s, box-shadow .15s
+}
+.kpi-tile:hover { background:#f5ece0; box-shadow:0 4px 14px #a66b3812 }
+.kpi-value { font:600 26px/1 Georgia,serif; letter-spacing:-.5px; color:var(--espresso) }
+.kpi-unit { font-size:16px }
+.kpi-label { font-size:12px; font-weight:650; color:var(--espresso); margin-top:6px }
+.kpi-sub { font-size:10px; color:#8a7060 }
+.kpi-alert .kpi-value { color:#a0341a }
+.kpi-alert { border-color:#e8c4b4 }
+
+/* ── Maintenance overview ─────────────────────────────────── */
+.queue-row {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:14px 0;
+  background:transparent;
+  border:0;
+  border-top:1px solid var(--line);
+  text-align:left;
+  cursor:pointer
+}
+.queue-row:hover { background:#faf4ec; border-radius:8px; padding-inline:8px; margin-inline:-8px; width:calc(100% + 16px) }
+.queue-meta { flex:1; min-width:0 }
+.queue-meta strong { display:block; font-size:13px; font-weight:650 }
+.queue-meta small { display:block; font-size:11px; color:#716454; margin-top:2px }
+.queue-row>svg { width:15px; color:#917c67; flex-shrink:0 }
+.assigned-badge { background:#d4edda; color:#1d5c35 }
+.pending-badge { background:#fce8c3; color:#7a4a0e }
+
+/* ── Staff card ───────────────────────────────────────────── */
+.staff-row { display:flex; align-items:center; gap:12px; padding:14px 0; border-top:1px solid var(--line) }
+.staff-info { flex:1; min-width:0 }
+.staff-info strong { display:block; font-size:14px; font-weight:650 }
+.staff-info small { display:block; font-size:11px; color:#716454; margin-top:2px }
+
+/* ── Financials card ──────────────────────────────────────── */
+.fin-row { display:flex; justify-content:space-between; align-items:baseline; padding:10px 0; border-top:1px solid var(--line) }
+.fin-row:first-of-type { border-top:0; padding-top:4px }
+.fin-label { font-size:12px; color:#7b6a59 }
+.fin-value { font-size:16px; font-weight:650; letter-spacing:-.3px }
+.fin-value.collected { color:#2d6a3e }
+.fin-value.overdue { color:#a0341a; font-size:13px }
+.fin-note { font-size:10px; font-weight:400; color:#9a7060 }
+.fin-bar-wrap { display:flex; align-items:center; gap:10px; margin:6px 0 10px }
+.fin-bar { flex:1; height:7px; background:#ece0d3; border-radius:20px; overflow:hidden }
+.fin-bar span { display:block; height:100%; background:linear-gradient(90deg,#4d9c68,#2d6a3e); border-radius:20px }
+.fin-pct { font-size:10px; color:#7b6a59; white-space:nowrap }
+.alert-row .fin-label { color:#a0341a }
+
+/* ── Occupancy grid ───────────────────────────────────────── */
+.occ-grid {
+  display:grid;
+  grid-template-columns:repeat(17,1fr);
+  gap:4px;
+  margin-bottom:12px
+}
+.occ-dot-cell {
+  width:100%;
+  aspect-ratio:1;
+  border-radius:3px;
+  background:var(--caramel);
+  opacity:.85
+}
+.occ-dot-cell.vacant { background:var(--line); opacity:1 }
+.occ-dot-cell.overdue-cell { background:#d46b38 }
+.occ-legend { display:flex; gap:16px; font-size:10px; color:#7b6a59 }
+.occ-legend span { display:flex; align-items:center; gap:5px }
+.occ-dot { width:8px; height:8px; border-radius:2px; flex-shrink:0 }
+.occ-dot.occupied { background:var(--caramel) }
+.occ-dot.vacant { background:var(--line) }
+.occ-dot.overdue { background:#d46b38 }
+
+/* ── Vote admin card ──────────────────────────────────────── */
+.vote-admin-row { display:flex; align-items:center; gap:12px; padding:14px 0; border-top:1px solid var(--line) }
+.vote-admin-info { flex:1; min-width:0 }
+.vote-admin-info strong { display:block; font-size:14px; font-weight:650 }
+.vote-admin-info small { display:block; font-size:11px; color:#716454; margin-top:2px }
+.vote-admin-progress { display:flex; align-items:center; gap:10px; margin:10px 0 14px }
+.progress-track { flex:1; height:7px; background:#ece0d3; border-radius:20px; overflow:hidden }
+.progress-track span { display:block; height:100%; background:linear-gradient(90deg,#b78049,#a66b38); border-radius:20px }
+.vote-admin-actions { display:flex; gap:10px }
+.vote-admin-actions .button { flex:1; justify-content:center }
+
+/* ── Responsive: 1600px+ ──────────────────────────────────── */
+@media(min-width:1600px) {
+  .dashboard { gap:22px }
+}
+
+/* ── Responsive: ≤1200px ──────────────────────────────────── */
+@media(max-width:1200px) {
+  .dashboard { grid-template-columns:1fr 1fr; gap:16px }
+  .kpis { grid-column:1 / -1 }
+  .staff { grid-column:1 / -1 }
+  .kpi-row { grid-template-columns:repeat(3,1fr) }
+  .occ-grid { grid-template-columns:repeat(12,1fr) }
+}
+
+/* ── Responsive: ≤800px ───────────────────────────────────── */
+@media(max-width:800px) {
+  .kpi-row { grid-template-columns:1fr 1fr }
+  .kpi-tile:last-child { grid-column:1 / -1 }
+}
+
+/* ── Responsive: ≤560px ───────────────────────────────────── */
+@media(max-width:560px) {
+  .dashboard { display:flex; flex-direction:column; gap:14px }
+  .kpi-row { grid-template-columns:1fr }
+  .kpi-tile:last-child { grid-column:auto }
+  .occ-grid { grid-template-columns:repeat(9,1fr) }
+}

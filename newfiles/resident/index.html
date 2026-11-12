@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Home</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-time="afternoon">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <div class="building"><i data-icon="building"></i><span>The Point on the Bow<small>Your community, connected</small></span></div>
+    <nav>
+      <a class="nav-item active" aria-current="page" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="#"><i data-icon="megaphone"></i>Announcements</a>
+      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="calendar"></i>Calendar</a>
+      <a class="nav-item" href="#"><i data-icon="file"></i>Documents</a>
+      <a class="nav-item" href="#"><i data-icon="bag"></i>Shop</a>
+      <a class="nav-item" href="#"><i data-icon="users"></i>Community</a>
+      <a class="nav-item" href="#"><i data-icon="board"></i>Board workspace</a>
+    </nav>
+    <div class="sidebar-bottom"><span class="avatar small">AL</span><div>Alex Morgan<small>Resident · Suite 1204</small></div><i data-icon="chevron"></i></div>
+  </aside>
+  <main>
+    <header class="welcome">
+      <div class="welcome-copy"><p class="eyebrow">A LITTLE MORE AT HOME</p><h1>Welcome home, Alex</h1><div class="resident-meta"><span>Suite 1204</span><span class="meta-dot">·</span><span class="badge">Board member</span></div><p class="welcome-note">Everything you need for life at The Point.</p></div>
+      <!-- Sample weather. Replace these two text values with your weather data. -->
+      <div class="window-weather" role="group" aria-label="Outside weather">
+        <span class="window-weather-temperature">3°C</span>
+        <span class="window-weather-condition">Sunny</span>
+      </div>
+      <div class="header-actions"><button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button><button class="avatar" aria-label="View Alex's profile" data-action="profile">AL</button></div>
+    </header>
+    <section class="dashboard" aria-label="Your dashboard">
+      <article class="card announcements" id="announcements"><div class="card-heading"><h2><i data-icon="megaphone"></i>Announcements</h2><span class="count">2 new</span></div>
+        <button class="announcement" data-action="announcement-pool"><span class="tile-icon"><i data-icon="pool"></i></span><span><strong>Pool maintenance</strong><small>Pool will be closed on Friday.</small><em>BUILDING UPDATE · 2 HOURS AGO</em></span><i data-icon="chevron"></i></button>
+        <button class="announcement" data-action="announcement-social"><span class="tile-icon"><i data-icon="users"></i></span><span><strong>Community social</strong><small>Meet your neighbours this Saturday.</small><em>COMMUNITY · YESTERDAY</em></span><i data-icon="chevron"></i></button>
+        <div class="card-footer">A good place to stay in the loop.</div>
+      </article>
+      <article class="card amenities" id="amenities"><div class="card-heading"><h2><i data-icon="calendar"></i>Amenity booking</h2></div><img class="pool-photo" src="../assets/pool.png" alt="Sunlit indoor pool with loungers and oak finishes">
+        <div class="amenity-row"><span><i data-icon="pool"></i><strong>Pool</strong></span><button class="button compact" data-book="Pool">Book a time</button></div>
+        <div class="amenity-row"><span><i data-icon="users"></i><strong>Common room</strong></span><button class="button compact" data-book="Common room">Reserve</button></div>
+      </article>
+      <article class="card calendar" id="calendar"><div class="card-heading"><h2><i data-icon="calendar"></i><span id="calendar-title">November 2026</span></h2><div class="calendar-controls"><button class="icon-button" data-month="-1" aria-label="Previous month"><i data-icon="left"></i></button><button class="icon-button" data-month="1" aria-label="Next month"><i data-icon="chevron"></i></button></div></div><div class="weekdays" aria-hidden="true"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div><div class="calendar-days" id="calendar-days" aria-label="Calendar dates"></div><div class="calendar-events" id="calendar-events"></div></article>
+      <article class="card maintenance" id="maintenance"><div class="card-heading"><h2><i data-icon="wrench"></i>Maintenance request</h2></div><p class="overline">#M-4821</p><h3>Kitchen sink leak</h3><div class="card-bottom"><span class="badge status">In progress</span><button class="button outline" data-action="maintenance">View details</button></div></article>
+      <article class="card vote" id="vote"><div class="card-heading"><h2><i data-icon="chart"></i>Community vote</h2><span class="tiny-label">OPEN</span></div><h3>Lobby refresh</h3><p class="muted">Have your say in our shared spaces.</p><div class="vote-progress"><div class="progress-track"><span></span></div><span>72%</span></div><button class="button full" data-action="vote" id="vote-button">Vote now<i data-icon="arrow"></i></button></article>
+      <article class="card meeting" id="meeting"><div class="card-heading"><h2><i data-icon="users"></i>Upcoming meeting</h2></div><h3>Board meeting</h3><p class="meeting-date"><i data-icon="calendar"></i>Nov 12 · 6:00 PM</p><button class="button outline full" data-action="meeting"><i data-icon="video"></i>Join Google Meet</button></article>
+      <article class="card shop" id="shop"><div class="shop-content"><h2><i data-icon="bag"></i>Shop</h2><h3>Little essentials.<br>One convenient place.</h3><p class="muted">Fobs, batteries &amp; everyday supplies.</p><button class="button" data-action="shop">Browse shop<i data-icon="arrow"></i></button></div></article>
+      <article class="card assistant" id="assistant"><div class="assistant-title"><span class="sparkle"><i data-icon="sparkle"></i></span><div><h2>Ask AI</h2><p class="muted">Answers from your condo policies</p></div><span class="tiny-label">YOUR BUILDING GUIDE</span></div><div id="ai-answer" class="ai-answer" aria-live="polite" hidden></div><form id="ai-form"><label class="sr-only" for="ai-input">Ask about your building</label><input id="ai-input" name="question" placeholder="Ask about your building…" required autocomplete="off"><button class="button send" aria-label="Send question"><i data-icon="send"></i></button></form><p class="ai-caption">Demo assistant · Connect your policies to enable verified answers.</p></article>
+    </section>
+    <footer class="page-footer"><span>MySuite · A little closer to home.</span><label class="lighting-picker" for="header-lighting">Header lighting <select id="header-lighting"><option value="morning">Morning</option><option value="afternoon" selected>Afternoon</option><option value="evening">Evening</option><option value="night">Night</option></select></label><button data-action="help">Need a hand?</button></footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>

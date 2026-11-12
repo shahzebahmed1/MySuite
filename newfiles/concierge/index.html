@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Concierge</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-time="afternoon">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <div class="building"><i data-icon="building"></i><span>The Point on the Bow<small>Concierge portal</small></span></div>
+    <nav>
+      <a class="nav-item active" aria-current="page" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="#"><i data-icon="users"></i>Residents</a>
+      <a class="nav-item" href="#"><i data-icon="package"></i>Packages</a>
+      <a class="nav-item" href="#"><i data-icon="person"></i>Visitors</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="#"><i data-icon="megaphone"></i>Announcements</a>
+    </nav>
+    <div class="sidebar-bottom"><span class="avatar small">JK</span><div>Jordan Kim<small>Concierge · Main Lobby</small></div><i data-icon="chevron"></i></div>
+  </aside>
+  <main>
+    <header class="welcome">
+      <div class="welcome-copy">
+        <p class="eyebrow">CONCIERGE PORTAL</p>
+        <h1>Hello, Jordan</h1>
+        <div class="resident-meta"><span>Main Lobby</span><span class="meta-dot">·</span><span>The Point on the Bow</span><span class="meta-dot">·</span><span class="badge">On shift</span></div>
+        <p class="welcome-note">Here&rsquo;s what&rsquo;s happening in the building right now.</p>
+      </div>
+      <div class="window-weather" role="group" aria-label="Outside weather">
+        <span class="window-weather-temperature">3°C</span>
+        <span class="window-weather-condition">Sunny</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button>
+        <button class="avatar" aria-label="View Jordan's profile" data-action="profile">JK</button>
+      </div>
+    </header>
+    <section class="dashboard" aria-label="Concierge dashboard">
+
+      <!-- Visitors card -->
+      <article class="card visitors" id="visitors">
+        <div class="card-heading"><h2><i data-icon="person"></i>Active visitors</h2><span class="count">2 signed in</span></div>
+        <div class="visitor-row">
+          <span class="tile-icon"><i data-icon="person"></i></span>
+          <span class="visitor-info"><strong>Liang Chen</strong><small>Guest of Suite 204 · Signed in 10:14 AM</small></span>
+          <button class="button compact outline" data-action="sign-out-liang">Sign out</button>
+        </div>
+        <div class="visitor-row">
+          <span class="tile-icon"><i data-icon="person"></i></span>
+          <span class="visitor-info"><strong>Sarah Park</strong><small>Guest of Suite 1108 · Signed in 11:02 AM</small></span>
+          <button class="button compact outline" data-action="sign-out-sarah">Sign out</button>
+        </div>
+        <div class="card-footer">Visitor log is local demo data only.</div>
+      </article>
+
+      <!-- Packages card -->
+      <article class="card packages" id="packages">
+        <div class="card-heading"><h2><i data-icon="package"></i>Package log</h2><span class="count">3 awaiting</span></div>
+        <div class="package-row">
+          <span class="tile-icon"><i data-icon="package"></i></span>
+          <span class="package-info"><strong>Suite 402</strong><small>Amazon · Received 9:05 AM</small></span>
+          <button class="button compact" data-action="notify-402">Notify</button>
+        </div>
+        <div class="package-row">
+          <span class="tile-icon"><i data-icon="package"></i></span>
+          <span class="package-info"><strong>Suite 711</strong><small>FedEx · Received 10:30 AM</small></span>
+          <button class="button compact" data-action="notify-711">Notify</button>
+        </div>
+        <div class="package-row">
+          <span class="tile-icon"><i data-icon="package"></i></span>
+          <span class="package-info"><strong>Suite 1204</strong><small>UPS · Received 11:45 AM</small></span>
+          <button class="button compact" data-action="notify-1204">Notify</button>
+        </div>
+        <div class="card-footer">Demo packages · Not connected to a real parcel system.</div>
+      </article>
+
+      <!-- Resident lookup card -->
+      <article class="card lookup" id="lookup">
+        <div class="card-heading"><h2><i data-icon="users"></i>Resident lookup</h2></div>
+        <form id="lookup-form">
+          <label class="sr-only" for="lookup-input">Search by suite or name</label>
+          <div class="lookup-field">
+            <input id="lookup-input" name="query" placeholder="Suite number or resident name…" autocomplete="off">
+            <button class="button compact" type="submit">Search</button>
+          </div>
+        </form>
+        <div id="lookup-results" class="lookup-results" aria-live="polite"></div>
+        <div class="card-footer">Demo search · Connect your resident directory to enable live results.</div>
+      </article>
+
+      <!-- Amenity schedule card -->
+      <article class="card schedule" id="schedule">
+        <div class="card-heading"><h2><i data-icon="calendar"></i>Amenity schedule</h2><span class="tiny-label">TODAY</span></div>
+        <div class="schedule-row">
+          <span class="schedule-time">2:00 PM</span>
+          <span class="schedule-body"><strong>Pool</strong><small>Suite 501 · 1 hour</small></span>
+          <span class="badge status">Active</span>
+        </div>
+        <div class="schedule-row">
+          <span class="schedule-time">6:00 PM</span>
+          <span class="schedule-body"><strong>Common room</strong><small>Suite 803 · 2 hours</small></span>
+          <span class="badge">Upcoming</span>
+        </div>
+        <div class="card-footer">Demo schedule · Connect your booking service for live data.</div>
+      </article>
+
+      <!-- Maintenance queue card -->
+      <article class="card maint-queue" id="maint-queue">
+        <div class="card-heading"><h2><i data-icon="wrench"></i>Maintenance queue</h2><span class="count">3 open</span></div>
+        <button class="queue-row" data-action="view-m4821">
+          <span class="queue-meta"><strong>#M-4821</strong><small>Suite 1204 · Kitchen sink leak</small></span>
+          <span class="badge status">In progress</span>
+          <i data-icon="chevron"></i>
+        </button>
+        <button class="queue-row" data-action="view-m4820">
+          <span class="queue-meta"><strong>#M-4820</strong><small>Suite 312 · HVAC noise</small></span>
+          <span class="badge assigned-badge">Assigned</span>
+          <i data-icon="chevron"></i>
+        </button>
+        <button class="queue-row" data-action="view-m4819">
+          <span class="queue-meta"><strong>#M-4819</strong><small>Suite 709 · Door intercom</small></span>
+          <span class="badge pending-badge">Pending</span>
+          <i data-icon="chevron"></i>
+        </button>
+        <div class="card-footer">Demo data · Connect your maintenance service for live requests.</div>
+      </article>
+
+      <!-- Broadcast card -->
+      <article class="card broadcast" id="broadcast">
+        <div class="card-heading"><h2><i data-icon="megaphone"></i>Quick broadcast</h2></div>
+        <p class="muted">Send an announcement to all residents instantly.</p>
+        <form id="broadcast-form">
+          <label class="sr-only" for="broadcast-input">Announcement text</label>
+          <textarea id="broadcast-input" name="message" placeholder="Type your announcement…" rows="3" required></textarea>
+          <button class="button full" type="submit"><i data-icon="send"></i>Send to all residents</button>
+        </form>
+        <p class="ai-caption">Demo only · Connect your notification service before sending real messages.</p>
+      </article>
+
+    </section>
+    <footer class="page-footer">
+      <span>MySuite · Concierge portal.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>
