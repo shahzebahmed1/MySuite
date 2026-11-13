@@ -1,7 +1,39 @@
 /* MySuite — Manager dashboard.
-   Requires: shared/icons.js, shared/utils.js (loaded before this file via defer). */
+   Requires: shared/icons.js, shared/utils.js, shared/mockdata.js */
 
 renderIcons();
+applyLoggedInUser('manager');
+
+(function renderStaffRoster() {
+  const listEl = document.querySelector('#staff-list');
+  if (!listEl) return;
+  const colors = {
+    'acct-concierge-jordan': '#7a3e1a',
+    'acct-tech-marcus': '#3d5a80',
+    'acct-concierge-aisha': '#5c4d3e'
+  };
+  const roster = [
+    { id: 'acct-concierge-jordan', status: 'On duty', onDuty: true },
+    { id: 'acct-tech-marcus', status: 'On duty', onDuty: true, labelRole: 'Maintenance' },
+    { id: 'acct-concierge-aisha', status: 'Later today', onDuty: false }
+  ];
+  listEl.innerHTML = roster.map(row => {
+    const account = findAccountById(row.id);
+    if (!account) return '';
+    const roleLabel = row.labelRole || account.title;
+    const shiftBit = account.shift ? ` · ${account.shift}` : '';
+    const badgeStyle = row.onDuty ? ' style="background:#d4edda;color:#1d5c35"' : '';
+    const avatarStyle = colors[row.id] ? ` style="background:${colors[row.id]}"` : '';
+    return `<div class="staff-row">
+      <span class="avatar small"${avatarStyle}>${account.initials}</span>
+      <span class="staff-info">
+        <strong>${account.name}</strong>
+        <small>${roleLabel}${shiftBit}</small>
+      </span>
+      <span class="badge"${badgeStyle}>${row.status}</span>
+    </div>`;
+  }).join('');
+})();
 
 /* ── Occupancy grid ───────────────────────────────────────── */
 (function buildOccupancyGrid() {
@@ -43,7 +75,10 @@ const actions = {
   'close-modal': () => modal.close(),
 
   notifications: () => openModal('Notifications', '<p>No new notifications in this demo.</p><div class="dialog-info">Connect your notification service to show real-time alerts here.</div>'),
-  profile: () => openModal('Sarah Wong', '<p>Property Manager<br>The Point on the Bow</p><div class="dialog-info">Admin access · Demo session</div>'),
+  profile: () => {
+    const account = getSessionAccount('manager');
+    openModal(account?.name || 'Manager', `<p>${account?.title || 'Property Manager'}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">Admin access · Demo session</div>`);
+  },
 
   /* KPI tiles */
   'kpi-occupancy': () => openModal('Occupancy details', '<div class="dialog-info">128 of 136 suites occupied · 94% occupancy rate</div><p><strong>8 vacant suites</strong> — units 115, 228, 339, 455, 571, 682, 799, 1014.</p><p class="muted">Demo data · Connect your property management system for live occupancy figures.</p>'),
@@ -51,7 +86,10 @@ const actions = {
   'kpi-fees': () => openModal('Overdue fees', '<div class="dialog-info">$14,200 outstanding · 2 suites</div><p><strong>Suite 312</strong> — $7,100 overdue since Oct 1, 2026.</p><p><strong>Suite 709</strong> — $7,100 overdue since Oct 1, 2026.</p><p>Follow-up notices sent Nov 1, 2026. No response on file.</p><p class="muted">Demo data · Connect your property management system for live financials.</p>'),
 
   /* Maintenance */
-  'maint-m4821': () => openModal('Kitchen sink leak', '<div class="dialog-info">#M-4821 · Suite 1204 · In progress</div><p><strong>Nov 5</strong> · Reported by resident: Water leaking below kitchen sink.</p><p><strong>Nov 6</strong> · Assigned to Marcus Torres. Appointment pending confirmation.</p><p class="muted">Demo data · Connect your maintenance platform for live details.</p>'),
+  'maint-m4821': () => {
+    const tech = getSessionAccount('technician');
+    openModal('Kitchen sink leak', `<div class="dialog-info">#M-4821 · Suite 1204 · In progress</div><p><strong>Nov 5</strong> · Reported by resident: Water leaking below kitchen sink.</p><p><strong>Nov 6</strong> · Assigned to ${tech?.name || 'technician'}. Appointment pending confirmation.</p><p class="muted">Demo data · Connect your maintenance platform for live details.</p>`);
+  },
   'maint-m4820': () => openModal('HVAC noise', '<div class="dialog-info">#M-4820 · Suite 312 · Assigned</div><p><strong>Nov 8</strong> · Reported: Loud humming from HVAC unit overnight.</p><p><strong>Nov 9</strong> · Assigned to mechanical team. Inspection scheduled Nov 13.</p><p class="muted">Demo data · Connect your maintenance platform for live details.</p>'),
   'maint-m4819': () => openModal('Door intercom', '<div class="dialog-info">#M-4819 · Suite 709 · Pending</div><p><strong>Nov 10</strong> · Reported: Building entry intercom not ringing the suite.</p><p>No technician assigned yet. Awaiting manager review.</p><p class="muted">Demo data · Connect your maintenance platform for live details.</p>'),
 

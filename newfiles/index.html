@@ -9,8 +9,12 @@
   <link rel="stylesheet" href="shared/base.css">
   <link rel="stylesheet" href="portal.css">
   <script src="shared/icons.js" defer></script>
+  <script src="shared/mockdata.js" defer></script>
   <script defer>
-    document.addEventListener('DOMContentLoaded', () => renderIcons());
+    document.addEventListener('DOMContentLoaded', () => {
+      renderIcons();
+      applyPortalAccounts();
+    });
   </script>
 </head>
 <body>
@@ -25,7 +29,16 @@
           <span class="portal-role-icon"><i data-icon="home"></i></span>
           <span>
             <strong>Resident</strong>
-            <small>Alex Morgan · Suite 1204</small>
+            <small data-portal-role="resident"></small>
+          </span>
+          <i data-icon="chevron"></i>
+        </a>
+
+        <a class="portal-role" href="board/">
+          <span class="portal-role-icon"><i data-icon="board"></i></span>
+          <span>
+            <strong>Board member</strong>
+            <small data-portal-role="board"></small>
           </span>
           <i data-icon="chevron"></i>
         </a>
@@ -34,7 +47,7 @@
           <span class="portal-role-icon"><i data-icon="key"></i></span>
           <span>
             <strong>Concierge</strong>
-            <small>Jordan Kim · Main Lobby</small>
+            <small data-portal-role="concierge"></small>
           </span>
           <i data-icon="chevron"></i>
         </a>
@@ -43,7 +56,7 @@
           <span class="portal-role-icon"><i data-icon="clipboard"></i></span>
           <span>
             <strong>Manager</strong>
-            <small>Sarah Wong · Property Manager</small>
+            <small data-portal-role="manager"></small>
           </span>
           <i data-icon="chevron"></i>
         </a>
@@ -52,7 +65,7 @@
           <span class="portal-role-icon"><i data-icon="wrench"></i></span>
           <span>
             <strong>Technician</strong>
-            <small>Marcus Torres · Building Technician</small>
+            <small data-portal-role="technician"></small>
           </span>
           <i data-icon="chevron"></i>
         </a>

@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="dashboard.css">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="packages-data.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body data-time="afternoon">
@@ -18,22 +20,24 @@
     <div class="building"><i data-icon="building"></i><span>The Point on the Bow<small>Concierge portal</small></span></div>
     <nav>
       <a class="nav-item active" aria-current="page" href="./"><i data-icon="home"></i>Home</a>
-      <a class="nav-item" href="#"><i data-icon="users"></i>Residents</a>
-      <a class="nav-item" href="#"><i data-icon="package"></i>Packages</a>
+      <a class="nav-item" href="#"><i data-icon="users"></i>Resident directory</a>
+      <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
       <a class="nav-item" href="#"><i data-icon="person"></i>Visitors</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item" href="#"><i data-icon="clipboard"></i>Daily log</a>
       <div class="nav-divider"></div>
       <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
       <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
       <a class="nav-item" href="#"><i data-icon="megaphone"></i>Announcements</a>
     </nav>
-    <div class="sidebar-bottom"><span class="avatar small">JK</span><div>Jordan Kim<small>Concierge · Main Lobby</small></div><i data-icon="chevron"></i></div>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
     <header class="welcome">
       <div class="welcome-copy">
         <p class="eyebrow">CONCIERGE PORTAL</p>
-        <h1>Hello, Jordan</h1>
-        <div class="resident-meta"><span>Main Lobby</span><span class="meta-dot">·</span><span>The Point on the Bow</span><span class="meta-dot">·</span><span class="badge">On shift</span></div>
+        <h1 data-user-greeting="Hello, {first}"></h1>
+        <div class="resident-meta"><span data-user-station></span><span class="meta-dot">·</span><span data-user-building></span><span class="meta-dot">·</span><span class="badge">On shift</span></div>
         <p class="welcome-note">Here&rsquo;s what&rsquo;s happening in the building right now.</p>
       </div>
       <div class="window-weather" role="group" aria-label="Outside weather">
@@ -42,46 +46,27 @@
       </div>
       <div class="header-actions">
         <button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button>
-        <button class="avatar" aria-label="View Jordan's profile" data-action="profile">JK</button>
+        <button class="avatar" data-user-initials data-user-profile-label data-action="profile"></button>
       </div>
     </header>
     <section class="dashboard" aria-label="Concierge dashboard">
 
       <!-- Visitors card -->
       <article class="card visitors" id="visitors">
-        <div class="card-heading"><h2><i data-icon="person"></i>Active visitors</h2><span class="count">2 signed in</span></div>
-        <div class="visitor-row">
-          <span class="tile-icon"><i data-icon="person"></i></span>
-          <span class="visitor-info"><strong>Liang Chen</strong><small>Guest of Suite 204 · Signed in 10:14 AM</small></span>
-          <button class="button compact outline" data-action="sign-out-liang">Sign out</button>
-        </div>
-        <div class="visitor-row">
-          <span class="tile-icon"><i data-icon="person"></i></span>
-          <span class="visitor-info"><strong>Sarah Park</strong><small>Guest of Suite 1108 · Signed in 11:02 AM</small></span>
-          <button class="button compact outline" data-action="sign-out-sarah">Sign out</button>
-        </div>
+        <div class="card-heading"><h2><i data-icon="person"></i>Active visitors</h2><span class="count" id="visitor-count">0 signed in</span></div>
+        <div id="visitor-list"></div>
         <div class="card-footer">Visitor log is local demo data only.</div>
       </article>
 
       <!-- Packages card -->
       <article class="card packages" id="packages">
-        <div class="card-heading"><h2><i data-icon="package"></i>Package log</h2><span class="count">3 awaiting</span></div>
-        <div class="package-row">
-          <span class="tile-icon"><i data-icon="package"></i></span>
-          <span class="package-info"><strong>Suite 402</strong><small>Amazon · Received 9:05 AM</small></span>
-          <button class="button compact" data-action="notify-402">Notify</button>
+        <div class="card-heading"><h2><i data-icon="package"></i>Package log</h2><span class="count" id="home-package-count">0 pending</span></div>
+        <div id="home-package-list"></div>
+        <div class="card-bottom package-card-actions">
+          <a class="button outline compact" href="packages.html">View all</a>
+          <a class="button compact" href="packages.html">Log package</a>
         </div>
-        <div class="package-row">
-          <span class="tile-icon"><i data-icon="package"></i></span>
-          <span class="package-info"><strong>Suite 711</strong><small>FedEx · Received 10:30 AM</small></span>
-          <button class="button compact" data-action="notify-711">Notify</button>
-        </div>
-        <div class="package-row">
-          <span class="tile-icon"><i data-icon="package"></i></span>
-          <span class="package-info"><strong>Suite 1204</strong><small>UPS · Received 11:45 AM</small></span>
-          <button class="button compact" data-action="notify-1204">Notify</button>
-        </div>
-        <div class="card-footer">Demo packages · Not connected to a real parcel system.</div>
+        <div class="card-footer">Open Packages to log arrivals and review pending packages.</div>
       </article>
 
       <!-- Resident lookup card -->
@@ -101,37 +86,14 @@
       <!-- Amenity schedule card -->
       <article class="card schedule" id="schedule">
         <div class="card-heading"><h2><i data-icon="calendar"></i>Amenity schedule</h2><span class="tiny-label">TODAY</span></div>
-        <div class="schedule-row">
-          <span class="schedule-time">2:00 PM</span>
-          <span class="schedule-body"><strong>Pool</strong><small>Suite 501 · 1 hour</small></span>
-          <span class="badge status">Active</span>
-        </div>
-        <div class="schedule-row">
-          <span class="schedule-time">6:00 PM</span>
-          <span class="schedule-body"><strong>Common room</strong><small>Suite 803 · 2 hours</small></span>
-          <span class="badge">Upcoming</span>
-        </div>
+        <div id="schedule-list"></div>
         <div class="card-footer">Demo schedule · Connect your booking service for live data.</div>
       </article>
 
       <!-- Maintenance queue card -->
       <article class="card maint-queue" id="maint-queue">
-        <div class="card-heading"><h2><i data-icon="wrench"></i>Maintenance queue</h2><span class="count">3 open</span></div>
-        <button class="queue-row" data-action="view-m4821">
-          <span class="queue-meta"><strong>#M-4821</strong><small>Suite 1204 · Kitchen sink leak</small></span>
-          <span class="badge status">In progress</span>
-          <i data-icon="chevron"></i>
-        </button>
-        <button class="queue-row" data-action="view-m4820">
-          <span class="queue-meta"><strong>#M-4820</strong><small>Suite 312 · HVAC noise</small></span>
-          <span class="badge assigned-badge">Assigned</span>
-          <i data-icon="chevron"></i>
-        </button>
-        <button class="queue-row" data-action="view-m4819">
-          <span class="queue-meta"><strong>#M-4819</strong><small>Suite 709 · Door intercom</small></span>
-          <span class="badge pending-badge">Pending</span>
-          <i data-icon="chevron"></i>
-        </button>
+        <div class="card-heading"><h2><i data-icon="wrench"></i>Maintenance queue</h2><span class="count" id="maint-count">0 open</span></div>
+        <div id="maint-list"></div>
         <div class="card-footer">Demo data · Connect your maintenance service for live requests.</div>
       </article>
 

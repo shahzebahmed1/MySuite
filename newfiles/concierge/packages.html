@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Packages</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="packages.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="packages-data.js" defer></script>
+  <script src="packages.js" defer></script>
+</head>
+<body data-time="afternoon">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <div class="building"><i data-icon="building"></i><span>The Point on the Bow<small>Concierge portal</small></span></div>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="#"><i data-icon="users"></i>Resident directory</a>
+      <a class="nav-item active" aria-current="page" href="packages.html"><i data-icon="package"></i>Packages</a>
+      <a class="nav-item" href="#"><i data-icon="person"></i>Visitors</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item" href="#"><i data-icon="clipboard"></i>Daily log</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="#"><i data-icon="megaphone"></i>Announcements</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">CONCIERGE</p>
+        <h1>Package tracking</h1>
+        <p class="welcome-note">Log arrivals on the left. Review pending packages on the right.</p>
+      </div>
+      <div class="header-tools">
+        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+      </div>
+    </header>
+
+    <div class="packages-layout">
+      <section id="log-panel" class="log-panel card" aria-label="Log a package">
+        <div class="log-panel-top">
+          <h2><i data-icon="package"></i>Log a package</h2>
+        </div>
+        <div id="form-slot-panel"></div>
+      </section>
+
+      <section class="packages-table-card card" aria-label="Package list">
+        <div class="pkg-tabs" role="tablist">
+          <button type="button" class="pkg-tab active" role="tab" aria-selected="true" data-tab="awaiting" id="tab-pending">Pending</button>
+          <button type="button" class="pkg-tab" role="tab" aria-selected="false" data-tab="history" id="tab-history">History</button>
+        </div>
+
+        <div id="pending-panel" class="pending-panel">
+          <div id="pending-list" class="pending-list"></div>
+          <p id="pending-empty" class="pkg-empty" hidden>Nothing pending. Log a package when one arrives.</p>
+        </div>
+
+        <div id="history-panel" class="table-wrap" hidden>
+          <table class="pkg-table" id="pkg-table">
+            <thead>
+              <tr id="pkg-thead-row">
+                <th>Suite / Resident</th>
+                <th>Carrier</th>
+                <th>Arrival</th>
+                <th>Logged by</th>
+                <th>Delivery</th>
+                <th>Delivered by</th>
+              </tr>
+            </thead>
+            <tbody id="pkg-tbody"></tbody>
+          </table>
+          <p id="pkg-empty" class="pkg-empty" hidden>No package history yet.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="page-footer">
+      <span>MySuite · Concierge portal.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+
+  <template id="package-form-template">
+    <form id="package-form" class="arrive-form">
+      <div class="arrive-top">
+        <label class="arrive-suite">Suite
+          <input id="pkg-suite" name="suite" type="text" inputmode="numeric" placeholder="Suite number" required autocomplete="off">
+        </label>
+        <label class="arrive-resident">Resident name
+          <input id="pkg-resident" name="residentName" type="text" required autocomplete="off">
+        </label>
+      </div>
+      <p id="suite-hint" class="suite-hint is-muted" aria-live="polite"></p>
+      <input type="hidden" name="receivedBy" value="">
+
+      <div class="arrive-fields">
+        <label>Time of arrival
+          <input id="pkg-arrived" name="arrivedAt" type="datetime-local" required>
+        </label>
+        <label>Type
+          <select name="parcelType" required>
+            <option value="Box">Box</option>
+            <option value="Package" selected>Package</option>
+            <option value="Envelope">Envelope</option>
+          </select>
+        </label>
+        <label>Last 6 of tracking #
+          <input name="trackingLast6" type="text" maxlength="6" minlength="6" pattern="[A-Za-z0-9]{6}" placeholder="482193" required autocomplete="off">
+        </label>
+        <label>Carrier
+          <select name="carrier" required>
+            <option value="Amazon">Amazon</option>
+            <option value="UPS">UPS</option>
+            <option value="FedEx">FedEx</option>
+            <option value="Canada Post">Canada Post</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="button outline" data-cancel-log>Clear</button>
+        <button class="button" type="submit">Log package</button>
+      </div>
+    </form>
+  </template>
+
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>

@@ -1,7 +1,66 @@
 /* MySuite — Concierge dashboard.
-   Requires: shared/icons.js, shared/utils.js (loaded before this file via defer). */
+   Requires: shared/icons.js, shared/utils.js, shared/mockdata.js, packages-data.js */
 
 renderIcons();
+applyLoggedInUser('concierge');
+
+/* ── Render dashboard cards from MOCK_DATA ─────────────────── */
+(function renderHomePackages() {
+  const listEl = document.querySelector('#home-package-list');
+  const countEl = document.querySelector('#home-package-count');
+  if (!listEl || !countEl) return;
+  const packages = sortPackagesNewestFirst(getPackages());
+  const pending = packages.filter(p => p.status === 'pending');
+  countEl.textContent = `${pending.length} pending`;
+  const recent = (pending.length ? pending : packages).slice(0, 3);
+  if (recent.length === 0) {
+    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No deliveries yet. Log a package to get started.</p>';
+    return;
+  }
+  listEl.innerHTML = recent.map(pkg => renderPackageRow(pkg)).join('');
+  renderIcons(listEl);
+})();
+
+(function renderVisitors() {
+  const listEl = document.querySelector('#visitor-list');
+  const countEl = document.querySelector('#visitor-count');
+  if (!listEl || !countEl) return;
+  const visitors = MOCK_DATA.visitors;
+  countEl.textContent = `${visitors.length} signed in`;
+  listEl.innerHTML = visitors.map(v => `
+    <div class="visitor-row">
+      <span class="tile-icon"><i data-icon="person"></i></span>
+      <span class="visitor-info"><strong>${v.name}</strong><small>Guest of Suite ${v.suite} · Signed in ${v.signedInAt}</small></span>
+      <button class="button compact outline" data-sign-out="${v.id}">Sign out</button>
+    </div>`).join('');
+  renderIcons(listEl);
+})();
+
+(function renderSchedule() {
+  const listEl = document.querySelector('#schedule-list');
+  if (!listEl) return;
+  listEl.innerHTML = MOCK_DATA.amenitySchedule.map(row => `
+    <div class="schedule-row">
+      <span class="schedule-time">${row.time}</span>
+      <span class="schedule-body"><strong>${row.amenity}</strong><small>Suite ${row.suite} · ${row.duration}</small></span>
+      <span class="badge ${row.statusClass}">${row.status}</span>
+    </div>`).join('');
+})();
+
+(function renderMaintenance() {
+  const listEl = document.querySelector('#maint-list');
+  const countEl = document.querySelector('#maint-count');
+  if (!listEl || !countEl) return;
+  const items = MOCK_DATA.maintenanceQueue;
+  countEl.textContent = `${items.length} open`;
+  listEl.innerHTML = items.map(item => `
+    <button class="queue-row" data-maint="${item.id}">
+      <span class="queue-meta"><strong>#${item.id}</strong><small>Suite ${item.suite} · ${item.title}</small></span>
+      <span class="badge ${item.statusClass}">${item.status}</span>
+      <i data-icon="chevron"></i>
+    </button>`).join('');
+  renderIcons(listEl);
+})();
 
 /* ── Sidebar ──────────────────────────────────────────────── */
 function closeMenu() {
@@ -16,19 +75,6 @@ document.querySelector('.sidebar nav')?.addEventListener('click', event => {
   if (link.getAttribute('href') === '#') event.preventDefault();
 });
 
-/* ── Demo resident directory ──────────────────────────────── */
-const demoResidents = [
-  { suite: '101', name: 'Maria Santos',   role: 'Resident' },
-  { suite: '204', name: 'David Chen',     role: 'Resident' },
-  { suite: '312', name: 'Priya Nair',     role: 'Resident' },
-  { suite: '402', name: 'James Okafor',   role: 'Resident' },
-  { suite: '501', name: 'Emily Larsson',  role: 'Resident' },
-  { suite: '709', name: 'Marcus Webb',    role: 'Resident' },
-  { suite: '803', name: 'Yuki Tanaka',    role: 'Resident · Board member' },
-  { suite: '1108', name: 'Fatima Al-Rashid', role: 'Resident' },
-  { suite: '1204', name: 'Alex Morgan',   role: 'Resident · Board member' },
-];
-
 /* ── Actions ──────────────────────────────────────────────── */
 const actions = {
   menu() {
@@ -40,26 +86,36 @@ const actions = {
   'close-modal': () => modal.close(),
 
   notifications: () => openModal('Notifications', '<p>No new notifications in this demo.</p><div class="dialog-info">Connect your notification service to show real-time alerts here.</div>'),
-  profile: () => openModal('Jordan Kim', '<p>Concierge · Main Lobby<br>The Point on the Bow</p><div class="dialog-info">Shift: 8:00 AM – 4:00 PM · Demo session</div>'),
+  profile: () => {
+    const concierge = getCurrentConcierge();
+    openModal(concierge?.name || 'Concierge', `<p>${concierge?.title || 'Concierge'}${concierge?.station ? ` · ${concierge.station}` : ''}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">${concierge?.shift ? `Shift: ${concierge.shift} · ` : ''}Demo session</div>`);
+  },
 
-  'sign-out-liang': () => { openModal('Sign out visitor', '<p>Mark <strong>Liang Chen</strong> (guest of Suite 204) as signed out?</p><div class="dialog-options"><button class="button full" data-action="confirm-sign-out">Confirm sign-out</button><button class="button outline full" data-action="close-modal">Cancel</button></div>'); },
-  'sign-out-sarah': () => { openModal('Sign out visitor', '<p>Mark <strong>Sarah Park</strong> (guest of Suite 1108) as signed out?</p><div class="dialog-options"><button class="button full" data-action="confirm-sign-out">Confirm sign-out</button><button class="button outline full" data-action="close-modal">Cancel</button></div>'); },
   'confirm-sign-out': () => { modal.close(); toast('Visitor signed out. Demo only \u2014 no record was saved.'); },
 
-  'notify-402':  () => { openModal('Notify resident', '<p>Send a package notification to <strong>Suite 402</strong> (James Okafor)?</p><div class="dialog-info">Amazon parcel · Received 9:05 AM</div><button class="button full" data-action="confirm-notify">Send demo notification</button>'); },
-  'notify-711':  () => { openModal('Notify resident', '<p>Send a package notification to <strong>Suite 711</strong>?</p><div class="dialog-info">FedEx parcel · Received 10:30 AM</div><button class="button full" data-action="confirm-notify">Send demo notification</button>'); },
-  'notify-1204': () => { openModal('Notify resident', '<p>Send a package notification to <strong>Suite 1204</strong> (Alex Morgan)?</p><div class="dialog-info">UPS parcel · Received 11:45 AM</div><button class="button full" data-action="confirm-notify">Send demo notification</button>'); },
-  'confirm-notify': () => { modal.close(); toast('Demo notification sent. Connect your messaging service to deliver real alerts.'); },
-
-  'view-m4821': () => openModal('Kitchen sink leak', '<div class="dialog-info">#M-4821 · Suite 1204 · In progress</div><p><strong>Nov 5</strong> · Request received: Water leaking from pipe below the kitchen sink.</p><p><strong>Nov 6</strong> · Assigned to maintenance team. Appointment being scheduled.</p><p class="muted">Demo data · Connect your maintenance system for live details.</p>'),
-  'view-m4820': () => openModal('HVAC noise', '<div class="dialog-info">#M-4820 · Suite 312 · Assigned</div><p><strong>Nov 8</strong> · Request received: Loud humming from HVAC unit at night.</p><p><strong>Nov 9</strong> · Assigned to mechanical team. Inspection scheduled for Nov 13.</p><p class="muted">Demo data · Connect your maintenance system for live details.</p>'),
-  'view-m4819': () => openModal('Door intercom', '<div class="dialog-info">#M-4819 · Suite 709 · Pending</div><p><strong>Nov 10</strong> · Request received: Building entry intercom not ringing suite.</p><p>No technician assigned yet. Pending review by building manager.</p><p class="muted">Demo data · Connect your maintenance system for live details.</p>'),
-
-  help: () => openModal('Concierge help', '<p>This is the concierge dashboard demo. Visitor log, packages, and maintenance data are all sample data.</p><p>Connect your building\u2019s directory, parcel system, and maintenance platform to enable live data.</p><div class="dialog-info">For production, all data access must be enforced by your server.</div>')
+  help: () => openModal('Concierge help', '<p>This is the concierge dashboard demo. Visitor log, packages, and maintenance data are all sample data from <code>shared/mockdata.js</code>.</p><p>Connect your building\u2019s directory, parcel system, and maintenance platform to enable live data.</p><div class="dialog-info">For production, all data access must be enforced by your server.</div>')
 };
 
 /* ── Event delegation ─────────────────────────────────────── */
 document.addEventListener('click', event => {
+  const signOut = event.target.closest('[data-sign-out]');
+  if (signOut) {
+    const visitor = MOCK_DATA.visitors.find(v => v.id === signOut.dataset.signOut);
+    if (visitor) {
+      openModal('Sign out visitor', `<p>Mark <strong>${visitor.name}</strong> (guest of Suite ${visitor.suite}) as signed out?</p><div class="dialog-options"><button class="button full" data-action="confirm-sign-out">Confirm sign-out</button><button class="button outline full" data-action="close-modal">Cancel</button></div>`);
+    }
+    return;
+  }
+
+  const maint = event.target.closest('[data-maint]');
+  if (maint) {
+    const item = MOCK_DATA.maintenanceQueue.find(m => m.id === maint.dataset.maint);
+    if (item) {
+      openModal(item.title, `<div class="dialog-info">#${item.id} · Suite ${item.suite} · ${item.status}</div>${item.detail}<p class="muted">Demo data · Connect your maintenance system for live details.</p>`);
+    }
+    return;
+  }
+
   const button = event.target.closest('[data-action]');
   if (!button) return;
   if (button.closest('.sidebar')) closeMenu();
@@ -72,7 +128,7 @@ document.addEventListener('submit', event => {
     event.preventDefault();
     const query = document.querySelector('#lookup-input').value.trim().toLowerCase();
     const resultsEl = document.querySelector('#lookup-results');
-    const matches = demoResidents.filter(r =>
+    const matches = DEMO_RESIDENTS.filter(r =>
       r.suite.includes(query) || r.name.toLowerCase().includes(query)
     );
     if (!query) {

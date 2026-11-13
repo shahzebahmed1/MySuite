@@ -13,6 +13,8 @@ function openModal(title, content) {
 let toastTimer;
 function toast(message) {
   const el = document.querySelector('#toast');
+  if (!el) return;
+  if (el.parentElement !== document.body) document.body.appendChild(el);
   el.textContent = message;
   el.classList.add('visible');
   clearTimeout(toastTimer);

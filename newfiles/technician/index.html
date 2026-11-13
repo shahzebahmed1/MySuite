@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="dashboard.css">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body data-time="afternoon">
@@ -24,15 +25,16 @@
       <div class="nav-divider"></div>
       <a class="nav-item" href="#"><i data-icon="clipboard"></i>Completed</a>
       <a class="nav-item" href="#"><i data-icon="send"></i>Notes</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
     </nav>
-    <div class="sidebar-bottom"><span class="avatar small">MT</span><div>Marcus Torres<small>Building Technician</small></div><i data-icon="chevron"></i></div>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
     <header class="welcome">
       <div class="welcome-copy">
         <p class="eyebrow">TECHNICIAN PORTAL</p>
-        <h1>Hello, Marcus</h1>
-        <div class="resident-meta"><span>Building Technician</span><span class="meta-dot">·</span><span>The Point on the Bow</span><span class="meta-dot">·</span><span class="badge">On shift</span></div>
+        <h1 data-user-greeting="Hello, {first}"></h1>
+        <div class="resident-meta"><span data-user-title></span><span class="meta-dot">·</span><span data-user-building></span><span class="meta-dot">·</span><span class="badge">On shift</span></div>
         <p class="welcome-note">Your assigned work for today.</p>
       </div>
       <div class="window-weather" role="group" aria-label="Outside weather">
@@ -41,7 +43,7 @@
       </div>
       <div class="header-actions">
         <button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button>
-        <button class="avatar" aria-label="View Marcus's profile" data-action="profile">MT</button>
+        <button class="avatar" data-user-initials data-user-profile-label data-action="profile"></button>
       </div>
     </header>
     <section class="dashboard" aria-label="Technician dashboard">

@@ -37,9 +37,12 @@ button:active { transform:translateY(1px) }
 .nav-item:hover { background:#ffffff0c }
 .nav-item.active { background:linear-gradient(105deg,#986536,#aa713c); color:#fff; box-shadow:0 4px 12px #1c110c22 }
 .nav-divider { height:1px; background:#ffffff20; margin:19px 14px }
-.sidebar-bottom { margin-top:auto; display:flex; align-items:center; gap:10px; border-top:1px solid #ffffff24; padding:22px 7px 0; font-size:12px }
+.sidebar-bottom { margin-top:auto; display:flex; flex-direction:column; gap:12px; border-top:1px solid #ffffff24; padding:22px 7px 0; font-size:12px }
+.sidebar-user { display:flex; align-items:center; gap:10px }
 .sidebar-bottom small { display:block; color:#c7b9ac; font-size:10px }
-.sidebar-bottom>svg { width:15px; margin-left:auto }
+.logout { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:#e9dfd6; font-size:13px; font-weight:550 }
+.logout svg { width:18px; height:18px }
+.logout:hover { background:#ffffff0c }
 
 /* ── Shared atoms ─────────────────────────────────────────── */
 .avatar { height:46px; width:46px; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:50%; background:#975a2d; color:white; font-size:14px; letter-spacing:.5px }
@@ -118,9 +121,30 @@ dialog input,dialog select { display:block; width:100%; border:1px solid #d6c2af
 .dialog-options { display:grid; gap:10px }
 .dialog-options .button { justify-content:flex-start; padding:12px 16px }
 
-/* ── Toast ────────────────────────────────────────────────── */
-.toast { position:fixed; bottom:25px; left:calc(50% + 125px); transform:translate(-50%,20px); background:var(--espresso); color:white; padding:12px 22px; border-radius:12px; opacity:0; pointer-events:none; transition:.2s; font-size:12px; z-index:100; max-width:calc(100vw - 30px); box-shadow:0 5px 25px #35261e30 }
-.toast.visible { opacity:1; transform:translate(-50%,0) }
+/* ── Toast — always top of the viewport (all roles) ───────── */
+.toast {
+  position: fixed;
+  top: 16px;
+  bottom: unset;
+  left: calc(50% + 125px);
+  right: auto;
+  transform: translate(-50%, -10px);
+  background: var(--espresso);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: .2s;
+  font-size: 12px;
+  z-index: 1000;
+  max-width: calc(100vw - 30px);
+  box-shadow: 0 5px 25px #35261e30;
+}
+.toast.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
 
 /* ── Page footer ──────────────────────────────────────────── */
 .page-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:22px 2px; color:#9a8a7b; font-size:10px }

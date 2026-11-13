@@ -1,7 +1,8 @@
 /* MySuite — Technician dashboard.
-   Requires: shared/icons.js, shared/utils.js (loaded before this file via defer). */
+   Requires: shared/icons.js, shared/utils.js, shared/mockdata.js */
 
 renderIcons();
+applyLoggedInUser('technician');
 
 function closeMenu() {
   document.querySelector('.sidebar').classList.remove('open');
@@ -25,7 +26,10 @@ const actions = {
   'close-modal': () => modal.close(),
 
   notifications: () => openModal('Notifications', '<p>Intercom board for #M-4819 is still on order (ETA Friday).</p><div class="dialog-info">Demo alerts · Connect your CMMS notifications for live updates.</div>'),
-  profile: () => openModal('Marcus Torres', '<p>Building Technician<br>The Point on the Bow</p><div class="dialog-info">Shift: 7:00 AM – 3:00 PM · Demo session</div>'),
+  profile: () => {
+    const account = getSessionAccount('technician');
+    openModal(account?.name || 'Technician', `<p>${account?.title || 'Building Technician'}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">${account?.shift ? `Shift: ${account.shift} · ` : ''}Demo session</div>`);
+  },
 
   'job-m4821': () => openModal('Kitchen sink leak', '<div class="dialog-info">#M-4821 · Suite 1204 · In progress</div><p><strong>Issue:</strong> Water leaking from the pipe below the kitchen sink.</p><p><strong>Access:</strong> Resident home after 1:00 PM.</p><p><strong>Plan:</strong> Replace 1/2&quot; compression fitting. Part checked out.</p><div class="dialog-options"><button class="button" data-action="complete-job">Mark complete</button><button class="button outline" data-action="close-modal">Keep working</button></div>'),
   'job-m4820': () => openModal('HVAC noise', '<div class="dialog-info">#M-4820 · Suite 312 · Assigned</div><p><strong>Issue:</strong> Loud humming from HVAC unit overnight.</p><p><strong>Scheduled:</strong> Inspection Nov 13.</p><p><strong>Notes:</strong> Check blower motor and filter. MERV-13 filter available in mechanical room.</p><p class="muted">Demo work order · Connect your CMMS for live details.</p>'),
@@ -50,7 +54,8 @@ document.addEventListener('submit', event => {
   if (event.target.id === 'tech-note-form') {
     event.preventDefault();
     const note = document.querySelector('#tech-note-input').value.trim();
-    openModal('Send note to manager', `<p>Send this handoff to Sarah Wong?</p><blockquote style="border-left:3px solid var(--caramel);margin:14px 0;padding:10px 14px;font-size:13px;color:#5a4232;background:#f8f1e8;border-radius:0 8px 8px 0">${note}</blockquote><button class="button full" data-action="confirm-note">Send demo note</button>`);
+    const manager = getSessionAccount('manager');
+    openModal('Send note to manager', `<p>Send this handoff to ${manager?.name || 'the manager'}?</p><blockquote style="border-left:3px solid var(--caramel);margin:14px 0;padding:10px 14px;font-size:13px;color:#5a4232;background:#f8f1e8;border-radius:0 8px 8px 0">${note}</blockquote><button class="button full" data-action="confirm-note">Send demo note</button>`);
   }
 });
 

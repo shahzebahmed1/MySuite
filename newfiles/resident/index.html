@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="dashboard.css">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body data-time="afternoon">
@@ -26,19 +27,19 @@
       <a class="nav-item" href="#"><i data-icon="file"></i>Documents</a>
       <a class="nav-item" href="#"><i data-icon="bag"></i>Shop</a>
       <a class="nav-item" href="#"><i data-icon="users"></i>Community</a>
-      <a class="nav-item" href="#"><i data-icon="board"></i>Board workspace</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
     </nav>
-    <div class="sidebar-bottom"><span class="avatar small">AL</span><div>Alex Morgan<small>Resident · Suite 1204</small></div><i data-icon="chevron"></i></div>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
     <header class="welcome">
-      <div class="welcome-copy"><p class="eyebrow">A LITTLE MORE AT HOME</p><h1>Welcome home, Alex</h1><div class="resident-meta"><span>Suite 1204</span><span class="meta-dot">·</span><span class="badge">Board member</span></div><p class="welcome-note">Everything you need for life at The Point.</p></div>
+      <div class="welcome-copy"><p class="eyebrow">A LITTLE MORE AT HOME</p><h1 data-user-greeting="Welcome home, {first}"></h1><div class="resident-meta"><span data-user-suite></span><span class="meta-dot">·</span><span data-user-building></span></div><p class="welcome-note">Everything you need for life at The Point.</p></div>
       <!-- Sample weather. Replace these two text values with your weather data. -->
       <div class="window-weather" role="group" aria-label="Outside weather">
         <span class="window-weather-temperature">3°C</span>
         <span class="window-weather-condition">Sunny</span>
       </div>
-      <div class="header-actions"><button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button><button class="avatar" aria-label="View Alex's profile" data-action="profile">AL</button></div>
+      <div class="header-actions"><button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button><button class="avatar" data-user-initials data-user-profile-label data-action="profile"></button></div>
     </header>
     <section class="dashboard" aria-label="Your dashboard">
       <article class="card announcements" id="announcements"><div class="card-heading"><h2><i data-icon="megaphone"></i>Announcements</h2><span class="count">2 new</span></div>
@@ -51,9 +52,9 @@
         <div class="amenity-row"><span><i data-icon="users"></i><strong>Common room</strong></span><button class="button compact" data-book="Common room">Reserve</button></div>
       </article>
       <article class="card calendar" id="calendar"><div class="card-heading"><h2><i data-icon="calendar"></i><span id="calendar-title">November 2026</span></h2><div class="calendar-controls"><button class="icon-button" data-month="-1" aria-label="Previous month"><i data-icon="left"></i></button><button class="icon-button" data-month="1" aria-label="Next month"><i data-icon="chevron"></i></button></div></div><div class="weekdays" aria-hidden="true"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div><div class="calendar-days" id="calendar-days" aria-label="Calendar dates"></div><div class="calendar-events" id="calendar-events"></div></article>
-      <article class="card maintenance" id="maintenance"><div class="card-heading"><h2><i data-icon="wrench"></i>Maintenance request</h2></div><p class="overline">#M-4821</p><h3>Kitchen sink leak</h3><div class="card-bottom"><span class="badge status">In progress</span><button class="button outline" data-action="maintenance">View details</button></div></article>
+      <article class="card maintenance" id="maintenance"><div class="card-heading"><h2><i data-icon="wrench"></i>Maintenance request</h2></div><p class="overline">#M-4802</p><h3>Bedroom window latch</h3><div class="card-bottom"><span class="badge status">Scheduled</span><button class="button outline" data-action="maintenance">View details</button></div></article>
       <article class="card vote" id="vote"><div class="card-heading"><h2><i data-icon="chart"></i>Community vote</h2><span class="tiny-label">OPEN</span></div><h3>Lobby refresh</h3><p class="muted">Have your say in our shared spaces.</p><div class="vote-progress"><div class="progress-track"><span></span></div><span>72%</span></div><button class="button full" data-action="vote" id="vote-button">Vote now<i data-icon="arrow"></i></button></article>
-      <article class="card meeting" id="meeting"><div class="card-heading"><h2><i data-icon="users"></i>Upcoming meeting</h2></div><h3>Board meeting</h3><p class="meeting-date"><i data-icon="calendar"></i>Nov 12 · 6:00 PM</p><button class="button outline full" data-action="meeting"><i data-icon="video"></i>Join Google Meet</button></article>
+      <article class="card meeting" id="meeting"><div class="card-heading"><h2><i data-icon="users"></i>Upcoming event</h2></div><h3>Community social</h3><p class="meeting-date"><i data-icon="calendar"></i>Nov 14 · 3:00 PM</p><button class="button outline full" data-action="announcement-social"><i data-icon="users"></i>View details</button></article>
       <article class="card shop" id="shop"><div class="shop-content"><h2><i data-icon="bag"></i>Shop</h2><h3>Little essentials.<br>One convenient place.</h3><p class="muted">Fobs, batteries &amp; everyday supplies.</p><button class="button" data-action="shop">Browse shop<i data-icon="arrow"></i></button></div></article>
       <article class="card assistant" id="assistant"><div class="assistant-title"><span class="sparkle"><i data-icon="sparkle"></i></span><div><h2>Ask AI</h2><p class="muted">Answers from your condo policies</p></div><span class="tiny-label">YOUR BUILDING GUIDE</span></div><div id="ai-answer" class="ai-answer" aria-live="polite" hidden></div><form id="ai-form"><label class="sr-only" for="ai-input">Ask about your building</label><input id="ai-input" name="question" placeholder="Ask about your building…" required autocomplete="off"><button class="button send" aria-label="Send question"><i data-icon="send"></i></button></form><p class="ai-caption">Demo assistant · Connect your policies to enable verified answers.</p></article>
     </section>

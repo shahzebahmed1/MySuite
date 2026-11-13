@@ -1,7 +1,8 @@
 /* MySuite — Resident dashboard.
-   Requires: shared/icons.js, shared/utils.js (loaded before this file via defer). */
+   Requires: shared/icons.js, shared/utils.js, shared/mockdata.js */
 
 renderIcons();
+applyLoggedInUser('resident');
 
 /* ── Vote state ───────────────────────────────────────────── */
 let savedVote = readSaved('mysuite-vote', null);
@@ -20,10 +21,10 @@ function renderCalendar() {
     Array.from({ length: first }, () => '<span></span>').join('') +
     Array.from({ length: total }, (_, i) => {
       const n = i + 1;
-      return `<button type="button" data-date="${n}" class="${isDemoMonth && n === 12 ? 'board-day' : isDemoMonth && n === 14 ? 'event-day' : ''}" aria-label="${label} ${n}${isDemoMonth && n === 12 ? ', Board meeting' : isDemoMonth && n === 14 ? ', Community social' : ''}">${n}</button>`;
+      return `<button type="button" data-date="${n}" class="${isDemoMonth && n === 14 ? 'event-day' : ''}" aria-label="${label} ${n}${isDemoMonth && n === 14 ? ', Community social' : ''}">${n}</button>`;
     }).join('');
   document.querySelector('#calendar-events').innerHTML = isDemoMonth
-    ? '<button data-action="meeting"><span class="event-dot"></span><span><strong>Nov 12</strong> · Board meeting</span></button><button data-action="announcement-social"><span class="event-dot light"></span><span><strong>Nov 14</strong> · Community social</span></button>'
+    ? '<button data-action="announcement-social"><span class="event-dot light"></span><span><strong>Nov 14</strong> · Community social</span></button>'
     : '<p class="muted">No demo events this month.</p>';
 }
 renderCalendar();
@@ -52,20 +53,22 @@ const actions = {
   'close-menu': closeMenu,
   'close-modal': () => modal.close(),
   notifications: () => openModal('You\u2019re all caught up', '<p>You have two new community announcements.</p><div class="dialog-options"><button class="button outline" data-action="announcement-pool">Pool maintenance</button><button class="button outline" data-action="announcement-social">Community social</button></div>'),
-  profile: () => openModal('Alex Morgan', '<p>Resident · Suite 1204<br>The Point on the Bow</p><div class="dialog-info">Board member access enabled in this demo.</div>'),
+  profile: () => {
+    const account = getSessionAccount('resident');
+    openModal(account?.name || 'Resident', `<p>${accountSubtitle(account)}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">Resident access only in this demo.</div>`);
+  },
   'announcement-pool': () => openModal('Pool maintenance', '<p>The pool will be closed on Friday, November 6 for scheduled maintenance.</p><p>Thank you for your patience while we keep our amenities in great shape.</p><div class="dialog-info">Demo announcement · Building management</div>'),
   'announcement-social': () => openModal('Community social', '<p>Join your neighbours in the common room on Saturday, November 14, 2026, from 3:00\u20135:00 PM.</p><p>Drop by for coffee, conversation, and a chance to meet the community.</p><button class="button full" data-action="rsvp">Add a demo RSVP</button>'),
   rsvp() { save('mysuite-rsvp', true); modal.close(); toast('Your demo RSVP has been saved on this device.'); },
-  maintenance: () => openModal('Kitchen sink leak', '<div class="dialog-info">#M-4821 · In progress</div><p><strong>Nov 5 · Request received</strong><br>Water leaking from the pipe below the kitchen sink.</p><p><strong>Nov 6 · Assigned to maintenance</strong><br>Your building team is reviewing availability. They will confirm the appointment with you.</p><p class="muted">Sample request for this dashboard demo.</p>'),
+  maintenance: () => openModal('Bedroom window latch', '<div class="dialog-info">#M-4802 · Scheduled</div><p><strong>Nov 8 · Request received</strong><br>Window latch in the bedroom sticks and does not close fully.</p><p><strong>Nov 10 · Scheduled</strong><br>Technician visit booked for Nov 13, 10:00 AM.</p><p class="muted">Sample request for this dashboard demo.</p>'),
   vote() {
     openModal('Lobby refresh', savedVote
       ? `<p>Your demo vote has been saved: <strong>${savedVote === 'warm' ? 'Warm natural finishes' : 'Contemporary neutral finishes'}</strong>.</p><p>This is stored only in your browser. No official vote has been cast.</p><button class="button outline full" data-action="change-vote">Change demo vote</button>`
       : '<p>Which direction would you prefer for our lobby refresh?</p><div class="dialog-options"><button class="button outline" data-vote="warm">Warm natural finishes</button><button class="button outline" data-vote="neutral">Contemporary neutral finishes</button></div><p>Demo only. Your selection stays on this device.</p>');
   },
   'change-vote'() { savedVote = null; save('mysuite-vote', null); document.querySelector('#vote-button').textContent = 'Vote now'; actions.vote(); },
-  meeting: () => openModal('Board meeting', '<p>Thursday, November 12, 2026 · 6:00 PM<br>Google Meet · Board members</p><div class="dialog-info">No meeting link is configured in this demo. Add your real Google Meet or Zoom URL before enabling the join action.</div><p>Agenda: building updates, maintenance priorities, and the lobby refresh.</p>'),
+  meeting: () => actions['announcement-social'](),
   documents: () => openModal('Condo documents', '<p>The dashboard is ready to connect to your document service.</p><div class="dialog-info">No documents have been uploaded to this demo. Add policies, bylaws, and resident guides through your future backend.</div>'),
-  board: () => openModal('Board workspace', '<p>You\u2019re viewing the resident dashboard with board member access.</p><p>Board documents, vote creation, and meeting management can be added as separate screens.</p><div class="dialog-info">Production access must be enforced by your server, not by hiding interface elements.</div>'),
   shop: () => openModal('Fobs & essentials', '<p>A preview of the essentials available through your building.</p><div class="dialog-info">Entry fobs · Batteries · Everyday supplies</div><p>Ordering and checkout are outside this dashboard demo. Connect your inventory and payment service to enable purchases.</p>'),
   help: () => openModal('A little help, close to home', '<p>For this demo, explore bookings, your maintenance request, and the community vote from the dashboard.</p><p>Add your concierge or management team\u2019s real contact information here before launch.</p>')
 };
@@ -91,8 +94,7 @@ document.addEventListener('click', event => {
   }
   if (button.dataset.date) {
     const n = Number(button.dataset.date), demo = shownMonth.getFullYear() === 2026 && shownMonth.getMonth() === 10;
-    if (demo && n === 12) actions.meeting();
-    else if (demo && n === 14) actions['announcement-social']();
+    if (demo && n === 14) actions['announcement-social']();
     else toast(`No demo events on ${shownMonth.toLocaleDateString('en-CA', { month: 'long' })} ${n}.`);
     return;
   }

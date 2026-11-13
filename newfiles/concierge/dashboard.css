@@ -32,6 +32,10 @@
 .package-info { flex:1; min-width:0 }
 .package-info strong { display:block; font-size:14px; font-weight:650 }
 .package-info small { display:block; font-size:11px; color:#716454; margin-top:3px; line-height:1.4 }
+.packages .package-actions { display:none }
+.package-card-actions { margin-top:16px; gap:10px }
+.package-card-actions .button { text-decoration:none }
+.packages .package-row .badge { flex-shrink:0 }
 
 /* ── Resident lookup card ─────────────────────────────────── */
 .lookup-field {
