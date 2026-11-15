@@ -1,0 +1,477 @@
+/* Concierge daily log — shift table + important notes */
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 36px 0 12px;
+  flex-wrap: wrap;
+}
+
+.page-header h1 { margin-bottom: 8px; }
+
+.header-tools {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.page-header .welcome-note {
+  font-size: 14px !important;
+  color: #3d2a1c !important;
+  margin: 0;
+  line-height: 1.45;
+}
+.page-header .eyebrow {
+  display: none;
+}
+
+.daily-log-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+  grid-template-rows: auto auto;
+  gap: 12px 18px;
+  align-items: start;
+  margin-bottom: 8px;
+}
+
+.log-toolbar {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.log-card {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.notes-card {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.date-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.date-nav-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--espresso);
+  cursor: pointer;
+  padding: 0;
+}
+
+.date-nav-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--espresso);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.date-pill svg {
+  width: 18px;
+  height: 18px;
+  color: #5c4d3e;
+}
+
+.date-pill svg:last-of-type {
+  width: 14px;
+  height: 14px;
+  transform: rotate(90deg);
+  color: #8a7460;
+}
+
+.date-pill-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.shift-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.shift-tab {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--espresso);
+  border-radius: 12px;
+  min-height: 40px;
+  padding: 0 18px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.shift-tab[aria-selected="true"] {
+  background: var(--espresso);
+  border-color: var(--espresso);
+  color: #fff;
+}
+
+.log-card,
+.notes-card {
+  padding: 0;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.log-card-top,
+.notes-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 14px;
+}
+
+.log-card-top h2,
+.notes-card-top h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.log-table-wrap {
+  border-top: 1px solid var(--line);
+  min-height: 220px;
+}
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.log-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 650;
+  color: #7b6a59;
+  padding: 12px 20px;
+  background: #f5ebe0;
+  border-bottom: 1px solid var(--line);
+}
+
+.log-table td.log-time {
+  width: 88px;
+}
+
+.log-table td.log-concierge {
+  width: 150px;
+  white-space: nowrap;
+}
+
+.log-concierge {
+  color: #716454;
+  font-size: 13px;
+  font-weight: 550;
+}
+
+.log-actions {
+  width: 150px;
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.log-row-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.row-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--espresso);
+  cursor: pointer;
+}
+
+.row-action svg {
+  width: 14px;
+  height: 14px;
+}
+
+.row-action.is-danger {
+  color: #9a2f2f;
+}
+
+.log-readonly {
+  font-size: 13px;
+  font-style: italic;
+  color: #9a8a7b;
+}
+
+.log-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  font-size: 14px;
+}
+
+.log-row:hover {
+  background: #faf6f0;
+}
+
+.log-row.is-editing {
+  background: #faf6f0;
+}
+
+.log-edit-cell {
+  padding: 14px 20px !important;
+}
+
+.log-edit-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.log-edit-field {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--muted);
+}
+
+.log-edit-field-notes {
+  min-width: 0;
+}
+
+.log-edit-time,
+.log-edit-notes {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  color: var(--espresso);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.log-edit-time {
+  max-width: 160px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.log-edit-notes {
+  resize: vertical;
+  min-height: 84px;
+  line-height: 1.45;
+}
+
+.log-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.log-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+  color: var(--espresso);
+  white-space: nowrap;
+}
+
+.log-entry {
+  color: var(--espresso);
+  line-height: 1.35;
+}
+
+.log-cell-btn {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: text;
+  white-space: pre-wrap;
+  border-radius: 0;
+  min-height: 0;
+}
+
+.log-time .log-cell-btn {
+  white-space: nowrap;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.log-inline-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--caramel);
+  border-radius: 0;
+  padding: 0 0 1px;
+  background: transparent;
+  color: var(--espresso);
+  font: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  min-height: 0;
+  height: auto;
+  box-shadow: none;
+  outline: none;
+}
+
+.log-inline-input[type="time"] {
+  width: 6.5rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.pkg-empty {
+  padding: 36px 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 16px;
+  border-top: 1px solid var(--line);
+  background: #faf6f0;
+}
+
+.composer input[type="text"] {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: var(--paper);
+  color: var(--espresso);
+  font: inherit;
+  width: 100%;
+}
+
+#composer-time {
+  max-width: 110px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.note-composer {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.notes-table .log-concierge {
+  width: 140px;
+}
+
+#modal-body label {
+  display: block;
+  font-size: 12px;
+  font-weight: 550;
+}
+
+#modal-body textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: var(--paper);
+  color: var(--espresso);
+  font: inherit;
+  resize: vertical;
+  min-height: 88px;
+}
+
+@media (max-width: 980px) {
+  .daily-log-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .log-toolbar,
+  .log-card,
+  .notes-card {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .page-header {
+    padding-top: 72px;
+  }
+
+  .header-tools {
+    width: 100%;
+  }
+
+  .composer {
+    grid-template-columns: 1fr;
+  }
+
+  .log-table td.log-concierge {
+    width: auto;
+    white-space: normal;
+  }
+}

@@ -1,0 +1,113 @@
+/* Concierge — long-term absences (view only) */
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 36px 0 12px;
+  flex-wrap: wrap;
+}
+
+.page-header h1 { margin-bottom: 8px; }
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.page-header .welcome-note {
+  font-size: 14px !important;
+  color: #3d2a1c !important;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.page-header .eyebrow { display: none; }
+
+.schedule-card {
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.pkg-tabs {
+  display: flex;
+  gap: 22px;
+  padding: 18px 22px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.pkg-tab {
+  border: 0;
+  background: none;
+  padding: 0 0 14px;
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--muted);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+
+.pkg-tab.active {
+  color: var(--espresso);
+  border-bottom-color: var(--caramel);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.pkg-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pkg-table th,
+.pkg-table td {
+  text-align: left;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.pkg-table th {
+  font-size: 13px;
+  font-weight: 600;
+  color: #5c4a3c;
+  background: #f7f1ea;
+}
+
+.pkg-table td {
+  color: var(--espresso);
+  line-height: 1.4;
+}
+
+.pkg-table tr:last-child td { border-bottom: 0; }
+
+.status-pill {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #efe6db;
+  color: #3d2a1c;
+}
+
+.status-pill.is-active {
+  background: #e4efe6;
+  color: #1d5c35;
+}
+
+.pkg-empty {
+  padding: 28px 22px;
+  margin: 0;
+  font-size: 14px;
+  color: #5c4a3c;
+  line-height: 1.45;
+}

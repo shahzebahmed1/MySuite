@@ -7,58 +7,167 @@ applyLoggedInUser('concierge');
 /* ── Render dashboard cards from MOCK_DATA ─────────────────── */
 (function renderHomePackages() {
   const listEl = document.querySelector('#home-package-list');
-  const countEl = document.querySelector('#home-package-count');
-  if (!listEl || !countEl) return;
-  const packages = sortPackagesNewestFirst(getPackages());
-  const pending = packages.filter(p => p.status === 'pending');
-  countEl.textContent = `${pending.length} pending`;
-  const recent = (pending.length ? pending : packages).slice(0, 3);
-  if (recent.length === 0) {
-    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No deliveries yet. Log a package to get started.</p>';
+  const viewAll = document.querySelector('#home-package-view-all');
+  if (!listEl) return;
+  const pending = sortPackagesNewestFirst(getPackages()).filter(p => p.status === 'pending');
+  if (viewAll) viewAll.textContent = `View all pending (${pending.length})`;
+  if (pending.length === 0) {
+    listEl.innerHTML = `
+      <div class="pkg-empty-state">
+        <p>No packages needing to be delivered.</p>
+      </div>`;
     return;
   }
-  listEl.innerHTML = recent.map(pkg => renderPackageRow(pkg)).join('');
-  renderIcons(listEl);
+  listEl.innerHTML = pending.slice(0, 3).map(pkg => renderPackageRow(pkg)).join('');
 })();
 
-(function renderVisitors() {
-  const listEl = document.querySelector('#visitor-list');
-  const countEl = document.querySelector('#visitor-count');
-  if (!listEl || !countEl) return;
-  const visitors = MOCK_DATA.visitors;
-  countEl.textContent = `${visitors.length} signed in`;
-  listEl.innerHTML = visitors.map(v => `
-    <div class="visitor-row">
-      <span class="tile-icon"><i data-icon="person"></i></span>
-      <span class="visitor-info"><strong>${v.name}</strong><small>Guest of Suite ${v.suite} · Signed in ${v.signedInAt}</small></span>
-      <button class="button compact outline" data-sign-out="${v.id}">Sign out</button>
-    </div>`).join('');
-  renderIcons(listEl);
-})();
+const BOOKING_SOON_MS = 15 * 60 * 1000;
+const BOOKING_REFRESH_MS = 30 * 1000;
 
-(function renderSchedule() {
+function bookingDayLabel(dateStr, now = new Date()) {
+  const target = new Date(`${dateStr}T12:00:00`);
+  const today = new Date(now);
+  today.setHours(12, 0, 0, 0);
+  const diffDays = Math.round((target - today) / 86400000);
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return 'Tomorrow';
+  return target.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function parseBookingTimeParts(timeStr) {
+  const match = String(timeStr || '').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+  let hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const meridiem = match[3].toUpperCase();
+  if (meridiem === 'PM' && hour < 12) hour += 12;
+  if (meridiem === 'AM' && hour === 12) hour = 0;
+  return { hour, minute };
+}
+
+function parseDurationMs(durationStr) {
+  const raw = String(durationStr || '').trim().toLowerCase();
+  const hours = raw.match(/(\d+(?:\.\d+)?)\s*hours?/);
+  const minutes = raw.match(/(\d+(?:\.\d+)?)\s*min/);
+  const shortHour = raw.match(/^(\d+(?:\.\d+)?)\s*h$/);
+  let ms = 0;
+  if (hours) ms += Number(hours[1]) * 60 * 60 * 1000;
+  if (minutes) ms += Number(minutes[1]) * 60 * 1000;
+  if (!ms && shortHour) ms = Number(shortHour[1]) * 60 * 60 * 1000;
+  return ms || (60 * 60 * 1000);
+}
+
+function bookingWindow(row) {
+  const parts = parseBookingTimeParts(row.time);
+  if (!parts || !row.date) return null;
+  const [y, mo, d] = String(row.date).split('-').map(Number);
+  const start = new Date(y, mo - 1, d, parts.hour, parts.minute, 0, 0);
+  if (Number.isNaN(start.getTime())) return null;
+  const end = new Date(start.getTime() + parseDurationMs(row.duration));
+  return { start, end };
+}
+
+/** Derive live status from the clock. Returns null when the booking has ended. */
+function bookingLiveStatus(row, now = new Date()) {
+  const window = bookingWindow(row);
+  if (!window) return null;
+  const { start, end } = window;
+  const t = now.getTime();
+  if (t >= end.getTime()) return null;
+  if (t >= start.getTime()) {
+    return { label: 'Active', pill: 'active-badge' };
+  }
+  if (start.getTime() - t <= BOOKING_SOON_MS) {
+    return { label: 'Starting soon', pill: 'soon-badge' };
+  }
+  return { label: 'Upcoming', pill: 'pending-badge' };
+}
+
+function formatBookingClock(date) {
+  try {
+    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  } catch {
+    return '';
+  }
+}
+
+function liveAmenityBookings(now = new Date()) {
+  return (MOCK_DATA.amenitySchedule || [])
+    .map(row => {
+      const window = bookingWindow(row);
+      const status = bookingLiveStatus(row, now);
+      if (!window || !status) return null;
+      return { row, status, start: window.start, end: window.end };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.start - b.start);
+}
+
+function renderSchedule() {
   const listEl = document.querySelector('#schedule-list');
   if (!listEl) return;
-  listEl.innerHTML = MOCK_DATA.amenitySchedule.map(row => `
+  const items = liveAmenityBookings().slice(0, 3);
+  if (items.length === 0) {
+    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0;font-size:14px">No upcoming bookings right now.</p>';
+    return;
+  }
+  listEl.innerHTML = items.map(({ row, status, end }) => {
+    const name = row.residentName || 'Resident';
+    return `
     <div class="schedule-row">
-      <span class="schedule-time">${row.time}</span>
-      <span class="schedule-body"><strong>${row.amenity}</strong><small>Suite ${row.suite} · ${row.duration}</small></span>
-      <span class="badge ${row.statusClass}">${row.status}</span>
-    </div>`).join('');
-})();
+      <div class="schedule-when">
+        <span class="schedule-day">${bookingDayLabel(row.date)}</span>
+        <span class="schedule-start">${row.time}</span>
+      </div>
+      <div class="schedule-body">
+        <strong>${row.amenity}</strong>
+        <span>${name}</span>
+        <span>Suite ${row.suite}</span>
+      </div>
+      <div class="schedule-meta">
+        <span class="badge ${status.pill}">${status.label}</span>
+        <span class="schedule-ends">Ends at ${formatBookingClock(end)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+renderSchedule();
+setInterval(renderSchedule, BOOKING_REFRESH_MS);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') renderSchedule();
+});
 
 (function renderMaintenance() {
   const listEl = document.querySelector('#maint-list');
-  const countEl = document.querySelector('#maint-count');
-  if (!listEl || !countEl) return;
-  const items = MOCK_DATA.maintenanceQueue;
-  countEl.textContent = `${items.length} open`;
+  const viewAll = document.querySelector('#home-maint-view-all');
+  if (!listEl) return;
+  const pending = sortMaintenanceNewestFirst(getMaintenance()).filter(m => m.status === 'pending');
+  if (viewAll) viewAll.textContent = `View all pending (${pending.length})`;
+  const items = pending.slice(0, 3);
+  if (items.length === 0) {
+    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No pending maintenance requests.</p>';
+    return;
+  }
   listEl.innerHTML = items.map(item => `
-    <button class="queue-row" data-maint="${item.id}">
-      <span class="queue-meta"><strong>#${item.id}</strong><small>Suite ${item.suite} · ${item.title}</small></span>
-      <span class="badge ${item.statusClass}">${item.status}</span>
-      <i data-icon="chevron"></i>
+    <button class="queue-row" data-maint="${item.id}" type="button">
+      <span class="queue-meta">
+        <strong>${item.suite}</strong>
+        <span class="queue-issue">${maintenanceSummary(item)}</span>
+      </span>
+      <span class="badge pending-badge">Pending</span>
     </button>`).join('');
+})();
+
+(function renderHomeAnnouncements() {
+  const listEl = document.querySelector('#home-announcement-list');
+  if (!listEl) return;
+  const items = sortAnnouncementsNewestFirst(getAnnouncements()).slice(0, 3);
+  if (items.length === 0) {
+    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No recent announcements.</p>';
+    return;
+  }
+  listEl.innerHTML = items.map(renderAnnouncementRow).join('');
   renderIcons(listEl);
 })();
 
@@ -91,28 +200,26 @@ const actions = {
     openModal(concierge?.name || 'Concierge', `<p>${concierge?.title || 'Concierge'}${concierge?.station ? ` · ${concierge.station}` : ''}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">${concierge?.shift ? `Shift: ${concierge.shift} · ` : ''}Demo session</div>`);
   },
 
-  'confirm-sign-out': () => { modal.close(); toast('Visitor signed out. Demo only \u2014 no record was saved.'); },
-
-  help: () => openModal('Concierge help', '<p>This is the concierge dashboard demo. Visitor log, packages, and maintenance data are all sample data from <code>shared/mockdata.js</code>.</p><p>Connect your building\u2019s directory, parcel system, and maintenance platform to enable live data.</p><div class="dialog-info">For production, all data access must be enforced by your server.</div>')
+  help: () => openModal('Concierge help', '<p>This is the concierge dashboard demo. Packages, maintenance, and announcements are sample data.</p><p>Concierge can review announcements; managers and board members create them.</p><div class="dialog-info">For production, all data access must be enforced by your server.</div>')
 };
 
 /* ── Event delegation ─────────────────────────────────────── */
 document.addEventListener('click', event => {
-  const signOut = event.target.closest('[data-sign-out]');
-  if (signOut) {
-    const visitor = MOCK_DATA.visitors.find(v => v.id === signOut.dataset.signOut);
-    if (visitor) {
-      openModal('Sign out visitor', `<p>Mark <strong>${visitor.name}</strong> (guest of Suite ${visitor.suite}) as signed out?</p><div class="dialog-options"><button class="button full" data-action="confirm-sign-out">Confirm sign-out</button><button class="button outline full" data-action="close-modal">Cancel</button></div>`);
+  const maint = event.target.closest('[data-maint]');
+  if (maint) {
+    const item = getMaintenance().find(m => m.id === maint.dataset.maint);
+    if (item) {
+      const when = formatMaintenanceWhen(item.reportedAt);
+      const note = item.note ? `<p>${item.note}</p>` : '';
+      openModal(maintenanceSummary(item), `<div class="dialog-info">${item.suite}${when ? ` · ${when}` : ''}</div>${note}<p><a class="button compact" href="maintenance.html">Open maintenance</a></p>`);
     }
     return;
   }
 
-  const maint = event.target.closest('[data-maint]');
-  if (maint) {
-    const item = MOCK_DATA.maintenanceQueue.find(m => m.id === maint.dataset.maint);
-    if (item) {
-      openModal(item.title, `<div class="dialog-info">#${item.id} · Suite ${item.suite} · ${item.status}</div>${item.detail}<p class="muted">Demo data · Connect your maintenance system for live details.</p>`);
-    }
+  const ann = event.target.closest('[data-announcement]');
+  if (ann) {
+    const item = findAnnouncementById(ann.dataset.announcement);
+    if (item) openModal(item.title, `${announcementDetailHtml(item)}<p><a class="button compact" href="announcements.html">View all</a></p>`);
     return;
   }
 
@@ -140,25 +247,10 @@ document.addEventListener('submit', event => {
       return;
     }
     resultsEl.innerHTML = matches.map(r =>
-      `<div class="lookup-result-item"><span class="tile-icon" style="width:36px;height:36px;font-size:11px;font-weight:650">${r.suite}</span><span><strong>${r.name}</strong><small>${r.role} · Suite ${r.suite}</small></span></div>`
+      `<div class="lookup-result-item"><span class="tile-icon" style="width:36px;height:36px;font-size:14px;font-weight:650">${r.suite}</span><span><strong>${r.name}</strong><small>${r.role} · Suite ${r.suite}</small></span></div>`
     ).join('');
   }
-
-  if (event.target.id === 'broadcast-form') {
-    event.preventDefault();
-    const msg = document.querySelector('#broadcast-input').value.trim();
-    modal.close();
-    openModal('Send broadcast', `<p>Send this announcement to all residents?</p><blockquote style="border-left:3px solid var(--caramel);margin:14px 0;padding:10px 14px;font-size:13px;color:#5a4232;background:#f8f1e8;border-radius:0 8px 8px 0">${msg}</blockquote><button class="button full" data-action="confirm-broadcast">Send demo broadcast</button>`);
-    renderIcons(modal);
-  }
 });
-
-actions['confirm-broadcast'] = () => {
-  const input = document.querySelector('#broadcast-input');
-  if (input) input.value = '';
-  modal.close();
-  toast('Demo broadcast sent. Connect your notification service to deliver real messages.');
-};
 
 modal.addEventListener('click', event => {
   if (event.target === modal) {

@@ -10,6 +10,8 @@
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="packages-data.js" defer></script>
+  <script src="maintenance-data.js" defer></script>
+  <script src="announcements-data.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body data-time="afternoon">
@@ -17,18 +19,18 @@
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
     <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
-    <div class="building"><i data-icon="building"></i><span>The Point on the Bow<small>Concierge portal</small></span></div>
     <nav>
       <a class="nav-item active" aria-current="page" href="./"><i data-icon="home"></i>Home</a>
-      <a class="nav-item" href="#"><i data-icon="users"></i>Resident directory</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
       <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
-      <a class="nav-item" href="#"><i data-icon="person"></i>Visitors</a>
-      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
-      <a class="nav-item" href="#"><i data-icon="clipboard"></i>Daily log</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
       <div class="nav-divider"></div>
       <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
-      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
-      <a class="nav-item" href="#"><i data-icon="megaphone"></i>Announcements</a>
+      <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
     </nav>
     <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
@@ -37,77 +39,59 @@
       <div class="welcome-copy">
         <p class="eyebrow">CONCIERGE PORTAL</p>
         <h1 data-user-greeting="Hello, {first}"></h1>
-        <div class="resident-meta"><span data-user-station></span><span class="meta-dot">·</span><span data-user-building></span><span class="meta-dot">·</span><span class="badge">On shift</span></div>
-        <p class="welcome-note">Here&rsquo;s what&rsquo;s happening in the building right now.</p>
-      </div>
-      <div class="window-weather" role="group" aria-label="Outside weather">
-        <span class="window-weather-temperature">3°C</span>
-        <span class="window-weather-condition">Sunny</span>
-      </div>
-      <div class="header-actions">
-        <button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button>
-        <button class="avatar" data-user-initials data-user-profile-label data-action="profile"></button>
       </div>
     </header>
     <section class="dashboard" aria-label="Concierge dashboard">
 
-      <!-- Visitors card -->
-      <article class="card visitors" id="visitors">
-        <div class="card-heading"><h2><i data-icon="person"></i>Active visitors</h2><span class="count" id="visitor-count">0 signed in</span></div>
-        <div id="visitor-list"></div>
-        <div class="card-footer">Visitor log is local demo data only.</div>
-      </article>
-
-      <!-- Packages card -->
-      <article class="card packages" id="packages">
-        <div class="card-heading"><h2><i data-icon="package"></i>Package log</h2><span class="count" id="home-package-count">0 pending</span></div>
-        <div id="home-package-list"></div>
-        <div class="card-bottom package-card-actions">
-          <a class="button outline compact" href="packages.html">View all</a>
-          <a class="button compact" href="packages.html">Log package</a>
-        </div>
-        <div class="card-footer">Open Packages to log arrivals and review pending packages.</div>
-      </article>
-
-      <!-- Resident lookup card -->
-      <article class="card lookup" id="lookup">
-        <div class="card-heading"><h2><i data-icon="users"></i>Resident lookup</h2></div>
-        <form id="lookup-form">
-          <label class="sr-only" for="lookup-input">Search by suite or name</label>
-          <div class="lookup-field">
-            <input id="lookup-input" name="query" placeholder="Suite number or resident name…" autocomplete="off">
-            <button class="button compact" type="submit">Search</button>
+      <div class="dashboard-col">
+        <article class="card packages" id="packages">
+          <div class="card-heading">
+            <h2><i data-icon="package"></i>Package log</h2>
+            <a class="button outline compact" id="home-package-view-all" href="packages.html">View all pending</a>
           </div>
-        </form>
-        <div id="lookup-results" class="lookup-results" aria-live="polite"></div>
-        <div class="card-footer">Demo search · Connect your resident directory to enable live results.</div>
-      </article>
+          <div id="home-package-list"></div>
+        </article>
 
-      <!-- Amenity schedule card -->
-      <article class="card schedule" id="schedule">
-        <div class="card-heading"><h2><i data-icon="calendar"></i>Amenity schedule</h2><span class="tiny-label">TODAY</span></div>
-        <div id="schedule-list"></div>
-        <div class="card-footer">Demo schedule · Connect your booking service for live data.</div>
-      </article>
+        <article class="card maint-queue" id="maint-queue">
+          <div class="card-heading">
+            <h2><i data-icon="wrench"></i>Maintenance queue</h2>
+            <a class="button outline compact" id="home-maint-view-all" href="maintenance.html">View all pending</a>
+          </div>
+          <div id="maint-list"></div>
+        </article>
+      </div>
 
-      <!-- Maintenance queue card -->
-      <article class="card maint-queue" id="maint-queue">
-        <div class="card-heading"><h2><i data-icon="wrench"></i>Maintenance queue</h2><span class="count" id="maint-count">0 open</span></div>
-        <div id="maint-list"></div>
-        <div class="card-footer">Demo data · Connect your maintenance service for live requests.</div>
-      </article>
+      <div class="dashboard-col">
+        <article class="card lookup" id="lookup">
+          <div class="card-heading"><h2><i data-icon="users"></i>Resident lookup</h2></div>
+          <form id="lookup-form">
+            <label class="sr-only" for="lookup-input">Search by suite or name</label>
+            <div class="lookup-field">
+              <input id="lookup-input" name="query" placeholder="Suite number or resident name…" autocomplete="off">
+              <button class="button compact" type="submit">Search</button>
+            </div>
+          </form>
+          <div id="lookup-results" class="lookup-results" aria-live="polite"></div>
+        </article>
 
-      <!-- Broadcast card -->
-      <article class="card broadcast" id="broadcast">
-        <div class="card-heading"><h2><i data-icon="megaphone"></i>Quick broadcast</h2></div>
-        <p class="muted">Send an announcement to all residents instantly.</p>
-        <form id="broadcast-form">
-          <label class="sr-only" for="broadcast-input">Announcement text</label>
-          <textarea id="broadcast-input" name="message" placeholder="Type your announcement…" rows="3" required></textarea>
-          <button class="button full" type="submit"><i data-icon="send"></i>Send to all residents</button>
-        </form>
-        <p class="ai-caption">Demo only · Connect your notification service before sending real messages.</p>
-      </article>
+        <article class="card announcements" id="announcements">
+          <div class="card-heading">
+            <h2><i data-icon="megaphone"></i>Announcements</h2>
+            <a class="button outline compact" href="announcements.html">View all</a>
+          </div>
+          <div id="home-announcement-list"></div>
+        </article>
+      </div>
+
+      <div class="dashboard-col">
+        <article class="card schedule" id="schedule">
+          <div class="card-heading">
+            <h2><i data-icon="calendar"></i>Upcoming bookings</h2>
+            <a class="button outline compact" href="#">View bookings</a>
+          </div>
+          <div id="schedule-list"></div>
+        </article>
+      </div>
 
     </section>
     <footer class="page-footer">

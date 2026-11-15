@@ -18,6 +18,7 @@ Design for the average user — not power users, not designers.
 - Prefer one clear next step over many competing controls.
 - Confirm important outcomes with short feedback (toasts stay consistent app-wide — top of the screen).
 - If a layout or button placement would confuse someone using the desk for the first time, redesign it before shipping.
+- **Readable type, always.** Do not use tiny helper text, captions, footers, or microcopy that looks polished but is hard to read for the average person. Secondary text should stay around body-readable size (rough floor: ~13–14px). Avoid ~9–11px “nice looking” notes. If copy is too small to read easily, remove it or bump the size — never ship pretty-but-unreadable text.
 
 ## While working
 

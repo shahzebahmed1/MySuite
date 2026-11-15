@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Maintenance</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="maintenance.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="maintenance-data.js" defer></script>
+  <script src="maintenance.js" defer></script>
+</head>
+<body data-time="afternoon" data-breadcrumb="Maintenance">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <a class="nav-item active" aria-current="page" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">CONCIERGE</p>
+        <h1>Maintenance</h1>
+        <p class="welcome-note">Log a request on the left. Review pending work on the right.</p>
+      </div>
+      <div class="header-tools">
+        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+      </div>
+    </header>
+
+    <div class="packages-layout">
+      <section id="log-panel" class="log-panel card" aria-label="Log a maintenance request">
+        <div class="log-panel-top">
+          <h2><i data-icon="wrench"></i>Log a request</h2>
+        </div>
+        <div id="form-slot-panel"></div>
+      </section>
+
+      <section class="packages-table-card card" aria-label="Maintenance list">
+        <div class="pkg-tabs" role="tablist">
+          <button type="button" class="pkg-tab active" role="tab" aria-selected="true" data-tab="awaiting" id="tab-pending">Pending</button>
+          <button type="button" class="pkg-tab" role="tab" aria-selected="false" data-tab="history" id="tab-history">History</button>
+        </div>
+
+        <div id="pending-panel" class="pending-panel">
+          <div id="pending-list" class="pending-list"></div>
+          <p id="pending-empty" class="pkg-empty" hidden>Nothing pending. Log a request when something needs attention.</p>
+        </div>
+
+        <div id="history-panel" class="table-wrap" hidden>
+          <table class="pkg-table" id="mnt-table">
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th>Title</th>
+                <th>Reported</th>
+                <th>Logged by</th>
+                <th>Completed</th>
+                <th>Completed by</th>
+              </tr>
+            </thead>
+            <tbody id="mnt-tbody"></tbody>
+          </table>
+          <p id="mnt-empty" class="pkg-empty" hidden>No completed requests yet.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="page-footer">
+      <span>MySuite · Concierge portal.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+
+  <template id="maintenance-form-template">
+    <form id="maintenance-form" class="arrive-form">
+      <div class="arrive-top">
+        <label class="arrive-suite">Location
+          <input id="mnt-location" name="suite" type="text" placeholder="Suite, lobby, garage…" required autocomplete="off">
+        </label>
+      </div>
+      <input type="hidden" name="reportedBy" value="">
+
+      <div class="arrive-fields">
+        <label>Maintenance Request Title
+          <input id="mnt-title" name="title" type="text" placeholder="Short title for this request" required autocomplete="off">
+        </label>
+        <label>When reported
+          <input id="mnt-reported" name="reportedAt" type="datetime-local" required>
+        </label>
+        <label>Notes
+          <textarea name="note" rows="4" placeholder="What needs attention?" required></textarea>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="button outline" data-cancel-log>Clear</button>
+        <button class="button" type="submit">Log request</button>
+      </div>
+    </form>
+  </template>
+
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>

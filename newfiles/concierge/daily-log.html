@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Daily log</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="daily-log.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="daily-log-data.js" defer></script>
+  <script src="daily-log.js" defer></script>
+</head>
+<body data-time="afternoon" data-breadcrumb="Daily log">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item active" aria-current="page" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">CONCIERGE</p>
+        <h1>Daily log</h1>
+        <p class="welcome-note">Record what happened on shift. Click any entry to edit it.</p>
+      </div>
+      <div class="header-tools">
+        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+      </div>
+    </header>
+
+    <div class="daily-log-layout">
+      <div class="log-toolbar">
+        <div class="date-nav">
+          <button type="button" class="date-nav-btn" data-action="prev-day" aria-label="Previous day"><i data-icon="left"></i></button>
+          <button type="button" class="date-pill" id="date-pill-btn" aria-label="Choose log date">
+            <i data-icon="calendar"></i>
+            <span id="log-date-label">Select date</span>
+            <i data-icon="chevron"></i>
+          </button>
+          <button type="button" class="date-nav-btn" data-action="next-day" aria-label="Next day"><i data-icon="chevron"></i></button>
+          <input id="log-date" class="date-pill-input" type="date" required aria-label="Log date">
+        </div>
+        <div class="shift-tabs" role="tablist" aria-label="Shift">
+          <button type="button" class="shift-tab" role="tab" data-shift="night" aria-selected="false">Night</button>
+          <button type="button" class="shift-tab" role="tab" data-shift="morning" aria-selected="false">Morning</button>
+          <button type="button" class="shift-tab" role="tab" data-shift="evening" aria-selected="false">Evening</button>
+        </div>
+      </div>
+
+      <section class="log-card card" aria-label="Shift log entries">
+        <div class="log-card-top">
+          <h2 id="shift-heading">Morning Shift</h2>
+        </div>
+
+        <div class="log-table-wrap">
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Entry</th>
+                <th scope="col">Logged by</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="log-tbody"></tbody>
+          </table>
+          <p id="log-empty" class="pkg-empty" hidden>No entries for this shift yet.</p>
+        </div>
+
+        <form id="composer-form" class="composer" aria-label="Add a log entry">
+          <label class="sr-only" for="composer-time">Time</label>
+          <input id="composer-time" name="time" type="text" inputmode="numeric" placeholder="HH:mm" pattern="^([01]\d|2[0-3]):[0-5]\d$" maxlength="5" lang="en-GB" required autocomplete="off" title="Use 24-hour time, e.g. 14:30">
+          <label class="sr-only" for="composer-notes">Log entry</label>
+          <input id="composer-notes" name="notes" type="text" placeholder="Write a log entry…" required autocomplete="off">
+          <button class="button compact" type="submit" id="composer-submit">Save entry</button>
+        </form>
+      </section>
+
+      <aside class="notes-card card" aria-label="Important notes">
+        <div class="notes-card-top">
+          <h2><i data-icon="clipboard"></i>Important notes</h2>
+        </div>
+        <div class="log-table-wrap">
+          <table class="log-table notes-table">
+            <thead>
+              <tr>
+                <th scope="col">Note</th>
+                <th scope="col">Logged by</th>
+              </tr>
+            </thead>
+            <tbody id="notes-tbody"></tbody>
+          </table>
+          <p id="notes-empty" class="pkg-empty" hidden>No important notes yet.</p>
+        </div>
+        <form id="note-composer-form" class="composer note-composer" aria-label="Add an important note">
+          <label class="sr-only" for="note-composer-text">Important note</label>
+          <input id="note-composer-text" name="title" type="text" placeholder="Write an important note…" required autocomplete="off">
+          <button class="button compact" type="submit">Save note</button>
+        </form>
+      </aside>
+    </div>
+
+    <footer class="page-footer">
+      <span>MySuite · Concierge portal.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>

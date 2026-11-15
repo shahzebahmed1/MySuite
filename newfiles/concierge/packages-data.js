@@ -208,13 +208,16 @@ function countPending(list) {
 
 function renderPackageRow(pkg) {
   /* Compact row for the home dashboard card */
+  const carrier = pkg.carrier || 'Other';
   const tracking = pkg.trackingLast6 ? ` · #…${pkg.trackingLast6}` : '';
   const who = pkg.residentName && pkg.residentName !== 'Unknown resident' ? ` · ${pkg.residentName}` : '';
   return `<div class="package-row" data-package-id="${pkg.id}">
-    <span class="tile-icon"><i data-icon="package"></i></span>
+    <span class="package-logo-wrap">
+      <img class="carrier-logo package-logo" src="${carrierLogoSrc(carrier)}" alt="" width="36" height="36">
+    </span>
     <span class="package-info">
       <strong>Suite ${pkg.suite}${who}</strong>
-      <small>${pkg.parcelType || 'Package'} · ${pkg.carrier}${tracking}</small>
+      <small>${pkg.parcelType || 'Package'} · ${carrier}${tracking}</small>
       <small>In ${formatPackageTime(pkg.receivedAt)}</small>
     </span>
     <span class="badge ${packageStatusClass(pkg.status)}">${packageStatusLabel(pkg.status)}</span>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Book elevator</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="elevator-booking.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="../shared/elevator-booking-data.js" defer></script>
+  <script src="elevator-booking.js" defer></script>
+</head>
+<body data-time="afternoon" data-breadcrumb="Book elevator">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item active" aria-current="page" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="calendar"></i>Calendar</a>
+      <a class="nav-item" href="documents.html"><i data-icon="file"></i>Documents</a>
+      <a class="nav-item" href="#"><i data-icon="bag"></i>Shop</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <header class="page-header">
+      <div>
+        <h1>Book elevator</h1>
+        <p class="welcome-note">Reserve the service elevator for a move or delivery. Overlapping times are not allowed.</p>
+      </div>
+      <div class="header-tools">
+        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+      </div>
+    </header>
+
+    <div class="elevator-layout">
+      <section class="log-panel card" aria-label="Book the elevator">
+        <div class="log-panel-top">
+          <h2><i data-icon="elevator"></i>New booking</h2>
+        </div>
+        <form id="elevator-form" class="arrive-form">
+          <div class="arrive-fields">
+            <label>Date
+              <input id="elv-date" name="date" type="date" required>
+            </label>
+            <div class="time-row">
+              <label>Start time
+                <input id="elv-start" name="startTime" type="time" required>
+              </label>
+              <label>End time
+                <input id="elv-end" name="endTime" type="time" required>
+              </label>
+            </div>
+            <label>Reason
+              <select name="reason" required>
+                <option value="">Select a reason</option>
+                <option value="Move">Move</option>
+                <option value="Delivery">Delivery</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
+            <label>Notes (optional)
+              <textarea name="notes" rows="3" placeholder="Anything the desk should know"></textarea>
+            </label>
+          </div>
+          <p id="form-message" class="form-message" hidden role="alert"></p>
+          <button class="button" type="submit">Submit booking</button>
+        </form>
+      </section>
+
+      <section class="list-card card" aria-label="Your elevator bookings">
+        <div class="card-heading">
+          <h2><i data-icon="calendar"></i>Your bookings</h2>
+        </div>
+        <div id="booking-list" class="booking-list"></div>
+        <p id="booking-empty" class="pkg-empty" hidden>You have no elevator bookings yet.</p>
+      </section>
+    </div>
+
+    <footer class="page-footer">
+      <span>MySuite · A little closer to home.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button type="button" data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>

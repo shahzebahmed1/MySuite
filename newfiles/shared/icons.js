@@ -36,7 +36,15 @@ const icons = {
   /* ── Technician icons ── */
   check:     '<path d="M20 6 9 17l-5-5"/>',
   toolbox:   '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M2 12h20"/>',
-  alert:     '<path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>'
+  alert:     '<path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>',
+  search:    '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  phone:     '<path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1.5 1.5 0 0 1 1.5-.4 9.5 9.5 0 0 0 3 1 1.5 1.5 0 0 1 1.5 1.5V20A1.5 1.5 0 0 1 20.4 21.5 18.5 18.5 0 0 1 2.5 3.6 1.5 1.5 0 0 1 4 2.1h3.1A1.5 1.5 0 0 1 8.6 3.6a9.5 9.5 0 0 0 1 3 1.5 1.5 0 0 1-.4 1.5z"/>',
+  mail:      '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="m2 7 10 7 10-7"/>',
+  info:      '<circle cx="12" cy="12" r="9"/><path d="M12 10v6m0-10h.01"/>',
+  pencil:    '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  trash:     '<path d="M3 6h18M8 6V4h8v2m-9 0v14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V6"/>',
+  elevator:  '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 11h14M12 3v18M9 7v2m6-2v2M9 15v2m6-2v2"/>',
+  suitcase:  '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M12 12v4"/>'
 };
 
 function renderIcons(root = document) {

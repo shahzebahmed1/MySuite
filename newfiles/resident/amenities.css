@@ -1,0 +1,110 @@
+/* Resident amenities, using the shared portal palette and typography. */
+body[data-breadcrumb="Amenities"] :is(.button, .nav-item, .sidebar-bottom, .logout, .avatar.small, .page-footer, .page-footer button, .lighting-picker, .toast, .eyebrow, .dialog-info, dialog p, dialog label, small) { font-size: 14px; }
+.page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 36px 0 20px; }
+.page-header h1 { margin-bottom: 8px; }
+.page-header .welcome-note { margin: 0; font-size: 15px; color: var(--muted); }
+.amenity-topbar { display: flex; align-items: center; gap: 30px; flex-wrap: wrap; padding-top: 24px; }
+.amenity-home { display: inline-flex; align-items: center; gap: 4px; border: 1px solid #ceb39a; border-radius: 10px; padding: 6px 11px 6px 7px; background: #fcf3e8; color: #77502e; font-size: 14px; font-weight: 650; box-shadow: 0 1px 2px #35261e0c; }
+.amenity-home svg { width: 18px; height: 18px; }
+.amenity-home:hover { background: #f2e3d0; }
+.amenity-topbar + .page-header { padding-top: 22px; }
+.amenity-review { max-width: 680px; padding: 24px; }
+.amenity-review h2 { font-size: 22px; }
+.amenity-review-note { color: var(--muted); font-size: 15px; margin: 10px 0 20px; }
+.amenity-review-summary { margin: 0 0 22px; }
+.amenity-review-summary > div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.amenity-review-summary dt { color: var(--muted); }
+.amenity-review-summary dd { margin: 0; font-weight: 550; white-space: pre-wrap; overflow-wrap: anywhere; }
+.amenity-review-actions { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+.amenity-selection { max-width: 760px; }
+.amenities-page-layout { max-width: 760px; }
+.amenity-view-tabs { display: flex; gap: 24px; max-width: 760px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.amenity-view-tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 8px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); font-size: 14px; }
+.amenity-view-tabs button[aria-selected="true"] { border-bottom-color: var(--caramel); color: var(--espresso); font-weight: 650; }
+.amenity-view-tabs button svg { width: 18px; height: 18px; color: var(--caramel); }
+#amenity-book-view[hidden], #amenity-my-bookings[hidden] { display: none; }
+.amenity-flow { min-width: 0; }
+.amenity-selection-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #e1cfbd; }
+.amenity-selected-count { min-width: 0; margin: 0; font-size: 14px; color: var(--muted); }
+.amenity-selection-total { display: flex; align-items: baseline; gap: 7px; margin: 0; white-space: nowrap; font-size: 15px; font-weight: 650; }
+.amenity-selection-total strong { font-size: 18px; }
+#amenity-selection[hidden], #amenity-booking-step[hidden], #amenity-review-step[hidden] { display: none; }
+.amenity-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.amenity-choice { position: relative; display: block; margin: 0; padding: 5px; border: 1px solid #d8c1ac; border-radius: 10px; cursor: pointer; background: #fffcf8; transition: border-color .15s, background .15s, box-shadow .15s; }
+.amenity-choice:hover { border-color: var(--caramel); background: #fbf3e8; }
+.amenity-choice:has(input:checked) { border-color: var(--caramel); background: #f8ecdd; }
+.amenity-choice:has(input:focus-visible) .amenity-select-button { outline: 2px solid #b87c48; outline-offset: 3px; }
+.amenity-choice input { position: absolute; width: 1px; height: 1px; margin: 0; padding: 0; opacity: 0; }
+.amenity-choice > img { display: block; width: 100%; height: clamp(100px, 14vw, 170px); object-fit: cover; border-radius: 6px; }
+.amenity-choice-caption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; min-height: 54px; padding: 9px 6px 5px; }
+.amenity-choice-info { display: grid; gap: 2px; min-width: 0; }
+.amenity-choice-caption strong { font-size: 17px; font-weight: 650; line-height: 1.2; }
+.amenity-choice-price { color: var(--espresso); font-size: 14px; font-weight: 650; }
+.amenity-select-button { display: inline-flex; align-items: center; justify-content: center; min-width: 90px; min-height: 34px; padding: 6px 10px; border: 1px solid #d8b99e; border-radius: 7px; background: var(--paper); color: #553824; font-size: 14px; font-weight: 650; }
+.amenity-select-selected { display: none; align-items: center; gap: 6px; }
+.amenity-select-selected svg { width: 17px; height: 17px; stroke-width: 2.5; }
+.amenity-choice:has(input:checked) .amenity-select-button { background: var(--caramel); border-color: var(--caramel); color: #fff; }
+.amenity-choice:has(input:checked) .amenity-select-available { display: none; }
+.amenity-choice:has(input:checked) .amenity-select-selected { display: inline-flex; }
+.amenity-selection-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.amenity-booking-price { display: grid; gap: 8px; padding: 14px; background: #f5eee5; border-radius: 10px; font-size: 14px; }
+.amenity-booking-price > div { display: flex; justify-content: space-between; gap: 12px; }
+.amenity-booking-price .amenity-price-total { border-top: 1px solid #d8c6b5; padding-top: 10px; font-size: 16px; font-weight: 650; }
+.amenity-review-summary .amenity-price-total { font-weight: 650; color: var(--espresso); }
+.amenity-selection-actions button:disabled { opacity: .45; cursor: default; }
+.amenity-back { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 18px; padding: 0; border: 0; color: var(--caramel-dark); background: transparent; font-size: 14px; font-weight: 550; }
+.amenity-back svg { width: 18px; height: 18px; }
+.amenities-booking-layout { display: block; }
+.amenity-reservation { padding: 22px; scroll-margin-top: 24px; }
+.amenity-reservation h2, .amenity-bookings h2 { margin: 0; font-size: 18px; }
+.amenity-form { display: grid; gap: 14px; margin-top: 18px; }
+.amenity-form label { display: grid; gap: 6px; font-size: 14px; font-weight: 550; min-width: 0; }
+.amenity-form :is(input, select, textarea) { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid #d6c2af; background: #fff; border-radius: 9px; padding: 10px 12px; color: var(--espresso); font: inherit; font-size: 15px; }
+.amenity-form textarea { resize: vertical; min-height: 76px; }
+.amenity-form textarea:focus-visible { outline: 3px solid #b87c48; outline-offset: 3px; }
+.amenity-time-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.amenity-availability { border-radius: 10px; padding: 12px 14px; background: #f5eee5; font-size: 14px; }
+.amenity-availability strong { display: block; margin-bottom: 5px; }
+.amenity-availability p { margin: 0; color: #716454; }
+.amenity-availability ul { margin: 0; padding-left: 18px; color: #716454; }
+.amenity-availability > div + div { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.amenity-time-note { margin: 0; font-size: 14px; color: var(--muted); }
+.amenity-error { font-size: 14px; color: #8c3525; padding: 12px 14px; background: #f5e0d8; border-radius: 10px; margin: 0; }
+.amenity-error[hidden], .amenity-empty[hidden], .amenity-booking-list[hidden] { display: none; }
+.amenity-bookings { padding: 0; overflow: hidden; }
+.amenity-bookings-heading { padding: 22px; border-bottom: 1px solid var(--line); }
+.amenity-booking-tabs { display: flex; border-bottom: 1px solid var(--line); padding: 0 14px; gap: 10px; }
+.amenity-booking-tabs button { flex: 1; padding: 14px 4px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); font-size: 14px; }
+.amenity-booking-tabs button[aria-selected="true"] { color: var(--espresso); border-bottom-color: var(--caramel); font-weight: 650; }
+.amenity-pagination { display: grid; gap: 12px; padding: 16px; border-top: 1px solid var(--line); }
+.amenity-pagination[hidden] { display: none; }
+.amenity-pagination p { margin: 0; font-size: 14px; color: var(--muted); }
+.amenity-page-controls { display: flex; justify-content: space-between; gap: 12px; }
+.amenity-page-controls button:disabled { opacity: .4; cursor: default; }
+.amenity-demo-label { display: inline-block; margin-left: 8px; font-size: 14px; font-weight: 400; color: var(--muted); }
+.amenity-booking { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.amenity-booking:last-child { border-bottom: 0; }
+.amenity-booking h3 { font-size: 16px; margin: 0 0 6px; }
+.amenity-booking p { font-size: 14px; color: #716454; margin: 4px 0; overflow-wrap: anywhere; }
+.amenity-booking .amenity-booking-notes { white-space: pre-wrap; }
+.amenity-booking-side { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.amenity-booking-status { font-size: 14px; font-weight: 550; color: #496444; background: #edf1e9; padding: 4px 10px; border-radius: 20px; }
+.amenity-booking-status.is-inactive { color: #716454; background: #f0e9e0; }
+.amenity-empty { padding: 28px 22px; margin: 0; font-size: 15px; color: var(--muted); }
+@media (max-width: 600px) {
+  .amenity-topbar { gap: 18px; }
+  .amenity-review { padding: 18px; }
+  .amenity-choices { gap: 9px; }
+  .amenity-choice > img { height: 105px; }
+  .amenity-choice-caption { padding-inline: 3px; gap: 6px; }
+  .amenity-choice-caption strong { font-size: 14px; }
+  .amenity-reservation, .amenity-bookings-heading { padding: 18px; }
+  .amenity-booking { padding: 18px; }
+}
+@media (max-width: 380px) {
+  .amenity-selection-footer { flex-wrap: wrap; }
+  .amenity-selection-actions { margin-left: auto; }
+  .amenity-time-row { grid-template-columns: minmax(0, 1fr); }
+  .amenity-booking { grid-template-columns: minmax(0, 1fr); }
+  .amenity-booking-side { flex-direction: row; justify-content: space-between; align-items: center; }
+}

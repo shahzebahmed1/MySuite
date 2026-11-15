@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Elevator bookings</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="elevator-bookings.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="../shared/elevator-booking-data.js" defer></script>
+  <script src="elevator-bookings.js" defer></script>
+</head>
+<body data-time="afternoon" data-breadcrumb="Book elevator">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item active" aria-current="page" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">CONCIERGE</p>
+        <h1>Elevator bookings</h1>
+        <p class="welcome-note">View resident elevator reservations. Residents submit bookings from their portal.</p>
+      </div>
+      <div class="header-tools">
+        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+      </div>
+    </header>
+
+    <section class="schedule-card card" aria-label="Elevator booking schedule">
+      <div class="pkg-tabs" role="tablist">
+        <button type="button" class="pkg-tab active" role="tab" aria-selected="true" data-tab="upcoming" id="tab-upcoming">Upcoming</button>
+        <button type="button" class="pkg-tab" role="tab" aria-selected="false" data-tab="past" id="tab-past">Past</button>
+      </div>
+      <div class="table-wrap">
+        <table class="pkg-table">
+          <thead>
+            <tr>
+              <th>Date / time</th>
+              <th>Suite</th>
+              <th>Resident</th>
+              <th>Reason</th>
+              <th>Elevator</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="booking-tbody"></tbody>
+        </table>
+        <p id="booking-empty" class="pkg-empty" hidden>No bookings in this list.</p>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span>MySuite · Concierge portal.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button type="button" data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>

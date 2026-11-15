@@ -18,6 +18,16 @@
   flex-wrap: wrap;
 }
 
+.page-header .welcome-note {
+  font-size: 14px !important;
+  color: #3d2a1c !important;
+  margin: 0;
+  line-height: 1.45;
+}
+.page-header .eyebrow {
+  display: none;
+}
+
 /* ── Two-column layout ────────────────────────────────────── */
 .packages-layout {
   display: grid;

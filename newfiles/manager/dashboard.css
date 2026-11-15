@@ -6,7 +6,12 @@
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:18px;
-  padding-top:2px
+  padding-top:2px;
+  align-items:start
+}
+.dashboard > .card {
+  align-self:start;
+  height:fit-content
 }
 
 /* ── KPI strip ────────────────────────────────────────────── */

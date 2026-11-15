@@ -1,0 +1,293 @@
+/* Concierge incident report — side-by-side form + history */
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 36px 0 12px;
+  flex-wrap: wrap;
+}
+
+.page-header h1 { margin-bottom: 8px; }
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.page-header .welcome-note {
+  font-size: 14px !important;
+  color: #3d2a1c !important;
+  margin: 0;
+  line-height: 1.45;
+}
+.page-header .eyebrow {
+  display: none;
+}
+
+.incidents-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 8px;
+}
+
+.log-panel {
+  padding: 22px;
+  position: sticky;
+  top: 16px;
+}
+
+.log-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.log-panel-top h2 {
+  margin: 0;
+}
+
+.incident-form {
+  display: grid;
+  gap: 14px;
+}
+
+.incident-fields label {
+  display: block;
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.incident-fields input,
+.incident-fields select,
+.incident-fields textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: var(--paper);
+  color: var(--espresso);
+  font: inherit;
+}
+
+.incident-fields textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.incident-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.incidents-history-card {
+  padding: 0;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.history-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.history-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.history-card-top h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.history-count {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 550;
+}
+
+.year-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.year-nav-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--espresso);
+  cursor: pointer;
+  padding: 0;
+}
+
+.year-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.year-nav-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.year-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--espresso);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.year-pill svg {
+  width: 18px;
+  height: 18px;
+  color: #5c4d3e;
+}
+
+.year-pill svg:last-of-type {
+  width: 14px;
+  height: 14px;
+  transform: rotate(90deg);
+  color: #8a7460;
+}
+
+.year-select {
+  position: absolute;
+  inset: 0 46px 0 46px;
+  opacity: 0;
+  cursor: pointer;
+  border: 0;
+  font-size: 16px;
+}
+
+.incident-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.incident-row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  column-gap: 20px;
+  align-items: start;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.incident-row:last-child {
+  border-bottom: 0;
+}
+
+.incident-who {
+  min-width: 0;
+}
+
+.incident-who strong,
+.incident-detail-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -.2px;
+  color: var(--espresso);
+  line-height: 1.25;
+}
+
+.incident-who span,
+.incident-detail-text span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: #716454;
+  line-height: 1.35;
+}
+
+.incident-detail {
+  min-width: 0;
+  padding-left: 20px;
+  border-left: 1px solid var(--line);
+}
+
+.incident-detail-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.incident-empty {
+  padding: 36px 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 980px) {
+  .incidents-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .log-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .page-header {
+    padding-top: 72px;
+  }
+
+  .header-tools {
+    width: 100%;
+  }
+
+  .incident-row {
+    grid-template-columns: 1fr;
+  }
+
+  .incident-detail {
+    padding-left: 0;
+    border-left: 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+}

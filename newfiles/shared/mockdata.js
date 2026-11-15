@@ -11,7 +11,7 @@ const MOCK_DATA = {
 
   /* Demo sessions — who is “logged in” per portal until real auth exists */
   session: {
-    conciergeId: 'acct-concierge-jordan',
+    conciergeId: 'acct-concierge-shahzeb',
     residentId: 'acct-resident-maria',
     boardId: 'acct-board-alex',
     managerId: 'acct-manager-sarah',
@@ -45,6 +45,15 @@ const MOCK_DATA = {
       shift: '8:00 AM – 4:00 PM'
     },
     {
+      id: 'acct-concierge-shahzeb',
+      name: 'Shahzeb',
+      initials: 'SZ',
+      role: 'concierge',
+      title: 'Concierge',
+      station: 'Main Lobby',
+      shift: '7:00 AM – 3:00 PM'
+    },
+    {
       id: 'acct-concierge-aisha',
       name: 'Aisha Lawal',
       initials: 'AL',
@@ -52,6 +61,15 @@ const MOCK_DATA = {
       title: 'Concierge',
       station: 'Main Lobby',
       shift: '4:00 PM – 12:00 AM'
+    },
+    {
+      id: 'acct-concierge-alsina',
+      name: 'Alsina Butt',
+      initials: 'AB',
+      role: 'concierge',
+      title: 'Concierge',
+      station: 'Main Lobby',
+      shift: '3:00 PM – 11:00 PM'
     },
     {
       id: 'acct-manager-sarah',
@@ -155,14 +173,167 @@ const MOCK_DATA = {
     }
   ],
 
+  dailyLogSeed: [
+    {
+      id: 'log-seed-m1',
+      date: '2026-11-12',
+      shift: 'morning',
+      happenedAt: '2026-11-12T07:30:00',
+      notes: 'Shift Started: Phone + Keys from Jawad',
+      loggedBy: 'Shahzeb',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-m2',
+      date: '2026-11-12',
+      shift: 'morning',
+      happenedAt: '2026-11-12T08:00:00',
+      notes: 'Healthcare for Frank, let up',
+      loggedBy: 'Shahzeb',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-m3',
+      date: '2026-11-12',
+      shift: 'morning',
+      happenedAt: '2026-11-12T08:55:00',
+      notes: 'Benjamin for Donaldson, let in the building by concierge',
+      loggedBy: 'Jordan Kim',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-m4',
+      date: '2026-11-12',
+      shift: 'morning',
+      happenedAt: '2026-11-12T10:30:00',
+      notes: 'Package for 402 delivered',
+      loggedBy: 'Shahzeb',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-m5',
+      date: '2026-11-12',
+      shift: 'morning',
+      happenedAt: '2026-11-12T10:30:00',
+      notes: 'Electrical Room Checked + Common Area Checked + Carwash Cleaned',
+      loggedBy: 'Shahzeb',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-m6',
+      date: '2026-11-12',
+      shift: 'morning',
+      happenedAt: '2026-11-12T11:15:00',
+      notes: 'Mech Room Checked + Drop Chutes checked + Parkade Checked',
+      loggedBy: 'Shahzeb',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-m7',
+      date: '2026-11-12',
+      shift: 'morning',
+      happenedAt: '2026-11-12T11:30:00',
+      notes: 'Shift Ended: Keys + Phone inside backroom for retrieval',
+      loggedBy: 'Shahzeb',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-e1',
+      date: '2026-11-12',
+      shift: 'evening',
+      happenedAt: '2026-11-12T14:50:00',
+      notes: 'Shahzeb left his Fob key for entering POB (outside in bushes as I didn\'t get one)',
+      loggedBy: 'Alsina Butt',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-e2',
+      date: '2026-11-12',
+      shift: 'evening',
+      happenedAt: '2026-11-12T14:55:00',
+      notes: 'Let in Ms. Waslen Suite #1101 (she had been waiting outside for 1/2 hour as had forgotten her fob key inside and no concierge at desk), let her in elevator too',
+      loggedBy: 'Alsina Butt',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-e3',
+      date: '2026-11-12',
+      shift: 'evening',
+      happenedAt: '2026-11-12T15:00:00',
+      notes: 'Phone and Keys retrieved from staff room',
+      loggedBy: 'Alsina Butt',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-e4',
+      date: '2026-11-12',
+      shift: 'evening',
+      happenedAt: '2026-11-12T15:05:00',
+      notes: 'Received packages already on desk 2 for #401, #402, #1201',
+      loggedBy: 'Alsina Butt',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-e5',
+      date: '2026-11-12',
+      shift: 'evening',
+      happenedAt: '2026-11-12T15:22:00',
+      notes: 'Delivered packages 2 for #401, #402, #1201',
+      loggedBy: 'Alsina Butt',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-e6',
+      date: '2026-11-12',
+      shift: 'evening',
+      happenedAt: '2026-11-12T16:08:00',
+      notes: '1st (A) Tour — Perimeters + Mech. + Electrical rooms and Parkades checked',
+      loggedBy: 'Alsina Butt',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-e7',
+      date: '2026-11-12',
+      shift: 'evening',
+      happenedAt: '2026-11-12T16:52:00',
+      notes: 'Benjamin arrived',
+      loggedBy: 'Alsina Butt',
+      updatedAt: null
+    },
+    {
+      id: 'log-seed-e8',
+      date: '2026-11-12',
+      shift: 'evening',
+      happenedAt: '2026-11-12T17:02:00',
+      notes: 'Ms. Patterson suite #303 three guests arrived/signed in and escorted to elevator',
+      loggedBy: 'Alsina Butt',
+      updatedAt: null
+    }
+  ],
+
+  dailyLogNotesSeed: [
+    {
+      id: 'note-seed-1',
+      title: 'Adjust automatic outer door opener if needed based on the weather. Select the correct door based on the wind.',
+      status: 'open',
+      createdBy: 'Shahzeb',
+      createdAt: '2026-11-12T07:30:00',
+      readAt: null,
+      resolvedAt: null
+    }
+  ],
+
   visitors: [
     { id: 'vis-1', name: 'Liang Chen', suite: '204', signedInAt: '10:14 AM' },
     { id: 'vis-2', name: 'Sarah Park', suite: '1108', signedInAt: '11:02 AM' }
   ],
 
+  /* Status is derived from the clock in concierge/app.js — do not hardcode labels */
   amenitySchedule: [
-    { time: '2:00 PM', amenity: 'Pool', suite: '501', duration: '1 hour', status: 'Active', statusClass: 'status' },
-    { time: '6:00 PM', amenity: 'Common room', suite: '803', duration: '2 hours', status: 'Upcoming', statusClass: '' }
+    { date: '2026-11-13', time: '2:00 PM', amenity: 'Pool', suite: '501', residentName: 'Emily Larsson', duration: '1 hour' },
+    { date: '2026-11-14', time: '5:00 PM', amenity: 'Gym', suite: '204', residentName: 'Alex Morgan', duration: '2 hours' },
+    { date: '2026-11-14', time: '6:00 PM', amenity: 'Common room', suite: '803', residentName: 'Jamie Chen', duration: '2 hours' },
+    { date: '2026-11-15', time: '10:00 AM', amenity: 'Pool', suite: '312', residentName: 'Maria Santos', duration: '1 hour' }
   ],
 
   maintenanceQueue: [
@@ -277,3 +448,5 @@ function applyPortalAccounts() {
 /* Back-compat aliases used by existing concierge scripts */
 const DEMO_RESIDENTS = MOCK_DATA.residents;
 const PACKAGE_SEED = MOCK_DATA.packageSeed;
+const DAILY_LOG_SEED = MOCK_DATA.dailyLogSeed;
+const DAILY_LOG_NOTES_SEED = MOCK_DATA.dailyLogNotesSeed;

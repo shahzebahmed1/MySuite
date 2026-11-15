@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Announcements</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="../concierge/announcements.css?v=397eb81e3d78">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="../concierge/announcements-data.js?v=eb1df7208a91" defer></script>
+  <script src="../concierge/announcements.js?v=c6042a200418" defer></script>
+</head>
+<body data-time="afternoon" data-portal-role="technician" data-breadcrumb="Announcements">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="#"><i data-icon="wrench"></i>Work orders</a>
+      <a class="nav-item" href="#"><i data-icon="toolbox"></i>Parts</a>
+      <a class="nav-item" href="#"><i data-icon="activity"></i>Systems</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="#"><i data-icon="clipboard"></i>Completed</a>
+      <a class="nav-item" href="#"><i data-icon="send"></i>Notes</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item active" aria-current="page" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">TECHNICIAN</p>
+        <h1>Announcements</h1>
+        <p class="welcome-note">Read the latest news and updates for your building.</p>
+      </div>
+      <div class="header-tools">
+        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+      </div>
+    </header>
+
+    <div class="announcements-layout is-reader">
+      <section class="compose-panel card" aria-hidden="true" hidden>
+        <div class="card-heading">
+          <h2><i data-icon="megaphone"></i>New announcement</h2>
+        </div>
+        <form id="announcement-form" class="announcement-form">
+          <label>Title<input name="title" type="text" required maxlength="160" placeholder="Announcement title"></label>
+          <label>Category<select name="category"><option>Building update</option><option>Community</option><option>Maintenance</option><option>Safety</option></select></label>
+          <label>Message<textarea name="body" required maxlength="10000" rows="7" placeholder="What would you like everyone to know?"></textarea></label>
+          <p id="announcement-form-error" class="announcement-error" role="alert" hidden></p>
+          <button class="button full" type="submit">Publish announcement</button>
+        </form>
+      </section>
+
+      <section class="announcements-list-card card" aria-label="Recent announcements">
+        <div class="card-heading">
+          <h2><i data-icon="megaphone"></i>Recent announcements</h2>
+        </div>
+        <div id="announcement-list" class="announcement-list"></div>
+        <p id="announcement-empty" class="ann-empty" hidden>No announcements yet.</p>
+      </section>
+    </div>
+
+    <footer class="page-footer">
+      <span>MySuite · Technician portal.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>

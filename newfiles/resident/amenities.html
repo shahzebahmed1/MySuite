@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite &mdash; Amenities</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="amenities.css?v=b94f4c467c54">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="amenities-data.js?v=fbf480095617" defer></script>
+  <script src="amenities.js?v=7a66e15287b6" defer></script>
+</head>
+<body data-time="afternoon" data-portal-role="resident" data-breadcrumb="Amenities">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+      <a class="nav-item active" aria-current="page" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="calendar"></i>Calendar</a>
+      <a class="nav-item" href="documents.html"><i data-icon="file"></i>Documents</a>
+      <a class="nav-item" href="#"><i data-icon="bag"></i>Shop</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <div class="amenity-topbar">
+      <a class="amenity-home" href="./"><i data-icon="left"></i>Home</a>
+    </div>
+    <header class="page-header">
+      <div><h1 id="amenity-page-title" tabindex="-1">Amenities</h1><p id="amenity-page-note" class="welcome-note">Book shared amenities for your residence, such as the common area or pool.</p></div>
+    </header>
+    <p id="amenity-page-error" class="amenity-error" role="alert" hidden></p>
+    <div class="amenity-view-tabs" role="tablist" aria-label="Amenities navigation">
+      <button type="button" id="amenity-view-book" role="tab" aria-selected="true" aria-controls="amenity-book-view" data-action="amenity-view-tab" data-view="book"><i data-icon="calendar"></i>Book a space</button>
+      <button type="button" id="amenity-view-bookings" role="tab" aria-selected="false" aria-controls="amenity-my-bookings" tabindex="-1" data-action="amenity-view-tab" data-view="bookings"><i data-icon="calendar"></i>My bookings <span id="amenity-my-bookings-count">(0)</span></button>
+    </div>
+    <div class="amenities-page-layout">
+      <div id="amenity-book-view" class="amenity-flow" role="tabpanel" aria-labelledby="amenity-view-book">
+    <section id="amenity-selection" class="amenity-selection" aria-label="Choose an amenity">
+      <fieldset class="amenity-choices">
+        <legend class="sr-only">What would you like to book?</legend>
+        <label class="amenity-choice">
+          <input type="checkbox" name="amenity-choice" value="common-area" aria-label="Common area">
+          <img src="../../Point_On_The_Bow/assets/realcommonarea.jpg" alt="Common area with a dining table and comfortable seating" width="1500" height="1000">
+          <span class="amenity-choice-caption">
+            <span class="amenity-choice-info"><strong>Common area</strong><span class="amenity-choice-price" data-amenity-price="common-area">$20 per booking</span></span>
+            <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
+          </span>
+        </label>
+        <label class="amenity-choice">
+          <input type="checkbox" name="amenity-choice" value="pool" aria-label="Pool">
+          <img src="../../Point_On_The_Bow/assets/realpool.jpg" alt="Indoor pool with large windows" width="1500" height="1000">
+          <span class="amenity-choice-caption">
+            <span class="amenity-choice-info"><strong>Pool</strong><span class="amenity-choice-price" data-amenity-price="pool">$20 per booking</span></span>
+            <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
+          </span>
+        </label>
+      </fieldset>
+      <div class="amenity-selection-footer">
+        <p id="amenity-selected-count" class="amenity-selected-count" aria-live="polite">0 amenities selected</p>
+        <div class="amenity-selection-actions">
+          <p id="amenity-selection-summary" class="amenity-selection-total" aria-live="polite"><span>Total</span> <strong>$0</strong></p>
+          <button type="button" class="button" id="amenity-continue" data-action="continue-amenity" disabled>Continue<i data-icon="arrow"></i></button>
+        </div>
+      </div>
+    </section>
+    <div id="amenity-booking-step" hidden>
+      <button type="button" class="amenity-back" data-action="back-to-amenities"><i data-icon="left"></i>Choose another amenity</button>
+    <div class="amenities-booking-layout">
+      <section id="amenity-reservation" class="amenity-reservation card" aria-labelledby="amenity-reservation-title">
+        <h2 id="amenity-reservation-title"><i data-icon="calendar"></i>Make a reservation</h2>
+        <form id="amenity-form" class="amenity-form">
+          <input name="amenity" type="hidden" value="common-area">
+          <label>Date<input name="date" type="date" required></label>
+          <div id="amenity-availability" class="amenity-availability" aria-live="polite"></div>
+          <div class="amenity-time-row"><label>Start time<input name="startTime" type="time" required step="60"></label><label>End time<input name="endTime" type="time" required step="60"></label></div>
+          <p class="amenity-time-note">All times are in Calgary time.</p>
+          <label>Notes (optional)<textarea name="notes" rows="2" maxlength="500" placeholder="Anything you would like to add"></textarea></label>
+          <div id="amenity-booking-price" class="amenity-booking-price" aria-label="Booking price"></div>
+          <p id="amenity-form-error" class="amenity-error" role="alert" hidden></p>
+          <button type="submit" class="button full">Review booking<i data-icon="arrow"></i></button>
+        </form>
+      </section>
+    </div>
+    </div>
+    <section id="amenity-review-step" class="amenity-review card" aria-labelledby="amenity-review-title" hidden>
+      <h2 id="amenity-review-title">Review your booking</h2>
+      <p class="amenity-review-note">Check the details below before confirming your reservation.</p>
+      <dl id="amenity-review-summary" class="amenity-review-summary"></dl>
+      <p id="amenity-review-error" class="amenity-error" role="alert" hidden></p>
+      <div class="amenity-review-actions"><button type="button" class="button outline" data-action="back-to-date-time">Back to date &amp; time</button><button type="button" class="button" data-action="confirm-amenity-booking">Confirm booking</button></div>
+    </section>
+      </div>
+      <aside id="amenity-my-bookings" class="amenity-bookings card" role="tabpanel" aria-labelledby="amenity-view-bookings" hidden>
+        <div class="amenity-bookings-heading"><h2 id="amenity-bookings-title"><i data-icon="calendar"></i>Your bookings</h2></div>
+        <div class="amenity-booking-tabs" role="tablist" aria-label="Booking history">
+          <button type="button" id="amenity-tab-active" role="tab" aria-selected="true" aria-controls="amenity-bookings-panel" data-action="bookings-tab" data-tab="active">Active bookings</button>
+          <button type="button" id="amenity-tab-past" role="tab" aria-selected="false" aria-controls="amenity-bookings-panel" tabindex="-1" data-action="bookings-tab" data-tab="past">Past bookings</button>
+        </div>
+        <div id="amenity-bookings-panel" role="tabpanel" aria-labelledby="amenity-tab-active" tabindex="0">
+          <div id="amenity-booking-list" class="amenity-booking-list" hidden></div>
+          <p id="amenity-booking-empty" class="amenity-empty">You have no active bookings.</p>
+          <nav id="amenity-past-pagination" class="amenity-pagination" aria-label="Past bookings pages" hidden>
+            <p id="amenity-page-info" role="status"></p>
+            <div class="amenity-page-controls"><button type="button" class="button outline compact" id="amenity-page-previous" data-action="previous-bookings-page">Previous</button><button type="button" class="button outline compact" id="amenity-page-next" data-action="next-bookings-page">Next<i data-icon="chevron"></i></button></div>
+          </nav>
+        </div>
+      </aside>
+    </div>
+    <footer class="page-footer">
+      <span>MySuite · A little closer to home.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button type="button" data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>

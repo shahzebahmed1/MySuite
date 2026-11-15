@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Contact directory</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="../shared/contact-directory.css?v=cd9b5378890d">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="../shared/contact-directory-data.js?v=75933a438c70" defer></script>
+  <script src="../shared/contact-directory-app.js?v=a7c8384a166e" defer></script>
+</head>
+<body data-time="afternoon" data-portal-role="concierge" data-breadcrumb="Contact directory">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item active" aria-current="page" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <header class="page-header">
+      <div>
+        <h1>Contact directory</h1>
+        <p class="welcome-note">Find residents and building contacts by name, suite, or phone.</p>
+      </div>
+      <div class="header-tools">
+        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+      </div>
+    </header>
+
+    <section class="dir-card card" aria-label="Contact directory">
+      <div class="dir-tabs" role="tablist">
+        <button type="button" class="dir-tab active" role="tab" aria-selected="true" data-tab="residents">Residents</button>
+        <button type="button" class="dir-tab" role="tab" aria-selected="false" data-tab="building">Building contacts</button>
+        <button type="button" class="dir-tab" role="tab" aria-selected="false" data-tab="contractors">Approved contractors</button>
+      </div>
+      <div class="dir-toolbar">
+        <div id="dir-filters" class="dir-filters">
+          <button type="button" class="dir-chip active" data-filter="all">All</button>
+          <button type="button" class="dir-chip" data-filter="owner">Owners</button>
+          <button type="button" class="dir-chip" data-filter="tenant">Tenants</button>
+        </div>
+        <label class="dir-search">
+          <i data-icon="search"></i>
+          <input id="dir-search" type="search" placeholder="Search name, suite or phone" autocomplete="off">
+        </label>
+      </div>
+      <div class="dir-table-wrap">
+        <table class="dir-table">
+          <thead>
+            <tr>
+              <th id="dir-col-suite">Suite</th>
+              <th id="dir-col-name">Resident</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th id="dir-col-actions" hidden>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dir-tbody"></tbody>
+        </table>
+        <p id="dir-empty" class="dir-empty" hidden>No contacts match that search.</p>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span>MySuite · Concierge portal.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <dialog id="contractor-modal" class="contractor-modal contractor-details-modal" aria-labelledby="contractor-modal-title">
+    <div class="contractor-modal-inner">
+      <header class="contractor-modal-header">
+        <div class="contractor-modal-heading">
+          <h2 id="contractor-modal-title">Contractor</h2>
+          <p id="contractor-modal-trade" class="contractor-modal-trade">Trade</p>
+          <div id="contractor-header-contacts" class="contractor-contact-list" aria-label="Contact information"></div>
+        </div>
+        <button type="button" class="icon-button" data-action="close-contractor-modal" aria-label="Close contractor details"><i data-icon="close"></i></button>
+      </header>
+      <div id="contractor-modal-body" class="contractor-modal-body"></div>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>

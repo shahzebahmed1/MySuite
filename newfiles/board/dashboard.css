@@ -7,7 +7,15 @@
   display:grid;
   grid-template-columns:1.04fr 1.06fr 1fr;
   gap:18px;
-  padding-top:2px
+  padding-top:2px;
+  align-items:start
+}
+.dashboard > .card {
+  align-self:start;
+  height:fit-content
+}
+.announcements .announcement:nth-child(n+5) {
+  display:none
 }
 
 /* ── Announcements card ───────────────────────────────────── */

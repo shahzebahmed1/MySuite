@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Documents</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="documents.css">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="../shared/documents-data.js" defer></script>
+  <script src="documents.js" defer></script>
+</head>
+<body data-time="afternoon" data-breadcrumb="Documents">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="calendar"></i>Calendar</a>
+      <a class="nav-item active" aria-current="page" href="documents.html"><i data-icon="file"></i>Documents</a>
+      <a class="nav-item" href="#"><i data-icon="bag"></i>Shop</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <header class="page-header">
+      <div>
+        <h1>Documents</h1>
+        <p class="welcome-note">Condo bylaws, house rules, and resident guides for The Point on the Bow.</p>
+      </div>
+      <div class="header-tools">
+        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+      </div>
+    </header>
+
+    <section class="docs-card card" aria-label="Condo documents">
+      <div class="card-heading">
+        <h2><i data-icon="file"></i>Condo documents</h2>
+      </div>
+      <div class="docs-toolbar">
+        <label class="docs-search">
+          <i data-icon="search"></i>
+          <span class="sr-only">Search documents</span>
+          <input id="docs-search" type="search" placeholder="Search by title or category" autocomplete="off">
+        </label>
+        <div class="docs-filters" id="docs-filters" role="group" aria-label="Filter by category"></div>
+      </div>
+      <div id="docs-list" class="docs-list"></div>
+      <p id="docs-empty" class="docs-empty" hidden>No documents match that search.</p>
+    </section>
+
+    <footer class="page-footer">
+      <span>MySuite · A little closer to home.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button type="button" data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>

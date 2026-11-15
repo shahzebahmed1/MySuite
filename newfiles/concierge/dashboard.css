@@ -1,25 +1,23 @@
 /* MySuite — Concierge dashboard card styles.
    Requires shared/tokens.css and shared/base.css. */
 
-/* ── Dashboard grid ───────────────────────────────────────── */
+/* ── Dashboard grid (column stacks so short cards pack up) ── */
 .dashboard {
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:18px;
-  padding-top:2px
+  padding-top:2px;
+  align-items:start
 }
-
-/* ── Visitors card ────────────────────────────────────────── */
-.visitor-row {
+.dashboard-col {
   display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px 0;
-  border-top:1px solid var(--line)
+  flex-direction:column;
+  gap:18px;
+  min-width:0
 }
-.visitor-info { flex:1; min-width:0 }
-.visitor-info strong { display:block; font-size:14px; font-weight:650 }
-.visitor-info small { display:block; font-size:11px; color:#716454; margin-top:3px; line-height:1.4 }
+.dashboard-col > .card {
+  height:fit-content
+}
 
 /* ── Packages card ────────────────────────────────────────── */
 .package-row {
@@ -29,13 +27,42 @@
   padding:14px 0;
   border-top:1px solid var(--line)
 }
+.package-logo-wrap {
+  width:36px;
+  height:36px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center
+}
+.package-logo {
+  width:36px;
+  height:36px;
+  object-fit:contain;
+  border-radius:8px;
+  display:block;
+  background:#fff
+}
 .package-info { flex:1; min-width:0 }
 .package-info strong { display:block; font-size:14px; font-weight:650 }
-.package-info small { display:block; font-size:11px; color:#716454; margin-top:3px; line-height:1.4 }
+.package-info small { display:block; font-size:14px; color:#716454; margin-top:3px; line-height:1.4 }
 .packages .package-actions { display:none }
-.package-card-actions { margin-top:16px; gap:10px }
-.package-card-actions .button { text-decoration:none }
 .packages .package-row .badge { flex-shrink:0 }
+
+/* Package log empty state — content-sized */
+.pkg-empty-state {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px 8px 8px;
+  text-align:center
+}
+.pkg-empty-state p {
+  margin:0;
+  font-size:14px;
+  font-weight:550;
+  line-height:1.4;
+  color:#5a4232
+}
 
 /* ── Resident lookup card ─────────────────────────────────── */
 .lookup-field {
@@ -48,14 +75,14 @@
   border:1px solid var(--line);
   border-radius:9px;
   padding:9px 13px;
-  font-size:13px;
+  font-size:14px;
   background:var(--paper);
   color:var(--espresso);
   min-width:0
 }
 .lookup-field input:focus { outline:3px solid #b87c48; outline-offset:2px }
 .lookup-field input::placeholder { color:#aa998a }
-.lookup-results { min-height:60px; font-size:13px; color:var(--espresso) }
+.lookup-results { min-height:0; font-size:14px; color:var(--espresso) }
 .lookup-result-item {
   display:flex;
   align-items:center;
@@ -64,28 +91,67 @@
   border-top:1px solid var(--line)
 }
 .lookup-result-item strong { display:block; font-size:14px; font-weight:650 }
-.lookup-result-item small { display:block; font-size:11px; color:#716454; margin-top:2px }
+.lookup-result-item small { display:block; font-size:14px; color:#716454; margin-top:2px }
 
-/* ── Amenity schedule card ────────────────────────────────── */
+/* ── Upcoming bookings card ───────────────────────────────── */
 .schedule-row {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:14px 0;
+  display:grid;
+  grid-template-columns:minmax(5.5rem,auto) minmax(0,1fr) minmax(6.5rem,auto);
+  column-gap:16px;
+  align-items:start;
+  padding:16px 0;
   border-top:1px solid var(--line)
 }
-.schedule-time {
-  font-size:11px;
-  font-weight:650;
-  color:var(--caramel);
-  white-space:nowrap;
-  min-width:52px
+.schedule-when {
+  display:grid;
+  gap:4px;
+  min-width:0
 }
-.schedule-body { flex:1; min-width:0 }
-.schedule-body strong { display:block; font-size:14px; font-weight:650 }
-.schedule-body small { display:block; font-size:11px; color:#716454; margin-top:2px }
+.schedule-day {
+  font-size:14px;
+  font-weight:700;
+  color:var(--espresso);
+  line-height:1.25
+}
+.schedule-start {
+  font-size:14px;
+  font-weight:550;
+  color:var(--caramel);
+  line-height:1.25
+}
+.schedule-body { min-width:0; display:grid; gap:3px }
+.schedule-body strong {
+  display:block;
+  font-size:14px;
+  font-weight:700;
+  color:var(--espresso);
+  line-height:1.25
+}
+.schedule-body span {
+  display:block;
+  font-size:14px;
+  color:#5c4a3c;
+  line-height:1.3
+}
+.schedule-meta {
+  display:grid;
+  justify-items:end;
+  gap:6px;
+  min-width:0
+}
+.schedule-meta .badge { white-space:nowrap }
+.schedule-ends {
+  font-size:14px;
+  font-weight:550;
+  color:#5c4a3c;
+  line-height:1.25;
+  text-align:right
+}
 
 /* ── Maintenance queue card ───────────────────────────────── */
+.packages .card-heading .button,
+.schedule .card-heading .button,
+.maint-queue .card-heading .button { text-decoration:none; flex-shrink:0 }
 .queue-row {
   display:flex;
   align-items:center;
@@ -99,45 +165,103 @@
   cursor:pointer
 }
 .queue-row:hover { background:#faf4ec; border-radius:8px; padding-inline:8px; margin-inline:-8px; width:calc(100% + 16px) }
-.queue-meta { flex:1; min-width:0 }
-.queue-meta strong { display:block; font-size:13px; font-weight:650 }
-.queue-meta small { display:block; font-size:11px; color:#716454; margin-top:2px }
-.queue-row>svg { width:15px; color:#917c67; flex-shrink:0 }
-.assigned-badge { background:#d4edda; color:#1d5c35 }
-.pending-badge { background:#fce8c3; color:#7a4a0e }
-
-/* ── Broadcast card ───────────────────────────────────────── */
-.broadcast .muted { margin-bottom:14px }
-.broadcast textarea {
-  display:block;
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:11px 13px;
-  font-size:13px;
-  font-family:inherit;
-  background:var(--paper);
-  color:var(--espresso);
-  resize:vertical;
-  margin-bottom:10px
+.queue-meta {
+  flex:1;
+  min-width:0;
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:6px 12px
 }
-.broadcast textarea:focus { outline:3px solid #b87c48; outline-offset:2px }
-.broadcast textarea::placeholder { color:#aa998a }
-.ai-caption { font-size:9px; color:#9b8b7b; margin-top:11px }
+.queue-meta strong { font-size:14px; font-weight:650 }
+.queue-issue { font-size:14px; color:#5a4232; line-height:1.35 }
+/* Same pill shape; Active green, Starting soon blue-grey, Upcoming amber */
+.badge,
+.status,
+.pending-badge,
+.active-badge,
+.soon-badge {
+  font-size:14px;
+  font-weight:650;
+  line-height:1.4;
+  padding:5px 12px;
+  border-radius:999px
+}
+.badge,
+.status,
+.pending-badge {
+  background:#fce8c3;
+  color:#7a4a0e
+}
+.soon-badge {
+  background:#e4eaf5;
+  color:#2f4a73
+}
+.active-badge {
+  background:#d4edda;
+  color:#1d5c35
+}
+
+/* ── Announcements card ───────────────────────────────────── */
+.announcements .card-heading .button { text-decoration:none; flex-shrink:0 }
+.announcement {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  width:100%;
+  padding:16px 0;
+  background:transparent;
+  border:0;
+  text-align:left;
+  border-top:1px solid var(--line);
+  cursor:pointer;
+  color:inherit;
+  font:inherit
+}
+.announcement>span:nth-child(2) { flex:1; min-width:0 }
+.announcement>svg { width:16px; color:#917c67; flex-shrink:0 }
+.announcement strong { display:block; font-size:14px; font-weight:650 }
+.announcement small { display:block; font-size:14px; line-height:1.45; color:#716454; margin-top:3px }
+.announcement em {
+  display:block;
+  font-size:14px;
+  font-weight:600;
+  font-style:normal;
+  color:#9a8a7b;
+  margin-top:8px
+}
+
+/* ── Readable floor: nothing under 14px on this dashboard ─── */
+.badge,
+.status,
+.muted,
+.button,
+.button.compact,
+.eyebrow,
+.resident-meta,
+.window-weather-condition,
+.page-footer,
+.page-footer button,
+.lighting-picker,
+.count,
+.card-footer {
+  font-size:14px
+}
 
 /* ── Responsive: 1600px+ ──────────────────────────────────── */
 @media(min-width:1600px) {
   .dashboard { gap:22px }
+  .dashboard-col { gap:22px }
 }
 
 /* ── Responsive: ≤1200px ──────────────────────────────────── */
 @media(max-width:1200px) {
   .dashboard { grid-template-columns:1fr 1fr; gap:16px }
-  .maint-queue { grid-column:1 / 3 }
-  .broadcast { grid-column:1 / 3 }
+  .dashboard-col { gap:16px }
 }
 
 /* ── Responsive: ≤560px ───────────────────────────────────── */
 @media(max-width:560px) {
   .dashboard { display:flex; flex-direction:column; gap:14px }
+  .dashboard-col { gap:14px }
 }
