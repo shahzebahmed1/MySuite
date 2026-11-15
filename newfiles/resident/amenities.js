@@ -40,8 +40,6 @@
     document.querySelectorAll('[data-amenity-price]').forEach(label => {
       label.textContent = `${formatAmenityPrice(BOOKABLE_AMENITIES[label.dataset.amenityPrice].feeCents)} per booking`;
     });
-    document.querySelector('#amenity-selected-count').textContent = `${pricing.items.length} ${pricing.items.length === 1 ? 'amenity' : 'amenities'} selected`;
-    document.querySelector('#amenity-selection-summary').innerHTML = `<span>Total</span> <strong>${formatAmenityPrice(pricing.totalCents)}</strong>`;
     document.querySelector('#amenity-booking-price').innerHTML = pricing.items.map(item =>
       `<div><span>${escapeHtml(item.name)}</span><span>${formatAmenityPrice(item.feeCents)}</span></div>`
     ).join('') + `<div class="amenity-price-total"><span>Total</span><span>${formatAmenityPrice(pricing.totalCents)}</span></div>`;
@@ -132,6 +130,7 @@
   dateInput.value = dateInput.min;
 
   function applyMainView() {
+    document.querySelector('#amenity-top-actions').hidden = mainView !== 'book' || currentWizardStep !== 1;
     document.querySelector('#amenity-book-view').hidden = mainView !== 'book';
     document.querySelector('#amenity-my-bookings').hidden = mainView !== 'bookings';
     document.querySelectorAll('[data-action="amenity-view-tab"]').forEach(tab => {

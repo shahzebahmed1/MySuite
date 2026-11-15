@@ -6,13 +6,13 @@
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css">
   <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="amenities.css?v=b94f4c467c54">
+  <link rel="stylesheet" href="amenities.css?v=eea99527d92e">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="amenities-data.js?v=fbf480095617" defer></script>
-  <script src="amenities.js?v=7a66e15287b6" defer></script>
+  <script src="amenities-data.js?v=d76f9fedfc35" defer></script>
+  <script src="amenities.js?v=7aa8ef1b947b" defer></script>
 </head>
 <body data-time="afternoon" data-portal-role="resident" data-breadcrumb="Amenities">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
@@ -43,9 +43,14 @@
       <div><h1 id="amenity-page-title" tabindex="-1">Amenities</h1><p id="amenity-page-note" class="welcome-note">Book shared amenities for your residence, such as the common area or pool.</p></div>
     </header>
     <p id="amenity-page-error" class="amenity-error" role="alert" hidden></p>
+    <div class="amenity-navigation">
     <div class="amenity-view-tabs" role="tablist" aria-label="Amenities navigation">
       <button type="button" id="amenity-view-book" role="tab" aria-selected="true" aria-controls="amenity-book-view" data-action="amenity-view-tab" data-view="book"><i data-icon="calendar"></i>Book a space</button>
       <button type="button" id="amenity-view-bookings" role="tab" aria-selected="false" aria-controls="amenity-my-bookings" tabindex="-1" data-action="amenity-view-tab" data-view="bookings"><i data-icon="calendar"></i>My bookings <span id="amenity-my-bookings-count">(0)</span></button>
+    </div>
+        <div id="amenity-top-actions" class="amenity-selection-actions">
+          <button type="button" class="button" id="amenity-continue" data-action="continue-amenity" disabled>Continue<i data-icon="arrow"></i></button>
+        </div>
     </div>
     <div class="amenities-page-layout">
       <div id="amenity-book-view" class="amenity-flow" role="tabpanel" aria-labelledby="amenity-view-book">
@@ -68,14 +73,55 @@
             <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
           </span>
         </label>
+        <label class="amenity-choice" data-test-amenity="true">
+          <input type="checkbox" name="amenity-choice" value="guest-suite-test" aria-label="Guest suite">
+          <img src="../../Point_On_The_Bow/assets/realcommonarea.jpg" alt="Common area photo used to preview the test guest suite" width="1500" height="1000" loading="lazy">
+          <span class="amenity-choice-caption">
+            <span class="amenity-choice-info"><strong>Guest suite</strong><span class="amenity-choice-price" data-amenity-price="guest-suite-test">$20 per booking</span></span>
+            <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
+          </span>
+        </label>
+        <label class="amenity-choice" data-test-amenity="true">
+          <input type="checkbox" name="amenity-choice" value="pool-2-test" aria-label="Pool #2">
+          <img src="../../Point_On_The_Bow/assets/realpool.jpg" alt="Indoor pool photo used to preview a second pool" width="1500" height="1000" loading="lazy">
+          <span class="amenity-choice-caption">
+            <span class="amenity-choice-info"><strong>Pool #2</strong><span class="amenity-choice-price" data-amenity-price="pool-2-test">$20 per booking</span></span>
+            <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
+          </span>
+        </label>
+        <label class="amenity-choice" data-test-amenity="true">
+          <input type="checkbox" name="amenity-choice" value="common-area-2-test" aria-label="Common area #2">
+          <img src="../../Point_On_The_Bow/assets/realcommonarea.jpg" alt="Common area photo used to preview a second common area" width="1500" height="1000" loading="lazy">
+          <span class="amenity-choice-caption">
+            <span class="amenity-choice-info"><strong>Common area #2</strong><span class="amenity-choice-price" data-amenity-price="common-area-2-test">$20 per booking</span></span>
+            <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
+          </span>
+        </label>
+        <label class="amenity-choice" data-test-amenity="true">
+          <input type="checkbox" name="amenity-choice" value="gym-test" aria-label="Gym">
+          <img src="../../Point_On_The_Bow/assets/realgym.jpg" alt="Building gym with exercise equipment" width="1500" height="1000" loading="lazy">
+          <span class="amenity-choice-caption">
+            <span class="amenity-choice-info"><strong>Gym</strong><span class="amenity-choice-price" data-amenity-price="gym-test">$20 per booking</span></span>
+            <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
+          </span>
+        </label>
+        <label class="amenity-choice" data-test-amenity="true">
+          <input type="checkbox" name="amenity-choice" value="games-room-test" aria-label="Games room">
+          <img src="../../Point_On_The_Bow/assets/real-library-pooltable.jpg" alt="Building games area with a pool table" width="1500" height="1000" loading="lazy">
+          <span class="amenity-choice-caption">
+            <span class="amenity-choice-info"><strong>Games room</strong><span class="amenity-choice-price" data-amenity-price="games-room-test">$20 per booking</span></span>
+            <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
+          </span>
+        </label>
+        <label class="amenity-choice" data-test-amenity="true">
+          <input type="checkbox" name="amenity-choice" value="meeting-room-test" aria-label="Meeting room">
+          <img src="../../Point_On_The_Bow/assets/realcommonarea.jpg" alt="Common area photo used to preview a meeting room" width="1500" height="1000" loading="lazy">
+          <span class="amenity-choice-caption">
+            <span class="amenity-choice-info"><strong>Meeting room</strong><span class="amenity-choice-price" data-amenity-price="meeting-room-test">$20 per booking</span></span>
+            <span class="amenity-select-button" aria-hidden="true"><span class="amenity-select-available">Select</span><span class="amenity-select-selected"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Selected</span></span>
+          </span>
+        </label>
       </fieldset>
-      <div class="amenity-selection-footer">
-        <p id="amenity-selected-count" class="amenity-selected-count" aria-live="polite">0 amenities selected</p>
-        <div class="amenity-selection-actions">
-          <p id="amenity-selection-summary" class="amenity-selection-total" aria-live="polite"><span>Total</span> <strong>$0</strong></p>
-          <button type="button" class="button" id="amenity-continue" data-action="continue-amenity" disabled>Continue<i data-icon="arrow"></i></button>
-        </div>
-      </div>
     </section>
     <div id="amenity-booking-step" hidden>
       <button type="button" class="amenity-back" data-action="back-to-amenities"><i data-icon="left"></i>Choose another amenity</button>

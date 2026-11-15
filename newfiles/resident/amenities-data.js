@@ -3,7 +3,14 @@
 const AMENITY_STORAGE_KEY = 'mysuite-amenity-bookings-v1';
 const BOOKABLE_AMENITIES = {
   'common-area': { name: 'Common area', icon: 'users', feeCents: 2000 },
-  pool: { name: 'Pool', icon: 'pool', feeCents: 2000 }
+  pool: { name: 'Pool', icon: 'pool', feeCents: 2000 },
+  // Temporary options for previewing a larger amenities grid.
+  'guest-suite-test': { name: 'Guest suite', icon: 'building', feeCents: 2000, test: true },
+  'pool-2-test': { name: 'Pool #2', icon: 'pool', feeCents: 2000, test: true },
+  'common-area-2-test': { name: 'Common area #2', icon: 'users', feeCents: 2000, test: true },
+  'gym-test': { name: 'Gym', icon: 'activity', feeCents: 2000, test: true },
+  'games-room-test': { name: 'Games room', icon: 'users', feeCents: 2000, test: true },
+  'meeting-room-test': { name: 'Meeting room', icon: 'users', feeCents: 2000, test: true }
 };
 
 /* Display-only sample history. These never reserve a space or affect availability. */

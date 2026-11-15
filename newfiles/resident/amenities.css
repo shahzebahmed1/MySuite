@@ -16,20 +16,19 @@ body[data-breadcrumb="Amenities"] :is(.button, .nav-item, .sidebar-bottom, .logo
 .amenity-review-summary dt { color: var(--muted); }
 .amenity-review-summary dd { margin: 0; font-weight: 550; white-space: pre-wrap; overflow-wrap: anywhere; }
 .amenity-review-actions { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
-.amenity-selection { max-width: 760px; }
-.amenities-page-layout { max-width: 760px; }
-.amenity-view-tabs { display: flex; gap: 24px; max-width: 760px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.amenity-selection, .amenities-page-layout { width: 100%; }
+#amenity-my-bookings { max-width: 900px; }
+.amenity-navigation { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px 24px; width: 100%; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.amenity-view-tabs { display: flex; align-self: stretch; gap: 24px; }
+.amenity-navigation > .amenity-selection-actions { padding-bottom: 6px; }
+.amenity-selection-actions[hidden] { display: none; }
 .amenity-view-tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 8px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); font-size: 14px; }
 .amenity-view-tabs button[aria-selected="true"] { border-bottom-color: var(--caramel); color: var(--espresso); font-weight: 650; }
 .amenity-view-tabs button svg { width: 18px; height: 18px; color: var(--caramel); }
 #amenity-book-view[hidden], #amenity-my-bookings[hidden] { display: none; }
 .amenity-flow { min-width: 0; }
-.amenity-selection-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #e1cfbd; }
-.amenity-selected-count { min-width: 0; margin: 0; font-size: 14px; color: var(--muted); }
-.amenity-selection-total { display: flex; align-items: baseline; gap: 7px; margin: 0; white-space: nowrap; font-size: 15px; font-weight: 650; }
-.amenity-selection-total strong { font-size: 18px; }
 #amenity-selection[hidden], #amenity-booking-step[hidden], #amenity-review-step[hidden] { display: none; }
-.amenity-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.amenity-choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; border: 0; min-width: 0; }
 .amenity-choice { position: relative; display: block; margin: 0; padding: 5px; border: 1px solid #d8c1ac; border-radius: 10px; cursor: pointer; background: #fffcf8; transition: border-color .15s, background .15s, box-shadow .15s; }
 .amenity-choice:hover { border-color: var(--caramel); background: #fbf3e8; }
 .amenity-choice:has(input:checked) { border-color: var(--caramel); background: #f8ecdd; }
@@ -55,7 +54,7 @@ body[data-breadcrumb="Amenities"] :is(.button, .nav-item, .sidebar-bottom, .logo
 .amenity-back { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 18px; padding: 0; border: 0; color: var(--caramel-dark); background: transparent; font-size: 14px; font-weight: 550; }
 .amenity-back svg { width: 18px; height: 18px; }
 .amenities-booking-layout { display: block; }
-.amenity-reservation { padding: 22px; scroll-margin-top: 24px; }
+.amenity-reservation { max-width: 680px; padding: 22px; scroll-margin-top: 24px; }
 .amenity-reservation h2, .amenity-bookings h2 { margin: 0; font-size: 18px; }
 .amenity-form { display: grid; gap: 14px; margin-top: 18px; }
 .amenity-form label { display: grid; gap: 6px; font-size: 14px; font-weight: 550; min-width: 0; }
@@ -91,18 +90,23 @@ body[data-breadcrumb="Amenities"] :is(.button, .nav-item, .sidebar-bottom, .logo
 .amenity-booking-status { font-size: 14px; font-weight: 550; color: #496444; background: #edf1e9; padding: 4px 10px; border-radius: 20px; }
 .amenity-booking-status.is-inactive { color: #716454; background: #f0e9e0; }
 .amenity-empty { padding: 28px 22px; margin: 0; font-size: 15px; color: var(--muted); }
+@media (max-width: 1200px) {
+  .amenity-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 600px) {
+  .amenity-navigation { gap: 8px; }
+  .amenity-view-tabs { order: 2; flex-basis: 100%; }
+  .amenity-navigation > .amenity-selection-actions { margin-left: auto; }
   .amenity-topbar { gap: 18px; }
   .amenity-review { padding: 18px; }
-  .amenity-choices { gap: 9px; }
-  .amenity-choice > img { height: 105px; }
+  .amenity-choices { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .amenity-choice > img { height: 180px; }
   .amenity-choice-caption { padding-inline: 3px; gap: 6px; }
   .amenity-choice-caption strong { font-size: 14px; }
   .amenity-reservation, .amenity-bookings-heading { padding: 18px; }
   .amenity-booking { padding: 18px; }
 }
 @media (max-width: 380px) {
-  .amenity-selection-footer { flex-wrap: wrap; }
   .amenity-selection-actions { margin-left: auto; }
   .amenity-time-row { grid-template-columns: minmax(0, 1fr); }
   .amenity-booking { grid-template-columns: minmax(0, 1fr); }
