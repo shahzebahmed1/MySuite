@@ -69,8 +69,7 @@ function openDocument(id) {
     doc.title,
     `<div class="dialog-info">${doc.category} · Updated ${formatDocumentDate(doc.updatedAt)}</div>
      <p>${doc.summary}</p>
-     <p style="font-size:14px;line-height:1.45;color:#5c4a3c">Demo library · File viewing and download will connect to your document service.</p>
-     <button class="button full" type="button" data-action="demo-download" data-doc-id="${doc.id}">Download (demo)</button>`
+     <button class="button full" type="button" data-action="demo-download" data-doc-id="${doc.id}">Download</button>`
   );
 }
 
@@ -106,7 +105,7 @@ document.addEventListener('click', event => {
   } else if (action === 'close-modal') {
     modal.close();
   } else if (action === 'demo-download') {
-    toast('Demo only. Connect your document service to download real files.');
+    toast('This document is not available for download yet.');
   } else if (action === 'help') {
     openModal(
       'Documents help',

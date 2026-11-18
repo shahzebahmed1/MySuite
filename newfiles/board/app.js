@@ -25,7 +25,7 @@ function renderCalendar() {
     }).join('');
   document.querySelector('#calendar-events').innerHTML = isDemoMonth
     ? '<button data-action="meeting"><span class="event-dot"></span><span><strong>Nov 12</strong> · Board meeting</span></button><button data-action="announcement-social"><span class="event-dot light"></span><span><strong>Nov 14</strong> · Community social</span></button>'
-    : '<p class="muted">No demo events this month.</p>';
+    : '<p class="muted">No events this month.</p>';
 }
 renderCalendar();
 
@@ -55,23 +55,23 @@ const actions = {
   notifications: () => openModal('You\u2019re all caught up', '<p>You have two new community announcements.</p><div class="dialog-options"><button class="button outline" data-action="announcement-pool">Pool maintenance</button><button class="button outline" data-action="announcement-social">Community social</button></div>'),
   profile: () => {
     const account = getSessionAccount('board');
-    openModal(account?.name || 'Board member', `<p>${accountSubtitle(account)}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">Resident features plus board workspace access in this demo.</div>`);
+    openModal(account?.name || 'Board member', `<p>${accountSubtitle(account)}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">Resident features and board workspace access.</div>`);
   },
-  'announcement-pool': () => openModal('Pool maintenance', '<p>The pool will be closed on Friday, November 6 for scheduled maintenance.</p><p>Thank you for your patience while we keep our amenities in great shape.</p><div class="dialog-info">Demo announcement · Building management</div>'),
-  'announcement-social': () => openModal('Community social', '<p>Join your neighbours in the common room on Saturday, November 14, 2026, from 3:00\u20135:00 PM.</p><p>Drop by for coffee, conversation, and a chance to meet the community.</p><button class="button full" data-action="rsvp">Add a demo RSVP</button>'),
-  rsvp() { save('mysuite-rsvp', true); modal.close(); toast('Your demo RSVP has been saved on this device.'); },
-  maintenance: () => openModal('Kitchen sink leak', '<div class="dialog-info">#M-4821 · In progress</div><p><strong>Nov 5 · Request received</strong><br>Water leaking from the pipe below the kitchen sink.</p><p><strong>Nov 6 · Assigned to maintenance</strong><br>Your building team is reviewing availability. They will confirm the appointment with you.</p><p class="muted">Sample request for this dashboard demo.</p>'),
+  'announcement-pool': () => openModal('Pool maintenance', '<p>The pool will be closed on Friday, November 6 for scheduled maintenance.</p><p>Thank you for your patience while we keep our amenities in great shape.</p><div class="dialog-info">Announcement · Building management</div>'),
+  'announcement-social': () => openModal('Community social', '<p>Join your neighbours in the common room on Saturday, November 14, 2026, from 3:00\u20135:00 PM.</p><p>Drop by for coffee, conversation, and a chance to meet the community.</p><button class="button full" data-action="rsvp">RSVP</button>'),
+  rsvp() { save('mysuite-rsvp', true); modal.close(); toast('Your RSVP has been saved.'); },
+  maintenance: () => openModal('Kitchen sink leak', '<div class="dialog-info">#M-4821 · In progress</div><p><strong>Nov 5 · Request received</strong><br>Water leaking from the pipe below the kitchen sink.</p><p><strong>Nov 6 · Assigned to maintenance</strong><br>Your building team is reviewing availability. They will confirm the appointment with you.</p>'),
   vote() {
     openModal('Lobby refresh', savedVote
-      ? `<p>Your demo vote has been saved: <strong>${savedVote === 'warm' ? 'Warm natural finishes' : 'Contemporary neutral finishes'}</strong>.</p><p>This is stored only in your browser. No official vote has been cast.</p><button class="button outline full" data-action="change-vote">Change demo vote</button>`
-      : '<p>Which direction would you prefer for our lobby refresh?</p><div class="dialog-options"><button class="button outline" data-vote="warm">Warm natural finishes</button><button class="button outline" data-vote="neutral">Contemporary neutral finishes</button></div><p>Demo only. Your selection stays on this device.</p>');
+      ? `<p>Your selection has been saved: <strong>${savedVote === 'warm' ? 'Warm natural finishes' : 'Contemporary neutral finishes'}</strong>.</p><button class="button outline full" data-action="change-vote">Change selection</button>`
+      : '<p>Which direction would you prefer for our lobby refresh?</p><div class="dialog-options"><button class="button outline" data-vote="warm">Warm natural finishes</button><button class="button outline" data-vote="neutral">Contemporary neutral finishes</button></div>');
   },
   'change-vote'() { savedVote = null; save('mysuite-vote', null); document.querySelector('#vote-button').textContent = 'Vote now'; actions.vote(); },
-  meeting: () => openModal('Board meeting', '<p>Thursday, November 12, 2026 · 6:00 PM<br>Google Meet · Board members</p><div class="dialog-info">No meeting link is configured in this demo. Add your real Google Meet or Zoom URL before enabling the join action.</div><p>Agenda: building updates, maintenance priorities, and the lobby refresh.</p>'),
-  documents: () => openModal('Condo documents', '<p>The dashboard is ready to connect to your document service.</p><div class="dialog-info">No documents have been uploaded to this demo. Add policies, bylaws, and resident guides through your future backend.</div>'),
+  meeting: () => openModal('Board meeting', '<p>Thursday, November 12, 2026 · 6:00 PM<br>Google Meet · Board members</p><div class="dialog-info">The meeting link is not available yet.</div><p>Agenda: building updates, maintenance priorities, and the lobby refresh.</p>'),
+  documents: () => openModal('Condo documents', '<p>No documents are available here yet.</p>'),
   board: () => openModal('Board workspace', '<p>You\u2019re in the board member portal.</p><p>Board documents, vote creation, and meeting management can be expanded as separate screens.</p><div class="dialog-info">Production access must be enforced by your server, not by hiding interface elements.</div>'),
-  shop: () => openModal('Fobs & essentials', '<p>A preview of the essentials available through your building.</p><div class="dialog-info">Entry fobs · Batteries · Everyday supplies</div><p>Ordering and checkout are outside this dashboard demo. Connect your inventory and payment service to enable purchases.</p>'),
-  help: () => openModal('A little help, close to home', '<p>For this demo, explore bookings, your maintenance request, and the community vote from the dashboard.</p><p>Add your concierge or management team\u2019s real contact information here before launch.</p>')
+  shop: () => openModal('Fobs & essentials', '<p>A preview of the essentials available through your building.</p><div class="dialog-info">Entry fobs · Batteries · Everyday supplies</div><p>Ordering is not available yet.</p>'),
+  help: () => openModal('A little help, close to home', '<p>Use the dashboard to view bookings, maintenance requests, and community updates.</p><p>Use the contact directory to reach your concierge or management team.</p>')
 };
 
 /* ── Event delegation ─────────────────────────────────────── */
@@ -97,12 +97,12 @@ document.addEventListener('click', event => {
     const n = Number(button.dataset.date), demo = shownMonth.getFullYear() === 2026 && shownMonth.getMonth() === 10;
     if (demo && n === 12) actions.meeting();
     else if (demo && n === 14) actions['announcement-social']();
-    else toast(`No demo events on ${shownMonth.toLocaleDateString('en-CA', { month: 'long' })} ${n}.`);
+    else toast(`No events on ${shownMonth.toLocaleDateString('en-CA', { month: 'long' })} ${n}.`);
     return;
   }
   if (button.dataset.book) {
     const amenity = button.dataset.book;
-    openModal(`Reserve the ${amenity.toLowerCase()}`, `<p>Choose a date and time for your demo booking.</p><form id="booking-form"><input type="hidden" name="amenity" value="${amenity}"><label>Date<input type="date" name="date" required min="${localDate()}"></label><label>Time<select name="time"><option>9:00 AM</option><option>11:00 AM</option><option>1:00 PM</option><option>3:00 PM</option><option>5:00 PM</option></select></label><p>Demo only. Availability and building rules are not checked.</p><button class="button full">Save demo booking</button></form>`);
+    openModal(`Reserve the ${amenity.toLowerCase()}`, `<p>Choose a date and time for your booking.</p><form id="booking-form"><input type="hidden" name="amenity" value="${amenity}"><label>Date<input type="date" name="date" required min="${localDate()}"></label><label>Time<select name="time"><option>9:00 AM</option><option>11:00 AM</option><option>1:00 PM</option><option>3:00 PM</option><option>5:00 PM</option></select></label><button class="button full">Save booking</button></form>`);
     return;
   }
   if (button.dataset.vote) {
@@ -110,7 +110,7 @@ document.addEventListener('click', event => {
     save('mysuite-vote', savedVote);
     document.querySelector('#vote-button').textContent = 'View your vote';
     modal.close();
-    toast('Demo vote saved on this device.');
+    toast('Your selection has been saved.');
     return;
   }
   if (button.dataset.action) {
@@ -125,14 +125,14 @@ document.addEventListener('submit', event => {
     const data = Object.fromEntries(new FormData(event.target));
     save('mysuite-booking', data);
     modal.close();
-    toast(`${data.amenity} demo booking saved for ${data.date}, ${data.time}.`);
+    toast(`${data.amenity} booking saved for ${data.date}, ${data.time}.`);
   }
   if (event.target.id === 'ai-form') {
     event.preventDefault();
     const input = document.querySelector('#ai-input');
     const answer = document.querySelector('#ai-answer');
     answer.hidden = false;
-    answer.textContent = 'This is a demo assistant. No condo policies or bylaws are connected yet, so I can\u2019t give a verified answer about your building. Connect your document search and AI service to enable this feature.';
+    answer.textContent = 'Policy answers are not available yet. Please contact your concierge or management team for help with building policies.';
     input.value = '';
   }
 });

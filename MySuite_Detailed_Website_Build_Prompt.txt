@@ -1,0 +1,1069 @@
+MYSUITE — DETAILED WEBSITE BUILD PROMPT
+=====================================
+Prepared from the existing MySuite application and latest approved UI decisions.
+Reference date: November 17, 2026.
+
+INSTRUCTIONS TO THE AI BUILDING THE WEBSITE
+------------------------------------------
+Create MySuite, an interactive condominium building portal with five role-based
+experiences: Resident, Concierge, Manager, Board member, and Technician.
+This is an application, not a marketing landing page or a property-listing site.
+Reproduce the product character, workflows, permissions, and business rules in
+this document. Do not substitute attractive static screens for working forms.
+
+Build a polished, presentation-ready prototype with persistent state. A modern
+framework is acceptable, but preserve the behavior and design decisions below.
+If a production backend is included, implement it deliberately and explain what
+is connected. Never imply a preview action sends a real message or payment.
+
+Current implementation categories:
+- FULL PAGE: Dedicated interactive workflow already exists in the source.
+- DASHBOARD PREVIEW: A card/modal/local interaction exists, but not a complete
+  operational service. Recreate honestly without claiming real integrations.
+- PRODUCTION REQUIREMENT: Infrastructure or hardening needed for a connected
+  release; not a claim that the existing prototype already implements it.
+
+The original uses plain HTML, CSS, JavaScript, localStorage, and IndexedDB for
+uploaded PDF files. It has no real authentication server, central database,
+payment processor, email/SMS service, or live language-model integration.
+Do not display the word "demo" anywhere in the application UI. Realistic fictional
+sample content is encouraged. Keep technical implementation details out of the
+normal resident flows unless they help the person make a meaningful decision.
+
+1. PRODUCT PURPOSE, BRAND, AND USERS
+===================================
+Name: MySuite.
+Tagline: A little closer to home.
+Example building: The Point on the Bow.
+Context: A residential condominium building in Calgary, Alberta, Canada.
+Currency: CAD. Use readable rates such as $20 and $120 per day.
+Scheduling timezone internally: America/Edmonton, with daylight saving handling.
+Do not repeatedly display "Calgary time" in Amenities; those labels were removed.
+
+MySuite combines resident services and building operations:
+- Residents book amenities, request repairs, reserve the service elevator, report
+  absences, read announcements/documents, and find approved building contacts.
+- Concierge staff handle packages, incidents, shift logs, maintenance, residents,
+  elevator schedules, and absence notices.
+- Managers oversee operations, publish announcements, and manage contractors/PDFs.
+- Board members view community/board information and publish announcements.
+- Technicians see work orders, parts, systems, completed work, and manager notes.
+
+Entry screen:
+- A centered MySuite role-selection card with icons and role/account information.
+- Five role choices open the appropriate dashboard.
+- Log out returns to role selection.
+- Example resident account: Maria Santos, Suite 101.
+- In the original this is role switching, not password-based authentication.
+  Replace with real authenticated accounts for a production implementation.
+
+2. VISUAL DESIGN SYSTEM
+=======================
+Overall style is warm, calm, residential, readable, and refined. Use a cream page,
+dark brown sidebar, caramel actions, light paper cards, warm fine borders,
+subtle shadows, rounded corners, outline icons, and photographs of actual spaces.
+Avoid a generic blue SaaS dashboard, oversized shadows, excessive whitespace,
+unrelated glass effects, or decorative gradients that change the product identity.
+
+Reference colors:
+  Cream page background: #F8F4EE
+  Paper/cards: #FFFCF8
+  Sand: #E9DED0
+  Primary caramel: #A66B38
+  Dark caramel/hover: #855027
+  Espresso text: #35261E
+  Muted text: #827467
+  Fine border: #E8DED4
+  Selected tab highlight: approximately #FAE9D4
+  Inactive tab text/icons: #665B52
+  Inactive tab count background: #F1E8DD
+  Completed/available: dark green on pale green
+  Cancelled/unavailable/error: dark red on pale red
+
+Typography:
+- Page titles use Georgia or a close serif, weight 500, line-height about 1.12.
+- Desktop title size: clamp(33px, 3.2vw, 54px), tracking about -1.8px.
+- Existing responsive title sizes: 40px at <=1200px, 38px at <=800px, 34px at
+  <=480px. Preserve a balanced readable result rather than blindly shrinking.
+- Interface text uses a system sans-serif similar to Segoe UI.
+- Page descriptions: 14px, line-height 1.45, dark brown #3D2A1C.
+- Match page title/description styling to the Long-term absence page throughout.
+- Announcements title/description placement matches Amenities, about 28px top
+  and 18px bottom header padding. Do not move Amenities to fix Announcements.
+- Sidebar links, name, subtitle, initials, and logout: 14px on every role/page,
+  including narrower desktop screens.
+- All Contact directory text must remain at least 14px.
+- New form controls, filters, statuses, and secondary text should generally stay
+  at least 14px. Do not recreate tiny screenshot text that is hard to read.
+
+Shapes and interaction styling:
+- Main cards: around 20px radius; controls: around 7–10px.
+- Fine warm borders and modest shadows.
+- Filled caramel primary buttons; outlined secondary buttons.
+- Red destructive actions where cancellation/removal is offered.
+- Statuses have text and/or icons as well as color.
+- Use restrained keyboard focus borders. Do not add thick brown rings around
+  text fields or page selectors. Keep an accessible focus indication.
+- Make forms compact and practical, with aligned labels and consistent gaps.
+
+3. SHARED SHELL, RESPONSIVENESS, AND NAVIGATION
+=============================================
+Desktop:
+- Fixed dark sidebar, approximately 250px wide on a large screen, 213px at a
+  narrower desktop breakpoint. Main content sits to its right.
+- Sidebar background is roughly a #39281E to #2F241E brown gradient.
+- MySuite wordmark at the top: large white serif letters, caramel dot.
+- A fine divider beneath the wordmark.
+- Icon/label navigation items with generous click targets.
+- Active item is a rounded caramel-filled rectangle with white text.
+- Dividers separate related navigation groups.
+- Profile anchored at the bottom: circular initials, full name, role/suite or
+  station. Log out underneath.
+- Keep this shell consistent across all pages and roles.
+
+Mobile:
+- Off-canvas sidebar with menu button, overlay/scrim, expanded state, and sensible
+  closing behavior. Content uses the full viewport width.
+- Subpages can show Home > Current page breadcrumbs.
+- Cards/forms reflow; wide tables use responsive rows or contained scrolling.
+- No page-wide horizontal overflow and no microscopic control labels.
+
+Dashboard header/footer:
+- Personalized greeting and warm photographic banner.
+- Header lighting selector: Morning, Afternoon, Evening, Night. Persist selection.
+- Some dashboards show weather, notifications, and profile controls. Weather is
+  a visual prototype feature unless an actual weather service is connected.
+- Footer includes MySuite tagline, lighting control, and Need a hand? help.
+- Toasts appear near the top of the screen. Details and confirmations use dialogs.
+- Use shared assets/icons rather than a separate design language per department.
+
+4. ROLES AND PERMISSIONS
+========================
+Announcements:
+- Every role may read announcements and open full details.
+- Only Manager and Board member may compose/publish.
+- Resident, Concierge, and Technician are read-only.
+
+Approved contractors:
+- Every role may view contractor information and uploaded documents.
+- Manager alone may add/edit contractors, upload PDFs, and remove documents.
+- Other roles get View more details rather than Edit.
+- No expiry functionality or private per-document sharing states in this scope.
+
+Privacy:
+- Residents cannot browse other residents' private directory/contact information.
+- Resident directory views show building contacts and approved contractors.
+- The current staff/board pages have broader resident-directory views. Enforce
+  their intended permissions with a backend in a connected release.
+- Resident requests/bookings must be scoped to the current account/suite.
+- Residents cannot cancel another resident's request or reservation.
+- Client-side hidden buttons are not production security. Enforce permissions
+  on reads, writes, status transitions, and file downloads server-side.
+
+5. DASHBOARD EXPERIENCES
+========================
+RESIDENT DASHBOARD — cards and working local previews:
+- Announcements: icons, title, summary, category/time, open-details interaction.
+- Amenity booking preview: photograph and shortcut to book spaces.
+- Calendar: month navigation, date selection, and representative building events.
+- Maintenance summary: reference, issue, status, View details.
+- Community vote: participation/progress and a local choice/change-choice flow.
+- Upcoming event: detail view and locally saved RSVP.
+- Shop: fobs, batteries, everyday essentials preview. Ordering is not connected.
+- Ask AI building guide: question input and response area. Current answers are
+  canned/local; do not claim a live LLM or policy-document retrieval service.
+- Notifications and profile dialogs.
+Some cards have static fixtures rather than dedicated-page store integration.
+Use consistent current status wording in the rebuild; replace the legacy
+Scheduled maintenance-card label with In progress.
+
+MANAGER DASHBOARD — operational/financial previews:
+- Building KPIs: occupancy, maintenance, overdue/outstanding fees.
+- Maintenance overview with references, suites, issues, statuses, detail dialogs.
+- Staff on shift.
+- Financial summary: expected, collected, outstanding, overdue; report dialog.
+- Occupancy summary and visual suite breakdown.
+- Community vote participation/results, close-vote confirmation, new-vote form
+  with title and two options.
+- These are mostly presentation/local UI, not a real accounting, banking,
+  staffing, or voting-administration service.
+- Dedicated functional pages include Announcements and Contractor management.
+
+BOARD MEMBER DASHBOARD:
+- Resident-like greeting/suite identity and Board member label.
+- Announcements, amenity preview, calendar, maintenance summary, community vote.
+- Upcoming board meeting and meeting/Google Meet preview.
+- Shop and Ask AI previews.
+- Board workspace is a placeholder, not a full governance platform.
+- Board can publish announcements, but cannot edit contractors.
+
+TECHNICIAN DASHBOARD:
+- Today's assigned work orders and count.
+- Reference, suite, issue, status, and work-order detail dialogs.
+- Active job with access information and Mark complete confirmation.
+- Parts/material quantities, building-system statuses, system-log details.
+- Completed-today list and note-to-manager interaction.
+- Current completion/note interactions show preview dialogs/toasts; they do not
+  already synchronize a real work-order backend or deliver messages.
+
+CONCIERGE DASHBOARD:
+- Package log, pending count, and recent operational items.
+- Maintenance queue and issue details.
+- Resident lookup by suite/name.
+- Announcements and upcoming bookings.
+- Use summary cards linking to the dedicated operational pages.
+
+6. ANNOUNCEMENTS — FULL PAGE FOR ALL ROLES
+=========================================
+Title: Announcements.
+Resident description: Read the latest news and updates for your building.
+
+Read view:
+- Recent-announcement card with vertically separated rows.
+- Each row: category icon, title, short summary, category/date metadata, chevron.
+- Open full message in a dialog; include author/posting time as appropriate.
+- Sort newest first.
+- Seed pool maintenance, community social, elevator service, and similar notices.
+
+Manager/Board compose form:
+- Title required, maximum 160 characters.
+- Category required: Building update, Community, Maintenance, Safety.
+- Message/body required, maximum 10,000 characters.
+- Publish with saving, validation, failure, and success feedback.
+- Save posting account/role and timestamp.
+- Add the post to the shared announcement list immediately.
+- Compose/list can appear side by side for authorized roles.
+- Hide publishing controls from read-only roles.
+- Do not imply publishing sends emails or notifications unless actually built.
+
+7. CONTACT DIRECTORY AND APPROVED CONTRACTORS — FULL PAGES
+=========================================================
+Directory groups/tabs:
+- Residents when the role is permitted.
+- Building contacts.
+- Approved contractors.
+- Search names, suites, phones, emails, role/trade.
+- Staff resident directory can filter resident kinds such as owner/tenant.
+- Phone/email are actionable links. Actions are centered in their table column.
+- Use a 14px minimum throughout.
+
+Contractor list:
+- Company name, trade, phone, email, action.
+- Manager: Add contractor and Edit.
+- Other roles: View more details.
+- Details must load correctly, not show a missing-function error.
+
+Details dialog:
+- Prominent company heading, trade beneath, compact phone/email icon line.
+- Documents section only if documents exist; hide the entire empty section.
+- Do not default to No documents shared yet.
+- Allow authorized roles to view/download actual uploaded files.
+
+Manager add/edit modal:
+- Add contractor / Edit contractor title; no redundant Approved contractors
+  subtitle underneath.
+- Company name required, <=160 characters.
+- Trade required, <=100 characters.
+- Phone <=50 characters, email with normal email validation <=254.
+- Efficient compact layout rather than excessively tall fields/blank space.
+- Save button says Save, not Save contractor.
+- Do not show Saved in this browser when you save the contractor.
+
+PDF upload and document management:
+- Editor section title: Uploaded Documents.
+- Place Add PDF documents upload area immediately below the title, above files.
+- Drag/drop plus a deliberate Upload button and multiple-file picker.
+- PDFs only; maximum 50 MB per individual file.
+- Validate file type and size; explain failures without losing existing data.
+- File rows contain PDF icon, filename, and understated three-dot action menu.
+- Menu: View PDF, Download, Remove document. Removal action is red.
+- The stronger oversized menu-button styling was reversed; keep it restrained.
+- Save metadata and binaries reliably; do not report success if saving fails.
+- Current storage: metadata in localStorage, PDF blobs in IndexedDB.
+- Preserve original files on failed saves. Delete removed binaries after the
+  updated metadata saves successfully.
+- Use/revoke object URLs appropriately for preview/download.
+- If an example has no original file, show an honest unavailable/preview state.
+
+Explicitly removed features/copy:
+- No document expiry, expiry date fields, warnings, or expiry badges.
+- No Share new PDFs with residents checkbox.
+- No Shared with residents or Management only labels under filenames.
+- All uploaded contractor documents are available across permitted portal roles.
+
+8. AMENITIES — FULL BOOKING WORKFLOW
+===================================
+Initial title: Amenities.
+Description: Book shared amenities for your residence, such as the common area
+or pool.
+
+Top tabs:
+- Book an amenity.
+- Active bookings, with count badge.
+- Past bookings, with count badge.
+- These are page panels, not a My bookings modal.
+
+Final shared tab treatment (also used on resident Maintenance, Elevator, Absence):
+- Compact horizontal tabs with calendar/history outline icons.
+- Active tab: soft peach fill, rounded top corners, caramel bottom underline.
+- Fine continuous baseline across the navigation row.
+- Inactive text/icons: #665B52; count badge background #F1E8DD.
+- Readable 14px minimum.
+- Support selected-state semantics and arrow/Home/End keyboard navigation.
+- Do not use the earlier dark floating pills, joined-form tabs, or descriptive
+  navigation-card variants; those were superseded.
+
+Wizard steps: Choose spaces / Date & time / Review.
+- Show the progress indicator once below tabs and above all booking sections.
+- Keep its small light-background outlined bubble; removing it was undone.
+- Position upper-left; current step has caramel circle and stronger text.
+- Around 16px gap before booking content.
+- Show progress once even when daily and timed sections both appear.
+- Keep an actual heading for the form; progress is not the page heading.
+
+Current implemented bottom actions:
+- Step 1: Continue, at bottom-right.
+- Step 2: Back to spaces at bottom-left; Continue to review at bottom-right.
+- Step 3: Back at bottom-left; Confirm booking at bottom-right.
+- Preserve selected spaces and entered information on Back.
+- Do not put a selected-amenity count or Total beside Continue; both were removed.
+- Progress bubble and Continue are separate controls.
+- Alternative button group placements were discussed but not implemented after
+  discussion. Treat grouped bottom-right buttons as an optional refinement, not
+  the current final accepted layout.
+
+STEP 1 — CHOOSE SPACES
+- Photo cards with native accessible multiple-checkbox selection.
+- Photo, amenity name, bold dark rate, Select/Selected treatment and checkmark.
+- Subtle selected border/background; no thick outer selected outline.
+- Four cards per row on desktop, two around tablet/narrow desktop, one on mobile.
+- Additional amenities naturally wrap into subsequent rows.
+- No extra large enclosing colored/outlined selection section.
+- Continue requires at least one valid selected space.
+
+Current amenity configuration:
+  Common area: $20 per booking; timed.
+  Pool: $20 per booking; timed.
+  Daily rental: $120 per day; check-in/out scheduling.
+  Guest suite: $20 per booking in the current fixture; check-in/out scheduling.
+  Pool #2: $20 per booking; timed.
+  Common area #2: $20 per booking; timed.
+  Gym: $20 per booking; timed.
+  Games room: $20 per booking; timed.
+  Meeting room: $20 per booking; timed.
+The original main spaces are Common area and Pool. Extra fixtures were added to
+test the larger grid. Retain them for presentation. Do not silently change the
+Guest suite fixture to $120/day; Daily rental is a separate newly added option.
+
+STEP 2 — DAILY RENTALS
+- Show only if daily-scheduled spaces are selected.
+- Heading: Schedule your rental.
+- Description: Choose check-in and check-out dates for your rental.
+- No Daily rentals badge above heading; it was removed.
+- No detached 1 day / night-count bubble; it was removed.
+- Rental image/name/rate/status left; check-in/out fields right on desktop.
+- Fine divider and compact card layout; stack appropriately on smaller screens.
+- If multiple daily spaces are selected, display all, not just the first.
+  The current scheduling UI shares check-in/out dates across selected rentals.
+- Available badge is green; Unavailable red.
+- Hide pending Choose dates badges.
+- Do not include Remove links in step 2. Go Back to spaces to change selection.
+- Show a clear date-conflict message and block continuing while unavailable.
+
+Daily date/billing rules:
+- Valid dates; check-in today or later; checkout strictly after check-in.
+- Checkout-exclusive intervals allow a new stay on the previous checkout date.
+- Confirmed overlapping stays conflict; cancelled stays do not.
+- Daily rentals are excluded from hourly shared-window calculations.
+- Daily rental price = $120 x calendar date difference.
+- June 12 to June 15 = three charged days = $360.
+- Do not charge the checkout date separately.
+- Handle date arithmetic independently of daylight-saving hour lengths.
+- Save unit-rate snapshot, charged day count, and calculated fee.
+- Show correct amount in review, active booking, and history.
+- Guest suite retains its configured flat $20 booking charge.
+- No deposits, taxes, cleaning fees, actual payment collection, or cancellation
+  fees have been specified. Do not invent them.
+
+STEP 2 — TIMED AMENITIES
+- Show only if timed spaces are selected.
+- Heading: Schedule your amenities.
+- Description: Choose one date and time for all selected amenities.
+- No Timed amenities badge above heading.
+- Shared Date field, compact availability panel when informative, then Start
+  time / End time dropdowns.
+- Duration summary and Maximum 8 hours per booking.
+- Selected-space rows with photo, name, schedule/conflict information and actual
+  Available/Unavailable status when known.
+- No Choose date and time placeholder badges, and no Remove links/buttons.
+- Notes optional below scheduling panels; concise booking terms/link below.
+
+Timed rules:
+- Booking day is currently configured as 8 AM–10 PM.
+- Start earlier than end on the same day; start must be in the future.
+- Maximum eight hours, even when a free window is longer.
+- Every selected timed space shares one date/start/end.
+- Every selected space must be available before review/confirmation.
+- Recheck current reservations when confirming.
+
+COMMON AVAILABLE-WINDOW ENGINE
+1. Collect confirmed reservations for every selected timed space on that date.
+2. Clip occupied periods to opening hours.
+3. Merge overlapping and adjoining occupied periods across selected resources.
+4. Subtract those periods from the booking day.
+5. Exclude elapsed time for today; the current UI rounds its earliest future
+   start to the next 15-minute boundary.
+6. Return intervals free for all selected timed spaces.
+
+Example: Pool booked 11 AM–1 PM; Common area booked 4–7 PM.
+Shared windows: 8–11 AM, 1–4 PM, 7–10 PM.
+
+Availability panel:
+- Compact informative panel with title Available windows, date/resource context,
+  small window chips, tight spacing, and no large explanatory block.
+- If several windows exist, let the user choose a chip and show selected state.
+- If exactly one exists, apply it automatically without a meaningless extra click.
+- Applying a window does not automatically select its entire duration.
+- If no reservations restrict the selected date and one window remains, hide
+  the whole availability panel and apply that window automatically.
+- If fully booked, show no-availability feedback and prevent continuing.
+- Recompute on date/resource/reservation changes; clear or reconcile invalid
+  times while retaining valid choices where possible.
+- Start options must be inside the selected window, excluding its end boundary.
+- End options must be after start, inside the window, and <= start + eight hours.
+- Use 15-minute options plus exact interval boundaries where necessary.
+- End stays unavailable until a valid start is chosen.
+
+Availability help:
+- Why aren't other times available? sits below window chips.
+- Dialog copy: Available windows are times when all selected amenities are free
+  and not booked by another resident.
+- Show actual reserved periods and resource names if such periods exist.
+- Do not show a No reserved periods message when there are none.
+- Do not restore the removed Window selected automatically. Choose any duration
+  within it, up to 8 hours helper sentence.
+- Do not restore visible Calgary time labels.
+
+STEP 3 — REVIEW AND SAVE
+- Show every selected space, actual date/time or check-in/out range, rate,
+  quantity, each fee, total, optional notes, and concise booking terms.
+- Mixed daily/timed reservations can have different dates; display each correctly.
+- Back preserves inputs.
+- Confirm validates the entire batch again and saves all or none.
+- Use integer cents; prevent duplicate submissions while saving.
+- If a conflict or storage error occurs, explain it and preserve the user's work.
+- After success, toast and switch to Active bookings.
+
+ACTIVE BOOKINGS
+- Clean operational rows inspired by concierge packages.
+- Date/time or stay range left, amenity information/price/notes center,
+  Reserved/In progress status and permitted actions right.
+- Current resident's real bookings can be cancelled with confirmation.
+- Only owner may cancel; cancellation persists and updates counts/history.
+- Three display-only active examples have no destructive cancellation control.
+
+PAST BOOKINGS
+- Booking history heading with count.
+- Compact rows: icon/name, date/time or daily range, price, status, Details.
+- Completed green; Cancelled red. No cancellation date underneath that badge.
+- Details disclosure expands creation time, stable readable reference, notes.
+- Do not leak internal sample IDs as human-readable references.
+- Twenty example records, five per page, plus actual history.
+- Amenities history currently uses bottom Previous / numbered pages / Next and
+  showing range. Maintenance's year filter/header pager is a separate feature.
+
+BOOKING SAMPLE DATA
+- Distinguish display-only personal examples from availability-blocking records
+  owned by another fictional resident.
+- Seed conflict records once and preserve the user's existing saved bookings.
+- Two weeks of timed examples: Pool/Pool #2 occupied 11 AM–1 PM; Common area
+  occupied 4–7 PM; other timed fixtures such as Common area #2 occupied 10 AM–noon
+  and 3–5 PM. Include a fully booked day.
+- Add daily rental blocked dates/free gaps to exercise date conflicts.
+- Sample reservations must not appear as the signed-in resident's own bookings.
+- Avoid duplicates or automatic resets on every render.
+
+9. RESIDENT MAINTENANCE — FULL PAGE
+==================================
+Title: Maintenance.
+Description: Request a repair and keep track of maintenance in your home.
+Tabs: Submit a request, Open requests + count, Past requests + count.
+Use the shared final tab styling.
+
+Form heading: How can we help?
+Fields:
+- Request title: required, 3–100 characters.
+- Category: Plumbing; Heating & cooling; Electrical; Doors & windows; Appliances;
+  Other. Required.
+- Location: Kitchen; Bathroom; Bedroom; Living room; Other area. Required.
+- Description: required, 10–2,000 characters.
+- Availability/contact-visit notes: optional, <=300 characters.
+- Optional permission to enter the suite while the resident is away.
+- Identity/suite comes from current account; not arbitrary resident input.
+- Submit saves, toasts, and switches to Open; failures retain inputs.
+
+Urgent-assistance side panel:
+- Briefly direct urgent leaks/loss of heat/urgent issues to the concierge.
+- Contact directory link; routine-repair explanation.
+- Omit You can follow updates in Open requests.
+- Omit Tell us what needs attention in Suite 101. All fields are required unless
+  marked optional.
+
+Open/history rows:
+- Request icon/title, reference, category, submitted date, status, Details.
+- Expand description, suite/location, entry permission, availability.
+- No Latest update section/timeline.
+- New status Submitted; working status In progress. Do not use Scheduled here.
+- Cancel request is red; confirmation offers Keep request and red cancellation.
+- Cancel moves record to past history.
+- Completed green; Cancelled red.
+- Two open and twenty past examples; five history rows per page.
+
+Header tools on BOTH Open and Past:
+- Left heading: Open requests or Request history.
+- Showing 1–5 of 20 directly underneath; omit the word requests.
+- Top-right: Filter by year, then arrows and Page 1 of 4 dropdown.
+- Year popover: Submission year, All years, individual years, Apply filter.
+- Include sample years for demonstrating filtering.
+- Filter by submission year. Applying/switching tabs returns to page 1.
+- Overall tab count and filtered showing count are different concepts.
+- Direct page selection, previous/next, disabled boundary arrows, clamped pages.
+- Empty year: useful empty message and Showing 0 of 0.
+- Menu closes outside/on Escape and manages focus sensibly.
+- Subtle selector focus treatment, not a thick brown ring.
+
+Current resident maintenance data is separate from concierge maintenance.
+Do not claim an existing automatic staff notification/technician integration.
+Connect deliberately to a shared backend for production.
+
+10. RESIDENT BOOK ELEVATOR — FULL PAGE
+=====================================
+Title: Book elevator. Reserve the service elevator for a move or delivery.
+Final tabs: Submit a request, Open requests + count, Past requests + count.
+Use the shared warm-highlight/underline style, not previous navigation cards or
+joined-to-form tabs.
+
+Form: Date, Start time, End time, Reason (Move/Delivery/Other), optional Notes.
+Required date/time/reason; current resident name and suite supplied automatically.
+Submit booking saves, resets, toasts, and switches to Open requests.
+End must be later than start. Prevent overlapping reservations across all suites
+on the service-elevator resource. Adjoining end/start boundaries are allowed.
+Show a useful conflict error and retain values.
+Open = current/future, sorted soonest; Past = ended, newest first.
+Rows show date/time, reason, elevator identity, and optional notes.
+No elevator fee is configured. Do not apply the $20 amenity fee automatically.
+Do not inherit amenities' eight-hour/8 AM–10 PM rules without a requirement.
+The existing helper is simpler than Amenities and does not enforce every future
+date/time edge case; production should reject past bookings consistently.
+The concierge schedule reads the same browser-local shared elevator store.
+
+11. RESIDENT LONG-TERM ABSENCE — FULL PAGE
+========================================
+Title: Long-term absence.
+Description: Tell the building when you will be away so the desk can help with
+packages and emergencies.
+This is the page-title/description typography reference.
+Latest version uses shared Submit a request / Open requests / Past requests tabs.
+Open includes Active and Upcoming notices.
+
+Form heading: Notify the building.
+- Away from date, required.
+- Return date, required.
+- Emergency contact name and phone, required.
+- Hold packages at desk checkbox.
+- Request a residence check checkbox.
+- Water turned off checkbox.
+- Notes optional; Submit notice.
+Identity/suite is account-derived. Return date must be on/after away-from.
+These are absence notices, not exclusive resources; overlapping notices are not
+blocked by a resource-conflict rule.
+Save, toast, and open Open requests.
+Active includes today's date between away/return inclusive; returning today is
+still Active. Upcoming starts later than today; Past has a return date before today.
+Rows show date range, status, emergency contact, checks, notes.
+Preserve five sample notices: one active, one upcoming, three past at reference
+date; roll dates forward for a fresh presentation.
+Examples do not overwrite actual notices and belong to the current suite.
+Some resident fixtures are display-only, while real submissions use the shared
+absence store read by the concierge overview.
+
+12. RESIDENT DOCUMENTS — FULL BROWSING PAGE
+==========================================
+- Search title, category, and summary.
+- Filter chips: All, Bylaws, Rules, Guides, Forms.
+- Rows: title, category, update date, View.
+- Details: metadata, summary, honest view/download behavior.
+- Examples: condominium bylaws, house rules, move-in/out guide, parking/visitor
+  policy, amenity guide, insurance requirements, emergency procedures, pet form.
+- Some fixtures only have metadata, not original binaries. Do not fake downloads.
+- Building documents are distinct from contractor-uploaded files.
+- Full manager administration of general building documents is not currently
+  implemented; treat as a deliberate extension if requested.
+
+13. CONCIERGE PACKAGES — FULL PAGE
+==================================
+Pending / History tabs with counts.
+Log form: suite, resident name (suite lookup/autofill), arrival date/time,
+type (Box/Package/Envelope), last six tracking characters, carrier
+(Amazon/UPS/FedEx/Canada Post/Other). Logged by is current concierge.
+Unknown suite lookup should use an honest unknown-resident fallback.
+New packages enter Pending.
+
+Pending view: clean rows with suite/resident left, carrier logo/type center,
+arrival and staff as secondary text, Delivered and Picked up actions right.
+Support selection/batch handling where offered. Confirm actions.
+Save completion time and staff, move to history, refresh counts.
+Delivered and Picked up are distinct outcomes.
+
+History: informational table with Suite/Resident, Carrier, Arrival, Logged by,
+Delivery, Delivered by. Use actual supplied carrier logos.
+Do not imply email/SMS delivery notifications exist without an integration.
+
+14. CONCIERGE INCIDENT REPORTING — FULL PAGE
+===========================================
+Report form: date/time, location, type (Noise/Safety/Property damage/Medical/Other),
+description of what happened, optional people involved. Capture current staff,
+creation time, and reference/id.
+Past reports sorted newest first, with date/time, location, category, details,
+and reporting staff.
+Filter by year using a compact year pill/calendar icon, dropdown, and previous/
+next year arrows. Show useful no-reports state.
+This year control inspired Maintenance pagination; year navigation is not paging.
+Other roles' Incident report sidebar links are not complete cross-role pages.
+
+15. CONCIERGE DAILY LOG AND IMPORTANT NOTES — FULL PAGE
+======================================================
+Operational journal organized by date and shift.
+Top: date pill/picker, previous/next day, Night/Morning/Evening shift tabs.
+Suggest an initial shift based on local time.
+Log table: Time, Entry, Logged by, Actions.
+Filter by selected day/shift; display appropriate chronological order.
+Composer: time plus multiline entry. Auto-capture current concierge author.
+Edit your own entry, including time/text; save/cancel editing; confirm deletion.
+Other staff entries are visibly read-only. Persist update timestamps.
+Production ownership must use account IDs rather than comparing display names.
+
+Important notes: separate card of ongoing handover notes, author, add/edit text.
+Some data objects have open/resolved/read metadata, but a full notification,
+escalation, acknowledgment, or resolution workflow is not established in the UI.
+Do not invent working automation from unused data fields.
+
+16. CONCIERGE MAINTENANCE, ELEVATOR, AND ABSENCES
+================================================
+MAINTENANCE FULL PAGE:
+- Log suite/resident, request title, details, report time, reported-by staff.
+- Pending list with Mark complete, counts, and concise row details.
+- Completion saves time/staff and moves to History table.
+- Current store is separate from resident requests and dashboard work-order
+  previews. Unify intentionally for a production system.
+
+ELEVATOR FULL PAGE:
+- Shared Upcoming/Past schedule.
+- Table: Date/time, Suite, Resident, Reason, Elevator, Notes.
+- Reads real resident bookings from shared elevator data.
+
+ABSENCE FULL PAGE:
+- Building-wide notices with Status, Away/return, Suite, Resident, Emergency
+  contact, Checks/notes columns.
+- Reads real absence submissions from shared data, not every display-only example.
+
+17. PERSISTENCE AND PRODUCTION LIMITATIONS
+==========================================
+Current prototype facts:
+- Role selector is not real authentication.
+- localStorage is browser-local, not a multi-user central database.
+- Different devices/browsers do not automatically share records.
+- Several pages respond to cross-tab storage changes; this is not server sync.
+- Contractor PDFs use IndexedDB; metadata is separate.
+- Dashboard financials, occupancy, systems, staff/work details are mostly fixtures.
+- Shop orders, payment processing, live AI, email/SMS/push are not connected.
+- Calendar is illustrative, not a complete shared calendar backend.
+- Some navigation entries remain # links or local previews.
+- A success toast in a preview is not proof of a persisted backend operation.
+
+Connected-version requirements:
+- Real authenticated sessions and building-scoped permissions.
+- Shared database and secure file storage with authorized downloads.
+- Shared maintenance lifecycle across resident, concierge, manager, technician.
+- Transactional reservation checks; all-or-nothing booking batches.
+- Integer money values and stored rate/quantity/fee snapshots.
+- Stable identifiers/references and audit information for staff actions.
+- Notifications/AI/payment services only if explicitly implemented and tested.
+- Handle validation, storage/network failures, retries, and duplicate submission.
+
+18. RECOMMENDED DOMAIN MODELS
+==============================
+These are modeling suggestions for a connected rebuild, not an existing API.
+Account: id, name, role, initials, buildingId, suite/station, active state.
+Suite: id, number, buildingId, account/residency links.
+Announcement: id, buildingId, title, body, summary, category, authorId/role, postedAt.
+Contractor: id, companyName, trade, phone, email, buildingId, documentIds.
+ContractorDocument: id, contractorId, filename, type, size, storageKey, uploadedBy,
+uploadedAt. No expiry fields in this product scope.
+Amenity: id, name, photo, icon, bookingType, rateUnit, unitRateCents, opening hours,
+maximum timed duration, active state.
+AmenityBooking: id/reference, amenityId, buildingId, residentId/suiteId, status,
+timed date/start/end OR daily checkIn/checkOut, notes, unit rate, quantity, total,
+createdAt, cancelledAt where relevant.
+MaintenanceRequest: id/reference, residentId/suiteId, title, category, location,
+description, availability, entryPermission, status, createdAt/updatedAt.
+WorkOrder extension: assignment, staff actions, completion metadata, audit trail.
+ElevatorBooking: resourceId, resident/suite, date/start/end, reason, notes, createdAt.
+AbsenceNotice: resident/suite, awayFrom/returnDate, emergency contact, check flags,
+notes, createdAt.
+Package: suite/resident snapshot, carrier, type, tracking suffix, arrival, loggedBy,
+status, delivered/pickedUp timestamps and identities.
+Incident: occurredAt, location, type, description, people, author, createdAt.
+DailyLog: date, shift, happenedAt, notes, author, updatedAt.
+ImportantNote: title, author, timestamps, status/read/resolution metadata as needed.
+Vote/VoteResponse: local dashboard preview now; full persisted administration is
+a separate extension.
+
+Interval invariant: reservations conflict only when startA < endB AND startB <
+endA for the same resource. Matching end/start boundaries do not conflict.
+Daily intervals are checkout-exclusive. Timed and daily schedules are distinct.
+Revalidate on save in a transaction rather than trusting a stale availability UI.
+
+19. SHARED USABILITY AND ACCESSIBILITY
+======================================
+- Every action should work or explain its unavailable state; no unexplained dead
+  controls or fabricated successful integrations.
+- Keep form contents when validation/save fails.
+- Preserve previous-step information and normal browser Back behavior.
+- Confirm destructive operations where appropriate and show useful feedback.
+- Disable repeated submission while saving.
+- Explain blocked progress near the relevant field/section.
+- Use correct headings, labels, fieldsets, tabs, buttons, dialogs, and disclosures.
+- Modal focus containment and return; menu outside/Escape closing.
+- Readable focus indicators, sufficient contrast, text/icons beyond status colors.
+- Respect reduced-motion preferences and provide comfortable touch targets.
+- Responsive mobile forms and contained table overflow.
+- Realistic fictional data and resident privacy, not arbitrary personal exposure.
+- Do not introduce unnecessary empty-document messages, repeated subtitles,
+  implementation notices, or removed controls.
+
+20. SOURCE FILES AND ASSETS
+============================
+Original application folder: newfiles/.
+Entry: newfiles/index.html.
+Preview URL convention: http://127.0.0.1:8000/newfiles/.
+Shared CSS: newfiles/shared/tokens.css and base.css.
+Shared behavior: icons.js, utils.js, mockdata.js, breadcrumbs.js.
+Directory: shared/contact-directory-data.js, contact-directory-app.js, CSS.
+Elevator: shared/elevator-booking-data.js.
+Absences: shared/absence-data.js.
+Documents: shared/documents-data.js.
+Amenities: resident/amenities.html, amenities.css, amenities.js, amenities-data.js.
+Resident maintenance: resident/maintenance.html, maintenance.css, maintenance.js.
+Concierge operational files are under newfiles/concierge/.
+
+Photos under Point_On_The_Bow/assets/:
+realcommonarea.jpg, realpool.jpg, realgym.jpg, real-library-pooltable.jpg,
+common-area.webp, pool.webp, gym.webp, concierge.webp, building.png,
+underground-parking.webp, parkade-storage.webp, car-wash.webp.
+The Daily rental currently reuses common-area.webp as a prototype illustration;
+do not claim it is a verified guest-suite photograph.
+Use object-fit: cover and appropriate alt text.
+
+Dashboard banners under newfiles/assets/:
+header-morning.png, header-afternoon.png, header-evening.png, header-night.png.
+Carrier logos under newfiles/assets/carriers/:
+amazon.svg, ups.svg, fedex.svg, canada-post.svg, other.svg.
+Other supplied assets include pool.png and fob.png.
+MySuite wordmark is styled serif text with a caramel dot, not an invented logo.
+
+21. SEED DATA AND PRESENTATION REQUIREMENTS
+===========================================
+- Five role accounts; Maria Santos/Suite 101 as primary resident example.
+- Building contacts, private staff-view resident records, multiple contractors.
+- Contractor documents including valid PDF fixtures or honest missing-file states.
+- Announcements across the four categories.
+- Nine amenity options, selected/unselected states, rates, and photographs.
+- Three active and twenty past personal amenity examples.
+- Two-week blocking availability fixtures, rental conflicts, free gaps, full day.
+- Two open and twenty past maintenance examples across multiple years/statuses.
+- Upcoming/past elevator reservations across suites.
+- Five absence examples with active/upcoming/past variation.
+- Packages across carriers with pending/delivered/picked-up variation.
+- Incidents across years; logs across shifts/authors/dates; important notes.
+- Management/technician dashboard examples described earlier.
+- Seed once without wiping actual user records or duplicating on rerender.
+- Keep presentation dates useful rather than hardcoding only expired examples.
+- Never put visible demo/mock labels into normal product UI.
+
+22. BUILD AND ACCEPTANCE CHECKLIST
+===================================
+BUILD ORDER
+1. Shared shell, identity, typography, and role routing.
+2. Permission model and shared data contracts/stores.
+3. Core workflows, especially Amenities, Maintenance, Contractor PDFs, Packages,
+   Incident reports, Daily log, Elevator, Absence, Announcements.
+4. Role dashboards with honest preview interactions.
+5. Seed data, responsive behavior, keyboard interactions, error/empty states.
+6. Verify full journeys and provide a run command and clear remaining limitations.
+
+VISUAL
+[ ] Warm MySuite palette and consistent five-role sidebar.
+[ ] 14px sidebar and readable interface text.
+[ ] Shared title/description typography; Announcements header matches Amenities.
+[ ] Final warm-highlight/underline tabs with icons and count badges.
+[ ] No visible demo wording or obsolete removed labels.
+
+PERMISSIONS
+[ ] All roles read announcements; only manager/board publish.
+[ ] Only manager edits contractors/uploads; all permitted roles view PDFs.
+[ ] Residents cannot see other residents' private directory or cancel their records.
+[ ] Production permissions are enforced by server rather than only hidden controls.
+
+AMENITIES
+[ ] Multi-select, wrapping four/two/one-card grid, correct individual rates.
+[ ] Daily rentals separate from shared timed scheduling.
+[ ] No removed section badges, detached day-count badge, pending badges, Remove links.
+[ ] Daily dates validate; checkout-exclusive overlap and same-day turnover work.
+[ ] $120/day produces $360 for three days and saves the correct fee/rate/day count.
+[ ] Shared free windows merge occupied periods across resources correctly.
+[ ] One window auto-applies; unrestricted-day panel hides; full day shows feedback.
+[ ] Dropdowns remain inside the window, future time, and eight-hour maximum.
+[ ] Availability help is below chips with the simple approved copy.
+[ ] No removed Calgary time labels or automatic-window explanatory paragraph.
+[ ] Mixed schedules/prices/notes review accurately; confirmation atomic/revalidated.
+[ ] Back retains values; statuses, cancellation, Details, pagination work.
+
+MAINTENANCE
+[ ] Required fields validate; submit/cancel/storage failure behavior works.
+[ ] No Scheduled status or Latest update section in resident list.
+[ ] Red cancellation and green/red history statuses.
+[ ] Both Open/Past have showing count, year filter, compact page selector/arrows.
+[ ] Twenty examples paginate five per page; filters/empty pages update correctly.
+
+OTHER WORKFLOWS
+[ ] Elevator overlaps blocked across suites; adjoining times allowed.
+[ ] Absence status handles return date inclusively; current account/suite preserved.
+[ ] Concierge package/maintenance lifecycle and counts persist.
+[ ] Delivered vs Picked up remain distinct.
+[ ] Incident year navigation and daily-log date/shift navigation work.
+[ ] Own log edits allowed, others read-only.
+[ ] PDF validation at 50 MB, safe save/view/download/removal, no expiry/sharing labels.
+[ ] Dashboard fixtures are not represented as real payment/AI/messaging systems.
+
+ROBUSTNESS
+[ ] Keyboard tabs/dialogs/menus/disclosures and mobile layouts work.
+[ ] No duplicate submissions or lost form contents on error.
+[ ] Samples preserve existing records and do not duplicate themselves.
+[ ] Connected integrations and remaining prototype limitations are documented.
+
+END OF MAIN BUILD PROMPT
+Source-derived page and technical inventories follow in the appendix.
+
+
+APPENDIX A ? CURRENT PAGE AND FORM INVENTORY
+============================================
+This inventory is extracted from the present source. Dynamic forms in JavaScript
+are additionally described in the main prompt. A # link is a placeholder/local
+action, not evidence of a complete separate page.
+
+
+ROUTE: newfiles/board/announcements.html
+Headings: H1: Announcements | H2: New announcement | H2: Recent announcements
+Named fields: title (text) required max 160; category (select); body (textarea) required max 10000
+
+ROUTE: newfiles/board/contact-directory.html
+Headings: H1: Contact directory | H2: Contractor
+
+ROUTE: newfiles/board/index.html
+Headings: H2: Announcements | H2: Amenity booking | H2: November 2026 | H2: Maintenance request | H3: Kitchen sink leak | H2: Community vote | H3: Lobby refresh | H2: Upcoming meeting | H3: Board meeting | H2: Shop | H3: Little essentials.One convenient place. | H2: Ask AI
+Named fields: question (input) required
+Sidebar: Home -> ./; Announcements -> announcements.html; Amenities -> #; Maintenance -> #; Calendar -> #; Documents -> #; Shop -> #; Contact directory -> contact-directory.html; Board workspace -> #; Incident report -> #
+
+ROUTE: newfiles/concierge/announcements.html
+Headings: H1: Announcements | H2: New announcement | H2: Recent announcements
+Named fields: title (text) required max 160; category (select); body (textarea) required max 10000
+
+ROUTE: newfiles/concierge/contact-directory.html
+Headings: H1: Contact directory | H2: Contractor
+
+ROUTE: newfiles/concierge/daily-log.html
+Headings: H1: Daily log | H2: Morning Shift | H2: Important notes
+Named fields: time (text) required max 5; notes (text) required; title (text) required
+
+ROUTE: newfiles/concierge/elevator-bookings.html
+Headings: H1: Elevator bookings
+
+ROUTE: newfiles/concierge/incident-report.html
+Headings: H1: Incident report | H2: Report an incident | H2: Past reports
+Named fields: reportedBy (hidden); occurredAt (datetime-local) required; location (text) required; type (select) required; description (textarea) required; peopleInvolved (text)
+
+ROUTE: newfiles/concierge/index.html
+Headings: H2: Package log | H2: Maintenance queue | H2: Resident lookup | H2: Announcements | H2: Upcoming bookings
+Named fields: query (input)
+Sidebar: Home -> ./; Contact directory -> contact-directory.html; Packages -> packages.html; Incident report -> incident-report.html; Daily log -> daily-log.html; Amenities -> #; Book elevator -> elevator-bookings.html; Long-term absence -> long-term-absence.html; Maintenance -> maintenance.html; Announcements -> announcements.html
+
+ROUTE: newfiles/concierge/long-term-absence.html
+Headings: H1: Long-term absence
+
+ROUTE: newfiles/concierge/maintenance.html
+Headings: H1: Maintenance | H2: Log a request
+Named fields: suite (text) required; reportedBy (hidden); title (text) required; reportedAt (datetime-local) required; note (textarea) required
+
+ROUTE: newfiles/concierge/packages.html
+Headings: H1: Package tracking | H2: Log a package
+Named fields: suite (text) required; residentName (text) required; receivedBy (hidden); arrivedAt (datetime-local) required; parcelType (select) required; trackingLast6 (text) required max 6; carrier (select) required
+
+ROUTE: newfiles/index.html
+Headings: H1: MySuite.
+
+ROUTE: newfiles/manager/announcements.html
+Headings: H1: Announcements | H2: New announcement | H2: Recent announcements
+Named fields: title (text) required max 160; category (select); body (textarea) required max 10000
+
+ROUTE: newfiles/manager/contact-directory.html
+Headings: H1: Contact directory | H2: Add contractor
+
+ROUTE: newfiles/manager/index.html
+Headings: H2: Building KPIs | H2: Maintenance overview | H2: Staff on shift | H2: Financials | H2: Occupancy | H2: Community votes
+Sidebar: Home -> ./; Contact directory -> contact-directory.html; Maintenance -> #; Financials -> #; Reports -> #; Staff -> #; Announcements -> announcements.html; Settings -> #; Incident report -> #
+
+ROUTE: newfiles/resident/amenities.html
+Headings: H1: Amenities | H2: Schedule your rental | H2: Schedule your amenities | H3: Available windows | H2: Review your booking | H3: Booking terms | H2: Active bookings
+Named fields: amenity-choice (checkbox); amenity (hidden); checkInDate (date); checkOutDate (date); date (date); startTime (select); endTime (select); notes (textarea) max 500
+
+ROUTE: newfiles/resident/announcements.html
+Headings: H1: Announcements | H2: New announcement | H2: Recent announcements
+Named fields: title (text) required max 160; category (select); body (textarea) required max 10000
+
+ROUTE: newfiles/resident/contact-directory.html
+Headings: H1: Contact directory | H2: Contractor
+
+ROUTE: newfiles/resident/documents.html
+Headings: H1: Documents | H2: Condo documents
+
+ROUTE: newfiles/resident/elevator-booking.html
+Headings: H1: Book elevator | H2: New booking | H2: Open requests
+Named fields: date (date) required; startTime (time) required; endTime (time) required; reason (select) required; notes (textarea)
+
+ROUTE: newfiles/resident/index.html
+Headings: H2: Announcements | H2: Amenity booking | H2: November 2026 | H2: Maintenance request | H3: Bedroom window latch | H2: Community vote | H3: Lobby refresh | H2: Upcoming event | H3: Community social | H2: Shop | H3: Little essentials.One convenient place. | H2: Ask AI
+Named fields: question (input) required
+Sidebar: Home -> ./; Announcements -> announcements.html; Amenities -> amenities.html; Maintenance -> maintenance.html; Book elevator -> elevator-booking.html; Long-term absence -> long-term-absence.html; Calendar -> #; Documents -> documents.html; Shop -> #; Contact directory -> contact-directory.html; Incident report -> #
+
+ROUTE: newfiles/resident/long-term-absence.html
+Headings: H1: Long-term absence | H2: Notify the building | H2: Open requests
+Named fields: awayFrom (date) required; returnDate (date) required; emergencyName (text) required; emergencyPhone (tel) required; holdPackages (checkbox); checkResidence (checkbox); waterOff (checkbox); notes (textarea)
+
+ROUTE: newfiles/resident/maintenance.html
+Headings: H1: Maintenance | H2: How can we help? | H2: Need urgent assistance? | H2: Open requests | H2: Request history
+Named fields: title (text) required max 100; category (select) required; location (select) required; description (textarea) required max 2000; availability (text) max 300; entryPermission (checkbox)
+
+ROUTE: newfiles/technician/announcements.html
+Headings: H1: Announcements | H2: New announcement | H2: Recent announcements
+Named fields: title (text) required max 160; category (select); body (textarea) required max 10000
+
+ROUTE: newfiles/technician/contact-directory.html
+Headings: H1: Contact directory | H2: Contractor
+
+ROUTE: newfiles/technician/index.html
+Headings: H2: Today’s work orders | H2: Active job | H3: Kitchen sink leak | H2: Parts & materials | H2: Building systems | H2: Completed today | H2: Note to manager
+Named fields: note (textarea) required
+Sidebar: Home -> ./; Work orders -> #; Parts -> #; Systems -> #; Contact directory -> contact-directory.html; Completed -> #; Notes -> #; Incident report -> #; Announcements -> announcements.html
+
+
+APPENDIX B ? SOURCE FILE INVENTORY
+=================================
+newfiles/board/announcements.html
+newfiles/board/app.js
+newfiles/board/contact-directory.html
+newfiles/board/dashboard.css
+newfiles/board/index.html
+newfiles/concierge/announcements-data.js
+newfiles/concierge/announcements.css
+newfiles/concierge/announcements.html
+newfiles/concierge/announcements.js
+newfiles/concierge/app.js
+newfiles/concierge/contact-directory.html
+newfiles/concierge/daily-log-data.js
+newfiles/concierge/daily-log.css
+newfiles/concierge/daily-log.html
+newfiles/concierge/daily-log.js
+newfiles/concierge/dashboard.css
+newfiles/concierge/elevator-bookings.css
+newfiles/concierge/elevator-bookings.html
+newfiles/concierge/elevator-bookings.js
+newfiles/concierge/incident-report-data.js
+newfiles/concierge/incident-report.css
+newfiles/concierge/incident-report.html
+newfiles/concierge/incident-report.js
+newfiles/concierge/index.html
+newfiles/concierge/long-term-absence.css
+newfiles/concierge/long-term-absence.html
+newfiles/concierge/long-term-absence.js
+newfiles/concierge/maintenance-data.js
+newfiles/concierge/maintenance.css
+newfiles/concierge/maintenance.html
+newfiles/concierge/maintenance.js
+newfiles/concierge/packages-data.js
+newfiles/concierge/packages.css
+newfiles/concierge/packages.html
+newfiles/concierge/packages.js
+newfiles/index.html
+newfiles/manager/announcements.html
+newfiles/manager/app.js
+newfiles/manager/contact-directory.html
+newfiles/manager/dashboard.css
+newfiles/manager/index.html
+newfiles/portal.css
+newfiles/resident/amenities-data.js
+newfiles/resident/amenities.css
+newfiles/resident/amenities.html
+newfiles/resident/amenities.js
+newfiles/resident/announcements.html
+newfiles/resident/app.js
+newfiles/resident/contact-directory.html
+newfiles/resident/dashboard.css
+newfiles/resident/documents.css
+newfiles/resident/documents.html
+newfiles/resident/documents.js
+newfiles/resident/elevator-booking.css
+newfiles/resident/elevator-booking.html
+newfiles/resident/elevator-booking.js
+newfiles/resident/index.html
+newfiles/resident/long-term-absence.css
+newfiles/resident/long-term-absence.html
+newfiles/resident/long-term-absence.js
+newfiles/resident/maintenance.css
+newfiles/resident/maintenance.html
+newfiles/resident/maintenance.js
+newfiles/shared/absence-data.js
+newfiles/shared/base.css
+newfiles/shared/breadcrumbs.js
+newfiles/shared/contact-directory-app.js
+newfiles/shared/contact-directory-data.js
+newfiles/shared/contact-directory.css
+newfiles/shared/documents-data.js
+newfiles/shared/elevator-booking-data.js
+newfiles/shared/icons.js
+newfiles/shared/mockdata.js
+newfiles/shared/tokens.css
+newfiles/shared/utils.js
+newfiles/technician/announcements.html
+newfiles/technician/app.js
+newfiles/technician/contact-directory.html
+newfiles/technician/dashboard.css
+newfiles/technician/index.html
+newfiles/weather-snippet.html
+
+
+APPENDIX C ? CURRENT LOCAL STORAGE REFERENCES
+=============================================
+These keys describe the local prototype, not a production database design.
+newfiles/concierge/announcements-data.js: ANNOUNCEMENT_STORAGE_KEY = mysuite-concierge-announcements-v1
+newfiles/concierge/daily-log-data.js: DAILY_LOG_STORAGE_KEY = mysuite-concierge-daily-log-v4
+newfiles/concierge/daily-log-data.js: DAILY_LOG_NOTES_KEY = mysuite-concierge-daily-log-notes-v3
+newfiles/concierge/incident-report-data.js: INCIDENT_STORAGE_KEY = mysuite-concierge-incidents-v2
+newfiles/concierge/maintenance-data.js: MAINTENANCE_STORAGE_KEY = mysuite-concierge-maintenance-v1
+newfiles/concierge/packages-data.js: PACKAGE_STORAGE_KEY = mysuite-concierge-packages-v4
+newfiles/resident/amenities-data.js: AMENITY_STORAGE_KEY = mysuite-amenity-bookings-v1
+newfiles/resident/maintenance.js: storageKey = mysuite-resident-maintenance-v1
+newfiles/shared/absence-data.js: ABSENCE_STORAGE_KEY = mysuite-long-term-absences-v2
+newfiles/shared/elevator-booking-data.js: ELEVATOR_BOOKING_STORAGE_KEY = mysuite-elevator-bookings-v1
+
+END OF DOCUMENT

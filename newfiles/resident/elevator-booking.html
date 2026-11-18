@@ -4,15 +4,15 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#35261e"><title>MySuite — Book elevator</title>
   <link rel="stylesheet" href="../shared/tokens.css">
-  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
   <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="elevator-booking.css">
+  <link rel="stylesheet" href="elevator-booking.css?v=12a10ca0fb60">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="../shared/elevator-booking-data.js" defer></script>
-  <script src="elevator-booking.js" defer></script>
+  <script src="elevator-booking.js?v=436bf4b7281d" defer></script>
 </head>
 <body data-time="afternoon" data-breadcrumb="Book elevator">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
@@ -23,7 +23,7 @@
       <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
       <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
       <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
-      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
       <a class="nav-item active" aria-current="page" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
       <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
       <div class="nav-divider"></div>
@@ -46,8 +46,13 @@
       </div>
     </header>
 
+    <div class="elevator-tabs" role="tablist" aria-label="Elevator requests">
+      <button type="button" id="elevator-tab-create" role="tab" aria-selected="true" aria-controls="elevator-create-panel" data-elevator-tab="create"><i data-icon="calendar" aria-hidden="true"></i><span data-tab-label>Submit a request</span></button>
+      <button type="button" id="elevator-tab-open" role="tab" aria-selected="false" aria-controls="elevator-requests-panel" tabindex="-1" data-elevator-tab="open"><i data-icon="calendar" aria-hidden="true"></i><span data-tab-label>Open requests</span><span data-tab-count>0</span></button>
+      <button type="button" id="elevator-tab-past" role="tab" aria-selected="false" aria-controls="elevator-requests-panel" tabindex="-1" data-elevator-tab="past"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l4 2"></path></svg><span data-tab-label>Past requests</span><span data-tab-count>0</span></button>
+    </div>
     <div class="elevator-layout">
-      <section class="log-panel card" aria-label="Book the elevator">
+      <section id="elevator-create-panel" class="log-panel card" role="tabpanel" aria-labelledby="elevator-tab-create" tabindex="0">
         <div class="log-panel-top">
           <h2><i data-icon="elevator"></i>New booking</h2>
         </div>
@@ -81,9 +86,9 @@
         </form>
       </section>
 
-      <section class="list-card card" aria-label="Your elevator bookings">
+      <section id="elevator-requests-panel" class="list-card card" role="tabpanel" aria-labelledby="elevator-tab-open" tabindex="0" hidden>
         <div class="card-heading">
-          <h2><i data-icon="calendar"></i>Your bookings</h2>
+          <h2 id="elevator-list-title">Open requests</h2>
         </div>
         <div id="booking-list" class="booking-list"></div>
         <p id="booking-empty" class="pkg-empty" hidden>You have no elevator bookings yet.</p>

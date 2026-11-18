@@ -13,10 +13,10 @@ body[data-breadcrumb="Announcements"] :is(.button, .nav-item, .sidebar-bottom, .
 
 .page-header {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-  padding: 36px 0 12px;
+  padding: 28px 0 18px;
   flex-wrap: wrap;
 }
 

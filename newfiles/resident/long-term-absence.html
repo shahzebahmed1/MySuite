@@ -4,15 +4,15 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#35261e"><title>MySuite — Long-term absence</title>
   <link rel="stylesheet" href="../shared/tokens.css">
-  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
   <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="long-term-absence.css">
+  <link rel="stylesheet" href="long-term-absence.css?v=e58568e26d9d">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="../shared/absence-data.js" defer></script>
-  <script src="long-term-absence.js" defer></script>
+  <script src="long-term-absence.js?v=20df122fab12" defer></script>
 </head>
 <body data-time="afternoon" data-breadcrumb="Long-term absence">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
@@ -23,7 +23,7 @@
       <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
       <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
       <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
-      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
       <a class="nav-item" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
       <a class="nav-item active" aria-current="page" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
       <div class="nav-divider"></div>
@@ -46,8 +46,13 @@
       </div>
     </header>
 
+    <div class="absence-tabs" role="tablist" aria-label="Absence requests">
+      <button type="button" id="absence-tab-create" role="tab" aria-selected="true" aria-controls="absence-create-panel" data-absence-tab="create"><i data-icon="calendar" aria-hidden="true"></i><span data-tab-label>Submit a request</span></button>
+      <button type="button" id="absence-tab-open" role="tab" aria-selected="false" aria-controls="absence-requests-panel" tabindex="-1" data-absence-tab="open"><i data-icon="calendar" aria-hidden="true"></i><span data-tab-label>Open requests</span><span data-tab-count>0</span></button>
+      <button type="button" id="absence-tab-past" role="tab" aria-selected="false" aria-controls="absence-requests-panel" tabindex="-1" data-absence-tab="past"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l4 2"></path></svg><span data-tab-label>Past requests</span><span data-tab-count>0</span></button>
+    </div>
     <div class="absence-layout">
-      <section class="log-panel card" aria-label="Report a long-term absence">
+      <section id="absence-create-panel" class="log-panel card" role="tabpanel" aria-labelledby="absence-tab-create" tabindex="0">
         <div class="log-panel-top">
           <h2><i data-icon="suitcase"></i>Notify the building</h2>
         </div>
@@ -91,9 +96,9 @@
         </form>
       </section>
 
-      <section class="list-card card" aria-label="Your absences">
+      <section id="absence-requests-panel" class="list-card card" role="tabpanel" aria-labelledby="absence-tab-open" tabindex="0" hidden>
         <div class="card-heading">
-          <h2><i data-icon="calendar"></i>Your absences</h2>
+          <h2 id="absence-list-title">Open requests</h2>
         </div>
         <div id="absence-list" class="absence-list"></div>
         <p id="absence-empty" class="pkg-empty" hidden>You have no absence notices yet.</p>

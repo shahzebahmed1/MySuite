@@ -3,6 +3,15 @@
 
 renderIcons();
 const residentAccount = applyLoggedInUser('resident');
+let elevatorTab = 'create';
+const elevatorTabs = [...document.querySelectorAll('[data-elevator-tab]')];
+const escapeBookingHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+
+function selectElevatorTab(key) {
+  if (!['create', 'open', 'past'].includes(key)) return;
+  elevatorTab = key;
+  renderMyBookings();
+}
 
 function closeMenu() {
   document.querySelector('.sidebar')?.classList.remove('open');
@@ -37,7 +46,23 @@ function renderMyBookings() {
   if (!listEl) return;
 
   const suite = residentAccount?.suite || '';
-  const rows = getBookingsForSuite(suite);
+  const all = getBookingsForSuite(suite);
+  const open = all.filter(booking => !isBookingPast(booking));
+  const past = all.filter(booking => isBookingPast(booking)).reverse();
+  const rows = elevatorTab === 'past' ? past : open;
+  elevatorTabs.forEach(tab => {
+    const key = tab.dataset.elevatorTab;
+    const selected = key === elevatorTab;
+    tab.setAttribute('aria-selected', String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+    if (key !== 'create') tab.querySelector('[data-tab-count]').textContent = key === 'open' ? open.length : past.length;
+  });
+  document.querySelector('#elevator-create-panel').hidden = elevatorTab !== 'create';
+  const panel = document.querySelector('#elevator-requests-panel');
+  panel.hidden = elevatorTab === 'create';
+  panel.setAttribute('aria-labelledby', `elevator-tab-${elevatorTab === 'past' ? 'past' : 'open'}`);
+  document.querySelector('#elevator-list-title').textContent = elevatorTab === 'past' ? 'Request history' : 'Open requests';
+  emptyEl.textContent = elevatorTab === 'past' ? 'You have no past elevator requests.' : 'You have no open elevator requests.';
 
   if (rows.length === 0) {
     listEl.innerHTML = '';
@@ -47,11 +72,10 @@ function renderMyBookings() {
   if (emptyEl) emptyEl.hidden = true;
 
   listEl.innerHTML = rows.map(b => {
-    const past = isBookingPast(b) ? ' · Past' : '';
-    const notes = b.notes ? `<span>${b.notes}</span>` : '';
+    const notes = b.notes ? `<span>${escapeBookingHtml(b.notes)}</span>` : '';
     return `<article class="booking-row">
-      <strong>${formatBookingDate(b.date)} · ${formatBookingTimeRange(b)}</strong>
-      <span>${b.reason} · ${b.elevator || 'Service'}${past}</span>
+      <strong>${escapeBookingHtml(formatBookingDate(b.date))} · ${escapeBookingHtml(formatBookingTimeRange(b))}</strong>
+      <span>${escapeBookingHtml(b.reason)} · ${escapeBookingHtml(b.elevator || 'Service')}</span>
       ${notes}
     </article>`;
   }).join('');
@@ -75,11 +99,14 @@ document.querySelector('#elevator-form')?.addEventListener('submit', event => {
 
   showFormMessage('');
   form.reset();
-  renderMyBookings();
+  selectElevatorTab('open');
+  elevatorTabs.find(tab => tab.dataset.elevatorTab === 'open').focus();
   toast('Elevator booking submitted.');
 });
 
 document.addEventListener('click', event => {
+  const tab = event.target.closest('[data-elevator-tab]');
+  if (tab) return selectElevatorTab(tab.dataset.elevatorTab);
   const button = event.target.closest('[data-action]');
   if (!button) return;
   const action = button.dataset.action;
@@ -113,4 +140,14 @@ lightingPicker?.addEventListener('change', () => {
   save('mysuite-header-lighting', lightingPicker.value);
 });
 
+document.querySelector('.elevator-tabs').addEventListener('keydown', event => {
+  const index = elevatorTabs.indexOf(event.target);
+  if (index < 0 || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+  event.preventDefault();
+  const next = event.key === 'Home' ? 0 : event.key === 'End' ? elevatorTabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + elevatorTabs.length) % elevatorTabs.length;
+  selectElevatorTab(elevatorTabs[next].dataset.elevatorTab);
+  elevatorTabs[next].focus();
+});
+window.addEventListener('storage', renderMyBookings);
+window.addEventListener('focus', renderMyBookings);
 renderMyBookings();

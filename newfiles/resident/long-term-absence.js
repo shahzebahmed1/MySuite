@@ -3,6 +3,15 @@
 
 renderIcons();
 const residentAccount = applyLoggedInUser('resident');
+let absenceTab = 'create';
+const absenceTabs = [...document.querySelectorAll('[data-absence-tab]')];
+const escapeAbsenceHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+
+function selectAbsenceTab(key) {
+  if (!['create', 'open', 'past'].includes(key)) return;
+  absenceTab = key;
+  renderMyAbsences();
+}
 
 function closeMenu() {
   document.querySelector('.sidebar')?.classList.remove('open');
@@ -37,13 +46,41 @@ function absenceStatusLabel(absence) {
   return 'Past';
 }
 
+function exampleResidentAbsences() {
+  if (!residentAccount?.suite) return [];
+  return [
+    { awayFrom: '2026-11-10', returnDate: '2026-11-24', holdPackages: true, checkResidence: true, waterOff: true, notes: 'Away visiting family. Please hold packages until I return.' },
+    { awayFrom: '2026-12-03', returnDate: '2026-12-18', holdPackages: true, checkResidence: false, waterOff: true, notes: 'Holiday travel. My emergency contact has a spare key.' },
+    { awayFrom: '2026-10-10', returnDate: '2026-10-25', holdPackages: true, checkResidence: true, waterOff: true, notes: 'Family trip.' },
+    { awayFrom: '2026-09-01', returnDate: '2026-09-12', holdPackages: false, checkResidence: true, waterOff: true, notes: 'Out of town for work.' },
+    { awayFrom: '2026-08-03', returnDate: '2026-08-15', holdPackages: true, checkResidence: false, waterOff: false, notes: 'Summer vacation.' }
+  ].map((entry, index) => ({ ...entry, id: `absence-example-${residentAccount.id}-${index + 1}`, suite: residentAccount.suite,
+    residentName: residentAccount.name, emergencyName: 'Elena Santos', emergencyPhone: '403-555-0128' }));
+}
+
 function renderMyAbsences() {
   const listEl = document.querySelector('#absence-list');
   const emptyEl = document.querySelector('#absence-empty');
   if (!listEl) return;
 
   const suite = residentAccount?.suite || '';
-  const rows = getAbsencesForSuite(suite);
+  const all = sortAbsencesByAway([...getAbsencesForSuite(suite), ...exampleResidentAbsences()]);
+  const open = all.filter(absence => !isAbsencePast(absence));
+  const past = all.filter(absence => isAbsencePast(absence)).reverse();
+  const rows = absenceTab === 'past' ? past : open;
+  absenceTabs.forEach(tab => {
+    const key = tab.dataset.absenceTab;
+    const selected = key === absenceTab;
+    tab.setAttribute('aria-selected', String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+    if (key !== 'create') tab.querySelector('[data-tab-count]').textContent = key === 'open' ? open.length : past.length;
+  });
+  document.querySelector('#absence-create-panel').hidden = absenceTab !== 'create';
+  const panel = document.querySelector('#absence-requests-panel');
+  panel.hidden = absenceTab === 'create';
+  panel.setAttribute('aria-labelledby', `absence-tab-${absenceTab === 'past' ? 'past' : 'open'}`);
+  document.querySelector('#absence-list-title').textContent = absenceTab === 'past' ? 'Request history' : 'Open requests';
+  emptyEl.textContent = absenceTab === 'past' ? 'You have no past absence requests.' : 'You have no open absence requests.';
 
   if (rows.length === 0) {
     listEl.innerHTML = '';
@@ -54,11 +91,11 @@ function renderMyAbsences() {
 
   listEl.innerHTML = rows.map(a => {
     const checks = formatAbsenceChecks(a);
-    const checksLine = checks.length ? `<span>${checks.join(' · ')}</span>` : '';
-    const notes = a.notes ? `<span>${a.notes}</span>` : '';
+    const checksLine = checks.length ? `<span>${checks.map(escapeAbsenceHtml).join(' · ')}</span>` : '';
+    const notes = a.notes ? `<span>${escapeAbsenceHtml(a.notes)}</span>` : '';
     return `<article class="absence-row">
-      <strong>${formatAbsenceDate(a.awayFrom)} – ${formatAbsenceDate(a.returnDate)}</strong>
-      <span>${absenceStatusLabel(a)} · Emergency: ${a.emergencyName} · ${a.emergencyPhone}</span>
+      <strong>${escapeAbsenceHtml(formatAbsenceDate(a.awayFrom))} – ${escapeAbsenceHtml(formatAbsenceDate(a.returnDate))}</strong>
+      <span>${absenceStatusLabel(a)} · Emergency: ${escapeAbsenceHtml(a.emergencyName)} · ${escapeAbsenceHtml(a.emergencyPhone)}</span>
       ${checksLine}
       ${notes}
     </article>`;
@@ -86,11 +123,14 @@ document.querySelector('#absence-form')?.addEventListener('submit', event => {
 
   showFormMessage('');
   form.reset();
-  renderMyAbsences();
+  selectAbsenceTab('open');
+  absenceTabs.find(tab => tab.dataset.absenceTab === 'open').focus();
   toast('Absence notice submitted.');
 });
 
 document.addEventListener('click', event => {
+  const tab = event.target.closest('[data-absence-tab]');
+  if (tab) return selectAbsenceTab(tab.dataset.absenceTab);
   const button = event.target.closest('[data-action]');
   if (!button) return;
   const action = button.dataset.action;
@@ -124,4 +164,14 @@ lightingPicker?.addEventListener('change', () => {
   save('mysuite-header-lighting', lightingPicker.value);
 });
 
+document.querySelector('.absence-tabs').addEventListener('keydown', event => {
+  const index = absenceTabs.indexOf(event.target);
+  if (index < 0 || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+  event.preventDefault();
+  const next = event.key === 'Home' ? 0 : event.key === 'End' ? absenceTabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + absenceTabs.length) % absenceTabs.length;
+  selectAbsenceTab(absenceTabs[next].dataset.absenceTab);
+  absenceTabs[next].focus();
+});
+window.addEventListener('storage', renderMyAbsences);
+window.addEventListener('focus', renderMyAbsences);
 renderMyAbsences();

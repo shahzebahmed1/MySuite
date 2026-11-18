@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35261e"><title>MySuite — Maintenance</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="maintenance.css?v=2f7e78f40ff2">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/breadcrumbs.js" defer></script>
+  <script src="../shared/utils.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="maintenance.js?v=41d507d4349b" defer></script>
+</head>
+<body data-time="afternoon" data-portal-role="resident" data-breadcrumb="Maintenance">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
+  <div class="scrim" data-action="close-menu"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item active" aria-current="page" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#"><i data-icon="calendar"></i>Calendar</a>
+      <a class="nav-item" href="documents.html"><i data-icon="file"></i>Documents</a>
+      <a class="nav-item" href="#"><i data-icon="bag"></i>Shop</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main class="maintenance-page">
+    <header class="page-header"><h1>Maintenance</h1><p class="welcome-note">Request a repair and keep track of maintenance in your home.</p></header>
+    <div class="maintenance-tabs" role="tablist" aria-label="Maintenance requests">
+      <button type="button" id="maintenance-tab-create" role="tab" aria-selected="true" aria-controls="maintenance-panel-create" data-maintenance-tab="create"><i data-icon="calendar" aria-hidden="true"></i><span data-tab-label>Submit a request</span></button>
+      <button type="button" id="maintenance-tab-open" role="tab" aria-selected="false" aria-controls="maintenance-panel-open" tabindex="-1" data-maintenance-tab="open"><i data-icon="calendar" aria-hidden="true"></i><span data-tab-label>Open requests</span><span data-tab-count>0</span></button>
+      <button type="button" id="maintenance-tab-past" role="tab" aria-selected="false" aria-controls="maintenance-panel-past" tabindex="-1" data-maintenance-tab="past"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l4 2"></path></svg><span data-tab-label>Past requests</span><span data-tab-count>0</span></button>
+    </div>
+    <p id="maintenance-error" class="maintenance-error" role="alert" tabindex="-1" hidden></p>
+    <section id="maintenance-panel-create" role="tabpanel" aria-labelledby="maintenance-tab-create" tabindex="0">
+      <div class="maintenance-create">
+        <section class="card" aria-labelledby="maintenance-form-title">
+          <h2 id="maintenance-form-title"><i data-icon="wrench"></i>How can we help?</h2>
+          <form id="maintenance-form" class="maintenance-form">
+            <label>Request title<input name="title" type="text" required minlength="3" maxlength="100" placeholder="For example, kitchen tap is leaking"></label>
+            <div class="maintenance-fields">
+              <label>Category<select name="category" required><option value="">Choose a category</option><option>Plumbing</option><option>Heating &amp; cooling</option><option>Electrical</option><option>Doors &amp; windows</option><option>Appliances</option><option>Other</option></select></label>
+              <label>Location<select name="location" required><option value="">Choose a location</option><option>Kitchen</option><option>Bathroom</option><option>Bedroom</option><option>Living room</option><option>Other area</option></select></label>
+            </div>
+            <label>Description<textarea name="description" required minlength="10" maxlength="2000" rows="5" placeholder="Describe the issue, when it started, and anything the team should know."></textarea><small>Up to 2,000 characters.</small></label>
+            <label>Availability <span class="sr-only">(optional)</span><input name="availability" type="text" maxlength="300" placeholder="Optional, for example weekdays after 3 PM"><small>Let us know a convenient time to contact you or visit.</small></label>
+            <label class="maintenance-consent"><input name="entryPermission" type="checkbox"><span>I give permission to enter my suite when I am away. <small>(Optional)</small></span></label>
+            <div class="maintenance-form-actions"><button class="button" type="submit">Submit request<i data-icon="arrow"></i></button></div>
+          </form>
+        </section>
+        <aside class="maintenance-aside"><h2>Need urgent assistance?</h2><p>For an active leak, loss of heat, or another urgent issue, contact the concierge directly so it can be addressed promptly.</p><p>Use this form for routine repairs.</p><a href="contact-directory.html">Contact directory<i data-icon="arrow"></i></a></aside>
+      </div>
+    </section>
+    <section id="maintenance-panel-open" role="tabpanel" aria-labelledby="maintenance-tab-open" tabindex="0" hidden>
+      <div class="card maintenance-list-card"><div id="maintenance-open-heading" class="maintenance-list-heading maintenance-history-heading"><div><h2>Open requests</h2><p id="maintenance-open-range" class="maintenance-range" role="status"></p></div></div><div id="maintenance-open-list"></div><p id="maintenance-open-empty" class="maintenance-empty" hidden>You have no open requests. Submit a request when something needs attention.</p></div>
+    </section>
+    <section id="maintenance-panel-past" role="tabpanel" aria-labelledby="maintenance-tab-past" tabindex="0" hidden>
+      <div class="card maintenance-list-card"><div id="maintenance-past-heading" class="maintenance-list-heading maintenance-history-heading"><div><h2>Request history</h2><p id="maintenance-range" class="maintenance-range" role="status"></p></div><div id="maintenance-history-tools" class="maintenance-history-tools"><div class="maintenance-year-filter"><button type="button" id="maintenance-year-toggle" class="button outline" data-action="toggle-request-year" aria-expanded="false" aria-controls="maintenance-year-menu"><i data-icon="calendar"></i><span id="maintenance-year-label">Filter by year</span></button><div id="maintenance-year-menu" class="maintenance-year-menu" hidden><fieldset><legend>Submission year</legend><div id="maintenance-year-options"></div></fieldset><button type="button" class="button" data-action="apply-request-year">Apply filter</button></div></div><nav id="maintenance-pagination" class="maintenance-pagination" aria-label="Past request pages" hidden><div id="maintenance-page-controls" class="maintenance-page-controls"></div></nav></div></div><div id="maintenance-past-list"></div><p id="maintenance-past-empty" class="maintenance-empty" hidden>Your completed and cancelled requests will appear here.</p></div>
+    </section>
+    <footer class="page-footer">
+      <span>MySuite · A little closer to home.</span>
+      <label class="lighting-picker" for="header-lighting">Header lighting
+        <select id="header-lighting">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+      <button type="button" data-action="help">Need a hand?</button>
+    </footer>
+  </main>
+  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>

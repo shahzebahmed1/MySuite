@@ -4,12 +4,12 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#35261e"><title>MySuite — Technician</title>
   <link rel="stylesheet" href="../shared/tokens.css">
-  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
   <link rel="stylesheet" href="dashboard.css">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=047772f32830" defer></script>
 </head>
 <body data-time="afternoon">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
@@ -67,7 +67,7 @@
           <span class="badge pending-badge">Pending</span>
           <i data-icon="chevron"></i>
         </button>
-        <div class="card-footer">Demo work orders · Connect your CMMS for live assignments.</div>
+        
       </article>
 
       <!-- Active job -->
@@ -102,7 +102,7 @@
           <span class="parts-info"><strong>HVAC filter (MERV-13)</strong><small>Stock · Mechanical room</small></span>
           <span class="badge assigned-badge">In stock</span>
         </div>
-        <div class="card-footer">Demo inventory · Connect your parts system for live stock.</div>
+        
       </article>
 
       <!-- Building systems -->
@@ -138,7 +138,7 @@
           <span class="tile-icon"><i data-icon="check"></i></span>
           <span class="done-info"><strong>#M-4817 · Common area</strong><small>Corridor thermostat · 11:15 AM</small></span>
         </div>
-        <div class="card-footer">Demo completions · Connect your CMMS for live history.</div>
+        
       </article>
 
       <!-- Notes to manager -->
@@ -148,9 +148,9 @@
         <form id="tech-note-form">
           <label class="sr-only" for="tech-note-input">Note text</label>
           <textarea id="tech-note-input" name="note" placeholder="e.g. Intercom board ETA Friday — Suite 709 on hold…" rows="3" required></textarea>
-          <button class="button full" type="submit"><i data-icon="send"></i>Send demo note</button>
+          <button class="button full" type="submit"><i data-icon="send"></i>Send note</button>
         </form>
-        <p class="ai-caption">Demo only · Connect your messaging or ticketing service before sending real notes.</p>
+        
       </article>
 
     </section>

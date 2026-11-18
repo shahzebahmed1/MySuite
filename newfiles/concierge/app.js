@@ -194,13 +194,13 @@ const actions = {
   'close-menu': closeMenu,
   'close-modal': () => modal.close(),
 
-  notifications: () => openModal('Notifications', '<p>No new notifications in this demo.</p><div class="dialog-info">Connect your notification service to show real-time alerts here.</div>'),
+  notifications: () => openModal('Notifications', '<p>No new notifications.</p>'),
   profile: () => {
     const concierge = getCurrentConcierge();
-    openModal(concierge?.name || 'Concierge', `<p>${concierge?.title || 'Concierge'}${concierge?.station ? ` · ${concierge.station}` : ''}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">${concierge?.shift ? `Shift: ${concierge.shift} · ` : ''}Demo session</div>`);
+    openModal(concierge?.name || 'Concierge', `<p>${concierge?.title || 'Concierge'}${concierge?.station ? ` · ${concierge.station}` : ''}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">${concierge?.shift ? `Shift: ${concierge.shift} · ` : ''}Concierge portal</div>`);
   },
 
-  help: () => openModal('Concierge help', '<p>This is the concierge dashboard demo. Packages, maintenance, and announcements are sample data.</p><p>Concierge can review announcements; managers and board members create them.</p><div class="dialog-info">For production, all data access must be enforced by your server.</div>')
+  help: () => openModal('Concierge help', '<p>Manage packages, maintenance, and building updates from your concierge dashboard.</p><p>Concierge can review announcements; managers and board members create them.</p>')
 };
 
 /* ── Event delegation ─────────────────────────────────────── */
@@ -243,7 +243,7 @@ document.addEventListener('submit', event => {
       return;
     }
     if (matches.length === 0) {
-      resultsEl.innerHTML = '<p class="muted">No demo residents match that search.</p>';
+      resultsEl.innerHTML = '<p class="muted">No residents match that search.</p>';
       return;
     }
     resultsEl.innerHTML = matches.map(r =>

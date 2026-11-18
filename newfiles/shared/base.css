@@ -61,17 +61,18 @@ button:active { transform:translateY(1px) }
   gap:12px;
   border-top:1px solid #ffffff24;
   padding:16px 7px 0;
-  font-size:12px
+  font-size:14px
 }
 .sidebar-user { display:flex; align-items:center; gap:10px }
-.sidebar-bottom small { display:block; color:#c7b9ac; font-size:10px }
-.logout { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:#e9dfd6; font-size:13px; font-weight:550 }
+.sidebar-bottom small { display:block; color:#c7b9ac; font-size:14px }
+.logout { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:#e9dfd6; font-size:14px; font-weight:550 }
 .logout svg { width:18px; height:18px }
 .logout:hover { background:#ffffff0c }
 
 /* ── Shared atoms ─────────────────────────────────────────── */
 .avatar { height:46px; width:46px; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:50%; background:#975a2d; color:white; font-size:14px; letter-spacing:.5px }
 .avatar.small { height:35px; width:35px; font-size:11px; background:#ffffff16 }
+.sidebar .avatar.small { font-size:14px }
 .icon-button { border:0; background:transparent; padding:8px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px }
 .icon-button:hover { background:#a66b3810 }
 .badge { background:#ffd49b; display:inline-flex; align-items:center; border-radius:30px; padding:4px 13px; color:#51351d; font-size:11px; line-height:1.5; font-weight:650 }
@@ -125,7 +126,7 @@ main { margin-left:250px; padding:0 28px; max-width:1920px }
 .eyebrow { font-size:9px; letter-spacing:2px; font-weight:650; color:var(--caramel); margin:0 0 10px }
 .resident-meta { display:flex; align-items:center; gap:15px; font-size:13px; font-weight:550 }
 .meta-dot { color:#a79687 }
-.welcome-note { font-size:12px; color:#7b6b5b; margin-top:14px }
+.welcome-note { font-size:14px; color:#3d2a1c; line-height:1.45; margin-top:14px }
 /* Inner pages (cream background) — always dark; lighting never restyles text */
 .page-header .welcome-note {
   font-size:14px;
@@ -144,6 +145,7 @@ main { margin-left:250px; padding:0 28px; max-width:1920px }
 
 /* ── Typography ───────────────────────────────────────────── */
 h1 { font:500 clamp(33px,3.2vw,54px)/1.12 Georgia,serif; letter-spacing:-1.8px; margin:0 0 17px }
+.page-header h1 { margin-bottom:8px }
 h2 { font-size:17px; letter-spacing:-.45px; line-height:1.3; margin:0; font-weight:650; display:flex; align-items:center; gap:11px }
 h2 svg { color:var(--caramel); width:25px; height:25px }
 h3 { font-size:17px; letter-spacing:-.3px; line-height:1.4; margin:0 0 8px; font-weight:600 }
@@ -228,7 +230,7 @@ body[data-time="night"]     .welcome { background-image:url('../assets/header-ni
   .sidebar { width:213px; padding-inline:12px }
   .brand { font-size:38px }
   .building { padding-inline:3px; font-size:12px }
-  .nav-item { font-size:12px; padding:12px; gap:11px }
+  .nav-item { font-size:14px; padding:12px; gap:11px }
   main { margin-left:213px; padding-inline:20px }
   .welcome { margin-inline:-20px; padding-inline:20px; min-height:230px }
   .toast { left:calc(50% + 106px) }
@@ -253,7 +255,6 @@ body[data-time="night"]     .welcome { background-image:url('../assets/header-ni
   h1 { font-size:38px }
   .header-actions .avatar { height:39px; width:39px; font-size:12px }
   .header-actions { gap:10px }
-  .welcome-note { font-size:11px }
   .toast { left:50% }
   .window-weather { top:70px }
   .window-weather-temperature { font-size:17px }

@@ -195,12 +195,12 @@
       return new Blob([bytes], { type: 'application/pdf' });
     }
     const body = [
-      `MySuite demo document`,
+      `MySuite document`,
       `Filename: ${doc.filename}`,
       `Uploaded: ${doc.uploadedAt || '—'}`,
       '',
-      'This is placeholder content for the resident portal demo.',
-      'Connect your document service for real files. Access must be enforced server-side.'
+      'Document preview. The original file is not available.',
+      ''
     ].join('\n');
     return new Blob([body], { type: 'text/plain' });
   }

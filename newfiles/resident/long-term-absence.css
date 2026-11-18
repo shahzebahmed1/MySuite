@@ -26,8 +26,7 @@
 }
 
 .absence-layout {
-  display: grid;
-  grid-template-columns: minmax(300px, 400px) minmax(0, 1fr);
+  display: block;
   gap: 18px;
   align-items: start;
   margin-bottom: 8px;
@@ -35,8 +34,7 @@
 
 .log-panel {
   padding: 22px;
-  position: sticky;
-  top: 16px;
+  max-width: 760px;
 }
 
 .log-panel-top {
@@ -202,3 +200,16 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Compact navigation with an active highlight and underline. */
+.absence-tabs { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
+.absence-tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; margin-bottom: -1px; padding: 10px 16px; border: 0; border-bottom: 2px solid transparent; border-radius: 10px 10px 0 0; background: transparent; color: var(--espresso); font-size: 14px; font-weight: 500; }
+.absence-tabs button svg { width: 20px; height: 20px; }
+.absence-tabs button:hover { background: #f7ecdf; }
+.absence-tabs button[aria-selected="true"] { border-bottom-color: var(--caramel); background: #fae9d4; font-weight: 650; }
+.absence-tabs [data-tab-count] { display: inline-flex; align-items: center; justify-content: center; min-width: 23px; min-height: 21px; padding: 0 6px; border-radius: 7px; background: #f5e4d1; font-size: 14px; font-weight: 550; }
+.absence-tabs button[aria-selected="false"] { color: #665b52; }
+.absence-tabs button[aria-selected="false"] [data-tab-count] { background: #f1e8dd; color: #665b52; }
+.absence-layout [hidden] { display: none; }
+.absence-layout .button { font-size: 14px; }
+@media (max-width: 600px) { .absence-tabs { gap: 4px; } .absence-tabs button { flex: 1 1 150px; gap: 7px; padding-inline: 10px; } }

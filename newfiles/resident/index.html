@@ -4,12 +4,12 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#35261e"><title>MySuite — Home</title>
   <link rel="stylesheet" href="../shared/tokens.css">
-  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
   <link rel="stylesheet" href="dashboard.css">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=da2aa8cd890f" defer></script>
 </head>
 <body data-time="afternoon">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
@@ -20,7 +20,7 @@
       <a class="nav-item active" aria-current="page" href="./"><i data-icon="home"></i>Home</a>
       <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
       <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
-      <a class="nav-item" href="#"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
       <a class="nav-item" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
       <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
       <div class="nav-divider"></div>
@@ -57,7 +57,7 @@
       <article class="card vote" id="vote"><div class="card-heading"><h2><i data-icon="chart"></i>Community vote</h2><span class="tiny-label">OPEN</span></div><h3>Lobby refresh</h3><p class="muted">Have your say in our shared spaces.</p><div class="vote-progress"><div class="progress-track"><span></span></div><span>72%</span></div><button class="button full" data-action="vote" id="vote-button">Vote now<i data-icon="arrow"></i></button></article>
       <article class="card meeting" id="meeting"><div class="card-heading"><h2><i data-icon="users"></i>Upcoming event</h2></div><h3>Community social</h3><p class="meeting-date"><i data-icon="calendar"></i>Nov 14 · 3:00 PM</p><button class="button outline full" data-action="announcement-social"><i data-icon="users"></i>View details</button></article>
       <article class="card shop" id="shop"><div class="shop-content"><h2><i data-icon="bag"></i>Shop</h2><h3>Little essentials.<br>One convenient place.</h3><p class="muted">Fobs, batteries &amp; everyday supplies.</p><button class="button" data-action="shop">Browse shop<i data-icon="arrow"></i></button></div></article>
-      <article class="card assistant" id="assistant"><div class="assistant-title"><span class="sparkle"><i data-icon="sparkle"></i></span><div><h2>Ask AI</h2><p class="muted">Answers from your condo policies</p></div><span class="tiny-label">YOUR BUILDING GUIDE</span></div><div id="ai-answer" class="ai-answer" aria-live="polite" hidden></div><form id="ai-form"><label class="sr-only" for="ai-input">Ask about your building</label><input id="ai-input" name="question" placeholder="Ask about your building…" required autocomplete="off"><button class="button send" aria-label="Send question"><i data-icon="send"></i></button></form><p class="ai-caption">Demo assistant · Connect your policies to enable verified answers.</p></article>
+      <article class="card assistant" id="assistant"><div class="assistant-title"><span class="sparkle"><i data-icon="sparkle"></i></span><div><h2>Ask AI</h2><p class="muted">Answers from your condo policies</p></div><span class="tiny-label">YOUR BUILDING GUIDE</span></div><div id="ai-answer" class="ai-answer" aria-live="polite" hidden></div><form id="ai-form"><label class="sr-only" for="ai-input">Ask about your building</label><input id="ai-input" name="question" placeholder="Ask about your building…" required autocomplete="off"><button class="button send" aria-label="Send question"><i data-icon="send"></i></button></form></article>
     </section>
     <footer class="page-footer"><span>MySuite · A little closer to home.</span><label class="lighting-picker" for="header-lighting">Header lighting <select id="header-lighting"><option value="morning">Morning</option><option value="afternoon" selected>Afternoon</option><option value="evening">Evening</option><option value="night">Night</option></select></label><button data-action="help">Need a hand?</button></footer>
   </main>
