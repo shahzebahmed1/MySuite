@@ -5,16 +5,16 @@
   <meta name="theme-color" content="#35261e"><title>MySuite — Elevator bookings</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="elevator-bookings.css">
+  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
+  <link rel="stylesheet" href="elevator-bookings.css?v=ff82be74356e">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="../shared/elevator-booking-data.js" defer></script>
-  <script src="elevator-bookings.js" defer></script>
+  <script src="elevator-bookings.js?v=376f47aaceaa" defer></script>
 </head>
-<body data-time="afternoon" data-breadcrumb="Book elevator">
+<body class="concierge-sidebar elevator-bookings" data-time="afternoon" data-breadcrumb="Book elevator">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -39,35 +39,55 @@
       <div>
         <p class="eyebrow">CONCIERGE</p>
         <h1>Elevator bookings</h1>
-        <p class="welcome-note">View resident elevator reservations. Residents submit bookings from their portal.</p>
+        <p class="welcome-note">Book the service elevator on the left. Review reservations on the right.</p>
       </div>
       <div class="header-tools">
         <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
       </div>
     </header>
 
+    <div class="elevator-bookings-layout">
+      <section class="booking-form-card card" aria-labelledby="concierge-booking-title">
+        <h2 id="concierge-booking-title"><i data-icon="elevator" aria-hidden="true"></i>Book an elevator</h2>
+        <form id="concierge-elevator-form" class="concierge-booking-form">
+          <label>Suite<input id="booking-suite" name="suite" placeholder="Suite number" maxlength="20" required autocomplete="off"></label>
+          <label>Resident name<input id="booking-resident" name="residentName" maxlength="120" required autocomplete="off"></label>
+          <label>Date<input id="booking-date" name="date" type="date" required></label>
+          <div class="booking-time-fields">
+            <label>Start time<input name="startTime" type="time" required></label>
+            <label>End time<input name="endTime" type="time" required></label>
+          </div>
+          <label>Reason<select name="reason" required><option value="">Select a reason</option><option value="Move">Move</option><option value="Delivery">Delivery</option><option value="Other">Other</option></select></label>
+          <label>Notes (optional)<textarea name="notes" rows="3" maxlength="2000" placeholder="Anything the desk should know"></textarea></label>
+          <p id="booking-form-message" class="booking-form-message" role="alert" tabindex="-1" hidden></p>
+          <div class="booking-form-actions"><button type="submit" class="button">Book elevator</button></div>
+        </form>
+      </section>
     <section class="schedule-card card" aria-label="Elevator booking schedule">
-      <div class="pkg-tabs" role="tablist">
-        <button type="button" class="pkg-tab active" role="tab" aria-selected="true" data-tab="upcoming" id="tab-upcoming">Upcoming</button>
-        <button type="button" class="pkg-tab" role="tab" aria-selected="false" data-tab="past" id="tab-past">Past</button>
+      <div class="pkg-tabs" role="tablist" aria-label="Elevator reservations">
+        <button type="button" class="pkg-tab active" role="tab" aria-selected="true" aria-controls="booking-panel" data-tab="upcoming" id="tab-upcoming">Upcoming</button>
+        <button type="button" class="pkg-tab" role="tab" aria-selected="false" aria-controls="booking-panel" data-tab="past" id="tab-past" tabindex="-1">Past</button>
       </div>
-      <div class="table-wrap">
-        <table class="pkg-table">
-          <thead>
-            <tr>
-              <th>Date / time</th>
-              <th>Suite</th>
-              <th>Resident</th>
-              <th>Reason</th>
-              <th>Elevator</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody id="booking-tbody"></tbody>
-        </table>
-        <p id="booking-empty" class="pkg-empty" hidden>No bookings in this list.</p>
+      <div class="booking-search">
+        <i data-icon="search" aria-hidden="true"></i>
+        <label class="sr-only" for="booking-search">Search elevator bookings</label>
+        <input type="search" id="booking-search" placeholder="Search suite, resident or booking reason..." aria-controls="booking-list">
+      </div>
+      <div id="booking-panel" role="tabpanel" aria-labelledby="tab-upcoming">
+        <div id="booking-list"></div>
+        <p id="booking-empty" class="booking-empty" hidden>No upcoming elevator bookings.</p>
+      </div>
+      <div class="booking-list-footer">
+        <p id="booking-range" role="status" aria-live="polite"></p>
+        <nav class="booking-pagination" aria-label="Booking pages">
+          <button type="button" class="booking-page-arrow" id="booking-previous" aria-label="Previous page"><i data-icon="left"></i></button>
+          <label class="sr-only" for="booking-page">Select booking page</label>
+          <div class="booking-page-select"><select id="booking-page"></select><i data-icon="chevron" aria-hidden="true"></i></div>
+          <button type="button" class="booking-page-arrow" id="booking-next" aria-label="Next page"><i data-icon="chevron"></i></button>
+        </nav>
       </div>
     </section>
+    </div>
 
     <footer class="page-footer">
       <span>MySuite · Concierge portal.</span>

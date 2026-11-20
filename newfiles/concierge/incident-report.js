@@ -5,7 +5,10 @@ renderIcons();
 applyLoggedInUser('concierge');
 
 let formWired = false;
-let selectedYear = new Date().getFullYear();
+let selectedYear = 'all';
+let incidentPage = 1;
+let incidentSearch = '';
+const incidentPageSize = 5;
 
 function closeMenu() {
   document.querySelector('.sidebar').classList.remove('open');
@@ -38,64 +41,18 @@ function availableYears() {
   return getIncidentYears(getIncidents());
 }
 
-function clampYear(year) {
-  const years = availableYears();
-  if (years.length === 0) return new Date().getFullYear();
-  const min = years[0];
-  const max = years[years.length - 1];
-  const y = Number(year);
-  if (!Number.isFinite(y)) return max;
-  return Math.min(max, Math.max(min, y));
-}
-
 function syncYearControls() {
   const years = availableYears();
-  selectedYear = clampYear(selectedYear);
-
-  const label = document.querySelector('#year-label');
-  if (label) label.textContent = String(selectedYear);
-
-  const select = document.querySelector('#year-select');
-  if (select) {
-    select.innerHTML = years.map(y =>
-      `<option value="${y}"${y === selectedYear ? ' selected' : ''}>${y}</option>`
-    ).join('');
-  }
-
-  const prev = document.querySelector('[data-action="prev-year"]');
-  const next = document.querySelector('[data-action="next-year"]');
-  const min = years[0];
-  const max = years[years.length - 1];
-  if (prev) prev.disabled = selectedYear <= min;
-  if (next) next.disabled = selectedYear >= max;
+  if (selectedYear !== 'all' && !years.includes(Number(selectedYear))) selectedYear = 'all';
+  document.querySelector('#incident-year-label').textContent = selectedYear === 'all' ? 'Filter by Year' : String(selectedYear);
+  document.querySelector('#incident-year-toggle').dataset.active = String(selectedYear !== 'all');
+  document.querySelector('#incident-year-options').innerHTML = ['all', ...years.slice().reverse()].map(year => `<label><input type="radio" name="incident-year" value="${year}"${String(year) === String(selectedYear) ? ' checked' : ''}>${year === 'all' ? 'All years' : year}</label>`).join('');
 }
 
-function shiftYear(delta) {
-  const years = availableYears();
-  const idx = years.indexOf(selectedYear);
-  if (idx === -1) {
-    selectedYear = clampYear(selectedYear + delta);
-  } else {
-    const nextIdx = idx + delta;
-    if (nextIdx < 0 || nextIdx >= years.length) return;
-    selectedYear = years[nextIdx];
-  }
-  refreshHistory();
-}
-
-function openYearPicker() {
-  const select = document.querySelector('#year-select');
-  if (!select) return;
-  try {
-    if (typeof select.showPicker === 'function') {
-      select.showPicker();
-      return;
-    }
-  } catch {
-    /* fall through */
-  }
-  select.focus();
-  select.click();
+function setIncidentYearMenu(open, restoreFocus = false) {
+  document.querySelector('#incident-year-menu').hidden = !open;
+  document.querySelector('#incident-year-toggle').setAttribute('aria-expanded', String(open));
+  if (restoreFocus) document.querySelector('#incident-year-toggle').focus();
 }
 
 function wireFormHandlers() {
@@ -109,7 +66,8 @@ function wireFormHandlers() {
     const data = Object.fromEntries(new FormData(form));
     const entry = addIncident(data);
     const year = incidentYear(entry);
-    if (year != null) selectedYear = year;
+    if (year != null && selectedYear !== 'all') selectedYear = year;
+    incidentPage = 1;
     resetForm();
     refreshHistory();
     toast(`${entry.type} incident logged · ${entry.location}.`);
@@ -144,37 +102,45 @@ function resetForm() {
 function refreshHistory() {
   syncYearControls();
   const all = getIncidents();
-  const incidents = sortIncidentsNewestFirst(filterIncidentsByYear(all, selectedYear));
+  const filtered = selectedYear === 'all' ? all : filterIncidentsByYear(all, selectedYear);
+  const query = incidentSearch.trim().toLowerCase();
+  const incidents = sortIncidentsNewestFirst(filtered).filter(incident => !query || [incident.type, incident.location, incident.description, incident.peopleInvolved, incident.reportedBy].some(value => String(value || '').toLowerCase().includes(query)));
+  const pageCount = Math.max(1, Math.ceil(incidents.length / incidentPageSize));
+  incidentPage = Math.max(1, Math.min(incidentPage, pageCount));
+  const offset = (incidentPage - 1) * incidentPageSize;
   const list = document.querySelector('#incident-list');
   const empty = document.querySelector('#incident-empty');
   const count = document.querySelector('#history-count');
-
-  if (count) count.textContent = `${incidents.length} report${incidents.length === 1 ? '' : 's'}`;
-
-  if (incidents.length === 0) {
-    list.innerHTML = '';
-    empty.hidden = false;
-    empty.textContent = `No incident reports for ${selectedYear}.`;
-    return;
-  }
-
-  empty.hidden = true;
-  list.innerHTML = incidents.map(renderIncidentRow).join('');
+  count.textContent = incidents.length ? `Showing ${offset + 1}\u2013${Math.min(offset + incidentPageSize, incidents.length)} of ${incidents.length}` : 'Showing 0 of 0';
+  document.querySelector('#incident-page-select').innerHTML = Array.from({ length: pageCount }, (_, index) => `<option value="${index + 1}"${index + 1 === incidentPage ? ' selected' : ''}>Page ${index + 1} of ${pageCount}</option>`).join('');
+  document.querySelector('[data-action="previous-incident-page"]').disabled = incidentPage === 1;
+  document.querySelector('[data-action="next-incident-page"]').disabled = incidentPage === pageCount;
+  empty.hidden = incidents.length > 0;
+  empty.textContent = query ? 'No incident reports match your search.' : selectedYear === 'all' ? 'No incident reports yet.' : `No incident reports for ${selectedYear}.`;
+  list.innerHTML = incidents.slice(offset, offset + incidentPageSize).map(renderIncidentRow).join('');
 }
 
 ensureFormMounted();
 resetForm();
-selectedYear = clampYear(new Date().getFullYear());
 refreshHistory();
-renderIcons(document.querySelector('.history-card-top'));
+renderIcons(document.querySelector('.incidents-history-card'));
 
-document.querySelector('#year-select')?.addEventListener('change', event => {
-  selectedYear = clampYear(event.target.value);
+document.querySelector('#incident-search').addEventListener('input', event => {
+  incidentSearch = event.target.value;
+  incidentPage = 1;
   refreshHistory();
 });
 
-document.querySelector('#year-pill-btn')?.addEventListener('click', () => {
-  openYearPicker();
+document.querySelector('#incident-page-select').addEventListener('change', event => {
+  const page = Number(event.target.value);
+  if (!Number.isInteger(page) || page < 1) return;
+  incidentPage = page;
+  refreshHistory();
+  document.querySelector('#incident-page-select').focus();
+});
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.incident-year-filter')) setIncidentYearMenu(false);
 });
 
 document.addEventListener('click', event => {
@@ -196,14 +162,24 @@ document.addEventListener('click', event => {
     closeMenu();
   } else if (action === 'close-modal') {
     modal.close();
-  } else if (action === 'prev-year') {
-    shiftYear(-1);
-  } else if (action === 'next-year') {
-    shiftYear(1);
+  } else if (action === 'toggle-incident-year') {
+    const open = document.querySelector('#incident-year-menu').hidden;
+    if (open) syncYearControls();
+    setIncidentYearMenu(open);
+    if (open) document.querySelector('input[name="incident-year"]:checked')?.focus();
+  } else if (action === 'apply-incident-year') {
+    const value = document.querySelector('input[name="incident-year"]:checked')?.value || 'all';
+    selectedYear = value === 'all' ? 'all' : Number(value);
+    incidentPage = 1;
+    setIncidentYearMenu(false, true);
+    refreshHistory();
+  } else if (action === 'previous-incident-page' || action === 'next-incident-page') {
+    incidentPage += action === 'next-incident-page' ? 1 : -1;
+    refreshHistory();
   } else if (action === 'help') {
     openModal(
       'Incident report help',
-      '<p>Use the <strong>Report an incident</strong> card to log what happened, when, and where.</p><p>Past reports on the right can be filtered by year with the arrows or the year button.</p>'
+      '<p>Use the <strong>Report an incident</strong> card to log what happened, when, and where.</p><p>Use <strong>Filter by year</strong> to narrow past reports. The page selector and arrows show five reports at a time.</p>'
     );
   }
 });
@@ -215,7 +191,10 @@ modal.addEventListener('click', event => {
   }
 });
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') closeMenu();
+  if (event.key === 'Escape') {
+    closeMenu();
+    if (!document.querySelector('#incident-year-menu').hidden) setIncidentYearMenu(false, true);
+  }
 });
 
 const lightingPicker = document.querySelector('#header-lighting');

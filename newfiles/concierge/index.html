@@ -5,16 +5,16 @@
   <meta name="theme-color" content="#35261e"><title>MySuite — Concierge</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b-shop">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="packages-data.js" defer></script>
+  <script src="packages-data.js?v=0ba191b85f72" defer></script>
   <script src="maintenance-data.js" defer></script>
   <script src="announcements-data.js" defer></script>
-  <script src="app.js?v=2f3daf71f353" defer></script>
+  <script src="app.js?v=2f3daf71f353-shop" defer></script>
 </head>
-<body data-time="afternoon">
+<body class="sidebar-merge concierge-sidebar" data-time="afternoon">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -37,8 +37,8 @@
   <main>
     <header class="welcome">
       <div class="welcome-copy">
-        <p class="eyebrow">CONCIERGE PORTAL</p>
-        <h1 data-user-greeting="Hello, {first}"></h1>
+        <h1 data-user-greeting="Welcome back, {first}"></h1>
+        <p class="welcome-note">Here’s what’s happening in your building today.</p>
       </div>
     </header>
     <section class="dashboard" aria-label="Concierge dashboard">
@@ -62,18 +62,6 @@
       </div>
 
       <div class="dashboard-col">
-        <article class="card lookup" id="lookup">
-          <div class="card-heading"><h2><i data-icon="users"></i>Resident lookup</h2></div>
-          <form id="lookup-form">
-            <label class="sr-only" for="lookup-input">Search by suite or name</label>
-            <div class="lookup-field">
-              <input id="lookup-input" name="query" placeholder="Suite number or resident name…" autocomplete="off">
-              <button class="button compact" type="submit">Search</button>
-            </div>
-          </form>
-          <div id="lookup-results" class="lookup-results" aria-live="polite"></div>
-        </article>
-
         <article class="card announcements" id="announcements">
           <div class="card-heading">
             <h2><i data-icon="megaphone"></i>Announcements</h2>
@@ -90,6 +78,15 @@
             <a class="button outline compact" href="#">View bookings</a>
           </div>
           <div id="schedule-list"></div>
+        </article>
+
+        <article class="card shop" id="shop" aria-labelledby="shop-title">
+          <div class="shop-content">
+            <h2 id="shop-title"><i data-icon="bag"></i>Shop</h2>
+            <h3>Little essentials.<br>One convenient place.</h3>
+            <p class="muted">Fobs, batteries &amp; everyday supplies.</p>
+            <button class="button" type="button" data-action="shop">Browse shop<i data-icon="arrow"></i></button>
+          </div>
         </article>
       </div>
 

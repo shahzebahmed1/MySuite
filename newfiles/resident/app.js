@@ -9,7 +9,8 @@ let savedVote = readSaved('mysuite-vote', null);
 if (savedVote) document.querySelector('#vote-button').textContent = 'View your vote';
 
 /* ── Calendar ─────────────────────────────────────────────── */
-let shownMonth = new Date(2026, 10, 1);
+const homeToday = amenityNowParts().date;
+let shownMonth = new Date(`${homeToday.slice(0, 7)}-01T12:00:00`);
 function renderCalendar() {
   const year = shownMonth.getFullYear(), month = shownMonth.getMonth();
   const label = shownMonth.toLocaleDateString('en-CA', { month: 'long', year: 'numeric' });

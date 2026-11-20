@@ -200,6 +200,7 @@ const actions = {
     openModal(concierge?.name || 'Concierge', `<p>${concierge?.title || 'Concierge'}${concierge?.station ? ` · ${concierge.station}` : ''}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">${concierge?.shift ? `Shift: ${concierge.shift} · ` : ''}Concierge portal</div>`);
   },
 
+  shop: () => openModal('Fobs & essentials', '<p>A preview of the essentials available through your building.</p><div class="dialog-info">Entry fobs · Batteries · Everyday supplies</div><p>Ordering is not available yet.</p>'),
   help: () => openModal('Concierge help', '<p>Manage packages, maintenance, and building updates from your concierge dashboard.</p><p>Concierge can review announcements; managers and board members create them.</p>')
 };
 

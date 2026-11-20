@@ -30,10 +30,10 @@
 
 .daily-log-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
-  grid-template-rows: auto auto;
+  grid-template-columns: minmax(0, 60fr) minmax(0, 40fr);
+  grid-template-rows: auto;
   gap: 12px 18px;
-  align-items: start;
+  align-items: stretch;
   margin-bottom: 8px;
 }
 
@@ -49,12 +49,12 @@
 
 .log-card {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 1;
 }
 
 .notes-card {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1;
 }
 
 .date-nav {
@@ -124,19 +124,23 @@
 }
 
 .shift-tabs {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  display: inline-flex;
+  gap: 2px;
+  flex-wrap: nowrap;
   margin-left: auto;
+  padding: 3px;
+  border: 1px solid #e5d9cc;
+  border-radius: 11px;
+  background: #f6f1eb;
 }
 
 .shift-tab {
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--espresso);
-  border-radius: 12px;
-  min-height: 40px;
-  padding: 0 18px;
+  border: 0;
+  background: transparent;
+  color: #716d66;
+  border-radius: 7px;
+  min-height: 30px;
+  padding: 0 12px;
   font: inherit;
   font-size: 14px;
   font-weight: 650;
@@ -144,16 +148,20 @@
 }
 
 .shift-tab[aria-selected="true"] {
-  background: var(--espresso);
-  border-color: var(--espresso);
-  color: #fff;
+  background: #ead2b8;
+  border-color: #ead2b8;
+  color: #56391f;
 }
 
 .log-card,
 .notes-card {
+  border-radius: 22px;
   padding: 0;
   overflow: hidden;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
 }
 
 .log-card-top,
@@ -175,8 +183,9 @@
 }
 
 .log-table-wrap {
-  border-top: 1px solid var(--line);
-  min-height: 220px;
+  border-top: 1px solid #e8ded480;
+  flex: 1 1 auto;
+  min-height: 280px;
 }
 
 .log-table {
@@ -195,7 +204,7 @@
 }
 
 .log-table td.log-time {
-  width: 88px;
+  width: 76px;
 }
 
 .log-table td.log-concierge {
@@ -253,10 +262,11 @@
 }
 
 .log-table td {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--line);
+  padding: 10px 16px;
+  border-bottom: 1px solid #e8ded480;
   vertical-align: top;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .log-row:hover {
@@ -394,19 +404,36 @@
   grid-template-columns: 110px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
-  padding: 14px 16px;
-  border-top: 1px solid var(--line);
+  padding: 16px;
+  border-top: 1px solid #e8ded480;
   background: #faf6f0;
 }
 
 .composer input[type="text"] {
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 11px 12px;
+  border-radius: 11px;
+  padding: 10px 12px;
   background: var(--paper);
   color: var(--espresso);
   font: inherit;
+  font-size: 14px;
   width: 100%;
+  min-height: 44px;
+  height: 44px;
+  box-sizing: border-box;
+}
+
+.composer .button,
+.composer .button.compact {
+  width: 108px;
+  max-width: 100%;
+  min-height: 40px;
+  height: 40px;
+  justify-self: end;
+  padding: 0 24px;
+  border-radius: 11px;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 
 #composer-time {
@@ -475,3 +502,92 @@
     white-space: normal;
   }
 }
+
+/* Compact actions for log entries and important notes. */
+.daily-entry-menu { display: inline-flex; vertical-align: middle; }
+.daily-entry-menu-toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; height: 36px; padding: 0 10px; border: 0; background: transparent; color: #5e3f29; font: inherit; font-size: 24px; line-height: 1; }
+.daily-entry-menu-toggle:hover, .daily-entry-menu-toggle[aria-expanded="true"] { background: transparent; color: #a1612b; }
+.daily-entry-menu-options { position: fixed; z-index: 80; min-width: 174px; max-width: calc(100vw - 16px); padding: 5px; border: 1px solid #eddfd1; border-radius: 12px; background: #fffcf8; box-shadow: 0 6px 18px #35261e24; text-align: left; }
+.daily-entry-menu-options[hidden] { display: none; }
+.daily-entry-menu-options button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 40px; border: 0; border-radius: 8px; padding: 8px 10px; background: transparent; color: #513c2c; font: inherit; font-size: 14px; text-align: left; white-space: nowrap; }
+.daily-entry-menu-options button:hover { background: #f6ece0; }
+.daily-entry-menu-options button.is-danger { color: #bc352b; }
+.daily-entry-menu-options button:disabled { opacity: .5; cursor: not-allowed; }
+.daily-entry-menu-options svg { width: 17px; height: 17px; }
+.log-table .log-actions { width: 48px; padding-right: 12px; padding-left: 4px; }
+
+.log-table .log-entry-content { display: block; min-height: 0; line-height: 1.5; border: 0; padding: 0; overflow-wrap: anywhere; }
+.log-entry-author { display: inline; color: #827363; font-size: 14px; line-height: 1.5; font-weight: 400; }
+.log-table td.log-time, .log-table td.log-entry, .log-table td.log-actions { vertical-align: top; }
+
+.log-entry-content > .log-cell-btn { display: inline; width: auto; }
+.log-author-inline { display: inline-block; white-space: nowrap; vertical-align: baseline; }
+.log-author-separator { display: inline-block; margin: 0 8px; color: #b19273; }
+.log-author-inline.is-author-outline .log-entry-author { padding: 0; border: 0; border-radius: 0; }
+.log-author-inline.is-author-chip { margin-left: 8px; padding: 1px 9px; border-radius: 999px; background: #f0e4d5; }
+.log-author-inline.is-author-chip .log-author-separator { display: none; }
+
+.log-table td.log-author-column { width: 144px; padding-right: 0; padding-left: 12px; text-align: left; vertical-align: top; }
+.log-author-column .log-author-separator { display: none; }
+.log-author-column .log-author-inline { margin-left: 0; }
+@media (max-width: 600px) {
+  .log-table td.log-author-column { width: 120px; }
+  .log-author-column .log-author-inline { white-space: normal; }
+}
+
+/* Center the date controls within the journal heading row. */
+.log-card-top { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 12px; }
+.log-card-top h2 { grid-column: 1; }
+.log-card-top .date-nav { grid-column: 2; justify-self: center; }
+@media (max-width: 1550px) {
+  .log-card-top { grid-template-columns: minmax(0, 1fr); }
+  .log-card-top .date-nav { grid-column: 1; }
+}
+
+.log-card-top .shift-tabs { grid-column: 3; justify-self: end; margin-left: 0; }
+.log-card-top .shift-tab { padding-inline: 12px; }
+@media (max-width: 1550px) {
+  .log-card-top .shift-tabs { grid-column: 1; justify-self: center; }
+}
+
+.log-card-top .date-nav { gap: 4px; }
+.log-card-top .date-nav-btn { width: 36px; height: 36px; border: 0; background: transparent; border-radius: 10px; }
+.log-card-top .date-pill { min-height: 36px; padding-inline: 10px; gap: 6px; border-radius: 10px; font-size: 14px; }
+.log-card-top .date-pill svg { width: 16px; height: 16px; }
+.log-card-top .date-pill svg:last-of-type { width: 12px; height: 12px; }
+
+/* Keep the shift selector at the right of the journal header. */
+@media (min-width: 701px) and (max-width: 1550px) {
+  .log-card-top { grid-template-columns: minmax(0, 1fr) auto; }
+  .log-card-top h2 { grid-column: 1; grid-row: 1; }
+  .log-card-top .shift-tabs { grid-column: 2; grid-row: 1; justify-self: end; }
+  .log-card-top .date-nav { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (max-width: 700px) {
+  .log-card-top .shift-tabs { justify-self: end; }
+}
+
+/* Quiet horizontal shift labels, with only the selection highlighted. */
+.log-card-top .shift-tabs { gap: 2px; padding: 4px; border: 0; border-radius: 12px; background: #eee7df; --shift-selection: #fff; }
+.log-card-top .shift-tab { min-height: 30px; padding: 4px 10px; border: 0; border-radius: 8px; background: transparent; color: #786b60; font-size: 14px; font-weight: 500; }
+.log-card-top .shift-tab:hover { background: #f5eee5; }
+.log-card-top .shift-tab[aria-selected="true"] { background: var(--shift-selection); color: #492c1b; border-radius: 8px; box-shadow: 0 1px 4px rgba(73, 44, 27, .16); font-weight: 600; }
+
+.log-card-top .shift-tab { transition: background-color 180ms ease, color 180ms ease; }
+@media (prefers-reduced-motion: reduce) {
+  .log-card-top .shift-tab { transition: none; }
+}
+
+/* Slide one shared caramel highlight beneath the selected shift. */
+.log-card-top .shift-tabs { position: relative; isolation: isolate; }
+.log-card-top .shift-tabs.has-shift-indicator::before { content: ''; position: absolute; z-index: -1; left: 0; top: var(--shift-y, 0px); width: var(--shift-width, 0px); height: var(--shift-height, 36px); transform: translateX(var(--shift-x, 0px)); border-radius: 8px; background: var(--shift-selection); box-shadow: 0 1px 4px rgba(73, 44, 27, .16); pointer-events: none; transition: transform 220ms ease, width 220ms ease, top 220ms ease, height 220ms ease; }
+.log-card-top .shift-tabs.has-shift-indicator .shift-tab[aria-selected="true"] { background: transparent; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) {
+  .log-card-top .shift-tabs.has-shift-indicator::before { transition: none; }
+}
+
+.log-card-top { padding: 10px 20px 11px; }
+
+.log-table .daily-entry-menu-toggle { min-width: 32px; height: 30px; margin-block: -4px; padding-inline: 4px; }
+
+.notes-table td.log-author-column { vertical-align: middle; }

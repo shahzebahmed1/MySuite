@@ -314,10 +314,11 @@ const MOCK_DATA = {
   dailyLogNotesSeed: [
     {
       id: 'note-seed-1',
-      title: 'Adjust automatic outer door opener if needed based on the weather. Select the correct door based on the wind.',
+      title: 'Entrance door adjustment',
+      body: 'Adjust automatic outer door opener if needed based on the weather. Select the correct door based on the wind.',
       status: 'open',
       createdBy: 'Shahzeb',
-      createdAt: '2026-11-12T07:30:00',
+      createdAt: '2026-11-18T07:30:00',
       readAt: null,
       resolvedAt: null
     }

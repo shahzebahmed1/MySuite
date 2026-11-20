@@ -5,16 +5,16 @@
   <meta name="theme-color" content="#35261e"><title>MySuite — Daily log</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="daily-log.css">
+  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
+  <link rel="stylesheet" href="daily-log.css?v=266abf2f9456">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="daily-log-data.js" defer></script>
-  <script src="daily-log.js" defer></script>
+  <script src="daily-log-data.js?v=50198422dc09" defer></script>
+  <script src="daily-log.js?v=7b62929a9aec" defer></script>
 </head>
-<body data-time="afternoon" data-breadcrumb="Daily log">
+<body class="concierge-sidebar" data-time="afternoon" data-breadcrumb="Daily log">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -47,39 +47,28 @@
     </header>
 
     <div class="daily-log-layout">
-      <div class="log-toolbar">
-        <div class="date-nav">
+
+      <section class="log-card card" aria-label="Shift log entries">
+        <div class="log-card-top">
+          <h2><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="2" width="18" height="20" rx="2"/><path d="M7 2v20M14 2v7l2-2 2 2V2M10 13h8m-8 4h6"/></svg><span id="shift-heading">Morning Shift Journal</span></h2>
+          <div class="date-nav">
           <button type="button" class="date-nav-btn" data-action="prev-day" aria-label="Previous day"><i data-icon="left"></i></button>
           <button type="button" class="date-pill" id="date-pill-btn" aria-label="Choose log date">
-            <i data-icon="calendar"></i>
             <span id="log-date-label">Select date</span>
             <i data-icon="chevron"></i>
           </button>
           <button type="button" class="date-nav-btn" data-action="next-day" aria-label="Next day"><i data-icon="chevron"></i></button>
           <input id="log-date" class="date-pill-input" type="date" required aria-label="Log date">
         </div>
-        <div class="shift-tabs" role="tablist" aria-label="Shift">
-          <button type="button" class="shift-tab" role="tab" data-shift="night" aria-selected="false">Night</button>
-          <button type="button" class="shift-tab" role="tab" data-shift="morning" aria-selected="false">Morning</button>
-          <button type="button" class="shift-tab" role="tab" data-shift="evening" aria-selected="false">Evening</button>
-        </div>
-      </div>
-
-      <section class="log-card card" aria-label="Shift log entries">
-        <div class="log-card-top">
-          <h2 id="shift-heading">Morning Shift</h2>
+          <div class="shift-tabs" role="tablist" aria-label="Shift" aria-orientation="horizontal">
+            <button type="button" class="shift-tab" role="tab" data-shift="morning" aria-selected="false">Morning</button>
+            <button type="button" class="shift-tab" role="tab" data-shift="evening" aria-selected="false">Evening</button>
+            <button type="button" class="shift-tab" role="tab" data-shift="night" aria-selected="false">Night</button>
+          </div>
         </div>
 
         <div class="log-table-wrap">
-          <table class="log-table">
-            <thead>
-              <tr>
-                <th scope="col">Time</th>
-                <th scope="col">Entry</th>
-                <th scope="col">Logged by</th>
-                <th scope="col"><span class="sr-only">Actions</span></th>
-              </tr>
-            </thead>
+          <table class="log-table" aria-label="Daily log entries">
             <tbody id="log-tbody"></tbody>
           </table>
           <p id="log-empty" class="pkg-empty" hidden>No entries for this shift yet.</p>
@@ -90,7 +79,7 @@
           <input id="composer-time" name="time" type="text" inputmode="numeric" placeholder="HH:mm" pattern="^([01]\d|2[0-3]):[0-5]\d$" maxlength="5" lang="en-GB" required autocomplete="off" title="Use 24-hour time, e.g. 14:30">
           <label class="sr-only" for="composer-notes">Log entry</label>
           <input id="composer-notes" name="notes" type="text" placeholder="Write a log entry…" required autocomplete="off">
-          <button class="button compact" type="submit" id="composer-submit">Save entry</button>
+          <button class="button compact" type="submit" id="composer-submit">Save</button>
         </form>
       </section>
 
@@ -100,20 +89,14 @@
         </div>
         <div class="log-table-wrap">
           <table class="log-table notes-table">
-            <thead>
-              <tr>
-                <th scope="col">Note</th>
-                <th scope="col">Logged by</th>
-              </tr>
-            </thead>
             <tbody id="notes-tbody"></tbody>
           </table>
           <p id="notes-empty" class="pkg-empty" hidden>No important notes yet.</p>
         </div>
         <form id="note-composer-form" class="composer note-composer" aria-label="Add an important note">
           <label class="sr-only" for="note-composer-text">Important note</label>
-          <input id="note-composer-text" name="title" type="text" placeholder="Write an important note…" required autocomplete="off">
-          <button class="button compact" type="submit">Save note</button>
+          <input id="note-composer-text" name="note" type="text" placeholder="Write an important note…" required autocomplete="off">
+          <button class="button compact" type="submit">Save</button>
         </form>
       </aside>
     </div>

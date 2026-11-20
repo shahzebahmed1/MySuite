@@ -5,16 +5,16 @@
   <meta name="theme-color" content="#35261e"><title>MySuite — Packages</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="packages.css">
+  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
+  <link rel="stylesheet" href="packages.css?v=e44fe9f4a324">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="packages-data.js" defer></script>
-  <script src="packages.js" defer></script>
+  <script src="packages-data.js?v=ef555d5b5845" defer></script>
+  <script src="packages.js?v=8789f5d9d4ca" defer></script>
 </head>
-<body data-time="afternoon" data-breadcrumb="Packages">
+<body class="concierge-sidebar package-tracking" data-time="afternoon" data-breadcrumb="Packages">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -35,51 +35,76 @@
     <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
-    <header class="page-header">
-      <div>
-        <p class="eyebrow">CONCIERGE</p>
-        <h1>Package tracking</h1>
-        <p class="welcome-note">Log arrivals on the left. Review pending packages on the right.</p>
-      </div>
-      <div class="header-tools">
-        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
+    <header class="page-header package-page-header card">
+      <div class="package-header-content">
+        <div class="package-header-thumbnail" aria-hidden="true"><img src="../assets/package-title-icon.png" alt="" width="64" height="64" decoding="async"></div>
+        <div class="package-header-copy">
+          <h1>Package tracking</h1>
+          <p class="welcome-note">Log arrivals and review pending packages in one place.</p>
+        </div>
       </div>
     </header>
 
     <div class="packages-layout">
-      <section id="log-panel" class="log-panel card" aria-label="Log a package">
-        <div class="log-panel-top">
-          <h2><i data-icon="package"></i>Log a package</h2>
-        </div>
-        <div id="form-slot-panel"></div>
-      </section>
-
       <section class="packages-table-card card" aria-label="Package list">
-        <div class="pkg-tabs" role="tablist">
-          <button type="button" class="pkg-tab active" role="tab" aria-selected="true" data-tab="awaiting" id="tab-pending">Pending</button>
-          <button type="button" class="pkg-tab" role="tab" aria-selected="false" data-tab="history" id="tab-history">History</button>
+        <div class="pkg-tabs" role="tablist" aria-label="Package status">
+          <button type="button" class="pkg-tab active" role="tab" aria-selected="true" aria-controls="pending-panel" data-tab="awaiting" id="tab-pending">Pending</button>
+          <button type="button" class="pkg-tab" role="tab" aria-selected="false" aria-controls="history-panel" data-tab="history" id="tab-history">History</button>
         </div>
+        <div class="package-history-intro" id="package-history-intro">
+          <div class="package-search-filters">
+            <div class="package-history-search" id="package-history-search-wrap"><i data-icon="search"></i><label class="sr-only" for="package-history-search">Search packages by resident, suite, tracking number or carrier</label><input id="package-history-search" type="search" placeholder="Search by resident, suite, tracking number, or carrier..." autocomplete="off" aria-controls="pending-list"></div>
 
-        <div id="pending-panel" class="pending-panel">
-          <div id="pending-list" class="pending-list"></div>
+            <div class="package-date-filter" id="package-date-filter">
+              <div class="package-date-trigger">
+                <button type="button" id="package-date-toggle" class="button outline" data-action="open-package-date" aria-haspopup="dialog"><i data-icon="calendar"></i><span id="package-date-label">Filter by Date</span><span class="package-filter-chevron" aria-hidden="true"><i data-icon="chevron"></i></span></button>
+                <input type="date" id="package-date-value" class="package-direct-date" tabindex="-1" aria-label="Filter packages by arrival date">
+              </div>
+              <button type="button" class="package-clear-date" id="package-clear-date" data-action="clear-package-date" hidden>Clear date</button>
+            </div>
+          </div>
+        </div>
+        <div id="pending-panel" class="package-panel" role="tabpanel" aria-labelledby="tab-pending">
+          <div class="pending-table-scroll" role="region" aria-label="Pending packages table" tabindex="0">
+            <table class="pending-packages-table">
+              <caption class="sr-only">Pending packages awaiting release</caption>
+              <thead><tr>
+                <th scope="col" aria-sort="none"><button type="button" data-action="sort-pending-packages" data-sort="resident">Resident</button></th>
+                <th scope="col" aria-sort="none"><button type="button" data-action="sort-pending-packages" data-sort="carrier">Carrier</button></th>
+                <th scope="col" aria-sort="descending"><button type="button" data-action="sort-pending-packages" data-sort="arrived">Arrived</button></th>
+                <th scope="col">Actions</th>
+              </tr></thead>
+              <tbody id="pending-list"></tbody>
+            </table>
+          </div>
           <p id="pending-empty" class="pkg-empty" hidden>Nothing pending. Log a package when one arrives.</p>
         </div>
-
-        <div id="history-panel" class="table-wrap" hidden>
-          <table class="pkg-table" id="pkg-table">
-            <thead>
-              <tr id="pkg-thead-row">
-                <th>Suite / Resident</th>
-                <th>Carrier</th>
-                <th>Arrival</th>
-                <th>Logged by</th>
-                <th>Delivery</th>
-                <th>Delivered by</th>
-              </tr>
-            </thead>
-            <tbody id="pkg-tbody"></tbody>
-          </table>
+        <div id="history-panel" class="package-panel" role="tabpanel" aria-labelledby="tab-history" hidden>
+          <div class="pending-table-scroll" role="region" aria-label="Package history table" tabindex="0">
+            <table class="pending-packages-table history-packages-table">
+              <caption class="sr-only">Package release and deletion history</caption>
+              <thead><tr>
+                <th scope="col">Resident</th>
+                <th scope="col">Carrier</th>
+                <th scope="col">Arrived</th>
+                <th scope="col">Released</th>
+                <th scope="col">Actions</th>
+              </tr></thead>
+              <tbody id="history-list"></tbody>
+            </table>
+          </div>
           <p id="pkg-empty" class="pkg-empty" hidden>No package history yet.</p>
+        </div>
+        <div class="package-list-footer">
+          <p id="package-range" class="package-range" role="status">Showing 0 of 0</p>
+          <div class="package-history-tools">
+
+            <nav class="package-pagination" aria-label="Package pages">
+              <button type="button" class="package-page-arrow" data-action="previous-package-page" aria-label="Previous page"><i data-icon="left"></i></button>
+              <label class="package-page-picker"><span class="sr-only">Page</span><select id="package-page-select" aria-label="Package page"><option value="1">Page 1 of 1</option></select><i data-icon="chevron"></i></label>
+              <button type="button" class="package-page-arrow" data-action="next-package-page" aria-label="Next page"><i data-icon="chevron"></i></button>
+            </nav>
+          </div>
         </div>
       </section>
     </div>
@@ -122,8 +147,8 @@
             <option value="Envelope">Envelope</option>
           </select>
         </label>
-        <label>Last 6 of tracking #
-          <input name="trackingLast6" type="text" maxlength="6" minlength="6" pattern="[A-Za-z0-9]{6}" placeholder="482193" required autocomplete="off">
+        <label>Tracking #
+          <input name="trackingLast6" type="text" pattern="[A-Za-z0-9]+" placeholder="1Z999AA10123456784" required autocomplete="off">
         </label>
         <label>Carrier
           <select name="carrier" required>
@@ -137,11 +162,19 @@
       </div>
 
       <div class="form-actions">
-        <button type="button" class="button outline" data-cancel-log>Clear</button>
+        <button class="button outline" type="button" data-action="close-package-log">Cancel</button>
         <button class="button" type="submit">Log package</button>
       </div>
     </form>
   </template>
+
+  <dialog id="package-log-modal" class="package-log-dialog" aria-labelledby="package-log-title">
+    <div class="dialog-top">
+      <h2 id="package-log-title"><i data-icon="package"></i>Log a package</h2>
+      <button type="button" class="icon-button" data-action="close-package-log" aria-label="Close log package dialog"><i data-icon="close"></i></button>
+    </div>
+    <div id="form-slot-modal"></div>
+  </dialog>
 
   <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
   <div class="toast" id="toast" role="status"></div>

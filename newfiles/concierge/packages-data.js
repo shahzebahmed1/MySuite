@@ -2,23 +2,407 @@
    Requires: shared/utils.js, shared/mockdata.js (DEMO_RESIDENTS, PACKAGE_SEED, getCurrentConcierge). */
 
 const PACKAGE_STORAGE_KEY = 'mysuite-concierge-packages-v4';
+const PACKAGE_PICKUP_ID_TYPES = ["Driver's licence", 'Provincial photo ID', 'Passport', 'Other photo ID'];
 
 function findResidentBySuite(suite) {
   const key = String(suite || '').trim();
   return DEMO_RESIDENTS.find(r => r.suite === key) || null;
 }
 
+const PACKAGE_HISTORY_EXAMPLES = [
+  {
+    "id": "pkg-history-example-1",
+    "suite": "204",
+    "residentName": "David Chen",
+    "carrier": "UPS",
+    "parcelType": "Box",
+    "trackingLast6": "785142",
+    "receivedAt": "2026-11-17T09:15:00",
+    "receivedBy": "Shahzeb",
+    "status": "picked-up",
+    "deliveredAt": null,
+    "deliveredBy": null,
+    "pickedUpAt": "2026-11-17T18:25:00",
+    "note": ""
+  },
+  {
+    "id": "pkg-history-example-2",
+    "suite": "312",
+    "residentName": "Priya Nair",
+    "carrier": "FedEx",
+    "parcelType": "Envelope",
+    "trackingLast6": "234901",
+    "receivedAt": "2026-11-17T10:30:00",
+    "receivedBy": "Aisha Lawal",
+    "status": "delivered",
+    "deliveredAt": "2026-11-17T12:45:00",
+    "deliveredBy": "Aisha Lawal",
+    "pickedUpAt": null,
+    "note": ""
+  },
+  {
+    "id": "pkg-history-example-3",
+    "suite": "803",
+    "residentName": "Yuki Tanaka",
+    "carrier": "Amazon",
+    "parcelType": "Package",
+    "trackingLast6": "920477",
+    "receivedAt": "2026-11-16T13:10:00",
+    "receivedBy": "Jordan Kim",
+    "status": "picked-up",
+    "deliveredAt": null,
+    "deliveredBy": null,
+    "pickedUpAt": "2026-11-16T17:40:00",
+    "note": ""
+  },
+  {
+    "id": "pkg-history-example-4",
+    "suite": "1108",
+    "residentName": "Fatima Al-Rashid",
+    "carrier": "Canada Post",
+    "parcelType": "Box",
+    "trackingLast6": "661820",
+    "receivedAt": "2026-11-16T11:20:00",
+    "receivedBy": "Shahzeb",
+    "status": "delivered",
+    "deliveredAt": "2026-11-16T14:05:00",
+    "deliveredBy": "Shahzeb",
+    "pickedUpAt": null,
+    "note": ""
+  },
+  {
+    "id": "pkg-history-example-5",
+    "suite": "402",
+    "residentName": "James Okafor",
+    "carrier": "UPS",
+    "parcelType": "Package",
+    "trackingLast6": "108645",
+    "receivedAt": "2026-11-15T08:55:00",
+    "receivedBy": "Alsina Butt",
+    "status": "picked-up",
+    "deliveredAt": null,
+    "deliveredBy": null,
+    "pickedUpAt": "2026-11-15T19:10:00",
+    "note": ""
+  },
+  {
+    "id": "pkg-history-example-6",
+    "suite": "709",
+    "residentName": "Marcus Webb",
+    "carrier": "FedEx",
+    "parcelType": "Box",
+    "trackingLast6": "872113",
+    "receivedAt": "2026-11-15T15:05:00",
+    "receivedBy": "Aisha Lawal",
+    "status": "delivered",
+    "deliveredAt": "2026-11-15T16:30:00",
+    "deliveredBy": "Jordan Kim",
+    "pickedUpAt": null,
+    "note": ""
+  },
+  {
+    "id": "pkg-history-example-7",
+    "suite": "1204",
+    "residentName": "Alex Morgan",
+    "carrier": "Amazon",
+    "parcelType": "Box",
+    "trackingLast6": "440782",
+    "receivedAt": "2026-11-14T12:35:00",
+    "receivedBy": "Jordan Kim",
+    "status": "picked-up",
+    "deliveredAt": null,
+    "deliveredBy": null,
+    "pickedUpAt": "2026-11-14T20:15:00",
+    "note": ""
+  },
+  {
+    "id": "pkg-history-example-8",
+    "suite": "101",
+    "residentName": "Maria Santos",
+    "carrier": "Canada Post",
+    "parcelType": "Envelope",
+    "trackingLast6": "317560",
+    "receivedAt": "2026-11-14T09:40:00",
+    "receivedBy": "Alsina Butt",
+    "status": "delivered",
+    "deliveredAt": "2026-11-14T11:25:00",
+    "deliveredBy": "Alsina Butt",
+    "pickedUpAt": null,
+    "note": ""
+  },
+  {
+    "id": "pkg-history-example-9",
+    "suite": "501",
+    "residentName": "Emily Larsson",
+    "carrier": "Other",
+    "parcelType": "Package",
+    "trackingLast6": "095624",
+    "receivedAt": "2026-11-13T16:50:00",
+    "receivedBy": "Shahzeb",
+    "status": "picked-up",
+    "deliveredAt": null,
+    "deliveredBy": null,
+    "pickedUpAt": "2026-11-14T08:20:00",
+    "note": "Oversized package stored beside the mail room shelving."
+  },
+  {
+    "id": "pkg-history-example-10",
+    "suite": "204",
+    "residentName": "David Chen",
+    "carrier": "Amazon",
+    "parcelType": "Envelope",
+    "trackingLast6": "563209",
+    "receivedAt": "2026-11-12T14:15:00",
+    "receivedBy": "Jordan Kim",
+    "status": "picked-up",
+    "deliveredAt": null,
+    "deliveredBy": null,
+    "pickedUpAt": "2026-11-12T18:55:00",
+    "note": ""
+  }
+];
+
+const PACKAGE_SAMPLE_PICKUP_RECORDERS = {
+  'pkg-history-example-1': { name: 'Aisha Lawal', id: 'acct-concierge-aisha' },
+  'pkg-history-example-3': { name: 'Shahzeb', id: 'acct-concierge-shahzeb' },
+  'pkg-history-example-5': { name: 'Jordan Kim', id: 'acct-concierge-jordan' },
+  'pkg-history-example-7': { name: 'Shahzeb', id: 'acct-concierge-shahzeb' },
+  'pkg-history-example-9': { name: 'Shahzeb', id: 'acct-concierge-shahzeb' },
+  'pkg-history-example-10': { name: 'Aisha Lawal', id: 'acct-concierge-aisha' }
+};
+
+function withPackageSamplePickupRecorder(pkg) {
+  const recorder = PACKAGE_SAMPLE_PICKUP_RECORDERS[pkg.id];
+  if (pkg.status !== 'picked-up' || pkg.pickedUpRecordedBy || pkg.pickedUpRecordedById || !recorder) return pkg;
+  return { ...pkg, pickedUpRecordedBy: recorder.name, pickedUpRecordedById: recorder.id };
+}
+
+// Fictional carrier-style tracking numbers for the existing demo packages.
+const PACKAGE_SAMPLE_TRACKING = {
+  'pkg-history-example-1': { previous: '785142', number: '1Z8R20450321785142' },
+  'pkg-history-example-2': { previous: '234901', number: '794612234901' },
+  'pkg-history-example-3': { previous: '920477', number: 'TBC203648920477' },
+  'pkg-history-example-4': { previous: '661820', number: '1028347500661820' },
+  'pkg-history-example-5': { previous: '108645', number: '1Z6V70980345108645' },
+  'pkg-history-example-6': { previous: '872113', number: '782965872113' },
+  'pkg-history-example-7': { previous: '440782', number: 'TBC207315440782' },
+  'pkg-history-example-8': { previous: '317560', number: '1028476300317560' },
+  'pkg-history-example-9': { previous: '095624', number: '84620173095624' },
+  'pkg-history-example-10': { previous: '563209', number: 'TBC209482563209' },
+  'pkg-pending-shahzeb-example': { previous: '620153', number: '1Z4X18320378620153' },
+  'pkg-permission-other-delivery': { previous: '754920', number: '1Z9A63750382754920' },
+  'pkg-permission-own-delivery': { previous: '286431', number: '794638286431' },
+};
+
 function getPackages() {
   const stored = readSaved(PACKAGE_STORAGE_KEY, null);
-  if (!Array.isArray(stored) || stored.length === 0) {
-    save(PACKAGE_STORAGE_KEY, PACKAGE_SEED);
-    return PACKAGE_SEED.map(p => ({ ...p }));
+  const needsSeed = !Array.isArray(stored);
+  const source = needsSeed ? PACKAGE_SEED : stored;
+  let changed = false;
+  const packages = source.map(pkg => {
+    const placeholder = pkg.note === 'Suite not in demo directory';
+    const sampleNote = pkg.id === 'pkg-history-example-4' && pkg.note === 'Fragile item kept on the lower shelf.';
+    let next = placeholder || sampleNote ? { ...pkg, note: '' } : needsSeed ? { ...pkg } : pkg;
+    if (placeholder || sampleNote) changed = true;
+    const attributed = withPackageSamplePickupRecorder(next);
+    if (attributed !== next) changed = true;
+    return attributed;
+  });
+  const examplesKey = 'mysuite-concierge-package-history-examples-v1';
+  const needsExamples = !readSaved(examplesKey, false);
+  if (needsExamples) {
+    const ids = new Set(packages.map(pkg => pkg.id));
+    const extra = PACKAGE_HISTORY_EXAMPLES.filter(pkg => !ids.has(pkg.id));
+    if (extra.length) { packages.push(...extra.map(pkg => withPackageSamplePickupRecorder({ ...pkg }))); changed = true; }
   }
-  return stored;
+  const ownExampleKey = 'mysuite-concierge-pending-shahzeb-example-v1';
+  const needsOwnExample = !readSaved(ownExampleKey, false);
+  if (needsOwnExample && !packages.some(pkg => pkg.id === 'pkg-pending-shahzeb-example')) {
+    packages.push({
+      id: 'pkg-pending-shahzeb-example', suite: '501', residentName: 'Emily Larsson',
+      receivedBy: 'Shahzeb', receivedById: 'acct-concierge-shahzeb',
+      carrier: 'UPS', parcelType: 'Box', trackingLast6: '620153', note: '',
+      status: 'pending', receivedAt: '2026-11-18T10:20:00',
+      deliveredAt: null, deliveredBy: null, pickedUpAt: null
+    });
+    changed = true;
+  }
+  const permissionExamplesKey = 'mysuite-concierge-package-permission-examples-v1';
+  const needsPermissionExamples = !readSaved(permissionExamplesKey, false);
+  if (needsPermissionExamples) {
+    const examples = [
+      {
+        id: 'pkg-permission-other-delivery', suite: '1204', residentName: 'Alex Morgan',
+        receivedBy: 'Shahzeb', receivedById: 'acct-concierge-shahzeb',
+        carrier: 'UPS', parcelType: 'Box', trackingLast6: '754920', note: '',
+        receivedAt: '2026-11-18T09:15:00', status: 'delivered',
+        deliveredAt: '2026-11-18T10:15:00', deliveredBy: 'Aisha Lawal',
+        deliveredById: 'acct-concierge-aisha', pickedUpAt: null
+      },
+      {
+        id: 'pkg-permission-own-delivery', suite: '501', residentName: 'Emily Larsson',
+        receivedBy: 'Shahzeb', receivedById: 'acct-concierge-shahzeb',
+        carrier: 'FedEx', parcelType: 'Envelope', trackingLast6: '286431', note: '',
+        receivedAt: '2026-11-18T08:45:00', status: 'delivered',
+        deliveredAt: '2026-11-18T09:40:00', deliveredBy: 'Shahzeb',
+        deliveredById: 'acct-concierge-shahzeb', pickedUpAt: null
+      }
+    ];
+    const ids = new Set(packages.map(pkg => pkg.id));
+    const extra = examples.filter(pkg => !ids.has(pkg.id));
+    if (extra.length) { packages.push(...extra); changed = true; }
+  }
+  packages.forEach((pkg, index) => {
+    const sample = PACKAGE_SAMPLE_TRACKING[pkg.id];
+    if (sample && pkg.trackingLast6 === sample.previous) {
+      packages[index] = { ...pkg, trackingLast6: sample.number };
+      changed = true;
+    }
+  });
+  if (needsSeed || changed) save(PACKAGE_STORAGE_KEY, packages);
+  if (needsExamples) save(examplesKey, true);
+  if (needsOwnExample) save(ownExampleKey, true);
+  if (needsPermissionExamples) save(permissionExamplesKey, true);
+  return packages;
 }
 
 function setPackages(list) {
   save(PACKAGE_STORAGE_KEY, list);
+}
+
+function canManagePackageEntry(pkg, account = getCurrentConcierge()) {
+  return Boolean(pkg && account?.id && account.role === 'concierge');
+}
+
+function canManagePackageDelivery(pkg, account = getCurrentConcierge()) {
+  return pkg?.status === 'delivered' && canManagePackageEntry(pkg, account);
+}
+
+function canManagePackagePickup(pkg, account = getCurrentConcierge()) {
+  return pkg?.status === 'picked-up' && canManagePackageEntry(pkg, account);
+}
+
+function canReturnPackageToPending(pkg, account = getCurrentConcierge()) {
+  return canManagePackageDelivery(pkg, account) || canManagePackagePickup(pkg, account);
+}
+
+const PACKAGE_CHANGE_REASONS = ['Duplicate entry', 'Wrong suite', 'Logged in error', 'Other'];
+const PACKAGE_AUDIT_KEY = 'mysuite-concierge-package-audit-v1';
+
+function packageChangeReason(pkg, fields = {}) {
+  const reason = String(fields.changeReason || '').trim();
+  const note = String(fields.changeNote || '').trim();
+  const completed = ['delivered', 'picked-up'].includes(pkg.status);
+  if (!PACKAGE_CHANGE_REASONS.includes(reason)) return { error: 'Choose a reason for this change.' };
+  if (reason === 'Other' && !note) return { error: 'Provide an explanation for this change.' };
+  if (note.length > 500) return { error: 'Keep the reason note to 500 characters or fewer.' };
+  return { completed, reason, note };
+}
+
+function recordPackageChange(action, before, after, change) {
+  const stored = readSaved(PACKAGE_AUDIT_KEY, []);
+  const records = Array.isArray(stored) ? stored : [];
+  const actor = getCurrentConcierge();
+  records.push({
+    id: `package-change-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+    packageId: before.id, action, reason: change.reason, note: change.note,
+    actorId: actor?.id || null, actorName: actor?.name || 'Concierge',
+    recordedAt: new Date().toISOString(),
+    before: JSON.parse(JSON.stringify(before)), after: after ? JSON.parse(JSON.stringify(after)) : null
+  });
+  save(PACKAGE_AUDIT_KEY, records);
+}
+
+function packageTimesMatchAtMinute(first, second) {
+  const firstMs = new Date(first).getTime();
+  const secondMs = new Date(second).getTime();
+  return Number.isFinite(firstMs) && Number.isFinite(secondMs)
+    ? Math.floor(firstMs / 60000) === Math.floor(secondMs / 60000)
+    : String(first || '') === String(second || '');
+}
+
+function preparePackageEntryUpdate(current, fields) {
+  if (!canManagePackageEntry(current)) return { error: 'Sign in as concierge to edit packages.' };
+  const suite = String(fields.suite || '').trim();
+  const residentName = String(fields.residentName || '').trim();
+  const trackingLast6 = String(fields.trackingLast6 || '').trim();
+  const arrival = new Date(fields.arrivedAt ?? current.receivedAt);
+  if (!suite || !residentName) return { error: 'Enter a suite and resident name.' };
+  if (!/^[A-Za-z0-9]+$/.test(trackingLast6)) return { error: 'Enter a tracking number using letters and digits.' };
+  if (Number.isNaN(arrival.getTime())) return { error: 'Choose a valid arrival date and time.' };
+  let deliveredAt = current.deliveredAt;
+  if (Object.hasOwn(fields, 'deliveredAt')) {
+    if (!canManagePackageDelivery(current)) return { error: 'Delivery details are only available for delivered packages.' };
+    const delivery = new Date(fields.deliveredAt);
+    if (Number.isNaN(delivery.getTime())) return { error: 'Choose a valid delivery date and time.' };
+    deliveredAt = packageTimesMatchAtMinute(delivery, current.deliveredAt) ? current.deliveredAt : delivery.toISOString();
+  }
+  const collector = String(fields.pickedUpBy ?? current.pickedUpBy ?? '').trim();
+  if (current.status === 'picked-up' && (!collector || collector.length > 120)) return { error: 'Enter the name of the person who picked up the package.' };
+  const completedAt = current.status === 'picked-up' ? current.pickedUpAt : deliveredAt;
+  if (completedAt && arrival.getTime() > new Date(completedAt).getTime()) return { error: 'Arrival must be before the delivery or pickup time.' };
+  const next = {
+    ...current, suite, residentName, trackingLast6,
+    carrier: String(fields.carrier || current.carrier || 'Other').trim(),
+    parcelType: String(fields.parcelType || current.parcelType || 'Package').trim(),
+    receivedAt: packageTimesMatchAtMinute(arrival, current.receivedAt) ? current.receivedAt : arrival.toISOString(), note: String(fields.note || '').trim(),
+    ...(current.status === 'picked-up' ? { pickedUpBy: collector, ...(collector !== String(current.pickedUpBy || '').trim() ? { pickupIdVerified: null, pickupIdType: null } : {}) } : {}),
+    ...(Object.hasOwn(fields, 'deliveredAt') ? { deliveredAt } : {})
+  };
+  return { package: next };
+}
+
+function updatePackageEntry(id, fields) {
+  const list = getPackages();
+  const index = list.findIndex(pkg => pkg.id === id);
+  if (index < 0) return { error: 'This package no longer exists.' };
+  const current = list[index];
+  const result = preparePackageEntryUpdate(current, fields);
+  if (result.error) return result;
+  const change = packageChangeReason(current, fields);
+  if (change.error) return change;
+  recordPackageChange('edit', current, result.package, change);
+  list[index] = result.package;
+  setPackages(list);
+  return result;
+}
+
+function deletePackageEntry(id, fields = {}) {
+  const list = getPackages();
+  const current = list.find(pkg => pkg.id === id);
+  if (!canManagePackageEntry(current)) return false;
+  const change = packageChangeReason(current, fields);
+  if (change.error) return false;
+  const remaining = list.filter(pkg => pkg.id !== id);
+  if (remaining.length === list.length) return false;
+  recordPackageChange('delete', current, null, change);
+  setPackages(remaining);
+  return true;
+}
+
+function undoDeletePackage(id, deletionId) {
+  const list = getPackages();
+  if (list.some(pkg => pkg.id === id)) return null;
+  const stored = readSaved(PACKAGE_AUDIT_KEY, []);
+  const deletion = (Array.isArray(stored) ? stored : []).filter(record => record?.packageId === id && record.action === 'delete' && record.before).reverse().sort((a, b) => new Date(b.recordedAt) - new Date(a.recordedAt))[0];
+  if (!deletion || (deletionId && deletion.id !== deletionId) || !canManagePackageEntry(deletion.before)) return null;
+  const restored = JSON.parse(JSON.stringify(deletion.before));
+  if (!['pending', 'delivered', 'picked-up'].includes(restored.status)) return null;
+  recordPackageChange('restore', { ...restored, status: 'deleted' }, restored, { reason: '', note: '' });
+  list.push(restored);
+  setPackages(list);
+  return restored;
+}
+
+function movePackageToPending(id) {
+  const list = getPackages();
+  const index = list.findIndex(pkg => pkg.id === id);
+  if (index < 0 || !canReturnPackageToPending(list[index])) return null;
+  const next = { ...list[index], status: 'pending', deliveredBy: null, deliveredById: null, deliveredAt: null, pickedUpAt: null, pickedUpBy: null, pickedUpRecordedBy: null, pickedUpRecordedById: null, pickupIdVerified: null, pickupIdType: null };
+  recordPackageChange('move-to-pending', list[index], next, { reason: '', note: '' });
+  list[index] = next;
+  setPackages(list);
+  return next;
 }
 
 function sortPackagesNewestFirst(list) {
@@ -132,10 +516,11 @@ function addPackage(fields) {
     id: `pkg-${Date.now()}`,
     suite,
     residentName: (fields.residentName || resident?.name || 'Unknown resident').trim(),
-    receivedBy: (fields.receivedBy || concierge?.name || 'Concierge').trim(),
+    receivedBy: (concierge?.name || fields.receivedBy || 'Concierge').trim(),
+    receivedById: concierge?.id || null,
     carrier: fields.carrier || 'Other',
     parcelType: fields.parcelType || 'Package',
-    trackingLast6: String(fields.trackingLast6 || '').trim().slice(-6),
+    trackingLast6: String(fields.trackingLast6 || '').trim(),
     note: (fields.note || '').trim(),
     status: 'pending',
     receivedAt: parseArrivalInput(fields.arrivedAt),
@@ -148,10 +533,17 @@ function addPackage(fields) {
   return entry;
 }
 
+function recordPackageCompletion(action, before, after) {
+  const records = readSaved(PACKAGE_AUDIT_KEY, []);
+  const hasHistory = Array.isArray(records) && records.some(record => record?.packageId === before.id && ['edit', 'delete', 'move-to-pending', 'restore', 'deliver', 'pickup'].includes(record.action));
+  if (hasHistory) recordPackageChange(action, before, after, { reason: '', note: '' });
+}
+
 function markPackagesDelivered(ids, by = getCurrentConcierge()?.name || 'Concierge') {
   const idSet = new Set((ids || []).map(String));
   if (idSet.size === 0) return [];
   const now = new Date().toISOString();
+  const concierge = getCurrentConcierge();
   const delivered = [];
   const list = getPackages().map(p => {
     if (!idSet.has(p.id) || p.status !== 'pending') return p;
@@ -159,9 +551,15 @@ function markPackagesDelivered(ids, by = getCurrentConcierge()?.name || 'Concier
       ...p,
       status: 'delivered',
       deliveredAt: now,
-      deliveredBy: by,
-      pickedUpAt: null
+      deliveredBy: concierge?.name || by,
+      deliveredById: concierge?.id || null,
+      pickedUpAt: null,
+      pickedUpBy: null,
+      pickedUpRecordedBy: null,
+      pickedUpRecordedById: null,
+      pickupIdVerified: null, pickupIdType: null
     };
+    recordPackageCompletion('deliver', p, next);
     delivered.push(next);
     return next;
   });
@@ -169,20 +567,32 @@ function markPackagesDelivered(ids, by = getCurrentConcierge()?.name || 'Concier
   return delivered;
 }
 
-function markPackagesPickedUp(ids) {
+function markPackagesPickedUp(ids, pickedUpBy, idVerified = false, idType = '') {
+  const collector = String(pickedUpBy || '').trim();
+  if (!collector || collector.length > 120) return [];
+  const verifiedIdType = idVerified === true ? String(idType || '').trim() : null;
+  if (idVerified === true && !PACKAGE_PICKUP_ID_TYPES.includes(verifiedIdType)) return [];
   const idSet = new Set((ids || []).map(String));
   if (idSet.size === 0) return [];
   const now = new Date().toISOString();
+  const concierge = getCurrentConcierge();
   const picked = [];
   const list = getPackages().map(p => {
     if (!idSet.has(p.id) || p.status !== 'pending') return p;
     const next = {
       ...p,
       status: 'picked-up',
+      pickedUpBy: collector,
+      pickupIdVerified: idVerified === true,
+      pickupIdType: verifiedIdType,
       pickedUpAt: now,
+      pickedUpRecordedBy: concierge?.name || 'Concierge',
+      pickedUpRecordedById: concierge?.id || null,
       deliveredAt: null,
-      deliveredBy: null
+      deliveredBy: null,
+      deliveredById: null
     };
+    recordPackageCompletion('pickup', p, next);
     picked.push(next);
     return next;
   });
@@ -209,7 +619,7 @@ function countPending(list) {
 function renderPackageRow(pkg) {
   /* Compact row for the home dashboard card */
   const carrier = pkg.carrier || 'Other';
-  const tracking = pkg.trackingLast6 ? ` · #…${pkg.trackingLast6}` : '';
+  const tracking = pkg.trackingLast6 ? ` · Tracking # ${pkg.trackingLast6}` : '';
   const who = pkg.residentName && pkg.residentName !== 'Unknown resident' ? ` · ${pkg.residentName}` : '';
   return `<div class="package-row" data-package-id="${pkg.id}">
     <span class="package-logo-wrap">

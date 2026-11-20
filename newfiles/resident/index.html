@@ -5,13 +5,18 @@
   <meta name="theme-color" content="#35261e"><title>MySuite — Home</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="dashboard.css?v=712dbe1f7d5b">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="app.js?v=da2aa8cd890f" defer></script>
+  <script src="amenities-data.js?v=f7227f5b5b8c" defer></script>
+  <script src="../shared/elevator-booking-data.js?v=57078882d728" defer></script>
+  <script src="../concierge/announcements-data.js?v=eb1df7208a91" defer></script>
+  <script src="maintenance-samples.js?v=3c0e996151c7" defer></script>
+  <script src="app.js?v=d29ded3b97d6" defer></script>
+  <script src="home.js?v=1a91ae4105d2" defer></script>
 </head>
-<body data-time="afternoon">
+<body class="resident-portal resident-home" data-time="afternoon" data-portal-role="resident">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -24,41 +29,45 @@
       <a class="nav-item" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
       <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
       <div class="nav-divider"></div>
-      <a class="nav-item" href="#"><i data-icon="calendar"></i>Calendar</a>
+      <a class="nav-item" href="./#calendar" data-home-extra="calendar"><i data-icon="calendar"></i>Calendar</a>
       <a class="nav-item" href="documents.html"><i data-icon="file"></i>Documents</a>
-      <a class="nav-item" href="#"><i data-icon="bag"></i>Shop</a>
+      <a class="nav-item" href="./#shop" data-home-extra="shop"><i data-icon="bag"></i>Shop</a>
       <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
       <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
     </nav>
     <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
-  <main>
-    <header class="welcome">
-      <div class="welcome-copy"><p class="eyebrow">A LITTLE MORE AT HOME</p><h1 data-user-greeting="Welcome home, {first}"></h1><div class="resident-meta"><span data-user-suite></span><span class="meta-dot">·</span><span data-user-building></span></div><p class="welcome-note">Everything you need for life at The Point.</p></div>
-      <!-- Sample weather. Replace these two text values with your weather data. -->
-      <div class="window-weather" role="group" aria-label="Outside weather">
-        <span class="window-weather-temperature">3°C</span>
-        <span class="window-weather-condition">Sunny</span>
-      </div>
-      <div class="header-actions"><button class="icon-button notification" aria-label="View notifications" data-action="notifications"><i data-icon="bell"></i><span></span></button><button class="avatar" data-user-initials data-user-profile-label data-action="profile"></button></div>
+  <main class="home-main">
+    <header class="home-header">
+      <div class="home-welcome-copy"><h1 data-user-greeting="Welcome home, {first}"></h1></div>
+      <div class="home-header-actions"><a class="icon-button" href="announcements.html" aria-label="View building announcements"><i data-icon="bell"></i></a><button class="avatar" type="button" data-user-initials data-user-profile-label data-action="profile"></button></div>
     </header>
-    <section class="dashboard" aria-label="Your dashboard">
-      <article class="card announcements" id="announcements"><div class="card-heading"><h2><i data-icon="megaphone"></i>Announcements</h2><span class="count">2 new</span></div>
-        <button class="announcement" data-action="announcement-pool"><span class="tile-icon"><i data-icon="pool"></i></span><span><strong>Pool maintenance</strong><small>Pool will be closed on Friday.</small><em>BUILDING UPDATE · 2 HOURS AGO</em></span><i data-icon="chevron"></i></button>
-        <button class="announcement" data-action="announcement-social"><span class="tile-icon"><i data-icon="users"></i></span><span><strong>Community social</strong><small>Meet your neighbours this Saturday.</small><em>COMMUNITY · YESTERDAY</em></span><i data-icon="chevron"></i></button>
-        <div class="card-footer">A good place to stay in the loop.</div>
-      </article>
-      <article class="card amenities" id="amenities"><div class="card-heading"><h2><i data-icon="calendar"></i>Amenity booking</h2></div><img class="pool-photo" src="../assets/pool.png" alt="Sunlit indoor pool with loungers and oak finishes">
-        <div class="amenity-row"><span><i data-icon="pool"></i><strong>Pool</strong></span><a class="button compact" href="amenities.html?amenity=pool">Book a time</a></div>
-        <div class="amenity-row"><span><i data-icon="users"></i><strong>Common room</strong></span><a class="button compact" href="amenities.html?amenity=common-area">Reserve</a></div>
-      </article>
-      <article class="card calendar" id="calendar"><div class="card-heading"><h2><i data-icon="calendar"></i><span id="calendar-title">November 2026</span></h2><div class="calendar-controls"><button class="icon-button" data-month="-1" aria-label="Previous month"><i data-icon="left"></i></button><button class="icon-button" data-month="1" aria-label="Next month"><i data-icon="chevron"></i></button></div></div><div class="weekdays" aria-hidden="true"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div><div class="calendar-days" id="calendar-days" aria-label="Calendar dates"></div><div class="calendar-events" id="calendar-events"></div></article>
-      <article class="card maintenance" id="maintenance"><div class="card-heading"><h2><i data-icon="wrench"></i>Maintenance request</h2></div><p class="overline">#M-4802</p><h3>Bedroom window latch</h3><div class="card-bottom"><span class="badge status">Scheduled</span><button class="button outline" data-action="maintenance">View details</button></div></article>
-      <article class="card vote" id="vote"><div class="card-heading"><h2><i data-icon="chart"></i>Community vote</h2><span class="tiny-label">OPEN</span></div><h3>Lobby refresh</h3><p class="muted">Have your say in our shared spaces.</p><div class="vote-progress"><div class="progress-track"><span></span></div><span>72%</span></div><button class="button full" data-action="vote" id="vote-button">Vote now<i data-icon="arrow"></i></button></article>
-      <article class="card meeting" id="meeting"><div class="card-heading"><h2><i data-icon="users"></i>Upcoming event</h2></div><h3>Community social</h3><p class="meeting-date"><i data-icon="calendar"></i>Nov 14 · 3:00 PM</p><button class="button outline full" data-action="announcement-social"><i data-icon="users"></i>View details</button></article>
-      <article class="card shop" id="shop"><div class="shop-content"><h2><i data-icon="bag"></i>Shop</h2><h3>Little essentials.<br>One convenient place.</h3><p class="muted">Fobs, batteries &amp; everyday supplies.</p><button class="button" data-action="shop">Browse shop<i data-icon="arrow"></i></button></div></article>
-      <article class="card assistant" id="assistant"><div class="assistant-title"><span class="sparkle"><i data-icon="sparkle"></i></span><div><h2>Ask AI</h2><p class="muted">Answers from your condo policies</p></div><span class="tiny-label">YOUR BUILDING GUIDE</span></div><div id="ai-answer" class="ai-answer" aria-live="polite" hidden></div><form id="ai-form"><label class="sr-only" for="ai-input">Ask about your building</label><input id="ai-input" name="question" placeholder="Ask about your building…" required autocomplete="off"><button class="button send" aria-label="Send question"><i data-icon="send"></i></button></form></article>
+    <nav class="home-quick-actions" aria-label="Quick actions">
+      <a href="amenities.html"><span class="home-action-icon"><i data-icon="calendar"></i></span><strong>Book an amenity</strong><i data-icon="chevron"></i></a>
+      <a href="maintenance.html"><span class="home-action-icon"><i data-icon="wrench"></i></span><strong>Request maintenance</strong><i data-icon="chevron"></i></a>
+      <a href="elevator-booking.html"><span class="home-action-icon"><i data-icon="elevator"></i></span><strong>Book elevator</strong><i data-icon="chevron"></i></a>
+      <a href="long-term-absence.html"><span class="home-action-icon"><i data-icon="suitcase"></i></span><strong>Report an absence</strong><i data-icon="chevron"></i></a>
+    </nav>
+    <p id="home-data-error" class="home-error" role="alert" hidden></p>
+    <section class="home-overview" aria-labelledby="home-overview-title">
+      <div class="home-section-heading"><h2 id="home-overview-title">Overview</h2><span>At a glance</span></div>
+      <div class="home-overview-grid">
+        <a class="home-summary-card" href="#home-reservations-title"><span class="home-summary-icon"><i data-icon="calendar"></i></span><span><span class="home-summary-label">Reservations</span><strong id="home-bookings-count" aria-live="polite">Loading reservations</strong><small>View your upcoming bookings</small></span><i data-icon="chevron"></i></a>
+        <a class="home-summary-card" href="maintenance.html?tab=open"><span class="home-summary-icon"><i data-icon="wrench"></i></span><span><span class="home-summary-label">Service requests</span><strong id="home-requests-count" aria-live="polite">Loading requests</strong><small id="home-requests-note">Track repairs in your home</small></span><i data-icon="chevron"></i></a>
+        <a class="home-summary-card" href="announcements.html"><span class="home-summary-icon"><i data-icon="megaphone"></i></span><span><span class="home-summary-label">Community</span><strong id="home-announcements-count" aria-live="polite">Loading announcements</strong><small>Latest news from your building</small></span><i data-icon="chevron"></i></a>
+      </div>
     </section>
+    <div class="home-main-grid">
+      <section class="home-panel" aria-labelledby="home-reservations-title"><div class="home-panel-heading"><h2 id="home-reservations-title"><i data-icon="calendar"></i>Upcoming reservations</h2><a href="amenities.html?tab=active">View bookings<i data-icon="chevron"></i></a></div><details class="home-font-panel"><summary>Appearance controls</summary><div class="home-appearance-content"><div class="home-font-panel-label"><strong>Heading font</strong><span class="home-font-name" id="home-font-name" aria-live="polite">Proxima Nova</span></div><div class="home-font-controls" role="group" aria-label="Welcome heading font"><button type="button" id="home-next-font">Next font</button><button type="button" id="home-remove-font">Remove</button><button type="button" data-home-font-weight="400" aria-pressed="false">Regular</button><button type="button" data-home-font-weight="600" aria-pressed="false">Semibold</button><button type="button" data-home-font-weight="700" aria-pressed="true">Bold</button></div><div class="home-logo-controls" role="group" aria-label="MySuite logo appearance"><label for="home-logo-size">Logo size <output id="home-logo-size-value" for="home-logo-size">43px</output></label><input type="range" id="home-logo-size" min="24" max="80" step="1" value="43"><button type="button" id="home-logo-move" aria-pressed="false">Move logo</button><button type="button" id="home-logo-reset">Reset logo</button><span class="home-logo-hint" id="home-logo-hint" hidden>Drag the logo or use arrow keys. Escape finishes moving.</span></div></div></details><div id="home-reservations-list"></div><p id="home-reservations-empty" class="home-empty" hidden>No upcoming reservations. Book a space when you need it.</p></section>
+      <section class="home-panel" aria-labelledby="home-announcements-title"><div class="home-panel-heading"><h2 id="home-announcements-title"><i data-icon="megaphone"></i>Community announcements</h2><a href="announcements.html">View all<i data-icon="chevron"></i></a></div><div id="home-announcements-list"></div><p id="home-announcements-empty" class="home-empty" hidden>Building announcements will appear here.</p></section>
+      <section class="home-panel home-recent" aria-labelledby="home-recent-title"><div class="home-panel-heading"><h2 id="home-recent-title"><i data-icon="wrench"></i>Recent requests</h2><a href="maintenance.html?tab=open">View all requests<i data-icon="chevron"></i></a></div><div id="home-requests-list"></div><p id="home-requests-empty" class="home-empty" hidden>You have no maintenance requests yet.</p></section>
+    </div>
+    <details class="home-extras" id="home-extras"><summary><span><i data-icon="building"></i>More from your building</span><i data-icon="chevron"></i></summary><div class="home-community-grid">
+<article class="card calendar" id="calendar"><div class="card-heading"><h2><i data-icon="calendar"></i><span id="calendar-title">November 2026</span></h2><div class="calendar-controls"><button class="icon-button" data-month="-1" aria-label="Previous month"><i data-icon="left"></i></button><button class="icon-button" data-month="1" aria-label="Next month"><i data-icon="chevron"></i></button></div></div><div class="weekdays" aria-hidden="true"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div><div class="calendar-days" id="calendar-days" aria-label="Calendar dates"></div><div class="calendar-events" id="calendar-events"></div></article>
+<article class="card vote" id="vote"><div class="card-heading"><h2><i data-icon="chart"></i>Community vote</h2><span class="tiny-label">OPEN</span></div><h3>Lobby refresh</h3><p class="muted">Have your say in our shared spaces.</p><div class="vote-progress"><div class="progress-track"><span></span></div><span>72%</span></div><button class="button full" data-action="vote" id="vote-button">Vote now<i data-icon="arrow"></i></button></article>
+<article class="card assistant" id="assistant"><div class="assistant-title"><span class="sparkle"><i data-icon="sparkle"></i></span><div><h2>Ask AI</h2><p class="muted">Answers from your condo policies</p></div><span class="tiny-label">YOUR BUILDING GUIDE</span></div><div id="ai-answer" class="ai-answer" aria-live="polite" hidden></div><form id="ai-form"><label class="sr-only" for="ai-input">Ask about your building</label><input id="ai-input" name="question" placeholder="Ask about your building…" required autocomplete="off"><button class="button send" aria-label="Send question"><i data-icon="send"></i></button></form></article>
+<article class="card shop" id="shop"><div class="shop-content"><h2><i data-icon="bag"></i>Shop</h2><h3>Little essentials.<br>One convenient place.</h3><p class="muted">Fobs, batteries &amp; everyday supplies.</p><button class="button" data-action="shop">Browse shop<i data-icon="arrow"></i></button></div></article>
+    </div></details>
     <footer class="page-footer"><span>MySuite · A little closer to home.</span><label class="lighting-picker" for="header-lighting">Header lighting <select id="header-lighting"><option value="morning">Morning</option><option value="afternoon" selected>Afternoon</option><option value="evening">Evening</option><option value="night">Night</option></select></label><button data-action="help">Need a hand?</button></footer>
   </main>
   <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>

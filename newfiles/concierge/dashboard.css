@@ -1,6 +1,134 @@
 /* MySuite — Concierge dashboard card styles.
    Requires shared/tokens.css and shared/base.css. */
 
+/* ── Cream merged sidebar (homepage only: body.sidebar-merge) ── */
+body.sidebar-merge {
+  background:
+    radial-gradient(120% 80% at 78% 0%, #ebd7c4 0%, transparent 55%),
+    radial-gradient(90% 60% at 100% 18%, #f0e0d0 0%, transparent 50%),
+    #f7f3ed
+}
+body.concierge-sidebar .sidebar {
+  border-right:0;
+  background:transparent;
+  color:#4a3f35
+}
+body.concierge-sidebar .brand {
+  color:var(--espresso);
+  border-bottom:1px solid transparent;
+  margin-bottom:8px;
+  padding-bottom:10px
+}
+body.concierge-sidebar .brand-dot { color:#c4a07a }
+body.concierge-sidebar .nav-item {
+  color:#4a3f35;
+  border-radius:999px;
+  padding:12px 16px;
+  margin:3px 0;
+  font-weight:500;
+  box-shadow:none
+}
+body.concierge-sidebar .nav-item:hover { background:#f0e8df }
+body.concierge-sidebar .nav-item.active {
+  background:#f2e3d5;
+  color:var(--espresso);
+  box-shadow:none;
+  font-weight:600
+}
+body.concierge-sidebar .nav-divider {
+  background:#e5ddd3;
+  margin:12px 16px
+}
+body.concierge-sidebar .sidebar-bottom {
+  border-top:1px solid #e5ddd3;
+  color:#4a3f35
+}
+body.concierge-sidebar .sidebar-bottom small { color:#8a7b6c }
+body.concierge-sidebar .sidebar .avatar.small {
+  background:#e8dccf;
+  color:var(--espresso)
+}
+body.concierge-sidebar .logout { color:#4a3f35 }
+body.concierge-sidebar .logout:hover { background:#f0e8df }
+body.sidebar-merge .welcome {
+  min-height:194px;
+  align-items:flex-start;
+  padding-top:48px;
+  padding-bottom:22px;
+  overflow:visible;
+  isolation:auto;
+  background:
+    linear-gradient(95deg, #f7f3ed 0%, #f7f3edf2 18%, #f7f3ed99 36%, transparent 58%),
+    url('../assets/header-afternoon.png') 72% 32% / cover;
+  /* Soft alpha dissolve so the photo never ends on a hard edge */
+  -webkit-mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 38%,
+    rgba(0,0,0,.92) 52%,
+    rgba(0,0,0,.7) 66%,
+    rgba(0,0,0,.38) 80%,
+    rgba(0,0,0,.12) 92%,
+    transparent 100%
+  );
+  mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 38%,
+    rgba(0,0,0,.92) 52%,
+    rgba(0,0,0,.7) 66%,
+    rgba(0,0,0,.38) 80%,
+    rgba(0,0,0,.12) 92%,
+    transparent 100%
+  )
+}
+body.sidebar-merge .welcome::after {
+  height:70%;
+  bottom:-12%;
+  background:linear-gradient(
+    to bottom,
+    rgba(247,243,237,0) 0%,
+    rgba(247,243,237,.06) 20%,
+    rgba(247,243,237,.18) 38%,
+    rgba(247,243,237,.36) 54%,
+    rgba(247,243,237,.58) 70%,
+    rgba(247,243,237,.82) 86%,
+    rgba(247,243,237,.96) 96%,
+    #f7f3ed 100%
+  )
+}
+body.sidebar-merge .welcome + .dashboard { margin-top:-52px }
+@media(min-width:1600px) {
+  body.sidebar-merge .welcome { min-height:216px }
+}
+@media(max-width:1200px) {
+  body.sidebar-merge .welcome { min-height:184px }
+}
+@media(max-width:800px) {
+  body.sidebar-merge .welcome { min-height:210px; padding-top:72px }
+}
+body.sidebar-merge .welcome-copy {
+  max-width:min(34rem, 58%);
+  transform:translateY(0)
+}
+body.sidebar-merge .welcome-copy h1 {
+  margin:0;
+  font-size:clamp(34px, 3.4vw, 48px);
+  line-height:1.15;
+  letter-spacing:-0.02em;
+  color:var(--espresso)
+}
+body.sidebar-merge .welcome-note {
+  margin:10px 0 0;
+  font-size:15px;
+  font-weight:500;
+  line-height:1.45;
+  color:#8a6848
+}
+
+/* ── Cards ────────────────────────────────────────────────── */
+.card { border-radius:40px }
+
 /* ── Dashboard grid (column stacks so short cards pack up) ── */
 .dashboard {
   display:grid;
@@ -18,6 +146,21 @@
 .dashboard-col > .card {
   height:fit-content
 }
+
+/* Shop card: reuse the resident portal's fob image. */
+.shop {
+  position:relative;
+  overflow:hidden;
+  min-height:270px;
+  border-radius:26px;
+  padding:28px;
+  background:linear-gradient(90deg,#fffcf8 10%,#fffcf8e6 42%,#fffcf800 85%),url('../assets/fob.png') center/cover
+}
+.shop-content { position:relative; max-width:100% }
+.shop h2 { margin-bottom:18px; font-size:22px }
+.shop h3 { font:500 clamp(23px,1.8vw,28px)/1.2 Georgia,serif; margin-bottom:12px }
+.shop .muted { margin:0; font-size:14px; color:#795638 }
+.shop .button { margin-top:20px; min-height:48px; padding:12px 19px; border-radius:12px; font-size:14px }
 
 /* ── Packages card ────────────────────────────────────────── */
 .package-row {

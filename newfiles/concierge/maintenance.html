@@ -5,16 +5,16 @@
   <meta name="theme-color" content="#35261e"><title>MySuite — Maintenance</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="maintenance.css">
+  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
+  <link rel="stylesheet" href="maintenance.css?v=deecf8dfa166">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="maintenance-data.js" defer></script>
-  <script src="maintenance.js" defer></script>
+  <script src="maintenance.js?v=afef46526891" defer></script>
 </head>
-<body data-time="afternoon" data-breadcrumb="Maintenance">
+<body class="concierge-sidebar maintenance-page" data-time="afternoon" data-breadcrumb="Maintenance">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -46,41 +46,22 @@
       </div>
     </header>
 
-    <div class="packages-layout">
-      <section id="log-panel" class="log-panel card" aria-label="Log a maintenance request">
+    <div class="packages-layout desk-layout">
+      <section id="log-panel" class="log-panel desk-form-card card" aria-label="Log a maintenance request">
         <div class="log-panel-top">
           <h2><i data-icon="wrench"></i>Log a request</h2>
         </div>
         <div id="form-slot-panel"></div>
       </section>
 
-      <section class="packages-table-card card" aria-label="Maintenance list">
-        <div class="pkg-tabs" role="tablist">
-          <button type="button" class="pkg-tab active" role="tab" aria-selected="true" data-tab="awaiting" id="tab-pending">Pending</button>
-          <button type="button" class="pkg-tab" role="tab" aria-selected="false" data-tab="history" id="tab-history">History</button>
+      <section class="packages-table-card desk-list-card card" aria-label="Maintenance list">
+        <div class="pkg-tabs" role="tablist" aria-label="Maintenance requests">
+          <button type="button" class="pkg-tab active" role="tab" aria-selected="true" aria-controls="maintenance-panel" data-tab="awaiting" id="tab-pending">Pending</button>
+          <button type="button" class="pkg-tab" role="tab" aria-selected="false" aria-controls="maintenance-panel" tabindex="-1" data-tab="history" id="tab-history">History</button>
         </div>
-
-        <div id="pending-panel" class="pending-panel">
-          <div id="pending-list" class="pending-list"></div>
-          <p id="pending-empty" class="pkg-empty" hidden>Nothing pending. Log a request when something needs attention.</p>
-        </div>
-
-        <div id="history-panel" class="table-wrap" hidden>
-          <table class="pkg-table" id="mnt-table">
-            <thead>
-              <tr>
-                <th>Location</th>
-                <th>Title</th>
-                <th>Reported</th>
-                <th>Logged by</th>
-                <th>Completed</th>
-                <th>Completed by</th>
-              </tr>
-            </thead>
-            <tbody id="mnt-tbody"></tbody>
-          </table>
-          <p id="mnt-empty" class="pkg-empty" hidden>No completed requests yet.</p>
-        </div>
+        <div class="desk-search"><i data-icon="search"></i><label class="sr-only" for="maintenance-search">Search maintenance requests</label><input id="maintenance-search" type="search" placeholder="Search location, request title or notes..." aria-controls="maintenance-list"></div>
+        <div id="maintenance-panel" role="tabpanel" aria-labelledby="tab-pending"><div id="maintenance-list"></div><p id="maintenance-empty" class="desk-empty" hidden>No maintenance requests in this list.</p></div>
+        <div class="desk-list-footer"><p id="maintenance-range" role="status" aria-live="polite"></p><nav class="desk-pagination" aria-label="Maintenance pages"><button type="button" id="maintenance-previous" class="desk-page-arrow" aria-label="Previous page"><i data-icon="left"></i></button><label class="desk-page-picker"><span class="sr-only">Maintenance page</span><select id="maintenance-page"></select><i data-icon="chevron"></i></label><button type="button" id="maintenance-next" class="desk-page-arrow" aria-label="Next page"><i data-icon="chevron"></i></button></nav></div>
       </section>
     </div>
 
@@ -99,7 +80,7 @@
   </main>
 
   <template id="maintenance-form-template">
-    <form id="maintenance-form" class="arrive-form">
+    <form id="maintenance-form" class="arrive-form desk-form">
       <div class="arrive-top">
         <label class="arrive-suite">Location
           <input id="mnt-location" name="suite" type="text" placeholder="Suite, lobby, garage…" required autocomplete="off">
@@ -108,18 +89,19 @@
       <input type="hidden" name="reportedBy" value="">
 
       <div class="arrive-fields">
-        <label>Maintenance Request Title
-          <input id="mnt-title" name="title" type="text" placeholder="Short title for this request" required autocomplete="off">
+        <label>Request title
+          <input id="mnt-title" name="title" type="text" placeholder="Short title for this request" maxlength="120" required autocomplete="off">
         </label>
         <label>When reported
           <input id="mnt-reported" name="reportedAt" type="datetime-local" required>
         </label>
         <label>Notes
-          <textarea name="note" rows="4" placeholder="What needs attention?" required></textarea>
+          <textarea name="note" rows="3" maxlength="2000" placeholder="What needs attention?" required></textarea>
         </label>
       </div>
 
-      <div class="form-actions">
+      <p id="maintenance-form-message" class="desk-form-message" role="alert" tabindex="-1" hidden></p>
+      <div class="form-actions desk-form-actions">
         <button type="button" class="button outline" data-cancel-log>Clear</button>
         <button class="button" type="submit">Log request</button>
       </div>

@@ -8,6 +8,7 @@ This folder is part of an enterprise application. Prefer caution over speed. Do 
 2. **Wait for explicit approval** before creating, editing, deleting, renaming, or moving files.
 3. If requirements are unclear, ask — do not assume or invent scope.
 4. Explain concepts like a beginner, but that doesnt mean this is a simple app being developed. it is a enterprise scale development so security must be thought of, and the code being enterprise grade.
+5. If its minor stuff, like delete, or undo, or resizing, or adding text or tables. you dont ned approval, its for major code changes
 
 ## UX for real people (required)
 

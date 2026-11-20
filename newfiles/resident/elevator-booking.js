@@ -150,4 +150,4 @@ document.querySelector('.elevator-tabs').addEventListener('keydown', event => {
 });
 window.addEventListener('storage', renderMyBookings);
 window.addEventListener('focus', renderMyBookings);
-renderMyBookings();
+selectElevatorTab(['open', 'past'].includes(new URLSearchParams(location.search).get('tab')) ? new URLSearchParams(location.search).get('tab') : 'create');

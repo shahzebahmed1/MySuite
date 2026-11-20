@@ -5,16 +5,16 @@
   <meta name="theme-color" content="#35261e"><title>MySuite — Incident report</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="incident-report.css">
+  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
+  <link rel="stylesheet" href="incident-report.css?v=8a91b2e653e4">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="incident-report-data.js" defer></script>
-  <script src="incident-report.js" defer></script>
+  <script src="incident-report-data.js?v=53216a9ede94" defer></script>
+  <script src="incident-report.js?v=2e16a5399d5f" defer></script>
 </head>
-<body data-time="afternoon" data-breadcrumb="Incident report">
+<body class="concierge-sidebar incident-report-page" data-time="afternoon" data-breadcrumb="Incident report">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -55,24 +55,26 @@
       </section>
 
       <section class="incidents-history-card card" aria-label="Incident history">
-        <div class="history-card-top">
-          <div class="history-card-heading">
-            <h2>Past reports</h2>
-            <div class="year-nav" aria-label="Filter by year">
-              <button type="button" class="year-nav-btn" data-action="prev-year" aria-label="Previous year"><i data-icon="left"></i></button>
-              <button type="button" class="year-pill" id="year-pill-btn" aria-label="Choose year">
-                <i data-icon="calendar"></i>
-                <span id="year-label">2026</span>
-                <i data-icon="chevron"></i>
-              </button>
-              <button type="button" class="year-nav-btn" data-action="next-year" aria-label="Next year"><i data-icon="chevron"></i></button>
-              <select id="year-select" class="year-select" aria-label="Year"></select>
+        <div class="history-card-top"><h2>Past reports</h2></div>
+        <div class="incident-search-toolbar">
+          <div class="incident-search-field"><i data-icon="search" aria-hidden="true"></i><label class="sr-only" for="incident-search">Search incident reports</label><input id="incident-search" type="search" placeholder="Search location, incident type or report..." aria-controls="incident-list"></div>
+            <div class="incident-year-filter">
+              <button type="button" id="incident-year-toggle" class="button outline" data-action="toggle-incident-year" aria-expanded="false" aria-controls="incident-year-menu"><i data-icon="calendar"></i><span id="incident-year-label">Filter by Year</span><span class="incident-filter-chevron"><i data-icon="chevron" aria-hidden="true"></i></span></button>
+              <div id="incident-year-menu" class="incident-year-menu" hidden>
+                <fieldset><legend>Incident year</legend><div id="incident-year-options"></div></fieldset>
+                <button type="button" class="button" data-action="apply-incident-year">Apply filter</button>
+              </div>
             </div>
-          </div>
-          <span class="history-count" id="history-count">0 reports</span>
         </div>
         <div id="incident-list" class="incident-list"></div>
         <p id="incident-empty" class="incident-empty" hidden>No incident reports yet.</p>
+        <div class="incident-history-footer"><p class="history-count" id="history-count" role="status" aria-live="polite">Showing 0 of 0</p>
+            <nav class="incident-pagination" aria-label="Past report pages">
+              <button type="button" class="incident-page-arrow" data-action="previous-incident-page" aria-label="Previous page"><i data-icon="left"></i></button>
+              <label class="incident-page-picker"><span class="sr-only">Page</span><select id="incident-page-select" aria-label="Report page"><option value="1">Page 1 of 1</option></select><i data-icon="chevron"></i></label>
+              <button type="button" class="incident-page-arrow" data-action="next-incident-page" aria-label="Next page"><i data-icon="chevron"></i></button>
+            </nav>
+        </div>
       </section>
     </div>
 
@@ -118,7 +120,6 @@
       </div>
 
       <div class="form-actions">
-        <button type="button" class="button outline" data-cancel-log>Clear</button>
         <button class="button" type="submit">Log incident</button>
       </div>
     </form>

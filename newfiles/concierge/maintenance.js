@@ -6,6 +6,9 @@ applyLoggedInUser('concierge');
 
 let activeTab = 'awaiting';
 let formWired = false;
+const deskSearch = { awaiting: '', history: '' };
+const deskPages = { awaiting: 1, history: 1 };
+const deskPageSize = 5;
 
 function closeMenu() {
   document.querySelector('.sidebar').classList.remove('open');
@@ -38,11 +41,21 @@ function wireFormHandlers() {
 
   form.addEventListener('submit', event => {
     event.preventDefault();
+    if (!form.reportValidity()) return;
     const data = Object.fromEntries(new FormData(form));
-    const entry = addMaintenance(data);
+    const message = document.querySelector('#maintenance-form-message');
+    if (!String(data.suite || '').trim() || !String(data.title || '').trim() || !String(data.note || '').trim() || Number.isNaN(new Date(data.reportedAt).getTime())) {
+      message.textContent = 'Enter a location, request title, reported time and description.';
+      message.hidden = false;
+      message.focus();
+      return;
+    }
+    addMaintenance(data);
     resetForm();
-    refreshTable();
-    toast(`${entry.suite} logged.`);
+    deskSearch.awaiting = '';
+    deskPages.awaiting = 1;
+    setTab('awaiting');
+    toast('Maintenance request logged.');
   });
 }
 
@@ -71,70 +84,86 @@ function resetForm() {
   const reportedBy = form.querySelector('input[name="reportedBy"]');
   if (reportedBy) reportedBy.value = currentConciergeName();
   stampReportedTime();
+  document.querySelector('#maintenance-form-message').hidden = true;
 }
 
-function updateTabCounts(pendingCount, historyCount) {
-  const pendingTab = document.querySelector('#tab-pending');
-  const historyTab = document.querySelector('#tab-history');
-  if (pendingTab) pendingTab.textContent = `Pending (${pendingCount})`;
-  if (historyTab) historyTab.textContent = `History (${historyCount})`;
+function escapeMaintenanceHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+}
+
+function renderMaintenanceRecord(item) {
+  const escape = escapeMaintenanceHtml;
+  const complete = item.status !== 'pending';
+  return `<article class="desk-record"><div class="desk-who"><strong>${escape(item.suite)}</strong>${item.residentName ? `<span>${escape(item.residentName)}</span>` : ''}</div><div class="desk-detail"><div class="desk-heading"><i data-icon="wrench"></i><strong>${escape(maintenanceSummary(item))}</strong></div>${item.note && item.note !== item.title ? `<p class="desk-note">${escape(item.note)}</p>` : ''}<dl class="desk-meta"><div><dt>Reported</dt><dd>${escape(formatMaintenanceDateTime(item.reportedAt))}</dd></div><div><dt>Logged by</dt><dd>${escape(item.reportedBy || 'Concierge')}</dd></div>${complete ? `<div><dt>Completed</dt><dd>${escape(formatMaintenanceDateTime(item.completedAt))}</dd></div><div><dt>Completed by</dt><dd>${escape(item.completedBy || 'Concierge')}</dd></div>` : ''}</dl></div>${complete ? '<span class="desk-status is-completed">Completed</span>' : `<button type="button" class="desk-complete" data-complete-maint="${escape(item.id)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Mark complete</button>`}</article>`;
 }
 
 function refreshTable() {
   const items = sortMaintenanceNewestFirst(getMaintenance());
-  const pending = items.filter(m => m.status === 'pending');
-  const history = items.filter(m => m.status !== 'pending').slice(0, 20);
-  const isHistory = activeTab === 'history';
-  const pendingPanel = document.querySelector('#pending-panel');
-  const historyPanel = document.querySelector('#history-panel');
-  const pendingList = document.querySelector('#pending-list');
-  const pendingEmpty = document.querySelector('#pending-empty');
-  const tbody = document.querySelector('#mnt-tbody');
-  const historyEmpty = document.querySelector('#mnt-empty');
-
-  updateTabCounts(pending.length, history.length);
-
-  if (pendingPanel) pendingPanel.hidden = isHistory;
-  if (historyPanel) historyPanel.hidden = !isHistory;
-
-  if (!isHistory) {
-    if (pending.length === 0) {
-      pendingList.innerHTML = '';
-      pendingEmpty.hidden = false;
-    } else {
-      pendingEmpty.hidden = true;
-      pendingList.innerHTML = pending.map(renderMaintenancePendingRow).join('');
-    }
-    return;
-  }
-
-  if (history.length === 0) {
-    tbody.innerHTML = '';
-    historyEmpty.hidden = false;
-    return;
-  }
-
-  historyEmpty.hidden = true;
-  tbody.innerHTML = history.map(renderMaintenanceHistoryRow).join('');
+  const pending = items.filter(item => item.status === 'pending');
+  const history = items.filter(item => item.status !== 'pending');
+  document.querySelector('#tab-pending').innerHTML = `Pending <span class="desk-count">${pending.length}</span>`;
+  document.querySelector('#tab-history').textContent = 'History';
+  const query = deskSearch[activeTab].trim().toLowerCase();
+  const rows = (activeTab === 'history' ? history : pending).filter(item => !query || [item.suite, item.residentName, item.title, item.note, item.reportedBy].some(value => String(value || '').toLowerCase().includes(query)));
+  const pageCount = Math.max(1, Math.ceil(rows.length / deskPageSize));
+  deskPages[activeTab] = Math.min(Math.max(1, deskPages[activeTab]), pageCount);
+  const page = deskPages[activeTab];
+  const offset = (page - 1) * deskPageSize;
+  document.querySelector('#maintenance-range').textContent = rows.length ? `Showing ${offset + 1}\u2013${Math.min(offset + deskPageSize, rows.length)} of ${rows.length}` : 'Showing 0 of 0';
+  document.querySelector('#maintenance-page').innerHTML = Array.from({ length: pageCount }, (_, index) => `<option value="${index + 1}"${index + 1 === page ? ' selected' : ''}>Page ${index + 1} of ${pageCount}</option>`).join('');
+  document.querySelector('#maintenance-previous').disabled = page <= 1;
+  document.querySelector('#maintenance-next').disabled = page >= pageCount;
+  const list = document.querySelector('#maintenance-list');
+  list.innerHTML = rows.slice(offset, offset + deskPageSize).map(renderMaintenanceRecord).join('');
+  renderIcons(list);
+  const empty = document.querySelector('#maintenance-empty');
+  empty.hidden = rows.length > 0;
+  empty.textContent = query ? 'No requests match your search.' : activeTab === 'history' ? 'No completed requests yet.' : 'Nothing pending. Log a request when something needs attention.';
 }
 
 function setTab(tab) {
+  if (!['awaiting', 'history'].includes(tab)) return;
   activeTab = tab;
-  document.querySelectorAll('.pkg-tab').forEach(btn => {
-    const on = btn.dataset.tab === tab;
-    btn.classList.toggle('active', on);
-    btn.setAttribute('aria-selected', String(on));
+  document.querySelectorAll('.pkg-tab').forEach(button => {
+    const selected = button.dataset.tab === tab;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-selected', String(selected));
+    button.tabIndex = selected ? 0 : -1;
   });
+  document.querySelector('#maintenance-panel').setAttribute('aria-labelledby', tab === 'awaiting' ? 'tab-pending' : 'tab-history');
+  document.querySelector('#maintenance-search').value = deskSearch[tab];
   refreshTable();
 }
 
+
+document.querySelector('#maintenance-search').addEventListener('input', event => {
+  deskSearch[activeTab] = event.target.value;
+  deskPages[activeTab] = 1;
+  refreshTable();
+});
+document.querySelector('#maintenance-page').addEventListener('change', event => {
+  const page = Number(event.target.value);
+  if (!Number.isInteger(page) || page < 1) return;
+  deskPages[activeTab] = page;
+  refreshTable();
+});
+for (const [id, offset] of [['maintenance-previous', -1], ['maintenance-next', 1]]) {
+  document.querySelector(`#${id}`).addEventListener('click', () => { deskPages[activeTab] += offset; refreshTable(); });
+}
+document.querySelector('.pkg-tabs').addEventListener('keydown', event => {
+  if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+  event.preventDefault();
+  const tab = event.key === 'Home' ? 'awaiting' : event.key === 'End' ? 'history' : activeTab === 'awaiting' ? 'history' : 'awaiting';
+  setTab(tab);
+  document.querySelector(`[data-tab="${tab}"]`).focus();
+});
 function findMaintenanceById(id) {
   return getMaintenance().find(m => m.id === id) || null;
 }
 
 function maintenanceConfirmLabel(item) {
   if (!item) return 'this request';
-  return `${item.suite} · ${maintenanceSummary(item)}`;
+  return `${escapeMaintenanceHtml(item.suite)} &middot; ${escapeMaintenanceHtml(maintenanceSummary(item))}`;
 }
 
 function askCompleteConfirm(id) {

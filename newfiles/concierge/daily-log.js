@@ -5,6 +5,7 @@ renderIcons();
 applyLoggedInUser('concierge');
 
 let activeShift = suggestShift();
+let shiftContentAnimation = null;
 let inlineEdit = null; /* { id, originalTime, originalNotes } — expanded log row */
 let inlineNoteEdit = null; /* { id, original } — important note */
 
@@ -42,7 +43,13 @@ function formatDateLabel(value) {
 
 function syncDateLabel() {
   const label = document.querySelector('#log-date-label');
+  const fullDate = formatDateLabel(currentDate());
   if (label) label.textContent = formatDateLabel(currentDate());
+  const button = document.querySelector('#date-pill-btn');
+  if (button) {
+    button.setAttribute('aria-label', `Choose log date: ${fullDate}`);
+    button.title = fullDate;
+  }
 }
 
 function openDatePicker() {
@@ -74,7 +81,7 @@ function shiftLogDate(days) {
 function updateShiftHeading() {
   const heading = document.querySelector('#shift-heading');
   if (!heading) return;
-  heading.textContent = `${shiftLabel(activeShift)} Shift`;
+  heading.textContent = `${shiftLabel(activeShift)} Shift Journal`;
 }
 
 function resetComposer() {
@@ -109,6 +116,25 @@ function refreshLogTable() {
   renderIcons(tbody);
 }
 
+function hideNoteComposer() {
+  const form = document.querySelector('#note-composer-form');
+  const toggle = document.querySelector('#note-add-toggle');
+  if (form) {
+    form.hidden = true;
+    form.reset();
+  }
+  if (toggle) toggle.hidden = false;
+}
+
+function showNoteComposer() {
+  const form = document.querySelector('#note-composer-form');
+  const toggle = document.querySelector('#note-add-toggle');
+  if (toggle) toggle.hidden = true;
+  if (!form) return;
+  form.hidden = false;
+  document.querySelector('#note-composer-text')?.focus();
+}
+
 function refreshNotes() {
   const notes = getOpenImportantNotes();
   const tbody = document.querySelector('#notes-tbody');
@@ -118,21 +144,48 @@ function refreshNotes() {
 
   if (notes.length === 0) {
     tbody.innerHTML = '';
-    empty.hidden = false;
-    return;
+    if (empty) empty.hidden = false;
+  } else {
+    if (empty) empty.hidden = true;
+    tbody.innerHTML = notes.map(renderImportantNoteRow).join('');
+    renderIcons(tbody);
   }
-  empty.hidden = true;
-  tbody.innerHTML = notes.map(renderImportantNoteRow).join('');
 }
 
+function updateShiftIndicator() {
+  const tabs = document.querySelector('.log-card-top .shift-tabs');
+  const selected = tabs?.querySelector('.shift-tab[aria-selected="true"]');
+  if (!tabs || !selected) return;
+  const groupRect = tabs.getBoundingClientRect();
+  const selectedRect = selected.getBoundingClientRect();
+  tabs.style.setProperty('--shift-x', `${selectedRect.left - groupRect.left - tabs.clientLeft}px`);
+  tabs.style.setProperty('--shift-y', `${selectedRect.top - groupRect.top - tabs.clientTop}px`);
+  tabs.style.setProperty('--shift-width', `${selectedRect.width}px`);
+  tabs.style.setProperty('--shift-height', `${selectedRect.height}px`);
+  tabs.classList.add('has-shift-indicator');
+}
+window.addEventListener('resize', updateShiftIndicator);
+document.fonts?.ready.then(updateShiftIndicator);
+
 function setShift(shift) {
-  activeShift = DAILY_LOG_SHIFTS.includes(shift) ? shift : suggestShift();
+  const nextShift = DAILY_LOG_SHIFTS.includes(shift) ? shift : suggestShift();
+  const changed = nextShift !== activeShift;
+  activeShift = nextShift;
   document.querySelectorAll('.shift-tab').forEach(btn => {
     const on = btn.dataset.shift === activeShift;
     btn.setAttribute('aria-selected', String(on));
   });
+  updateShiftIndicator();
   resetComposer();
   refreshLogTable();
+  shiftContentAnimation?.cancel();
+  if (changed && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const content = document.querySelector('.log-card .log-table-wrap');
+    shiftContentAnimation = content?.animate?.(
+      [{ opacity: .45, transform: 'translateY(3px)' }, { opacity: 1, transform: 'translateY(0)' }],
+      { duration: 180, easing: 'ease-out' }
+    );
+  }
 }
 
 function cancelInlineEdit() {
@@ -253,29 +306,30 @@ function cancelInlineNoteEdit() {
 
 function commitInlineNoteEdit({ silent = false } = {}) {
   if (!inlineNoteEdit) return;
-  const { id, original } = inlineNoteEdit;
-  const row = document.querySelector(`tr[data-note-id="${CSS.escape(id)}"]`);
-  const input = row?.querySelector('.log-inline-input');
-  if (!input) {
+  const { id, originalBody } = inlineNoteEdit;
+  const row = document.querySelector(`#notes-tbody tr[data-note-id="${CSS.escape(id)}"]`);
+  const bodyInput = row?.querySelector('.note-edit-body');
+  if (!bodyInput) {
     inlineNoteEdit = null;
     refreshNotes();
     return;
   }
 
-  const nextTitle = input.value.trim();
-  if (!nextTitle) {
-    toast('Note can’t be empty.');
-    input.focus();
+  const nextBody = bodyInput.value.trim();
+  if (!nextBody) {
+    toast('Write a note before saving.');
+    bodyInput.focus();
     return;
   }
 
   inlineNoteEdit = null;
-  if (nextTitle === original) {
+  if (nextBody === originalBody) {
     refreshNotes();
     return;
   }
 
-  const updated = updateImportantNote(id, nextTitle);
+  const short = nextBody.length > 52 ? `${nextBody.slice(0, 52).trim()}…` : nextBody;
+  const updated = updateImportantNote(id, { title: short, body: nextBody });
   refreshNotes();
   if (!silent && updated) toast('Note updated.');
 }
@@ -283,45 +337,38 @@ function commitInlineNoteEdit({ silent = false } = {}) {
 function beginInlineNoteEdit(id) {
   const note = findImportantNoteById(id);
   if (!note) return;
+  const normalized = normalizeImportantNote(note);
 
   if (inlineNoteEdit) {
     if (inlineNoteEdit.id === id) {
-      document.querySelector(`tr[data-note-id="${CSS.escape(id)}"] .log-inline-input`)?.focus();
+      document.querySelector(`#notes-tbody tr[data-note-id="${CSS.escape(id)}"] .note-edit-body`)?.focus();
       return;
     }
     commitInlineNoteEdit({ silent: true });
   }
   if (inlineEdit) commitInlineEdit({ silent: true });
 
-  const row = document.querySelector(`tr[data-note-id="${CSS.escape(id)}"]`);
-  const cell = row?.querySelector('.log-entry');
-  if (!cell) return;
+  const row = document.querySelector(`#notes-tbody tr[data-note-id="${CSS.escape(id)}"]`);
+  if (!row) return;
 
-  const original = note.title || '';
-  inlineNoteEdit = { id, original };
-  row.classList.add('is-editing');
-
-  const input = document.createElement('input');
-  input.className = 'log-inline-input';
-  input.type = 'text';
-  input.value = original;
-  input.setAttribute('aria-label', 'Edit important note');
-  cell.innerHTML = '';
-  cell.appendChild(input);
-  input.focus();
-  input.select();
-
-  input.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      cancelInlineNoteEdit();
-      return;
-    }
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      input.blur();
-    }
-  });
+  inlineNoteEdit = {
+    id,
+    originalBody: normalized.body || ''
+  };
+  row.innerHTML = `
+    <td colspan="3">
+      <div class="log-inline-edit">
+        <label class="sr-only" for="note-edit-body-${escapeLogHtml(id)}">Note</label>
+        <textarea id="note-edit-body-${escapeLogHtml(id)}" class="note-edit-body log-edit-notes" rows="3" required>${escapeLogHtml(normalized.body || '')}</textarea>
+        <div class="log-edit-actions">
+          <button type="button" class="button outline compact" data-cancel-note="${escapeLogHtml(id)}">Cancel</button>
+          <button type="button" class="button compact" data-save-note="${escapeLogHtml(id)}">Save</button>
+        </div>
+      </div>
+    </td>`;
+  const bodyInput = row.querySelector('.note-edit-body');
+  bodyInput?.focus();
+  bodyInput?.setSelectionRange(bodyInput.value.length, bodyInput.value.length);
 }
 
 document.querySelector('#composer-form')?.addEventListener('submit', event => {
@@ -415,22 +462,54 @@ logTbody?.addEventListener('click', event => {
   beginInlineEdit(row.dataset.logId);
 });
 
-const notesTbody = document.querySelector('#notes-tbody');
+const notesPanel = document.querySelector('.notes-card');
 
-notesTbody?.addEventListener('click', event => {
-  const trigger = event.target.closest('[data-inline-note]');
-  if (!trigger) return;
-  const row = trigger.closest('tr[data-note-id]');
-  if (!row) return;
-  beginInlineNoteEdit(row.dataset.noteId);
+function askDeleteNoteConfirm(id) {
+  const note = findImportantNoteById(id);
+  if (!note) return;
+  const normalized = normalizeImportantNote(note);
+  const preview = (normalized.body || normalized.title || 'this note').trim();
+  const short = preview.length > 80 ? `${preview.slice(0, 80)}…` : preview;
+  openModal(
+    'Delete important note',
+    `<p>Remove this note?</p>
+     <p><strong>${escapeLogHtml(short)}</strong></p>
+     <div class="dialog-actions">
+       <button class="button full" data-action="confirm-delete-note" data-note-id="${escapeLogHtml(note.id)}">Delete note</button>
+     </div>`
+  );
+}
+
+notesPanel?.addEventListener('click', event => {
+  const saveBtn = event.target.closest('[data-save-note]');
+  if (saveBtn) {
+    commitInlineNoteEdit();
+    return;
+  }
+  const cancelBtn = event.target.closest('[data-cancel-note]');
+  if (cancelBtn) {
+    cancelInlineNoteEdit();
+    return;
+  }
+  const editBtn = event.target.closest('[data-edit-note]');
+  if (editBtn) {
+    beginInlineNoteEdit(editBtn.dataset.editNote);
+    return;
+  }
+  const deleteBtn = event.target.closest('[data-delete-note]');
+  if (deleteBtn) {
+    askDeleteNoteConfirm(deleteBtn.dataset.deleteNote);
+  }
 });
 
-notesTbody?.addEventListener('focusout', event => {
-  if (!inlineNoteEdit) return;
-  if (!event.target.classList.contains('log-inline-input')) return;
-  const row = event.target.closest('tr[data-note-id]');
-  if (row && row.contains(event.relatedTarget)) return;
-  commitInlineNoteEdit();
+document.querySelector('#note-add-toggle')?.addEventListener('click', () => {
+  if (inlineNoteEdit) commitInlineNoteEdit({ silent: true });
+  if (inlineEdit) commitInlineEdit({ silent: true });
+  showNoteComposer();
+});
+
+document.querySelector('#note-composer-cancel')?.addEventListener('click', () => {
+  hideNoteComposer();
 });
 
 document.querySelector('#note-composer-form')?.addEventListener('submit', event => {
@@ -438,22 +517,25 @@ document.querySelector('#note-composer-form')?.addEventListener('submit', event 
   if (inlineNoteEdit) commitInlineNoteEdit({ silent: true });
   if (inlineEdit) commitInlineEdit({ silent: true });
 
-  const title = document.querySelector('#note-composer-text')?.value.trim();
-  if (!title) {
+  const text = document.querySelector('#note-composer-text')?.value.trim();
+  if (!text) {
     toast('Write a note before saving.');
     document.querySelector('#note-composer-text')?.focus();
     return;
   }
 
-  addImportantNote(title);
-  document.querySelector('#note-composer-text').value = '';
+  const short = text.length > 52 ? `${text.slice(0, 52).trim()}…` : text;
+  addImportantNote(short, text);
+  document.querySelector('#note-composer-form')?.reset();
+  document.querySelector('#note-composer-text')?.focus();
   refreshNotes();
   toast('Important note saved.');
 });
 
+seedDailyLogAuthorExamples(toDateInputValue(), activeShift);
 document.querySelector('#log-date').value = toDateInputValue();
 syncDateLabel();
-renderIcons(document.querySelector('.log-toolbar'));
+renderIcons(document.querySelector('.log-card-top'));
 renderIcons(document.querySelector('.notes-card'));
 setShift(activeShift);
 refreshNotes();
@@ -500,10 +582,18 @@ document.addEventListener('click', event => {
     deleteDailyLog(id);
     refreshLogTable();
     toast('Entry deleted.');
+  } else if (action === 'confirm-delete-note') {
+    const id = button.dataset.noteId;
+    modal.close();
+    if (inlineNoteEdit?.id === id) inlineNoteEdit = null;
+    if (deleteImportantNote(id)) {
+      refreshNotes();
+      toast('Note deleted.');
+    }
   } else if (action === 'help') {
     openModal(
       'Daily log help',
-      '<p>Use the arrows or date pill to change the day. Pick a <strong>shift</strong> above the log, then add entries at the bottom. Your name is saved automatically under Logged by.</p><p>Click <strong>Edit</strong> on your own entry to expand it, then <strong>Save</strong>. Entries from another concierge show as <strong>Read only</strong>.</p>'
+      '<p>Use the arrows or date pill to change the day. Pick a <strong>shift</strong> above the log, then add entries at the bottom.</p><p>Click your own entry to expand it, then <strong>Save</strong>. Entries from another concierge show as <strong>Read only</strong>.</p>'
     );
   }
 });
@@ -535,4 +625,62 @@ setLighting(savedLighting);
 lightingPicker.addEventListener('change', () => {
   setLighting(lightingPicker.value);
   save('mysuite-header-lighting', lightingPicker.value);
+});
+
+// One compact action menu stays open at a time, above scrolling table containers.
+(function initEntryMenus() {
+  let open = null;
+  function closeMenu(restoreFocus = false) {
+    if (!open) return;
+    const { trigger, panel } = open;
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    open = null;
+    if (restoreFocus && trigger.isConnected) trigger.focus();
+  }
+  document.addEventListener('click', event => {
+    const trigger = event.target.closest('[data-entry-menu-toggle]');
+    if (trigger) {
+      const same = open?.trigger === trigger;
+      closeMenu();
+      if (same) return;
+      const panel = trigger.parentElement.querySelector('[data-entry-menu-options]');
+      if (!panel) return;
+      panel.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      const rect = trigger.getBoundingClientRect();
+      const width = panel.offsetWidth;
+      const height = panel.offsetHeight;
+      panel.style.left = `${Math.max(8, Math.min(rect.right - width, innerWidth - width - 8))}px`;
+      panel.style.top = `${Math.max(8, rect.bottom + height + 5 <= innerHeight - 8 ? rect.bottom + 5 : rect.top - height - 5)}px`;
+      open = { trigger, panel };
+      return;
+    }
+    if (!open) return;
+    if (event.target.closest('[data-edit-log], [data-delete-log], [data-edit-note], [data-delete-note]')) {
+      if (!event.target.closest('button')?.disabled) closeMenu();
+    } else if (!open.panel.contains(event.target)) closeMenu();
+  }, true);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && open) {
+      event.preventDefault();
+      closeMenu(true);
+    }
+  });
+  document.addEventListener('focusin', event => {
+    if (open && event.target !== open.trigger && !open.panel.contains(event.target)) closeMenu();
+  });
+  window.addEventListener('resize', () => closeMenu());
+  document.addEventListener('scroll', () => closeMenu(), true);
+})();
+
+document.addEventListener('keydown', event => {
+  const current = event.target.closest('.shift-tabs .shift-tab');
+  if (!current || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+  const tabs = [...document.querySelectorAll('.shift-tabs .shift-tab')];
+  const index = tabs.indexOf(current);
+  const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+  event.preventDefault();
+  tabs[next].focus();
+  tabs[next].click();
 });

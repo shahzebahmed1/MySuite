@@ -5,16 +5,16 @@
   <meta name="theme-color" content="#35261e"><title>MySuite — Long-term absence</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="long-term-absence.css">
+  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
+  <link rel="stylesheet" href="long-term-absence.css?v=deecf8dfa166">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="../shared/absence-data.js" defer></script>
-  <script src="long-term-absence.js" defer></script>
+  <script src="long-term-absence.js?v=5781bf12c94b" defer></script>
 </head>
-<body data-time="afternoon" data-breadcrumb="Long-term absence">
+<body class="concierge-sidebar absence-page" data-time="afternoon" data-breadcrumb="Long-term absence">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -39,35 +39,42 @@
       <div>
         <p class="eyebrow">CONCIERGE</p>
         <h1>Long-term absence</h1>
-        <p class="welcome-note">See who is away and how to handle packages or emergencies for their suite.</p>
+        <p class="welcome-note">Record an absence on the left. Review resident notices on the right.</p>
       </div>
       <div class="header-tools">
         <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
       </div>
     </header>
 
-    <section class="schedule-card card" aria-label="Long-term absences">
-      <div class="pkg-tabs" role="tablist">
-        <button type="button" class="pkg-tab active" role="tab" aria-selected="true" data-tab="current" id="tab-current">Current</button>
-        <button type="button" class="pkg-tab" role="tab" aria-selected="false" data-tab="past" id="tab-past">Past</button>
-      </div>
-      <div class="table-wrap">
-        <table class="pkg-table">
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>Away / return</th>
-              <th>Suite</th>
-              <th>Resident</th>
-              <th>Emergency contact</th>
-              <th>Checks / notes</th>
-            </tr>
-          </thead>
-          <tbody id="absence-tbody"></tbody>
-        </table>
-        <p id="absence-empty" class="pkg-empty" hidden>No absences in this list.</p>
-      </div>
-    </section>
+    <div class="desk-layout">
+      <section class="desk-form-card card" aria-labelledby="absence-form-title">
+        <h2 id="absence-form-title"><i data-icon="suitcase"></i>Record an absence</h2>
+        <form id="concierge-absence-form" class="desk-form">
+          <label>Suite<input id="absence-suite" name="suite" placeholder="Suite number" maxlength="20" required autocomplete="off"></label>
+          <label>Resident name<input id="absence-resident" name="residentName" maxlength="120" required autocomplete="off"></label>
+          <div class="desk-field-pair"><label>Away from<input id="absence-from" name="awayFrom" type="date" required></label><label>Return date<input id="absence-return" name="returnDate" type="date" required></label></div>
+          <label>Emergency contact name<input name="emergencyName" maxlength="120" placeholder="Full name" required></label>
+          <label>Emergency contact phone<input name="emergencyPhone" type="tel" maxlength="40" placeholder="Phone number" required></label>
+          <fieldset class="desk-checks"><legend>While the resident is away</legend>
+            <label><input type="checkbox" name="holdPackages" value="true"><span>Hold packages at the desk</span></label>
+            <label><input type="checkbox" name="checkResidence" value="true"><span>Check the residence</span></label>
+            <label><input type="checkbox" name="waterOff" value="true"><span>Water has been turned off</span></label>
+          </fieldset>
+          <label>Notes (optional)<textarea name="notes" rows="3" maxlength="2000" placeholder="Anything else the desk should know"></textarea></label>
+          <p id="absence-form-message" class="desk-form-message" hidden role="alert" tabindex="-1"></p>
+          <div class="desk-form-actions"><button type="submit" class="button">Record absence</button></div>
+        </form>
+      </section>
+      <section class="desk-list-card card" aria-label="Long-term absences">
+        <div class="pkg-tabs" role="tablist" aria-label="Absence notices">
+          <button type="button" class="pkg-tab active" role="tab" aria-selected="true" aria-controls="absence-panel" data-tab="current" id="tab-current">Current</button>
+          <button type="button" class="pkg-tab" role="tab" aria-selected="false" aria-controls="absence-panel" tabindex="-1" data-tab="past" id="tab-past">Past</button>
+        </div>
+        <div class="desk-search"><i data-icon="search"></i><label class="sr-only" for="absence-search">Search absences</label><input type="search" id="absence-search" placeholder="Search suite, resident or emergency contact..." aria-controls="absence-list"></div>
+        <div id="absence-panel" role="tabpanel" aria-labelledby="tab-current"><div id="absence-list"></div><p id="absence-empty" class="desk-empty" hidden>No absence notices in this list.</p></div>
+        <div class="desk-list-footer"><p id="absence-range" role="status" aria-live="polite"></p><nav class="desk-pagination" aria-label="Absence pages"><button type="button" id="absence-previous" class="desk-page-arrow" aria-label="Previous page"><i data-icon="left"></i></button><label class="desk-page-picker"><span class="sr-only">Absence page</span><select id="absence-page"></select><i data-icon="chevron"></i></label><button type="button" id="absence-next" class="desk-page-arrow" aria-label="Next page"><i data-icon="chevron"></i></button></nav></div>
+      </section>
+    </div>
 
     <footer class="page-footer">
       <span>MySuite · Concierge portal.</span>

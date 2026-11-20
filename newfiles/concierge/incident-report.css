@@ -37,6 +37,7 @@
 }
 
 .log-panel {
+  border-radius: 22px;
   padding: 22px;
   position: sticky;
   top: 16px;
@@ -60,7 +61,7 @@
 
 .incident-fields label {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 550;
 }
 
@@ -98,8 +99,9 @@
 }
 
 .incidents-history-card {
+  border-radius: 22px;
   padding: 0;
-  overflow: hidden;
+  overflow: visible;
   min-width: 0;
 }
 
@@ -113,95 +115,36 @@
   flex-wrap: wrap;
 }
 
-.history-card-heading {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  min-width: 0;
-}
-
-.history-card-top h2 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.history-count {
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 550;
-}
-
-.year-nav {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  position: relative;
-}
-
-.year-nav-btn {
-  display: inline-grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #fff;
-  color: var(--espresso);
-  cursor: pointer;
-  padding: 0;
-}
-
-.year-nav-btn:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.year-nav-btn svg {
-  width: 16px;
-  height: 16px;
-}
-
-.year-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 40px;
-  padding: 0 14px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #fff;
-  color: var(--espresso);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
-}
-
-.year-pill svg {
-  width: 18px;
-  height: 18px;
-  color: #5c4d3e;
-}
-
-.year-pill svg:last-of-type {
-  width: 14px;
-  height: 14px;
-  transform: rotate(90deg);
-  color: #8a7460;
-}
-
-.year-select {
-  position: absolute;
-  inset: 0 46px 0 46px;
-  opacity: 0;
-  cursor: pointer;
-  border: 0;
-  font-size: 16px;
+.history-card-top h2 { margin: 0; font-size: 17px; }
+.history-count { margin: 6px 0 0; font-size: 14px; color: var(--muted); font-weight: 400; }
+.incident-history-tools { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.incident-year-filter { position: relative; }
+.incident-year-filter > .button { min-height: 40px; background: transparent; border-color: transparent; font-size: 14px; font-weight: 500; padding: 8px 12px; border-radius: 10px; }
+.incident-year-filter > .button svg { width: 17px; height: 17px; }
+.incident-year-menu { position: absolute; right: 0; top: calc(100% + 10px); width: 220px; max-width: calc(100vw - 32px); padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: #fffaf4; box-shadow: 0 6px 24px #39281e26; z-index: 15; }
+.incident-year-menu[hidden] { display: none; }
+.incident-year-menu fieldset { border: 0; padding: 0; margin: 0 0 14px; }
+.incident-year-menu legend { padding: 0; margin-bottom: 8px; font-size: 15px; font-weight: 600; }
+.incident-year-menu label { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; cursor: pointer; }
+.incident-year-menu input { width: 16px; height: 16px; margin: 0; accent-color: var(--caramel); }
+.incident-year-menu > .button { width: 100%; font-size: 14px; }
+.incident-pagination { display: flex; align-items: center; gap: 7px; padding-left: 12px; border-left: 1px solid var(--line); }
+.incident-page-arrow { display: inline-grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 10px; background: transparent; color: var(--espresso); }
+.incident-page-arrow svg { width: 16px; height: 16px; }
+.incident-page-arrow:disabled { opacity: .4; cursor: default; }
+.incident-page-arrow:hover:not(:disabled) { background: #f0e5d9; color: var(--espresso); }
+.incident-page-picker { position: relative; display: inline-flex; align-items: center; }
+.incident-page-picker select { appearance: none; min-height: 40px; padding: 0 34px 0 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--espresso); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
+.incident-page-picker > svg { position: absolute; right: 12px; width: 14px; height: 14px; transform: rotate(90deg); color: #8a7460; pointer-events: none; }
+@media (max-width: 600px) {
+  .incident-history-tools { width: 100%; flex-wrap: wrap; }
+  .incident-pagination { margin-left: auto; }
+  .incident-year-menu { right: auto; left: 0; }
 }
 
 .incident-list {
+  border-radius: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -237,7 +180,7 @@
 .incident-detail-text span {
   display: block;
   margin-top: 3px;
-  font-size: 12px;
+  font-size: 14px;
   color: #716454;
   line-height: 1.35;
 }
@@ -291,3 +234,77 @@
     border-top: 1px solid var(--line);
   }
 }
+
+/* Expand each past report to see authorship and additional details. */
+.incident-report-disclosure { border-bottom: 1px solid var(--line); }
+.incident-report-disclosure:last-child { border-bottom: 0; }
+.incident-report-disclosure > .incident-row { grid-template-columns: 130px minmax(0, 1fr) auto; gap: 16px; border: 0; cursor: pointer; list-style: none; }
+.incident-report-disclosure > summary::-webkit-details-marker { display: none; }
+.incident-report-disclosure > summary:hover { background: #faf6f0; }
+.incident-report-disclosure > summary:focus-visible { outline: 2px solid var(--caramel); outline-offset: -3px; }
+.incident-report-disclosure .incident-who span, .incident-report-disclosure .incident-detail-text span { font-size: 14px; line-height: 1.5; }
+.incident-expand-label { display: inline-flex; align-items: center; gap: 6px; color: #8a542b; font-size: 14px; align-self: center; white-space: nowrap; }
+.incident-expand-chevron { display: inline-block; font-size: 22px; transition: transform 160ms ease; }
+.incident-report-disclosure[open] .incident-expand-chevron { transform: rotate(90deg); }
+
+.incident-expanded-meta { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 14px 0 0; padding-top: 12px; border-top: 1px solid #e8ded480; font-size: 14px; color: #655343; }
+.incident-expanded-meta dt { font-weight: 600; color: var(--espresso); }
+.incident-expanded-meta dd { margin: 3px 0 0; overflow-wrap: anywhere; }
+@media (max-width: 720px) {
+  .incident-report-disclosure > .incident-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .incident-report-disclosure .incident-who { grid-column: 1; }
+  .incident-report-disclosure .incident-detail { grid-column: 1 / -1; grid-row: 2; }
+  .incident-report-disclosure .incident-expand-label { grid-column: 2; grid-row: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .incident-expand-chevron { transition: none; }
+}
+
+.incident-report-disclosure .incident-description { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere; }
+.incident-report-disclosure[open] .incident-description { display: block; -webkit-line-clamp: unset; overflow: visible; }
+
+.incident-label-open { display: none; }
+.incident-report-disclosure[open] .incident-label-closed { display: none; }
+.incident-report-disclosure[open] .incident-label-open { display: inline; }
+/* Shared expanded report style, selected from sample report 2. */
+.incident-report-disclosure[open] { background: #fffdf9; box-shadow: inset 0 0 0 1px #cfaa84; border-radius: 12px; }
+.incident-report-disclosure[open] > summary:hover { background: transparent; }
+.incident-report-disclosure:not([open]) .incident-expanded-meta { display: none; }
+
+.incident-page-picker select:focus, .incident-page-picker select:focus-visible { outline: none; border-color: var(--caramel); }
+
+.incident-form, .incident-form .button, .header-tools .button, .page-footer, .page-footer :is(button, label, select) { font-size: 14px; }
+
+/* Match Package tracking's card, search, filter and pagination treatment. */
+body.incident-report-page { background: var(--cream); }
+.incident-report-page .log-panel, .incident-report-page .incidents-history-card { border-radius: 22px; }
+.history-card-top { min-height: 52px; padding: 16px 22px; }
+.history-card-top h2 { font-size: 16px; font-weight: 550; }
+.incident-search-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 16px 22px; }
+.incident-search-field { flex: 1 1 220px; position: relative; min-width: 0; }
+.incident-search-field > svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #887665; pointer-events: none; }
+.incident-search-field input { display: block; width: 100%; min-height: 42px; padding: 10px 14px 10px 42px; margin: 0; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--espresso); font: inherit; font-size: 14px; }
+.incident-search-field input:focus-visible { outline: 0; border-color: var(--caramel); box-shadow: 0 0 0 2px #aa6e3420; }
+.incident-year-filter > .button { min-height: 42px; gap: 8px; padding: 8px 12px; border: 1px solid transparent; border-radius: 11px; background: #f6efe5; color: #6f4929; font-size: 14px; font-weight: 500; }
+.incident-year-filter > .button:hover, .incident-year-filter > .button[data-active="true"], .incident-year-filter > .button[aria-expanded="true"] { background: #efe1ce; color: #573519; border-color: transparent; }
+.incident-year-filter .incident-filter-chevron svg { width: 12px; height: 12px; transform: rotate(90deg); }
+.incident-year-filter > .button[aria-expanded="true"] .incident-filter-chevron svg { transform: rotate(-90deg); }
+.incident-year-filter > .button:focus-visible { outline: 2px solid var(--caramel); outline-offset: 3px; }
+.incident-history-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 14px 22px; border-top: 1px solid var(--line); border-radius: 0 0 22px 22px; font-size: 14px; }
+.incident-history-footer .history-count { margin: 0; color: #8a7765; }
+.incident-history-footer .incident-pagination { margin-left: auto; }
+.incident-report-disclosure > .incident-row { padding: 14px 22px; }
+.incident-report-disclosure .incident-detail { padding-left: 20px; }
+.incident-form :is(input, select, textarea), .incident-form .button { font-size: 14px; }
+.incident-empty { margin: 0; }
+@media (max-width: 720px) {
+  .incident-report-disclosure .incident-detail { padding-left: 0; }
+}
+@media (max-width: 600px) {
+  .incident-search-toolbar { padding: 16px; }
+  .incident-search-field { flex-basis: 100%; }
+  .history-card-top, .incident-history-footer { padding-inline: 16px; }
+  .incident-report-disclosure > .incident-row { padding-inline: 16px; }
+}
+
+.incident-filter-chevron { display: inline-flex; align-items: center; }

@@ -2,7 +2,7 @@
    Requires: shared/utils.js, shared/mockdata.js */
 
 const DAILY_LOG_STORAGE_KEY = 'mysuite-concierge-daily-log-v4';
-const DAILY_LOG_NOTES_KEY = 'mysuite-concierge-daily-log-notes-v3';
+const DAILY_LOG_NOTES_KEY = 'mysuite-concierge-daily-log-notes-v4';
 const DAILY_LOG_SHIFTS = ['night', 'morning', 'evening'];
 
 function escapeLogHtml(str) {
@@ -163,10 +163,50 @@ function canEditDailyLog(entry, currentName) {
   return String(entry?.loggedBy || '').trim() === String(currentName || '').trim();
 }
 
+function renderDailyEntryMenu(kind, rawId, editable = true) {
+  const id = escapeLogHtml(rawId);
+  const noun = kind === 'note' ? 'note' : 'entry';
+  const disabled = editable ? '' : ' disabled title="Only the author can change this entry"';
+  return `<div class="daily-entry-menu">
+    <button type="button" class="daily-entry-menu-toggle" data-entry-menu-toggle aria-expanded="false" aria-label="Actions for ${noun}"><span aria-hidden="true">&#8942;</span></button>
+    <div class="daily-entry-menu-options" data-entry-menu-options hidden role="group" aria-label="${noun} actions">
+      <button type="button" data-edit-${kind}="${id}"${disabled}><i data-icon="pencil"></i>Edit ${noun}</button>
+      <button type="button" class="is-danger" data-delete-${kind}="${id}"${disabled}><i data-icon="trash"></i>Delete ${noun}</button>
+    </div>
+  </div>`;
+}
+
+function seedDailyLogAuthorExamples(date, shift) {
+  const key = `mysuite-log-author-examples-${date}-${shift}-v1`;
+  if (readSaved(key, false)) return;
+  const labels = ['Logged by:', 'Written by:', 'Authored by:', 'Recorded by:', 'Added by:', 'By'];
+  const descriptions = [
+    'Completed perimeter walk. All exterior doors secure, no unusual activity.',
+    'Light rain started. Set entrance door to weather mode and checked mats.',
+    'Received office supplies and stored the delivery in the receiving room.',
+    'Elevator 2 briefly stopped at the fourth floor. Reset and tested successfully.',
+    'Garage inspection complete. Lighting and gates are working properly.',
+    'Checked the pool and common area. Both spaces are tidy and ready for residents.'
+  ];
+  const start = shift === 'night' ? 0 : shift === 'morning' ? 8 : 16;
+  const examples = labels.map((authorLabel, index) => {
+    const time = `${String(start + index).padStart(2, '0')}:${index % 2 ? '30' : '15'}`;
+    const happenedAt = combineDateAndTime(date, time);
+    return { id: `author-example-${date}-${shift}-${index}`, date, shift, happenedAt,
+      createdAt: happenedAt, updatedAt: happenedAt, notes: descriptions[index],
+      loggedBy: 'Shahzeb', authorLabel };
+  });
+  const current = getDailyLogs();
+  const ids = new Set(current.map(entry => entry.id));
+  setDailyLogs([...current, ...examples.filter(entry => !ids.has(entry.id))]);
+  save(key, true);
+}
+
 function renderDailyLogRow(entry, currentName) {
   const notes = escapeLogHtml(entry.notes || '');
+  const author = escapeLogHtml(entry.loggedBy || 'Concierge');
+  const authorMarkup = `<span class="log-author-inline is-author-outline"><small class="log-entry-author">${author}</small></span>`;
   const time = escapeLogHtml(formatLogTime(entry.happenedAt));
-  const who = escapeLogHtml(entry.loggedBy || 'Concierge');
   const timeValue = escapeLogHtml(toTimeInputValue(new Date(entry.happenedAt)));
   const own = canEditDailyLog(entry, currentName);
   const id = escapeLogHtml(entry.id);
@@ -177,17 +217,12 @@ function renderDailyLogRow(entry, currentName) {
   const entryCell = own
     ? `<button type="button" class="log-cell-btn" data-inline-edit="notes" title="Click to edit entry">${notes}</button>`
     : `<span>${notes}</span>`;
-  const actions = own
-    ? `<div class="log-row-actions">
-         <button type="button" class="row-action" data-edit-log="${id}"><i data-icon="pencil"></i>Edit</button>
-         <button type="button" class="row-action is-danger" data-delete-log="${id}"><i data-icon="trash"></i>Delete</button>
-       </div>`
-    : `<span class="log-readonly">Read only</span>`;
+  const actions = renderDailyEntryMenu('log', entry.id, own);
 
   return `<tr class="log-row${own ? '' : ' is-readonly'}" data-log-id="${id}">
     <td class="log-time">${timeCell}</td>
-    <td class="log-entry">${entryCell}</td>
-    <td class="log-concierge">${who}</td>
+    <td class="log-entry"><div class="log-entry-content">${entryCell}</div></td>
+    <td class="log-author-column">${authorMarkup}</td>
     <td class="log-actions">${actions}</td>
   </tr>`;
 }
@@ -218,11 +253,48 @@ function findImportantNoteById(id) {
   return getImportantNotes().find(n => n.id === id) || null;
 }
 
-function addImportantNote(title) {
+function normalizeImportantNote(note) {
+  const rawTitle = String(note?.title || '').trim();
+  const rawBody = String(note?.body || '').trim();
+  if (rawBody) {
+    return {
+      ...note,
+      title: rawTitle || 'Note',
+      body: rawBody,
+      createdBy: note?.createdBy || 'Concierge',
+      createdAt: note?.createdAt || ''
+    };
+  }
+  /* Legacy notes stored the full text in title only */
+  const short = rawTitle.length > 52 ? `${rawTitle.slice(0, 52).trim()}…` : (rawTitle || 'Note');
+  return {
+    ...note,
+    title: short,
+    body: rawTitle,
+    createdBy: note?.createdBy || 'Concierge',
+    createdAt: note?.createdAt || ''
+  };
+}
+
+function formatNoteCardDate(iso) {
+  if (!iso) return '';
+  try {
+    return new Date(iso).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  } catch {
+    return '';
+  }
+}
+
+function addImportantNote(title, body) {
   const concierge = getCurrentConcierge();
   const note = {
     id: `note-${Date.now()}`,
     title: String(title || '').trim(),
+    body: String(body || '').trim(),
     status: 'open',
     createdBy: concierge?.name || 'Concierge',
     createdAt: new Date().toISOString(),
@@ -235,27 +307,61 @@ function addImportantNote(title) {
   return note;
 }
 
-function updateImportantNote(id, title) {
+function updateImportantNote(id, fields = {}) {
   const list = getImportantNotes();
   const index = list.findIndex(n => n.id === id);
   if (index < 0) return null;
-  const nextTitle = String(title ?? list[index].title).trim();
-  if (!nextTitle) return null;
+  const current = normalizeImportantNote(list[index]);
+  const nextTitle = String(fields.title ?? current.title).trim();
+  const nextBody = String(fields.body ?? current.body).trim();
+  if (!nextTitle || !nextBody) return null;
   list[index] = {
     ...list[index],
-    title: nextTitle
+    title: nextTitle,
+    body: nextBody
   };
   setImportantNotes(list);
   return list[index];
 }
 
+function deleteImportantNote(id) {
+  const list = getImportantNotes();
+  const next = list.filter(n => n.id !== id);
+  if (next.length === list.length) return false;
+  setImportantNotes(next);
+  return true;
+}
+
+function renderImportantNoteCard(note) {
+  const normalized = normalizeImportantNote(note);
+  const id = escapeLogHtml(normalized.id);
+  const title = escapeLogHtml(normalized.title || '');
+  const body = escapeLogHtml(normalized.body || '');
+  const who = escapeLogHtml(normalized.createdBy || 'Concierge');
+  const when = escapeLogHtml(formatNoteCardDate(normalized.createdAt));
+  const meta = when ? `By ${who} · ${when}` : `By ${who}`;
+  return `<article class="note-item" data-note-id="${id}">
+    <div class="note-item-top">
+      <h3 class="note-item-title">${title}</h3>
+      <div class="note-item-actions">${renderDailyEntryMenu('note', normalized.id)}</div>
+    </div>
+    <p class="note-item-body">${body}</p>
+    <p class="note-item-meta">${meta}</p>
+  </article>`;
+}
+
 function renderImportantNoteRow(note) {
-  const title = escapeLogHtml(note.title || '');
-  const who = escapeLogHtml(note.createdBy || 'Concierge');
-  return `<tr class="log-row" data-note-id="${escapeLogHtml(note.id)}">
+  const normalized = normalizeImportantNote(note);
+  const id = escapeLogHtml(normalized.id);
+  const text = escapeLogHtml(normalized.body || normalized.title || '');
+  const who = escapeLogHtml(normalized.createdBy || 'Concierge');
+  return `<tr data-note-id="${id}">
     <td class="log-entry">
-      <button type="button" class="log-cell-btn" data-inline-note="title" title="Click to edit note">${title}</button>
+      <button type="button" class="log-cell-btn" data-edit-note="${id}" title="Click to edit note">${text}</button>
     </td>
-    <td class="log-concierge">${who}</td>
+    <td class="log-author-column"><span class="log-author-inline is-author-outline"><small class="log-entry-author">${who}</small></span></td>
+    <td class="log-actions">
+      ${renderDailyEntryMenu('note', normalized.id)}
+    </td>
   </tr>`;
 }
