@@ -1,0 +1,7 @@
+body.sidebar-merge[data-dashboard-card-layout] .dashboard > .shop[data-match-header-height] { height: var(--dashboard-greeting-card-height,160px); }
+.shop-height-controls { margin: 16px 0 0; padding: 12px 0 0; border: 0; border-top: 1px solid var(--finish-border,#e7ddd1); }
+.shop-height-controls legend { padding-right: 8px; color: var(--finish-ink,#35261e); font-size: 13px; font-weight: 600; }
+.shop-match-header { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; font-size: 12px; cursor: pointer; }
+.shop-match-header input { width: 14px; height: 14px; margin: 0; accent-color: #a66b38; }
+.shop-height-controls .header-adjustment-range { display: grid; gap: 6px; max-width: 360px; font-size: 12px; }
+.shop-height-controls input:disabled { opacity: .45; cursor: default; }

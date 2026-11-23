@@ -1,20 +1,54 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="concierge-shared-appearance.js?v=4bdde979be54"></script>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#35261e"><title>MySuite — Long-term absence</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
-  <link rel="stylesheet" href="long-term-absence.css?v=deecf8dfa166">
+  <link rel="stylesheet" href="dashboard.css?v=0795f7f8682a">
+  <link rel="stylesheet" href="long-term-absence.css?v=609a2de351e9">
+  <link rel="stylesheet" href="concierge-theme.css?v=820a96672c3b">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="../shared/absence-data.js" defer></script>
-  <script src="long-term-absence.js?v=5781bf12c94b" defer></script>
+  <script src="long-term-absence.js?v=bb8fd20a3277" defer></script>
+  <script src="color-settings.js?v=98c9ea4d93f2" defer></script>
+  <link rel="stylesheet" href="nav-style-preview.css?v=a5728f68f9c7">
+  <script src="nav-style-preview.js?v=0ffcc69676bd" defer></script>
+  <link rel="stylesheet" href="concierge-sidebar.css?v=d695b6832c78">
+  <script src="sidebar-ink-colors.js?v=cc47d5c5587a" defer></script>
+  <link rel="stylesheet" href="sidebar-dividers.css?v=e2a573041e86">
+  <script src="sidebar-dividers.js?v=2022d31f2f5b" defer></script>
+  <link rel="stylesheet" href="absence-appearance.css?v=f2724b9c7c13">
+  <script src="absence-appearance.js?v=875b9725962d" defer></script>
+  <link rel="stylesheet" href="sidebar-navigation-options.css?v=dcc86218290c">
+  <script src="sidebar-navigation-options.js?v=4cf4b2876ec1" defer></script>
+  <link rel="stylesheet" href="logo-cream-options.css?v=2b4699363092">
+  <script src="logo-cream-options.js?v=2f9f5181b42c" defer></script>
+  <link rel="preload" href="../assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="sidebar-font.css?v=94a4d1f2c251">
+  <script src="sidebar-logo-position.js?v=5f5c7c2c1dec" defer></script>
+  <link rel="stylesheet" href="sidebar-shape.css?v=da8610f99345">
+  <script src="sidebar-shape.js?v=5fb61a65d45f" defer></script>
+  <link rel="stylesheet" href="sidebar-nav-colors.css?v=9a7a537f4af5">
+  <script src="sidebar-nav-colors.js?v=f8be49ffdab9" defer></script>
+  <link rel="stylesheet" href="sidebar-logo-shared.css?v=c00e620b222b">
+  <link rel="stylesheet" href="sidebar-icon-toggle.css?v=87b7452a85e3">
+  <script src="sidebar-icon-toggle.js?v=0626678becfd" defer></script>
+  <link rel="stylesheet" href="sidebar-selection-width.css?v=abe2c8ce2f99">
+  <script src="sidebar-selection-width.js?v=cfca32f38c5a" defer></script>
+  <link rel="stylesheet" href="sidebar-row-alignment.css?v=22387f0ef696">
+  <script src="sidebar-icon-weight.js?v=a00e08e57648" defer></script>
+  <link rel="stylesheet" href="sidebar-logo-styles.css?v=d55b2a6c6d67">
+  <script src="sidebar-logo-styles.js?v=593d53f9bf25" defer></script>
+  <link rel="stylesheet" href="concierge-shared-appearance.css?v=53f150935ee2">
+  <link rel="stylesheet" href="concierge-supplied-logo.css?v=83d97b5a06c4">
+  <script src="concierge-supplied-logo.js?v=da567e51a7c7" defer></script>
 </head>
-<body class="concierge-sidebar absence-page" data-time="afternoon" data-breadcrumb="Long-term absence">
+<body class="concierge-square concierge-sidebar absence-page" data-sidebar-palette="original-cream" data-time="afternoon" data-breadcrumb="Long-term absence">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -23,10 +57,10 @@
       <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
       <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
       <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
-      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
-      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident Reports</a>
+      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Activity Log</a>
       <div class="nav-divider"></div>
-      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
       <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
       <a class="nav-item active" aria-current="page" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
       <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
@@ -35,43 +69,21 @@
     <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
-    <header class="page-header">
-      <div>
-        <p class="eyebrow">CONCIERGE</p>
-        <h1>Long-term absence</h1>
-        <p class="welcome-note">Record an absence on the left. Review resident notices on the right.</p>
-      </div>
-      <div class="header-tools">
-        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
-      </div>
-    </header>
+
 
     <div class="desk-layout">
-      <section class="desk-form-card card" aria-labelledby="absence-form-title">
-        <h2 id="absence-form-title"><i data-icon="suitcase"></i>Record an absence</h2>
-        <form id="concierge-absence-form" class="desk-form">
-          <label>Suite<input id="absence-suite" name="suite" placeholder="Suite number" maxlength="20" required autocomplete="off"></label>
-          <label>Resident name<input id="absence-resident" name="residentName" maxlength="120" required autocomplete="off"></label>
-          <div class="desk-field-pair"><label>Away from<input id="absence-from" name="awayFrom" type="date" required></label><label>Return date<input id="absence-return" name="returnDate" type="date" required></label></div>
-          <label>Emergency contact name<input name="emergencyName" maxlength="120" placeholder="Full name" required></label>
-          <label>Emergency contact phone<input name="emergencyPhone" type="tel" maxlength="40" placeholder="Phone number" required></label>
-          <fieldset class="desk-checks"><legend>While the resident is away</legend>
-            <label><input type="checkbox" name="holdPackages" value="true"><span>Hold packages at the desk</span></label>
-            <label><input type="checkbox" name="checkResidence" value="true"><span>Check the residence</span></label>
-            <label><input type="checkbox" name="waterOff" value="true"><span>Water has been turned off</span></label>
-          </fieldset>
-          <label>Notes (optional)<textarea name="notes" rows="3" maxlength="2000" placeholder="Anything else the desk should know"></textarea></label>
-          <p id="absence-form-message" class="desk-form-message" hidden role="alert" tabindex="-1"></p>
-          <div class="desk-form-actions"><button type="submit" class="button">Record absence</button></div>
-        </form>
-      </section>
-      <section class="desk-list-card card" aria-label="Long-term absences">
+
+      <section class="desk-list-card card portal-list-card" aria-label="Long-term absences">
+        <header class="page-header portal-page-header">
+          <div class="portal-header-content"><div class="portal-header-copy"><h1>Long-term absence</h1><p class="welcome-note">Record resident absences and keep handling instructions close by.</p></div></div>
+          <button type="button" class="button portal-create-button" data-action="open-absence-form" aria-haspopup="dialog" aria-controls="absence-form-modal"><span aria-hidden="true">+</span>Record absence</button>
+        </header>
         <div class="pkg-tabs" role="tablist" aria-label="Absence notices">
           <button type="button" class="pkg-tab active" role="tab" aria-selected="true" aria-controls="absence-panel" data-tab="current" id="tab-current">Current</button>
           <button type="button" class="pkg-tab" role="tab" aria-selected="false" aria-controls="absence-panel" tabindex="-1" data-tab="past" id="tab-past">Past</button>
         </div>
         <div class="desk-search"><i data-icon="search"></i><label class="sr-only" for="absence-search">Search absences</label><input type="search" id="absence-search" placeholder="Search suite, resident or emergency contact..." aria-controls="absence-list"></div>
-        <div id="absence-panel" role="tabpanel" aria-labelledby="tab-current"><div id="absence-list"></div><p id="absence-empty" class="desk-empty" hidden>No absence notices in this list.</p></div>
+        <div id="absence-panel" role="tabpanel" aria-labelledby="tab-current"><div class="portal-table-scroll" role="region" aria-label="Long-term absence notices" tabindex="0"><table class="portal-table"><caption class="sr-only">Long-term absence notices</caption><thead><tr><th scope="col">Resident</th><th scope="col">Away dates</th><th scope="col">Emergency contact</th><th scope="col">Instructions</th><th scope="col">Status</th></tr></thead><tbody id="absence-list"></tbody></table></div><p id="absence-empty" class="desk-empty" hidden>No absence notices in this list.</p></div>
         <div class="desk-list-footer"><p id="absence-range" role="status" aria-live="polite"></p><nav class="desk-pagination" aria-label="Absence pages"><button type="button" id="absence-previous" class="desk-page-arrow" aria-label="Previous page"><i data-icon="left"></i></button><label class="desk-page-picker"><span class="sr-only">Absence page</span><select id="absence-page"></select><i data-icon="chevron"></i></label><button type="button" id="absence-next" class="desk-page-arrow" aria-label="Next page"><i data-icon="chevron"></i></button></nav></div>
       </section>
     </div>
@@ -89,6 +101,25 @@
       <button type="button" data-action="help">Need a hand?</button>
     </footer>
   </main>
+  <dialog id="absence-form-modal" class="portal-form-dialog" aria-labelledby="absence-form-modal-title">
+    <div class="dialog-top"><h2 id="absence-form-modal-title" class="portal-dialog-title">Record absence</h2><button type="button" class="icon-button" data-action="close-absence-form" aria-label="Close record absence dialog"><i data-icon="close"></i></button></div>
+    <form id="concierge-absence-form" class="desk-form">
+          <label>Suite<input id="absence-suite" name="suite" placeholder="Suite number" maxlength="20" required autocomplete="off"></label>
+          <label>Resident name<input id="absence-resident" name="residentName" maxlength="120" required autocomplete="off"></label>
+          <div class="desk-field-pair"><label>Away from<input id="absence-from" name="awayFrom" type="date" required></label><label>Return date<input id="absence-return" name="returnDate" type="date" required></label></div>
+          <label>Emergency contact name<input name="emergencyName" maxlength="120" placeholder="Full name" required></label>
+          <label>Emergency contact phone<input name="emergencyPhone" type="tel" maxlength="40" placeholder="Phone number" required></label>
+          <fieldset class="desk-checks"><legend>While the resident is away</legend>
+            <label><input type="checkbox" name="holdPackages" value="true"><span>Hold packages at the desk</span></label>
+            <label><input type="checkbox" name="checkResidence" value="true"><span>Check the residence</span></label>
+            <label><input type="checkbox" name="waterOff" value="true"><span>Water has been turned off</span></label>
+          </fieldset>
+          <label>Notes (optional)<textarea name="notes" rows="3" maxlength="2000" placeholder="Anything else the desk should know"></textarea></label>
+          <p id="absence-form-message" class="desk-form-message" hidden role="alert" tabindex="-1"></p>
+          <div class="desk-form-actions"><button type="button" class="button outline" data-action="close-absence-form">Cancel</button><button type="submit" class="button">Record absence</button></div>
+        </form>
+  </dialog>
+
   <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
   <div class="toast" id="toast" role="status"></div>
 </body>

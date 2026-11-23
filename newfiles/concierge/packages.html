@@ -1,20 +1,53 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="concierge-shared-appearance.js?v=4bdde979be54"></script>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#35261e"><title>MySuite — Packages</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
-  <link rel="stylesheet" href="packages.css?v=e44fe9f4a324">
+  <link rel="stylesheet" href="dashboard.css?v=0795f7f8682a">
+  <link rel="stylesheet" href="packages.css?v=20261120rand2">
+  <link rel="stylesheet" href="concierge-theme.css?v=820a96672c3b">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="packages-data.js?v=ef555d5b5845" defer></script>
-  <script src="packages.js?v=8789f5d9d4ca" defer></script>
+  <script src="daily-log-data.js?v=38bda97e5c4a" defer></script>
+  <script src="packages-data.js?v=31a21dc7e6c3" defer></script>
+  <script src="packages.js?v=20261120forest1" defer></script>
+  <script src="color-settings.js?v=98c9ea4d93f2" defer></script>
+  <link rel="stylesheet" href="nav-style-preview.css?v=a5728f68f9c7">
+  <script src="nav-style-preview.js?v=0ffcc69676bd" defer></script>
+  <link rel="stylesheet" href="concierge-sidebar.css?v=d695b6832c78">
+  <script src="sidebar-ink-colors.js?v=cc47d5c5587a" defer></script>
+  <link rel="stylesheet" href="sidebar-dividers.css?v=e2a573041e86">
+  <script src="sidebar-dividers.js?v=2022d31f2f5b" defer></script>
+  <link rel="stylesheet" href="sidebar-navigation-options.css?v=dcc86218290c">
+  <script src="sidebar-navigation-options.js?v=4cf4b2876ec1" defer></script>
+  <link rel="stylesheet" href="logo-cream-options.css?v=2b4699363092">
+  <script src="logo-cream-options.js?v=2f9f5181b42c" defer></script>
+  <link rel="preload" href="../assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="sidebar-font.css?v=94a4d1f2c251">
+  <script src="sidebar-logo-position.js?v=5f5c7c2c1dec" defer></script>
+  <link rel="stylesheet" href="sidebar-shape.css?v=da8610f99345">
+  <script src="sidebar-shape.js?v=5fb61a65d45f" defer></script>
+  <link rel="stylesheet" href="sidebar-nav-colors.css?v=9a7a537f4af5">
+  <script src="sidebar-nav-colors.js?v=f8be49ffdab9" defer></script>
+  <link rel="stylesheet" href="sidebar-logo-shared.css?v=c00e620b222b">
+  <link rel="stylesheet" href="sidebar-icon-toggle.css?v=87b7452a85e3">
+  <script src="sidebar-icon-toggle.js?v=0626678becfd" defer></script>
+  <link rel="stylesheet" href="sidebar-selection-width.css?v=abe2c8ce2f99">
+  <script src="sidebar-selection-width.js?v=cfca32f38c5a" defer></script>
+  <link rel="stylesheet" href="sidebar-row-alignment.css?v=22387f0ef696">
+  <script src="sidebar-icon-weight.js?v=a00e08e57648" defer></script>
+  <link rel="stylesheet" href="sidebar-logo-styles.css?v=d55b2a6c6d67">
+  <script src="sidebar-logo-styles.js?v=593d53f9bf25" defer></script>
+  <link rel="stylesheet" href="concierge-shared-appearance.css?v=53f150935ee2">
+  <link rel="stylesheet" href="concierge-supplied-logo.css?v=83d97b5a06c4">
+  <script src="concierge-supplied-logo.js?v=da567e51a7c7" defer></script>
 </head>
-<body class="concierge-sidebar package-tracking" data-time="afternoon" data-breadcrumb="Packages">
+<body class="concierge-square concierge-sidebar package-tracking" data-sidebar-palette="original-cream" data-time="afternoon" data-breadcrumb="Packages">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -23,10 +56,10 @@
       <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
       <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
       <a class="nav-item active" aria-current="page" href="packages.html"><i data-icon="package"></i>Packages</a>
-      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
-      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident Reports</a>
+      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Activity Log</a>
       <div class="nav-divider"></div>
-      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
       <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
       <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
       <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
@@ -35,32 +68,42 @@
     <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
-    <header class="page-header package-page-header card">
-      <div class="package-header-content">
-        <div class="package-header-thumbnail" aria-hidden="true"><img src="../assets/package-title-icon.png" alt="" width="64" height="64" decoding="async"></div>
-        <div class="package-header-copy">
-          <h1>Package tracking</h1>
-          <p class="welcome-note">Log arrivals and review pending packages in one place.</p>
-        </div>
-      </div>
-    </header>
-
     <div class="packages-layout">
-      <section class="packages-table-card card" aria-label="Package list">
-        <div class="pkg-tabs" role="tablist" aria-label="Package status">
-          <button type="button" class="pkg-tab active" role="tab" aria-selected="true" aria-controls="pending-panel" data-tab="awaiting" id="tab-pending">Pending</button>
-          <button type="button" class="pkg-tab" role="tab" aria-selected="false" aria-controls="history-panel" data-tab="history" id="tab-history">History</button>
+      <header class="page-header package-page-header">
+        <div class="package-header-content">
+          <div class="package-header-copy">
+            <h1>Package tracking</h1>
+            <p class="welcome-note">Log arrivals, track pending deliveries, and release packages to residents.</p>
+          </div>
         </div>
-        <div class="package-history-intro" id="package-history-intro">
-          <div class="package-search-filters">
-            <div class="package-history-search" id="package-history-search-wrap"><i data-icon="search"></i><label class="sr-only" for="package-history-search">Search packages by resident, suite, tracking number or carrier</label><input id="package-history-search" type="search" placeholder="Search by resident, suite, tracking number, or carrier..." autocomplete="off" aria-controls="pending-list"></div>
+        <div class="package-header-actions" role="group" aria-label="Package actions">
+          <button type="button" class="button outline package-header-btn is-release" id="activity-release-trigger" aria-label="Release Package" aria-haspopup="dialog" aria-controls="activity-release-modal">
+            <span>Release packages</span>
+            <span class="package-header-pending-count" id="package-header-pending-count">0</span>
+          </button>
+          <button type="button" class="button package-header-btn is-log" id="activity-log-package-trigger" aria-label="Log Package" aria-haspopup="dialog" aria-controls="activity-package-log-modal">
+            <span aria-hidden="true">+</span>
+            <span>Log package</span>
+          </button>
+        </div>
+      </header>
+      <section class="packages-table-card card" aria-label="Package list">
+        <div class="package-toolbar">
+          <div class="pkg-tabs" role="tablist" aria-label="Package status">
+            <button type="button" class="pkg-tab active" role="tab" aria-selected="true" aria-controls="pending-panel" data-tab="awaiting" id="tab-pending">Pending</button>
+            <button type="button" class="pkg-tab" role="tab" aria-selected="false" aria-controls="history-panel" data-tab="history" id="tab-history">History</button>
+          </div>
+          <div class="package-history-intro" id="package-history-intro">
+            <div class="package-search-filters">
+              <div class="package-history-search" id="package-history-search-wrap"><i data-icon="search"></i><label class="sr-only" for="package-history-search">Search packages by resident, suite, tracking number or carrier</label><input id="package-history-search" type="search" placeholder="Search resident, suite, tracking #, or carrier..." autocomplete="off" aria-controls="pending-list"></div>
 
-            <div class="package-date-filter" id="package-date-filter">
-              <div class="package-date-trigger">
-                <button type="button" id="package-date-toggle" class="button outline" data-action="open-package-date" aria-haspopup="dialog"><i data-icon="calendar"></i><span id="package-date-label">Filter by Date</span><span class="package-filter-chevron" aria-hidden="true"><i data-icon="chevron"></i></span></button>
-                <input type="date" id="package-date-value" class="package-direct-date" tabindex="-1" aria-label="Filter packages by arrival date">
+              <div class="package-date-filter" id="package-date-filter">
+                <div class="package-date-trigger">
+                  <button type="button" id="package-date-toggle" class="button outline" data-action="open-package-date" aria-haspopup="dialog"><i data-icon="calendar"></i><span id="package-date-label">Filter by Date</span><span class="package-filter-chevron" aria-hidden="true"><i data-icon="chevron"></i></span></button>
+                  <input type="date" id="package-date-value" class="package-direct-date" tabindex="-1" aria-label="Filter packages by arrival date">
+                </div>
+                <button type="button" class="package-clear-date" id="package-clear-date" data-action="clear-package-date" hidden>Clear date</button>
               </div>
-              <button type="button" class="package-clear-date" id="package-clear-date" data-action="clear-package-date" hidden>Clear date</button>
             </div>
           </div>
         </div>
@@ -72,7 +115,7 @@
                 <th scope="col" aria-sort="none"><button type="button" data-action="sort-pending-packages" data-sort="resident">Resident</button></th>
                 <th scope="col" aria-sort="none"><button type="button" data-action="sort-pending-packages" data-sort="carrier">Carrier</button></th>
                 <th scope="col" aria-sort="descending"><button type="button" data-action="sort-pending-packages" data-sort="arrived">Arrived</button></th>
-                <th scope="col">Actions</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
               </tr></thead>
               <tbody id="pending-list"></tbody>
             </table>
@@ -88,7 +131,7 @@
                 <th scope="col">Carrier</th>
                 <th scope="col">Arrived</th>
                 <th scope="col">Released</th>
-                <th scope="col">Actions</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
               </tr></thead>
               <tbody id="history-list"></tbody>
             </table>
@@ -175,6 +218,34 @@
     </div>
     <div id="form-slot-modal"></div>
   </dialog>
+
+  <dialog id="activity-package-log-modal" class="portal-form-dialog activity-package-log-dialog" aria-labelledby="activity-package-log-title">
+    <div class="dialog-top"><h2 id="activity-package-log-title" class="portal-dialog-title">Log packages</h2><button type="button" class="icon-button" data-close-activity-package-log aria-label="Close log packages"><i data-icon="close"></i></button></div>
+    <form id="activity-package-log-form">
+      <p class="portal-form-context">Add arrivals below. Arrival time and logged-by are recorded automatically.</p>
+      <div class="activity-package-log-scroll" role="region" aria-label="Packages to log" tabindex="0">
+        <table class="activity-package-log-table"><thead><tr><th scope="col">Suite #</th><th scope="col">Resident Name</th><th scope="col">Package</th><th scope="col">Tracking # <span class="sr-only">(optional)</span></th><th scope="col">Storage Location</th></tr></thead><tbody id="activity-package-log-rows"></tbody></table>
+      </div>
+      <button type="button" class="button outline activity-package-add-row" id="activity-package-add-row">+ Add row</button>
+      <p id="activity-package-log-error" class="activity-release-error" role="alert" hidden></p>
+      <div class="portal-form-actions"><button type="button" class="button outline" data-close-activity-package-log>Cancel</button><button type="submit" class="button" id="activity-package-log-save">Save packages</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="activity-release-modal" class="portal-form-dialog activity-release-dialog" aria-labelledby="activity-release-title">
+    <div class="dialog-top"><h2 id="activity-release-title" class="portal-dialog-title">Release packages</h2><button type="button" class="icon-button" data-close-activity-release aria-label="Close release packages"><i data-icon="close"></i></button></div>
+    <form id="activity-release-form">
+      <div class="activity-release-intro"><p class="portal-form-context">Choose Delivered or Picked up beside each package you want to release.</p>
+      <div class="activity-release-selection"><span id="activity-release-count" role="status">0 ready to release</span></div></div>
+      <div class="activity-release-table-wrap" tabindex="0" role="region" aria-label="Pending packages">
+        <table class="activity-release-table"><thead><tr><th scope="col">Resident</th><th scope="col">Package</th><th scope="col">Arrived</th><th scope="col">Release as</th></tr></thead><tbody id="activity-release-rows"></tbody></table>
+        <p id="activity-release-empty" class="pkg-empty" hidden>No pending packages to release.</p>
+      </div>
+      <p id="activity-release-error" class="activity-release-error" role="alert" hidden></p>
+      <div class="portal-form-actions"><button type="button" class="button outline" data-close-activity-release>Cancel</button><button type="submit" id="activity-release-submit" class="button" disabled>Release packages</button></div>
+    </form>
+  </dialog>
+
 
   <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
   <div class="toast" id="toast" role="status"></div>

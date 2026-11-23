@@ -1,0 +1,161 @@
+/* The approved compact welcome treatment, scoped to this card only. */
+body.sidebar-merge[data-dashboard-card-layout][data-dashboard-header="premium-welcome-card"][data-header-adjustments] .dashboard .welcome {
+  box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0;
+  aspect-ratio: 4.5 / 1; min-height: 136px; height: var(--dashboard-adjusted-height,160px); padding: 20px 36px;
+  justify-self: stretch;
+  display: flex; align-items: center; border: 0; border-radius: 16px;
+  background: #122135; overflow: hidden; isolation: isolate;
+  mask-image: none; -webkit-mask-image: none;
+  box-shadow: 0 4px 16px rgb(16 30 48 / 10%) !important;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome::before {
+  inset: 0; display: block; opacity: 1; filter: none; transform: none;
+  background-image: var(--dashboard-header-photo,url('../assets/header-sunlit-workspace.png'));
+  background-size: calc(100% * var(--dashboard-image-zoom,1.25)) auto;
+  background-position: var(--dashboard-image-x,100%) var(--dashboard-image-y,100%);
+  mask-image: none; -webkit-mask-image: none; border-radius: inherit;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-header-adjustments] .dashboard .welcome::after {
+  display: block; inset: 0; border-radius: inherit;
+  background: linear-gradient(90deg, rgb(16 30 48 / 46%), rgb(16 30 48 / 12%) 45%, transparent 62%);
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome > :is(.header-edge-fade-layer,.classic-welcome-surface,.header-glass-nameplate) { display: none !important; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .welcome-copy {
+  width: 100%; max-width: 100%; margin: 0; padding: 0; background: transparent;
+  border: 0; border-radius: 0; box-shadow: none; position: relative; z-index: 3; transform: none;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .welcome-copy,
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .welcome-copy * { font-family: 'Inter Sidebar','Segoe UI',sans-serif !important; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-greeting-experiments] .dashboard .welcome .experimental-greeting {
+  display: block; margin: 0; color: #fffdf8; line-height: 1.15; letter-spacing: -.025em;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .experimental-greeting [data-greeting-part] { display: inline; font-weight: 500 !important; font-style: normal !important; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-greeting-experiments] .welcome .classic-welcome-copy p,
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-greeting-experiments] .welcome .home-welcome-details {
+  display: grid; grid-template-columns: max-content max-content; align-items: center;
+  justify-content: start; column-gap: 18px; row-gap: 16px; margin: 12px 0 0;
+  font-size: 12px; line-height: 1.35; color: #ded5c3;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .home-welcome-role {
+  grid-column: 1 / -1; justify-self: start; padding: 6px 13px;
+  background: #ddc597; color: #172638; border: 0; border-radius: 999px;
+  font-size: 11px; line-height: 1.25; font-weight: 500; letter-spacing: 0;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome :is(.greeting-date,.greeting-weather) { color: #ded5c3; font-size: 12px; font-weight: 400; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome [hidden] { display: none !important; }
+body.sidebar-merge[data-dashboard-card-layout][data-dashboard-header="premium-welcome-card"][data-header-adjustments][data-rearranging-cards] .dashboard .welcome { padding-top: 52px; }
+@media (max-width: 600px) {
+  body.sidebar-merge[data-dashboard-card-layout][data-dashboard-header="premium-welcome-card"][data-header-adjustments] .dashboard .welcome { min-height: 154px; aspect-ratio: auto; padding: 20px 22px; }
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome::before { background-size: auto calc(130% * var(--dashboard-image-zoom,1.25)); background-position: var(--dashboard-image-x,0%) var(--dashboard-image-y,100%); }
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .experimental-greeting { font-size: 26px !important; }
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .classic-welcome-copy p { column-gap: 14px; }
+}
+
+body.sidebar-merge[data-dashboard-card-layout][data-dashboard-header="premium-welcome-card"][data-header-adjustments] .dashboard .welcome[data-remove-header-shadow] { box-shadow: none !important; }
+
+/* Keep the classic greeting as the single visible copy. Broad typography rules
+   must never reveal the alternate h1 or the alternate metadata row. */
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .welcome-copy > :not(.classic-welcome-copy) {
+  display: none !important;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .welcome-copy > .classic-welcome-copy {
+  display: block; margin: 0;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .classic-welcome-copy .greeting-heading-role {
+  display: none !important;
+}
+
+body.sidebar-merge[data-dashboard-card-layout][data-dashboard-header="premium-welcome-card"][data-header-adjustments] .dashboard > .welcome {
+  width: 100%; max-width: 100%; min-width: 0; margin: 0; flex-shrink: 1;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .classic-welcome-copy {
+  width: 100%; min-width: 0; padding: 0; transform: none;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-greeting-experiments] .dashboard .welcome .classic-welcome-copy h2 {
+  font-size: var(--greeting-experiment-size,36px) !important; line-height: 1.12; font-weight: 500; white-space: nowrap;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome :is(.greeting-date,.greeting-weather) {
+  font-size: 13px; line-height: 1.25; color: #ded5c3;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .home-welcome-role {
+  font-size: 12px; line-height: 1.2;
+}
+@media (max-width: 760px) {
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-greeting-experiments] .dashboard .welcome .classic-welcome-copy h2 { font-size: var(--greeting-experiment-size,32px) !important; }
+}
+
+.dashboard-header-tools-top { margin: 0 0 20px; padding: 16px 20px; background: var(--finish-card,#fffdf9); border: 1px solid var(--finish-border,#e8ded4); border-radius: 12px; }
+.dashboard-header-tools-top .dashboard-header-adjustments { margin: 0; padding: 0; border-top: 0; }
+.dashboard-header-tools-top > .dashboard-header-adjustments > .header-adjustment-fields { grid-template-columns: repeat(3,minmax(0,1fr)); }
+@media (max-width: 760px) { .dashboard-header-tools-top > .dashboard-header-adjustments > .header-adjustment-fields { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+
+body.sidebar-merge[data-dashboard-card-layout] .dashboard > .dashboard-header-tools-top { grid-column: 1 / -1; align-self: start; min-width: 0; margin: 0; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .welcome-copy { position: static; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta {
+  position: absolute; top: 20px; right: 30px; z-index: 4;
+  display: flex; align-items: center; gap: 18px; white-space: nowrap;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .classic-welcome-copy p { position: static; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-rearranging-cards] .welcome .premium-card-meta { top: 46px; }
+@media (max-width: 600px) {
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta { top: 14px; right: 20px; gap: 12px; }
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta :is(.greeting-date,.greeting-weather) { font-size: 11px; }
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .classic-welcome-copy { padding-top: 20px; }
+}
+
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta { gap: 26px; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-weather-group { display: inline-flex; align-items: center; gap: 10px; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-weather-group:has(.greeting-weather[hidden]) { display: none; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-weather-group svg { width: 21px; height: 21px; flex: 0 0 21px; fill: none; stroke: #f3e9d4; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .premium-card-meta :is(.greeting-date,.greeting-weather) { color: #f3e9d4; font-size: 13px; font-weight: 500; line-height: 1.4; }
+@media (max-width: 600px) { body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta { gap: 18px; } }
+
+/* Date above the greeting; weather stays independently anchored at top right. */
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta { position: static; display: contents; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta > .greeting-date {
+  position: absolute; top: 18px; left: 30px; right: auto; z-index: 4;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-weather-group {
+  position: absolute; top: 18px; right: 20px; z-index: 4;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .classic-welcome-copy {
+  padding-top: 20px;
+}
+body.sidebar-merge[data-dashboard-card-layout][data-dashboard-header="premium-welcome-card"][data-header-adjustments] .dashboard .welcome {
+  padding-left: 30px; padding-right: 30px;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-rearranging-cards] .welcome .premium-card-meta > .greeting-date,
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-rearranging-cards] .welcome .premium-weather-group { top: 46px; }
+@media (max-width: 600px) {
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta > .greeting-date { top: 16px; left: 22px; }
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-weather-group { top: 16px; right: 16px; gap: 7px; }
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .premium-card-meta :is(.greeting-date,.greeting-weather) { font-size: 11px; }
+  body.sidebar-merge[data-dashboard-card-layout][data-dashboard-header="premium-welcome-card"][data-header-adjustments] .dashboard .welcome { padding-left: 22px; padding-right: 22px; }
+}
+
+/* Group date and weather together in the upper-right corner for both greetings. */
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta {
+  position: absolute; display: flex; top: 18px; right: 20px; left: auto; bottom: auto;
+  align-items: center; gap: 24px; z-index: 4;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .premium-card-meta > .greeting-date,
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome .premium-card-meta > .premium-weather-group {
+  position: static; top: auto; right: auto; bottom: auto; left: auto;
+}
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"][data-rearranging-cards] .welcome .premium-card-meta { top: 46px; }
+@media (max-width: 600px) {
+  body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .welcome .premium-card-meta { top: 16px; right: 16px; gap: 16px; }
+}
+
+/* Honor small height settings across every greeting and role treatment. */
+body.sidebar-merge[data-dashboard-card-layout][data-dashboard-header="premium-welcome-card"][data-header-adjustments] .dashboard .welcome {
+  min-height: 40px !important;
+  height: var(--dashboard-adjusted-height,160px);
+  padding-top: min(20px,calc(var(--dashboard-adjusted-height,160px) * .15));
+  padding-bottom: min(20px,calc(var(--dashboard-adjusted-height,160px) * .15));
+}
+
+/* Flat page canvas behind cards; the pattern remains on its separate layer. */
+body.sidebar-merge[data-dashboard-card-layout],
+body.sidebar-merge[data-dashboard-card-layout] main { background-image: none !important; }
+body.sidebar-merge[data-dashboard-card-layout] .dashboard::before { display: none !important; }

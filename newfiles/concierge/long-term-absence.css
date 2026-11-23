@@ -71,3 +71,72 @@ body { background: var(--cream); }
   .desk-status, .desk-complete { grid-column: 2; grid-row: 1; }
 }
 @media (max-width: 600px) { .desk-search { margin-inline: 16px; } .pkg-tabs, .desk-list-footer { padding-inline: 16px; } .desk-record { padding-inline: 16px; } }
+
+/* Concierge portal layout: matching header, table and creation dialog. */
+body { background: var(--cream); }
+.portal-list-card { padding: 0; border: 0; border-radius: 22px; overflow: visible; min-width: 0; }
+.portal-page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; min-height: 0; margin: 0; padding: 18px 24px; gap: 24px; }
+.portal-header-content { display: flex; align-items: center; gap: 18px; flex: 1; min-width: 0; }
+.portal-header-icon { display: grid; place-items: center; width: 64px; height: 64px; flex: 0 0 64px; border-radius: 16px; background: #f2e3d5; color: var(--caramel-dark); }
+.portal-header-icon svg { width: 32px; height: 32px; }
+.portal-header-copy { min-width: 0; }
+.portal-page-header h1 { margin: 0 0 5px; font: 700 clamp(26px, 2.2vw, 32px)/1.15 "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: -0.7px; }
+.portal-page-header .welcome-note { max-width: none; margin: 0; font-size: 14px !important; line-height: 1.5; color: #716454 !important; }
+.portal-page-header .portal-create-button { flex-shrink: 0; min-height: 42px; padding: 9px 15px; border-radius: 11px; font-size: 14px; white-space: nowrap; }
+.portal-create-button > span { font-size: 21px; font-weight: 400; line-height: 1; }
+.portal-table-scroll { overflow-x: auto; padding: 0 20px; }
+.portal-table-scroll:focus-visible { outline: 2px solid var(--caramel); outline-offset: -3px; }
+.portal-table { width: 100%; min-width: 920px; border-collapse: collapse; table-layout: fixed; font-size: 14px; line-height: 1.5; color: var(--espresso); }
+.portal-table th { padding: 12px 8px; border-bottom: 1px solid var(--line); text-align: left; color: #716454; font-weight: 600; }
+.portal-table td { padding: 14px 8px; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+.portal-table tbody tr:last-child td { border-bottom: 0; }
+.portal-table tbody tr:hover { background: #faf6f0; }
+.portal-primary { display: block; font-weight: 650; }
+.portal-secondary { display: block; margin-top: 3px; color: #716454; white-space: pre-line; }
+.portal-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.portal-table :is(.booking-status, .desk-status) { display: inline-block; margin: 0; }
+.portal-details { margin-top: 6px; color: #716454; }
+.portal-details summary { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; color: #82694f; cursor: pointer; list-style: none; }
+.portal-details summary::-webkit-details-marker { display: none; }
+.portal-details summary::after { content: ''; width: 6px; height: 6px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg); margin: -3px 2px 0; }
+.portal-details[open] summary::after { transform: rotate(225deg); margin-top: 3px; }
+.portal-details summary:focus-visible { outline: 2px solid var(--caramel); outline-offset: 3px; }
+.portal-details p { margin: 6px 0 0; white-space: pre-wrap; }
+dialog.portal-form-dialog { max-width: 560px; max-height: calc(100dvh - 32px); padding: 24px; overflow-y: auto; }
+.portal-form-dialog .dialog-top { align-items: center; gap: 16px; margin-bottom: 20px; }
+.portal-form-dialog .portal-dialog-title { display: block; margin: 0; font: 650 24px/1.2 "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; }
+.portal-form-dialog :is(.composer, .desk-form, .concierge-booking-form) { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 0; margin: 0; border: 0; background: transparent; height: auto; min-height: 0; }
+.portal-form-dialog label { display: grid; gap: 6px; margin: 0; font-size: 14px; font-weight: 550; }
+.portal-form-dialog :is(input:not([type="checkbox"]), select, textarea) { width: 100%; min-width: 0; min-height: 44px; margin: 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); color: var(--espresso); font: inherit; font-size: 14px; }
+.portal-form-dialog textarea { min-height: 110px; height: auto; resize: vertical; line-height: 1.5; }
+.portal-form-dialog .desk-checks label { display: flex; align-items: flex-start; gap: 9px; font-weight: 400; }
+.portal-form-dialog .desk-checks input { width: 16px; height: 16px; min-height: 16px; margin: 3px 0 0; padding: 0; flex-shrink: 0; }
+.portal-form-dialog :is(.portal-form-actions, .booking-form-actions, .desk-form-actions, .form-actions) { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; margin: 4px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
+.portal-form-dialog .button { min-height: 42px; font-size: 14px; }
+.portal-form-dialog [hidden] { display: none; }
+.portal-form-context { margin: 0 0 18px; font-size: 14px; color: #716454; }
+@media (max-width: 800px) {
+  .portal-page-header { padding: 18px 22px; }
+}
+@media (max-width: 560px) {
+  .portal-page-header { flex-wrap: wrap; gap: 16px; padding: 16px 18px; }
+  .portal-header-content { gap: 14px; flex-basis: 100%; }
+  .portal-header-icon { width: 48px; height: 48px; flex-basis: 48px; border-radius: 12px; }
+  .portal-header-icon svg { width: 26px; height: 26px; }
+  .portal-page-header h1 { font-size: 26px; }
+  .portal-page-header .portal-create-button { margin-left: 62px; }
+  .portal-list-card { border-radius: 18px; }
+  .portal-table-scroll { padding: 0 12px; }
+  dialog.portal-form-dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); padding: 18px; }
+  .portal-form-dialog :is(.desk-field-pair, .booking-time-fields) { grid-template-columns: minmax(0, 1fr); }
+}
+
+.desk-layout { grid-template-columns: minmax(0, 1fr); margin-top: 16px; }
+.desk-list-card.portal-list-card { border: 0; overflow: visible; }
+.portal-table { min-width: 1050px; }
+.portal-table th:nth-child(1) { width: 20%; }
+.portal-table th:nth-child(2) { width: 23%; }
+.portal-table th:nth-child(3) { width: 23%; }
+.portal-table th:nth-child(4) { width: 22%; }
+.portal-table th:nth-child(5) { width: 12%; }
+@media (max-width: 560px) { .desk-layout { margin-top: 12px; } }

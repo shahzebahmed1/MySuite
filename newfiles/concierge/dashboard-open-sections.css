@@ -1,0 +1,58 @@
+/* Section headings live on the canvas; only their individual entries are cards. */
+html[data-dashboard-shell="monochrome"] body.sidebar-merge[data-dashboard-card-layout] .dashboard > :is(.packages,.announcements,.maint-queue,.schedule,.shop) {
+  background: transparent !important; border: 0 !important; border-radius: 0 !important;
+  box-shadow: none !important; padding: 0; min-height: 0; height: auto; overflow: visible;
+  display: block; color: #171717;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge[data-dashboard-card-layout] .dashboard > :is(.packages,.announcements,.maint-queue,.schedule,.shop) > .card-heading {
+  padding: 0; margin: 0 0 16px; min-height: 32px; border: 0;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge[data-dashboard-card-layout] .dashboard > :is(.packages,.announcements,.maint-queue,.schedule,.shop) > .card-heading h2 {
+  color: #171717; font-size: 23px; line-height: 1.25; font-weight: 550; letter-spacing: -.03em;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .dashboard > :is(.packages,.announcements,.maint-queue,.schedule,.shop) > .card-heading h2 svg { display: none; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; align-items: stretch; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-row {
+  display: grid; grid-template-columns: 40px minmax(0,1fr); align-content: start; align-items: start;
+  gap: 12px; min-width: 0; min-height: 158px; margin: 0 !important; padding: 20px;
+  border: 0; border-radius: 20px; background: #fff; color: #171717; box-shadow: 0 5px 18px #15151506;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-row:nth-child(even) { background: var(--monochrome-card-colour,#f1f1f1); }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-logo-wrap { width: 40px; height: 40px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-logo { width: 36px; height: 36px; object-fit: contain; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-info { min-width: 0; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-info strong { color: #171717; font-size: 14px; line-height: 1.4; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-info small { color: #626262; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-row > .badge { grid-column: 2; justify-self: start; align-self: start; margin: 0; font-size: 11px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-announcement-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(240px,100%),1fr)); gap: 14px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-announcement-list .announcement {
+  display: grid; grid-template-columns: 36px minmax(0,1fr) 12px; align-items: start; gap: 12px;
+  min-width: 0; min-height: 160px; padding: 18px; margin: 0 !important; border: 0; border-radius: 18px;
+  background: #fff; color: #171717;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-announcement-list .tile-icon { width: 36px; height: 36px; background: #ececec; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-announcement-list .announcement strong { color: #171717; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-announcement-list .announcement :is(small,em) { color: #626262; font-size: 12px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #maint-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #maint-list .queue-row {
+  display: grid; align-content: space-between; align-items: start; gap: 16px; min-height: 135px;
+  width: 100%; padding: 18px; margin: 0 !important; border: 0; border-radius: 18px; background: var(--monochrome-card-colour,#f1f1f1); color: #171717;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #maint-list .queue-meta { display: grid; gap: 7px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #maint-list .queue-issue { color: #626262; font-size: 12px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #maint-list .badge { justify-self: start; font-size: 11px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #schedule-list { display: grid; gap: 12px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #schedule-list > :is(.schedule-row,p) { margin: 0; padding: 20px !important; border: 0; border-radius: 18px; background: #fff; color: #626262; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .monochrome-shop-panel {
+  box-sizing: border-box; height: var(--dashboard-shop-height,160px); min-height: 40px; padding: 18px 22px; border-radius: 20px;
+  display: flex; align-items: center; overflow: hidden;
+  background: linear-gradient(90deg,#fff 0%,#ffffffdf 42%,transparent 90%),url('../assets/fob.png') center/cover;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .shop[data-match-header-height] .monochrome-shop-panel { height: var(--dashboard-greeting-card-height,160px); }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .dashboard > .shop h3 { font-size: 18px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge[data-rearranging-cards] .dashboard > :is(.packages,.announcements,.maint-queue,.schedule,.shop) { padding-top: 42px; }
+@media(max-width:900px){ html[data-dashboard-shell="monochrome"] body.sidebar-merge #maint-list { grid-template-columns: 1fr; } }
+@media(max-width:600px){
+  html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(220px,78%); overflow-x: auto; padding-bottom: 8px; scrollbar-width: thin; scrollbar-color: #b6b6b6 transparent; }
+  html[data-dashboard-shell="monochrome"] body.sidebar-merge .dashboard > :is(.packages,.announcements,.maint-queue,.schedule,.shop) > .card-heading h2 { font-size: 21px; }
+}

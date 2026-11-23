@@ -12,7 +12,9 @@
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="../shared/contact-directory-data.js?v=75933a438c70" defer></script>
-  <script src="../shared/contact-directory-app.js?v=bf5fbd6896d4" defer></script>
+  <script src="../shared/contact-directory-app.js?v=3901f8cede8e" defer></script>
+  <link rel="stylesheet" href="sidebar-colors.css?v=5e3ee7e7b1b2">
+  <script src="sidebar-colors.js?v=a1e3f037cc99" defer></script>
 </head>
 <body data-time="afternoon" data-portal-role="board" data-breadcrumb="Contact directory">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
@@ -34,16 +36,16 @@
     <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
-    <header class="page-header">
-      <div>
-        <h1>Contact directory</h1>
-        <p class="welcome-note">Find residents and building contacts by name, suite, or phone.</p>
-      </div>
-      <div class="header-tools">
-        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
-      </div>
-    </header>
     <section class="dir-card card" aria-label="Contact directory">
+      <header class="page-header dir-page-header">
+        <div class="dir-header-content">
+          <div class="dir-header-thumbnail" aria-hidden="true"><img src="../assets/contact-directory-title-icon.png" alt="" width="64" height="64" decoding="async"></div>
+          <div class="dir-header-copy">
+            <h1>Contact directory</h1>
+            <p class="welcome-note">Find residents and building contacts by name, suite, or phone.</p>
+          </div>
+        </div>
+      </header>
       <div class="dir-tabs" role="tablist">
         <button type="button" class="dir-tab active" role="tab" aria-selected="true" data-tab="residents">Residents</button>
         <button type="button" class="dir-tab" role="tab" aria-selected="false" data-tab="building">Building contacts</button>

@@ -10,6 +10,15 @@ const deskSearch = { awaiting: '', history: '' };
 const deskPages = { awaiting: 1, history: 1 };
 const deskPageSize = 5;
 
+const maintenanceFormModal = document.querySelector('#maintenance-form-modal');
+
+function openMaintenanceForm() {
+  ensureFormMounted();
+  resetForm();
+  if (!maintenanceFormModal.open) maintenanceFormModal.showModal();
+  document.querySelector('#mnt-location')?.focus();
+}
+
 function closeMenu() {
   document.querySelector('.sidebar').classList.remove('open');
   document.querySelector('.scrim').classList.remove('visible');
@@ -51,6 +60,7 @@ function wireFormHandlers() {
       return;
     }
     addMaintenance(data);
+    maintenanceFormModal.close();
     resetForm();
     deskSearch.awaiting = '';
     deskPages.awaiting = 1;
@@ -60,7 +70,7 @@ function wireFormHandlers() {
 }
 
 function ensureFormMounted() {
-  const slot = document.querySelector('#form-slot-panel');
+  const slot = document.querySelector('#maintenance-form-slot-modal');
   let form = document.querySelector('#maintenance-form');
   if (!form) {
     const template = document.querySelector('#maintenance-form-template');
@@ -94,7 +104,13 @@ function escapeMaintenanceHtml(value) {
 function renderMaintenanceRecord(item) {
   const escape = escapeMaintenanceHtml;
   const complete = item.status !== 'pending';
-  return `<article class="desk-record"><div class="desk-who"><strong>${escape(item.suite)}</strong>${item.residentName ? `<span>${escape(item.residentName)}</span>` : ''}</div><div class="desk-detail"><div class="desk-heading"><i data-icon="wrench"></i><strong>${escape(maintenanceSummary(item))}</strong></div>${item.note && item.note !== item.title ? `<p class="desk-note">${escape(item.note)}</p>` : ''}<dl class="desk-meta"><div><dt>Reported</dt><dd>${escape(formatMaintenanceDateTime(item.reportedAt))}</dd></div><div><dt>Logged by</dt><dd>${escape(item.reportedBy || 'Concierge')}</dd></div>${complete ? `<div><dt>Completed</dt><dd>${escape(formatMaintenanceDateTime(item.completedAt))}</dd></div><div><dt>Completed by</dt><dd>${escape(item.completedBy || 'Concierge')}</dd></div>` : ''}</dl></div>${complete ? '<span class="desk-status is-completed">Completed</span>' : `<button type="button" class="desk-complete" data-complete-maint="${escape(item.id)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Mark complete</button>`}</article>`;
+  return `<tr data-maintenance-id="${escape(item.id)}">
+    <td><strong class="portal-primary">${escape(item.suite)}</strong>${item.residentName ? `<span class="portal-secondary">${escape(item.residentName)}</span>` : ''}</td>
+    <td><strong class="portal-primary">${escape(maintenanceSummary(item))}</strong>${item.note && item.note !== item.title ? `<details class="portal-details"><summary>Details</summary><p>${escape(item.note)}</p></details>` : ''}</td>
+    <td>${escape(formatMaintenanceDateTime(item.reportedAt))}<span class="portal-secondary">Logged by ${escape(item.reportedBy || 'Concierge')}</span></td>
+    <td>${complete ? `Completed<span class="portal-secondary">${escape(formatMaintenanceDateTime(item.completedAt))}</span><span class="portal-secondary">By ${escape(item.completedBy || 'Concierge')}</span>` : 'Pending'}</td>
+    <td>${complete ? '<span class="portal-secondary">No actions</span>' : `<button type="button" class="desk-complete" data-complete-maint="${escape(item.id)}">Mark complete</button>`}</td>
+  </tr>`;
 }
 
 function refreshTable() {
@@ -212,6 +228,10 @@ document.addEventListener('click', event => {
     document.querySelector('.mobile-toggle').setAttribute('aria-expanded', String(open));
   } else if (action === 'close-menu') {
     closeMenu();
+  } else if (action === 'open-maintenance-form') {
+    openMaintenanceForm();
+  } else if (action === 'close-maintenance-form') {
+    maintenanceFormModal.close();
   } else if (action === 'close-modal') {
     modal.close();
   } else if (action === 'confirm-complete') {
@@ -223,7 +243,7 @@ document.addEventListener('click', event => {
   } else if (action === 'help') {
     openModal(
       'Maintenance help',
-      '<p>Use <strong>Log a request</strong> for new issues from residents or the desk.</p><p>On each pending item, use <strong>Mark complete</strong>, then confirm in the dialog.</p>'
+      '<p>Choose <strong>+ Log request</strong> for new issues from residents or the desk.</p><p>On each pending item, use <strong>Mark complete</strong>, then confirm in the dialog.</p>'
     );
   }
 });
@@ -250,4 +270,10 @@ setLighting(savedLighting);
 lightingPicker.addEventListener('change', () => {
   setLighting(lightingPicker.value);
   save('mysuite-header-lighting', lightingPicker.value);
+});
+
+maintenanceFormModal.addEventListener('click', event => {
+  if (event.target !== maintenanceFormModal) return;
+  const bounds = maintenanceFormModal.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) maintenanceFormModal.close();
 });

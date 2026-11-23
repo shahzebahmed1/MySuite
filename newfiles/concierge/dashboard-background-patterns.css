@@ -1,0 +1,18 @@
+body.sidebar-merge main[data-background-pattern] { position: relative; isolation: isolate; }
+.dashboard-pattern-surface { position: absolute; inset: 0; z-index: -1; pointer-events: none; background-repeat: repeat; border-radius: inherit; }
+.dashboard-pattern-switcher { margin: 0 10px 12px; padding: 0 0 10px; border-bottom: 1px solid color-mix(in srgb,currentColor 12%,transparent); }
+.dashboard-pattern-label { display: block; margin-bottom: 6px; font-size: 11px; line-height: 1.4; color: inherit; opacity: .8; }
+.dashboard-pattern-switcher button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 7px 10px; border: 1px solid color-mix(in srgb,currentColor 22%,transparent); border-radius: 8px; background: color-mix(in srgb,currentColor 5%,transparent); color: inherit; font: 500 12px/1.4 'Inter Sidebar','Segoe UI',sans-serif; cursor: pointer; }
+.dashboard-pattern-switcher button:hover { background: color-mix(in srgb,currentColor 11%,transparent); }
+.dashboard-pattern-switcher button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.dashboard-pattern-switcher svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.sidebar-pattern-surface { position: absolute; inset: 0; z-index: 0; pointer-events: none; background-repeat: repeat; border-radius: inherit; }
+.sidebar-pattern-surface[hidden] { display: none; }
+.dashboard-pattern-surface, .sidebar-pattern-surface { background-attachment: fixed; }
+.sidebar[data-sidebar-pattern] > :not(.sidebar-pattern-surface):not(.sidebar-full-width-highlight) { position: relative; z-index: 1; }
+.sidebar-pattern-extension { display: flex; align-items: center; gap: 6px; margin-top: 9px; font-size: 11px; line-height: 1.4; cursor: pointer; color: inherit; }
+.sidebar-pattern-extension input { width: 13px; height: 13px; margin: 0; accent-color: #c5a47b; }
+
+.sidebar-pattern-independent { margin-top: 10px; }
+.sidebar-pattern-label { display: block; margin-bottom: 6px; color: inherit; opacity: .8; font-size: 11px; line-height: 1.4; }

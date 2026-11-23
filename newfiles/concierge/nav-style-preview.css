@@ -1,0 +1,61 @@
+.concierge-nav-comparison { padding: 24px 0; border-top: 1px solid #e8ded4; }
+.nav-comparison-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+.nav-comparison-heading h2 { margin: 0; font: 600 20px/1.4 "Segoe UI", sans-serif; }
+.nav-style-reset { padding: 6px; border: 0; background: transparent; color: #69452d; font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.nav-comparison-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.nav-comparison-grid article { min-width: 0; }
+.nav-comparison-grid h3 { margin: 0 0 4px; font: 600 16px/1.4 "Segoe UI", sans-serif; }
+.nav-comparison-grid p { margin: 0 0 12px; min-height: 42px; font-size: 14px; color: #716454; }
+.nav-preview-sidebar { padding: 18px 10px; border: 1px solid #e8ded4; border-radius: 14px; background: #f8f4ee; margin-bottom: 12px; color: #4a3f35; }
+.nav-preview-logo { padding: 0 12px 15px; font: 700 30px/1.4 Georgia, serif; letter-spacing: -1px; color: #35261e; }
+.nav-preview-logo span { color: #c4a07a; }
+.nav-preview-row { display: flex; align-items: center; gap: 10px; margin: 4px 0; padding: 11px 12px; border-radius: 999px; font-size: 14px; }
+.nav-preview-row svg { width: 19px; height: 19px; flex-shrink: 0; }
+.nav-comparison-grid button { width: 100%; min-height: 40px; border: 1px solid #ccb6a3; border-radius: 9px; background: transparent; color: #69452d; font: 600 14px/1.4 "Segoe UI", sans-serif; }
+.nav-comparison-grid button:hover { background: #f0e5d9; }
+.nav-comparison-grid button[aria-pressed="true"] { background: #4a3424; color: #fff; border-color: #4a3424; }
+.nav-group-title { margin: 26px 0 5px; font: 600 18px/1.4 "Segoe UI", sans-serif; }
+.nav-group-description { margin: 0 0 18px; color: #716454; font-size: 14px; }
+.nav-preview-accent { position: relative; }
+.nav-preview-accent::before,
+body.concierge-sidebar[data-nav-mix][data-nav-pill="accent"] .sidebar .nav-item.active::before { content: ''; position: absolute; left: 3px; top: 12px; bottom: 12px; width: 3px; border-radius: 3px; background: #35261e; }
+.nav-preview-canvas { margin-bottom: 12px; padding-right: 16px; border-radius: 14px; overflow: hidden; }
+.nav-preview-canvas .nav-preview-sidebar { margin-bottom: 0; }
+body.concierge-sidebar[data-nav-mix] .sidebar { background: var(--nav-sidebar-background); box-shadow: var(--nav-sidebar-shadow, none); border-right: var(--nav-sidebar-border, 0); border-radius: var(--nav-sidebar-radius, 0); }
+body.concierge-sidebar[data-nav-mix] .sidebar .nav-item.active { position: relative; background: var(--sidebar-highlight); color: var(--sidebar-highlight-text); box-shadow: var(--nav-highlight-shadow, none); border-radius: 999px; font-weight: var(--nav-highlight-weight, 600); }
+body.concierge-sidebar[data-nav-mix] .sidebar .nav-item.active { backdrop-filter: var(--nav-highlight-filter, none); -webkit-backdrop-filter: var(--nav-highlight-filter, none); }
+.sidebar-pill-color-hint { margin: 9px 0 0; font-size: 12px; line-height: 1.45; }
+body.concierge-sidebar[data-nav-mix] .sidebar .nav-item:not(.active):hover { background: #35261e0d; }
+body.concierge-sidebar[data-nav-canvas] { background: var(--nav-canvas); }
+.sidebar-rgb-controls { margin: 8px 0; font-size: 14px; color: inherit; }
+.sidebar-rgb-controls summary { padding: 10px 15px; cursor: pointer; border-radius: 10px; font-weight: 500; }
+.sidebar-rgb-controls summary:hover { background: #82746712; }
+.sidebar-rgb-panel { margin: 6px 8px; padding: 12px; border: 1px solid var(--custom-sidebar-divider, #e8ded4); border-radius: 10px; }
+.sidebar-color-label { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+.sidebar-rgb-panel input[type="color"] { width: 36px; height: 30px; min-height: 0; padding: 2px; margin: 0; border: 1px solid #cbbfb3; border-radius: 5px; background: #fffcf8; cursor: pointer; }
+.sidebar-rgb-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.sidebar-rgb-fields label { display: grid; gap: 3px; font-size: 12px; }
+.sidebar-rgb-fields input { width: 100%; min-width: 0; min-height: 32px; margin: 0; padding: 4px; border: 1px solid #cbbfb3; border-radius: 5px; background: #fffcf8; color: #35261e; font-size: 13px; }
+.sidebar-rgb-panel button { margin-top: 10px; padding: 3px 0; border: 0; background: transparent; color: inherit; font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+body.concierge-sidebar .sidebar[data-custom-sidebar] { background: var(--custom-sidebar-bg); }
+body.concierge-sidebar .sidebar[data-custom-sidebar] :is(.brand, .brand-dot, .nav-item:not(.active), .logout, .sidebar-bottom, .sidebar-bottom small, .sidebar-rgb-controls) { color: var(--custom-sidebar-text); }
+body.concierge-sidebar .sidebar[data-custom-sidebar] .sidebar-bottom { border-color: var(--custom-sidebar-divider); }
+body.concierge-sidebar .sidebar[data-custom-sidebar] .nav-divider { background: var(--custom-sidebar-divider); }
+@media (max-width: 1200px) { .nav-comparison-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .nav-comparison-grid { grid-template-columns: 1fr; } }
+
+/* Keep the active selection continuous between concierge pages. */
+@view-transition { navigation: auto; }
+body.concierge-sidebar .sidebar .nav-item {
+  transition: background-color 220ms cubic-bezier(.16, 1, .3, 1), color 180ms ease-out, box-shadow 280ms cubic-bezier(.16, 1, .3, 1);
+}
+body.concierge-sidebar .sidebar .nav-item.active { view-transition-name: concierge-active-pill; }
+::view-transition-group(concierge-active-pill) { animation-duration: 320ms; animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
+::view-transition-old(root) { animation: none; opacity: 0; }
+::view-transition-new(root) { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  body.concierge-sidebar .sidebar .nav-item { transition: none; }
+  body.concierge-sidebar .sidebar .nav-item.active { view-transition-name: none; }
+  ::view-transition-group(concierge-active-pill) { animation: none; }
+}

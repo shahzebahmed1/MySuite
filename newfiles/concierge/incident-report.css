@@ -1,4 +1,6 @@
-/* Concierge incident report — side-by-side form + history */
+/* Concierge incident report — log incident dialog + history table */
+body.concierge-sidebar.concierge-square.incident-report-page { background: #fff; }
+body.incident-report-page main { background: #fff; min-height: 100vh; }
 
 .page-header {
   display: flex;
@@ -30,7 +32,7 @@
 
 .incidents-layout {
   display: grid;
-  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
   align-items: start;
   margin-bottom: 8px;
@@ -271,27 +273,26 @@
 .incident-report-disclosure[open] > summary:hover { background: transparent; }
 .incident-report-disclosure:not([open]) .incident-expanded-meta { display: none; }
 
-.incident-page-picker select:focus, .incident-page-picker select:focus-visible { outline: none; border-color: var(--caramel); }
+.incident-page-picker select:focus-visible { outline: 2px solid #8f5624; outline-offset: 2px; border-color: #8f5624; }
 
 .incident-form, .incident-form .button, .header-tools .button, .page-footer, .page-footer :is(button, label, select) { font-size: 14px; }
 
 /* Match Package tracking's card, search, filter and pagination treatment. */
-body.incident-report-page { background: var(--cream); }
 .incident-report-page .log-panel, .incident-report-page .incidents-history-card { border-radius: 22px; }
 .history-card-top { min-height: 52px; padding: 16px 22px; }
 .history-card-top h2 { font-size: 16px; font-weight: 550; }
 .incident-search-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 16px 22px; }
 .incident-search-field { flex: 1 1 220px; position: relative; min-width: 0; }
-.incident-search-field > svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #887665; pointer-events: none; }
+.incident-search-field > svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #716454; pointer-events: none; }
 .incident-search-field input { display: block; width: 100%; min-height: 42px; padding: 10px 14px 10px 42px; margin: 0; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--espresso); font: inherit; font-size: 14px; }
-.incident-search-field input:focus-visible { outline: 0; border-color: var(--caramel); box-shadow: 0 0 0 2px #aa6e3420; }
+.incident-search-field input:focus-visible { outline: 2px solid #8f5624; outline-offset: 1px; border-color: #8f5624; box-shadow: none; }
 .incident-year-filter > .button { min-height: 42px; gap: 8px; padding: 8px 12px; border: 1px solid transparent; border-radius: 11px; background: #f6efe5; color: #6f4929; font-size: 14px; font-weight: 500; }
 .incident-year-filter > .button:hover, .incident-year-filter > .button[data-active="true"], .incident-year-filter > .button[aria-expanded="true"] { background: #efe1ce; color: #573519; border-color: transparent; }
 .incident-year-filter .incident-filter-chevron svg { width: 12px; height: 12px; transform: rotate(90deg); }
 .incident-year-filter > .button[aria-expanded="true"] .incident-filter-chevron svg { transform: rotate(-90deg); }
-.incident-year-filter > .button:focus-visible { outline: 2px solid var(--caramel); outline-offset: 3px; }
+.incident-year-filter > .button:focus-visible { outline: 2px solid #8f5624; outline-offset: 3px; }
 .incident-history-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 14px 22px; border-top: 1px solid var(--line); border-radius: 0 0 22px 22px; font-size: 14px; }
-.incident-history-footer .history-count { margin: 0; color: #8a7765; }
+.incident-history-footer .history-count { margin: 0; color: #6c5b4c; }
 .incident-history-footer .incident-pagination { margin-left: auto; }
 .incident-report-disclosure > .incident-row { padding: 14px 22px; }
 .incident-report-disclosure .incident-detail { padding-left: 20px; }
@@ -308,3 +309,267 @@ body.incident-report-page { background: var(--cream); }
 }
 
 .incident-filter-chevron { display: inline-flex; align-items: center; }
+
+/* Editorial cardless layout for Concierge Incident reports. */
+body.concierge-sidebar.incident-report-page { background: #fff; }
+body.concierge-sidebar.incident-report-page .sidebar { background: linear-gradient(155deg, #39281e, #2f241e); border-right: 0; color: #f8f1e8; }
+body.concierge-sidebar.incident-report-page .brand { color: #f8f1e8; border-bottom-color: #ffffff24; }
+body.concierge-sidebar.incident-report-page .brand-dot { color: #c58e59; }
+body.concierge-sidebar.incident-report-page .nav-item { color: #e9dfd6; border-radius: 11px; }
+body.concierge-sidebar.incident-report-page .nav-item:hover { background: #ffffff0c; color: #fff; }
+body.concierge-sidebar.incident-report-page .nav-item.active { background: rgba(255, 255, 255, 0.14); color: #fff; box-shadow: none; }
+body.concierge-sidebar.incident-report-page .nav-divider { background: #ffffff20; }
+body.concierge-sidebar.incident-report-page .sidebar-bottom { border-top-color: #ffffff24; color: #f8f1e8; }
+body.concierge-sidebar.incident-report-page .sidebar-bottom small { color: #c7b9ac; }
+body.concierge-sidebar.incident-report-page .sidebar .avatar.small { background: #ffffff16; color: #f8f1e8; }
+body.concierge-sidebar.incident-report-page .logout { color: #e9dfd6; }
+body.concierge-sidebar.incident-report-page .logout:hover { background: #ffffff0c; color: #fff; }
+.incidents-layout { margin-top: 8px; gap: 0; }
+.incident-top-bar { display: flex; align-items: center; gap: 14px; padding: 10px 0 14px; border-bottom: 1px solid #eae6e0; }
+.incident-top-building { font-size: 13px; font-weight: 500; letter-spacing: 2px; color: #6e6860; }
+
+body.concierge-sidebar.incident-report-page .incidents-history-card { background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+.incident-page-header { align-items: center; flex-wrap: nowrap; min-height: 0; margin: 0; padding: 24px 0 18px; gap: 20px; }
+.incident-header-content { display: flex; align-items: center; flex: 1; min-width: 0; }
+.incident-header-copy { min-width: 0; }
+.incident-page-header h1 { margin: 0; font: 600 clamp(28px, 2.5vw, 34px)/1.15 Georgia, serif; letter-spacing: -.5px; color: var(--espresso); }
+.incident-log-button { flex-shrink: 0; min-height: 40px; padding: 8px 16px; border-radius: 10px; background: #354f69; border: 1px solid #354f69; color: #fff; font-size: 14px; font-weight: 600; white-space: nowrap; }
+.incident-log-button:hover { background: #293e54; border-color: #293e54; }
+.incident-log-button:focus-visible { outline: 2px solid #354f69; outline-offset: 2px; }
+.incident-log-button span { margin-right: 6px; font-size: 17px; font-weight: 400; line-height: 1; }
+
+.incident-search-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; padding: 0; border-bottom: 1px solid #eae6e0; }
+.incident-tabs { display: flex; align-items: center; gap: 24px; }
+.incident-tab { position: relative; border: 0; background: transparent; padding: 10px 0 14px; margin-bottom: -1px; font: inherit; font-size: 15px; font-weight: 500; color: #6e6860; cursor: pointer; }
+.incident-tab:hover { color: var(--espresso); }
+.incident-tab[aria-selected="true"] { color: var(--espresso); font-weight: 650; }
+.incident-tab[aria-selected="true"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2.5px; border-radius: 2px; background: #354f69; }
+.incident-search-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-left: auto; padding-bottom: 10px; }
+.incident-search-controls .incident-search-field { flex: 1 1 280px; width: min(320px, 100%); }
+.incident-search-controls .incident-search-field input { min-height: 38px; border-radius: 8px; border-color: #dedad3; }
+.incident-search-controls .incident-search-field input:focus-visible { outline: 2px solid #354f69; outline-offset: 1px; border-color: #354f69; }
+.incident-search-controls .incident-year-filter > .button { min-height: 38px; border-radius: 8px; background: #fff; border: 1px solid #dedad3; color: #2f241e; }
+.incident-search-controls .incident-year-filter > .button:hover { background: #f6f5f2; border-color: #c9c3ba; color: #2f241e; }
+.incident-search-controls .incident-year-filter > .button[data-active="true"],
+.incident-search-controls .incident-year-filter > .button[aria-expanded="true"] { background: #eef2f6; border-color: #c8d3de; color: #2c445c; }
+.incident-year-filter > .button:focus-visible { outline: 2px solid #354f69; outline-offset: 2px; }
+.incident-year-menu { background: #ffffff; border-color: #e6e2dc; }
+.incident-year-menu input { accent-color: #354f69; }
+.incident-year-menu > .button { background: #354f69; border-color: #354f69; color: #ffffff; }
+.incident-year-menu > .button:hover { background: #293e54; border-color: #293e54; }
+
+.incident-table-scroll { overflow-x: auto; padding: 0; }
+.incident-table-scroll:focus-visible { outline: 2px solid #354f69; outline-offset: -3px; }
+.incident-table { width: 100%; min-width: 820px; border-collapse: collapse; table-layout: fixed; color: var(--espresso); font-size: 14px; line-height: 1.45; }
+.incident-table th { padding: 14px 12px; border-bottom: 1px solid #eae6e0; text-align: left; font-weight: 500; color: #6e6860; }
+.incident-table th:first-child, .incident-table td:first-child { padding-left: 0; }
+.incident-table th:last-child, .incident-table td:last-child { padding-right: 0; }
+.incident-table th:nth-child(1) { width: 18%; }
+.incident-table th:nth-child(2) { width: 58%; }
+.incident-table th:nth-child(3) { width: 14%; }
+.incident-table th:nth-child(4) { width: 10%; }
+.incident-table td { padding: 18px 12px; border-bottom: 1px solid #eae6e0; vertical-align: top; overflow-wrap: anywhere; }
+.incident-table tbody tr:last-child td { border-bottom: 0; }
+.incident-table tbody tr:hover { background: #faf9f7; }
+.incident-table time { display: block; font-variant-numeric: tabular-nums; }
+.incident-table-heading { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 700; color: var(--espresso); line-height: 1.35; }
+.incident-table-summary { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; white-space: normal; overflow: hidden; color: #5c554e; line-height: 1.5; }
+.incident-table-when, .incident-table-reporter { white-space: nowrap; color: var(--espresso); }
+.incident-table-action { text-align: right; }
+.incident-table .incident-view-report { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border: 0; border-radius: 6px; background: transparent; color: #5c554e; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+.incident-view-report:hover { background: #f0eeea; color: var(--espresso); }
+.incident-details-chevron { width: 14px; height: 14px; transition: transform 160ms ease; }
+.incident-view-report[aria-expanded="true"] .incident-details-chevron { transform: rotate(180deg); }
+.incident-view-report:focus-visible { outline: 2px solid #354f69; outline-offset: 2px; }
+.incident-history-footer { padding: 16px 0; border-top: 1px solid #eae6e0; border-radius: 0; }
+.incident-history-footer .history-count { color: #6e6860; font-variant-numeric: tabular-nums; }
+.incident-page-arrow:hover:not(:disabled) { background: #f0eeea; color: var(--espresso); }
+.incident-page-picker select { border-color: #dedad3; }
+.incident-page-picker select:focus-visible { outline: 2px solid #354f69; outline-offset: 2px; border-color: #354f69; }
+.incident-report-meta { background: #f8f7f5; }
+.incidents-history-card [hidden] { display: none; }
+dialog.incident-log-dialog { max-width: 560px; max-height: calc(100dvh - 32px); padding: 24px; overflow-y: auto; }
+.incident-log-dialog .dialog-top { align-items: center; gap: 16px; margin-bottom: 20px; }
+.incident-log-dialog #incident-log-title { margin: 0; font: 650 24px/1.2 "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; }
+.incident-log-dialog .incident-fields label { margin: 0; font-size: 14px; }
+.incident-log-dialog .incident-fields :is(input, select) { min-height: 44px; font-size: 14px; }
+.incident-log-dialog .form-actions { padding-top: 14px; border-top: 1px solid var(--line); }
+.incident-log-dialog .form-actions .button { min-height: 44px; font-size: 14px; }
+dialog.incident-detail-dialog { max-width: 740px; max-height: calc(100dvh - 32px); overflow-y: auto; }
+.incident-detail-dialog #modal-title { font: 650 26px/1.2 "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; }
+.incident-report-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 24px; margin: 0 0 20px; padding: 16px; border-radius: 12px; background: #f4eee6; font-size: 14px; }
+.incident-report-meta dt { color: #716454; }
+.incident-report-meta dd { margin: 3px 0 0; color: var(--espresso); overflow-wrap: anywhere; }
+.incident-report-people { grid-column: 1 / -1; }
+.incident-report-description { padding-top: 16px; border-top: 1px solid var(--line); }
+.incident-report-description h3 { margin: 0 0 10px; font-size: 15px; font-weight: 650; }
+.incident-report-description p { margin: 0; color: var(--espresso); font-size: 14px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 800px) {
+  .incidents-layout { padding-top: 52px; }
+  .incident-page-header { padding: 20px 0 16px; }
+}
+@media (max-width: 560px) {
+  .incidents-layout { margin-top: 12px; }
+  .incident-page-header { flex-wrap: wrap; gap: 16px; padding: 16px 0; }
+  .incident-header-content { flex-basis: 100%; }
+  .incident-page-header h1 { font-size: 26px; }
+  .incident-search-controls { width: 100%; }
+  .incident-search-controls .incident-search-field { width: 100%; flex-basis: 100%; }
+  dialog.incident-log-dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); padding: 18px; }
+  .incident-report-meta { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Details extends the same incident text in place. */
+.incident-table-row.is-expanded .incident-table-summary { display: block; -webkit-line-clamp: unset; overflow: visible; white-space: pre-line; line-height: 1.7; }
+.incident-inline-people { max-width: calc(100% - 24px); margin-top: 16px; padding-top: 12px; }
+.incident-inline-people dd { color: #716454; }
+
+/* ── Dynamic palette variables, square borderless buttons & randomizer ── */
+body.concierge-sidebar.incident-report-page {
+  background: var(--theme-bg, #ffffff);
+  color: var(--theme-text, #2f241e);
+  font-family: var(--theme-font, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+}
+body.concierge-sidebar.incident-report-page :is(h1, h2, h3, button, input, select, textarea) {
+  font-family: var(--theme-font, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif) !important;
+}
+body.concierge-sidebar.incident-report-page .sidebar {
+  background: var(--theme-sidebar, linear-gradient(155deg, #39281e, #2f241e));
+  color: var(--theme-sidebar-text, #f4ede5);
+}
+body.concierge-sidebar.incident-report-page .brand,
+body.concierge-sidebar.incident-report-page .nav-item,
+body.concierge-sidebar.incident-report-page .logout {
+  color: var(--theme-sidebar-text, #f4ede5);
+}
+body.concierge-sidebar.incident-report-page .sidebar-bottom small {
+  color: var(--theme-sidebar-muted, #c7b9ac);
+}
+body.concierge-sidebar.incident-report-page .nav-item { border-radius: 0; }
+body.concierge-sidebar.incident-report-page .nav-item.active {
+  background: var(--theme-sidebar-active, rgba(255, 255, 255, 0.14));
+  color: var(--theme-sidebar-active-text, #ffffff);
+  box-shadow: none;
+}
+body.concierge-sidebar.incident-report-page .incident-page-header h1,
+body.concierge-sidebar.incident-report-page .incident-table-heading,
+body.concierge-sidebar.incident-report-page .incident-table-when,
+body.concierge-sidebar.incident-report-page .incident-table-reporter,
+body.concierge-sidebar.incident-report-page .incident-tab[aria-selected="true"] {
+  color: var(--theme-text, #2f241e);
+}
+body.concierge-sidebar.incident-report-page .incident-top-building,
+body.concierge-sidebar.incident-report-page .incident-tab,
+body.concierge-sidebar.incident-report-page .incident-table th,
+body.concierge-sidebar.incident-report-page .incident-table-summary,
+body.concierge-sidebar.incident-report-page .incident-history-footer .history-count {
+  color: var(--theme-muted, #6e6860);
+}
+body.concierge-sidebar.incident-report-page .incident-top-bar,
+body.concierge-sidebar.incident-report-page .incident-search-toolbar,
+body.concierge-sidebar.incident-report-page .incident-table th,
+body.concierge-sidebar.incident-report-page .incident-table td,
+body.concierge-sidebar.incident-report-page .incident-history-footer {
+  border-color: var(--theme-border, #eae6e0);
+}
+body.concierge-sidebar.incident-report-page .incident-table tbody tr:hover {
+  background: var(--theme-surface-alt, #f7f6f4);
+}
+body.concierge-sidebar.incident-report-page .incident-tab[aria-selected="true"]::after {
+  background: var(--theme-accent, #354f69);
+}
+
+/* Square, borderless buttons */
+body.concierge-sidebar.incident-report-page :is(
+  .button,
+  .incident-log-button,
+  .incident-year-filter > .button,
+  .incident-page-arrow,
+  .incident-view-report,
+  .incident-page-picker select,
+  .incident-search-controls .incident-search-field input
+) {
+  border-radius: 0;
+}
+body.concierge-sidebar.incident-report-page :is(
+  .button,
+  .incident-log-button,
+  .incident-year-filter > .button,
+  .incident-page-arrow,
+  .incident-view-report
+) {
+  border: 0;
+  outline: none;
+}
+body.concierge-sidebar.incident-report-page .incident-log-button,
+body.concierge-sidebar.incident-report-page .incident-year-menu > .button,
+body.concierge-sidebar.incident-report-page .button:not(.outline) {
+  background: var(--theme-accent, #354f69);
+  color: var(--theme-accent-text, #ffffff);
+}
+body.concierge-sidebar.incident-report-page .incident-log-button:hover,
+body.concierge-sidebar.incident-report-page .incident-year-menu > .button:hover,
+body.concierge-sidebar.incident-report-page .button:not(.outline):hover {
+  background: var(--theme-accent-hover, #293e54);
+}
+body.concierge-sidebar.incident-report-page .incident-search-controls .incident-year-filter > .button {
+  background: var(--theme-accent-soft, #eef2f6);
+  color: var(--theme-accent-soft-text, #2c445c);
+}
+body.concierge-sidebar.incident-report-page .incident-search-controls .incident-year-filter > .button:hover {
+  background: var(--theme-accent-soft-hover, #e1e8f0);
+}
+body.concierge-sidebar.incident-report-page .incident-view-report {
+  background: transparent;
+  color: var(--theme-muted, #6e6860);
+}
+body.concierge-sidebar.incident-report-page .incident-view-report:hover {
+  background: var(--theme-accent-soft, #eef2f6);
+  color: var(--theme-accent-soft-text, #2c445c);
+}
+
+/* Bottom-right palette & font dock */
+.theme-controls-dock {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.theme-dock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: var(--theme-accent, #354f69);
+  color: var(--theme-accent-text, #ffffff);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+.theme-dock-btn:hover {
+  background: var(--theme-accent-hover, #293e54);
+}
+.theme-dock-btn.is-font {
+  background: var(--theme-accent-soft, #eef2f6);
+  color: var(--theme-accent-soft-text, #2c445c);
+}
+.theme-dock-btn.is-font:hover {
+  background: var(--theme-accent-soft-hover, #e1e8f0);
+}
+.theme-randomize-swatch {
+  width: 12px;
+  height: 12px;
+  background: var(--theme-sidebar, #39281e);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}

@@ -26,6 +26,14 @@ function currentConciergeName() {
   return getCurrentConcierge()?.name || 'Concierge';
 }
 
+function updatePendingPackageCount() {
+  const count = getPackages().filter(pkg => pkg.status === 'pending').length;
+  document.querySelector('#activity-pending-count').textContent = String(count);
+  document.querySelector('#activity-release-trigger').setAttribute('aria-label', `Release Package, ${count} pending ${count === 1 ? 'package' : 'packages'}`);
+}
+updatePendingPackageCount();
+window.addEventListener('pageshow', updatePendingPackageCount);
+
 function currentDate() {
   return document.querySelector('#log-date')?.value || toDateInputValue();
 }
@@ -97,7 +105,7 @@ function focusComposer() {
 function refreshLogTable() {
   const date = currentDate();
   const rows = sortDailyLogsOldestFirst(
-    filterDailyLogs(getDailyLogs(), { date, shift: activeShift })
+    filterDailyLogs(getDailyLogs(), { date })
   );
   const tbody = document.querySelector('#log-tbody');
   const empty = document.querySelector('#log-empty');
@@ -107,7 +115,7 @@ function refreshLogTable() {
   if (rows.length === 0) {
     tbody.innerHTML = '';
     empty.hidden = false;
-    empty.textContent = `No entries for this ${shiftLabel(activeShift).toLowerCase()} shift yet.`;
+    empty.textContent = 'No entries for this day yet.';
     return;
   }
 
@@ -373,6 +381,7 @@ function beginInlineNoteEdit(id) {
 
 document.querySelector('#composer-form')?.addEventListener('submit', event => {
   event.preventDefault();
+  if (!event.currentTarget.reportValidity()) return;
   if (inlineEdit) commitInlineEdit({ silent: true });
 
   const time = normalizeTimeInput(document.querySelector('#composer-time')?.value);
@@ -536,6 +545,7 @@ seedDailyLogAuthorExamples(toDateInputValue(), activeShift);
 document.querySelector('#log-date').value = toDateInputValue();
 syncDateLabel();
 renderIcons(document.querySelector('.log-card-top'));
+  renderIcons(document.querySelector('.entry-head'));
 renderIcons(document.querySelector('.notes-card'));
 setShift(activeShift);
 refreshNotes();
@@ -592,8 +602,8 @@ document.addEventListener('click', event => {
     }
   } else if (action === 'help') {
     openModal(
-      'Daily log help',
-      '<p>Use the arrows or date pill to change the day. Pick a <strong>shift</strong> above the log, then add entries at the bottom.</p><p>Click your own entry to expand it, then <strong>Save</strong>. Entries from another concierge show as <strong>Read only</strong>.</p>'
+      'Activity Log help',
+      '<p>Use the arrows or date pill to change the day. Use the entry row beneath the journal to enter a time and update, then choose <strong>Save</strong>.</p><p>Click your own entry to expand it, then <strong>Save</strong>. Entries from another concierge show as <strong>Read only</strong>.</p>'
     );
   }
 });
@@ -684,3 +694,71 @@ document.addEventListener('keydown', event => {
   tabs[next].focus();
   tabs[next].click();
 });
+
+// Record each shift start independently, including overnight schedules.
+(function initActivityStartShift() {
+  const dialog = document.querySelector('#activity-start-shift-modal');
+  const form = document.querySelector('#activity-start-shift-form');
+  const error = document.querySelector('#activity-start-shift-error');
+  const submit = document.querySelector('#activity-start-shift-save');
+  const relieved = form.elements.namedItem('relievedAccountId');
+  const start = form.elements.namedItem('startedAt');
+  const end = form.elements.namedItem('endsAt');
+  const otherEquipment = form.elements.namedItem('otherEquipment');
+  const shiftNotes = form.elements.namedItem('shiftNotes');
+  let saving = false;
+
+  document.querySelector('#activity-start-shift-trigger').addEventListener('click', () => {
+    form.reset();
+    relieved.innerHTML = '<option value="">Select concierge</option>' + getShiftReliefConcierges().map(account => `<option value="${escapeLogHtml(account.id)}">${escapeLogHtml(account.name)}</option>`).join('') + '<option value="not-applicable">N/A</option>';
+    error.hidden = true;
+    error.textContent = '';
+    const now = new Date();
+    start.value = `${toDateInputValue(now)}T${toTimeInputValue(now)}`;
+    end.min = start.value;
+    dialog.showModal();
+    relieved.focus();
+  });
+  dialog.querySelectorAll('[data-close-start-shift]').forEach(button => button.addEventListener('click', () => dialog.close()));
+  start.addEventListener('input', () => { end.min = start.value; });
+  form.addEventListener('input', () => { error.hidden = true; });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (saving || !form.reportValidity()) return;
+    saving = true;
+    submit.disabled = true;
+    try {
+      const equipment = [...form.querySelectorAll('input[name="equipment"]:checked')].map(input => input.value);
+      const result = addShiftStart({ relievedAccountId: relieved.value, startedAt: start.value, endsAt: end.value, equipment, otherEquipment: otherEquipment.value, shiftNotes: shiftNotes.value });
+      if (result.error) {
+        error.textContent = result.error;
+        error.hidden = false;
+        return;
+      }
+      dialog.close();
+      document.querySelector('#log-date').value = result.entry.date;
+      activeShift = result.entry.shift;
+      syncDateLabel();
+      refreshLogTable();
+      toast('Shift start recorded.');
+    } finally {
+      saving = false;
+      submit.disabled = false;
+    }
+  });
+})();
+
+// Shared dialogs keep Activity Log date and counters in sync.
+initPackageReleaseDialog({
+  onChange: updatePendingPackageCount,
+  onReleased(result) {
+    document.querySelector('#log-date').value = result.entry.date;
+    activeShift = result.entry.shift;
+    syncDateLabel();
+    refreshLogTable();
+  },
+  onStorage(event) {
+    if (event.key === DAILY_LOG_STORAGE_KEY || event.key === null) refreshLogTable();
+  }
+});
+initPackageLogDialog({ onChange: updatePendingPackageCount });

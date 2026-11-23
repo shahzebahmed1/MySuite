@@ -130,6 +130,91 @@ function addDailyLog(fields) {
   return entry;
 }
 
+function getShiftReliefConcierges() {
+  return MOCK_DATA.accounts.filter(account => account.role === 'concierge').sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function addShiftStart(fields) {
+  const relievedAccountId = String(fields.relievedAccountId || '');
+  const relieved = getShiftReliefConcierges().find(account => account.id === relievedAccountId);
+  if (!relieved && relievedAccountId !== 'not-applicable') return { error: 'Select the concierge you relieved, or choose N/A.' };
+  const relievedName = relieved?.name || 'N/A';
+  const equipmentOptions = ['Phone', 'Master Keys', 'Radio', 'Tablet', 'Other'];
+  if (fields.equipment !== undefined && !Array.isArray(fields.equipment)) return { error: 'Choose valid equipment options.' };
+  const equipment = [...new Set(fields.equipment || [])];
+  if (equipment.some(item => !equipmentOptions.includes(item))) return { error: 'Choose valid equipment options.' };
+  const otherEquipment = String(fields.otherEquipment || '').trim();
+  const shiftNotes = String(fields.shiftNotes || '').trim();
+  if (shiftNotes.length > 1000) return { error: 'Keep shift notes within 1,000 characters.' };
+  if (otherEquipment.length > 200) return { error: 'Keep other equipment details within 200 characters.' };
+  if (otherEquipment && !equipment.includes('Other')) equipment.push('Other');
+  if (equipment.includes('Other') && !otherEquipment) return { error: 'Enter the other equipment received.' };
+  const equipmentNames = equipment.map(item => item === 'Other' ? otherEquipment : item);
+  const equipmentText = equipmentNames.length ? ` Equipment received: ${equipmentNames.join(', ')}${equipmentNames[equipmentNames.length - 1].endsWith('.') ? '' : '.'}` : '';
+  const startedAt = new Date(fields.startedAt);
+  const endsAt = new Date(fields.endsAt);
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(fields.startedAt || '') || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(fields.endsAt || '') || !Number.isFinite(startedAt.getTime()) || !Number.isFinite(endsAt.getTime())) return { error: 'Enter a valid start and end date and time.' };
+  if (endsAt <= startedAt) return { error: 'The scheduled end must be after the shift start. For overnight shifts, choose the following date.' };
+  const actor = getCurrentConcierge();
+  const time = endsAt.toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const endDate = toDateInputValue(startedAt) === toDateInputValue(endsAt) ? '' : ` on ${endsAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+  const scheduledEnd = `${time}${endDate}`;
+  const entry = {
+    id: `log-shift-${crypto.randomUUID()}`, source: 'shift-start',
+    date: toDateInputValue(startedAt), shift: suggestShift(startedAt), happenedAt: startedAt.toISOString(),
+    notes: `Shift started. ${relieved ? `Relieved ${relievedName}${relievedName.endsWith('.') ? '' : '.'}` : 'Relieved: N/A.'} Scheduled end: ${scheduledEnd}${scheduledEnd.endsWith('.') ? '' : '.'}${equipmentText}${shiftNotes ? ` Notes: ${shiftNotes}` : ''}`,
+    loggedBy: actor?.name || 'Concierge', loggedById: actor?.id || null,
+    shiftDetails: { relievedAccountId: relieved?.id || null, relievedName, startedAt: startedAt.toISOString(), scheduledEndAt: endsAt.toISOString(), equipmentReceived: equipment, otherEquipment, notes: shiftNotes },
+    createdAt: new Date().toISOString(), updatedAt: null
+  };
+  const logs = getDailyLogs();
+  try {
+    localStorage.setItem(DAILY_LOG_STORAGE_KEY, JSON.stringify([...logs, entry]));
+  } catch {
+    return { error: 'The shift could not be saved. Your details are still here; please try again.' };
+  }
+  return { entry };
+}
+
+function packageActivityCount(count) {
+  const small = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  if (count < 20) return small[count];
+  if (count < 100) return ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'][Math.floor(count / 10)] + (count % 10 ? `-${small[count % 10]}` : '');
+  if (count < 1000) return `${small[Math.floor(count / 100)]} hundred${count % 100 ? ` and ${packageActivityCount(count % 100)}` : ''}`;
+  if (count < 1000000) return `${packageActivityCount(Math.floor(count / 1000))} thousand${count % 1000 ? ` ${packageActivityCount(count % 1000)}` : ''}`;
+  return `a total of ${count.toLocaleString('en-US')}`;
+}
+
+function formatPackageReleaseActivity(items) {
+  const groups = new Map();
+  items.forEach(item => {
+    const collector = String(item.pickedUpBy || '').trim().replace(/\s+/g, ' ');
+    const key = JSON.stringify([item.suite, item.method, item.method === 'picked-up' ? collector.normalize('NFKC').toLowerCase() : '']);
+    if (!groups.has(key)) groups.set(key, { ...item, collector, count: 0 });
+    groups.get(key).count++;
+  });
+  return [...groups.values()].map(group => {
+    const subject = group.count === 1 ? 'A package' : `Multiple packages (${group.count})`;
+    const start = subject[0].toUpperCase() + subject.slice(1);
+    const verb = group.count === 1 ? 'was' : 'were';
+    if (group.method === 'delivered') return `${start} ${verb} delivered to Suite ${group.suite}.`;
+    const names = group.collector.split(/\s+/);
+    const label = names.length > 1 ? `${names[0]} ${Array.from(names[names.length - 1])[0]}.` : group.collector;
+    return `${start} for Suite ${group.suite} ${verb} picked up by ${label}` + (label.endsWith('.') ? '' : '.');
+  }).join(' ');
+}
+
+function createPackageReleaseLogEntry(release) {
+  const happenedAt = new Date(release.releasedAt);
+  return {
+    id: `log-${release.id}`, releaseId: release.id, source: 'package-release',
+    date: toDateInputValue(happenedAt), shift: suggestShift(happenedAt),
+    happenedAt: release.releasedAt, notes: formatPackageReleaseActivity(release.items),
+    loggedBy: release.recordedBy, loggedById: release.recordedById,
+    createdAt: release.releasedAt, updatedAt: null
+  };
+}
+
 function updateDailyLog(id, fields) {
   const list = getDailyLogs();
   const index = list.findIndex(e => e.id === id);

@@ -1,0 +1,12 @@
+.classic-welcome-toggle { display: flex; align-items: flex-start; gap: 9px; margin-top: 16px; font-size: 13px; color: var(--finish-ink, #1e293b); cursor: pointer; }
+.classic-welcome-toggle input { width: 16px; height: 16px; margin: 2px 0 0; accent-color: var(--finish-accent, #293e55); }
+.classic-welcome-toggle small { display: block; margin-top: 4px; color: var(--finish-muted, #667085); font-size: 11px; line-height: 1.5; }
+.classic-welcome-copy, .classic-welcome-surface { display: none; }
+.welcome[data-classic-welcome] .welcome-copy > :not(.classic-welcome-copy) { display: none; }
+.welcome[data-classic-welcome] .classic-welcome-copy { display: block; }
+.welcome[data-classic-welcome] > .classic-welcome-surface { display: none; }
+body.sidebar-merge .welcome[data-classic-welcome] .welcome-copy { display: block; max-width: min(52rem, 90%); }
+body.sidebar-merge .welcome[data-classic-welcome] .classic-welcome-copy h2 { margin: 0; color: #35261e; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(28px, calc(var(--dashboard-adjusted-height, 216px) * .22), 54px); font-weight: 400; line-height: 1.12; letter-spacing: -.025em; }
+.classic-welcome-copy p { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 18px 0 0; color: #35261e; font: 400 12px/1.5 'Inter Sidebar', 'Segoe UI', sans-serif; }
+.classic-welcome-badge { padding: 4px 14px; border-radius: 999px; background: #ffd59d; color: #4d2b0d; font-size: 11px; font-weight: 600; }
+.welcome[data-classic-welcome] .header-glass-nameplate { display: none; }

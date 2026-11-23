@@ -1,0 +1,2 @@
+body.sidebar-merge .welcome.blue-reading-ink .experimental-greeting { color: #fff8ef; }
+body.sidebar-merge .welcome.blue-reading-ink :is(.greeting-date,.greeting-weather) { color: #dfc6a6; }

@@ -9,6 +9,14 @@ const deskSearch = { current: '', past: '' };
 const deskPages = { current: 1, past: 1 };
 const deskPageSize = 5;
 
+const absenceFormModal = document.querySelector('#absence-form-modal');
+
+function openAbsenceForm() {
+  resetAbsenceForm();
+  if (!absenceFormModal.open) absenceFormModal.showModal();
+  document.querySelector('#absence-suite').focus();
+}
+
 function closeMenu() {
   document.querySelector('.sidebar')?.classList.remove('open');
   document.querySelector('.scrim')?.classList.remove('visible');
@@ -50,7 +58,13 @@ function renderAbsenceRecord(absence) {
   const escape = escapeAbsenceHtml;
   const status = statusMeta(absence);
   const checks = formatAbsenceChecks(absence);
-  return `<article class="desk-record"><div class="desk-who"><strong>Suite ${escape(absence.suite)}</strong><span>${escape(absence.residentName)}</span></div><div class="desk-detail"><div class="desk-heading"><i data-icon="suitcase"></i><strong>${escape(formatAbsenceDate(absence.awayFrom))} &ndash; ${escape(formatAbsenceDate(absence.returnDate))}</strong></div><dl class="desk-meta"><div><dt>Emergency contact</dt><dd>${escape(absence.emergencyName)}</dd></div><div><dt>Phone</dt><dd>${escape(absence.emergencyPhone)}</dd></div></dl>${checks.length ? `<p class="desk-note">${checks.map(escape).join(' &middot; ')}</p>` : ''}${absence.notes ? `<p class="desk-note">${escape(absence.notes)}</p>` : ''}</div><span class="desk-status ${status.className}">${status.label}</span></article>`;
+  return `<tr data-absence-id="${escape(absence.id)}">
+    <td><strong class="portal-primary">${escape(absence.residentName || 'Unknown resident')}</strong><span class="portal-secondary">Suite ${escape(absence.suite)}</span></td>
+    <td>${escape(formatAbsenceDate(absence.awayFrom))}<span class="portal-secondary">Returns ${escape(formatAbsenceDate(absence.returnDate))}</span></td>
+    <td>${escape(absence.emergencyName)}<span class="portal-secondary">${escape(absence.emergencyPhone)}</span></td>
+    <td>${checks.length ? checks.map(escape).join('<br>') : '<span class="portal-secondary">No special instructions</span>'}${absence.notes ? `<details class="portal-details"><summary>Notes</summary><p>${escape(absence.notes)}</p></details>` : ''}</td>
+    <td><span class="desk-status ${status.className}">${status.label}</span></td>
+  </tr>`;
 }
 
 function renderTable() {
@@ -102,6 +116,7 @@ document.querySelector('#concierge-absence-form').addEventListener('submit', eve
     message.focus();
     return;
   }
+  absenceFormModal.close();
   resetAbsenceForm();
   const tab = isAbsencePast(result.absence) ? 'past' : 'current';
   deskSearch[tab] = '';
@@ -147,12 +162,16 @@ document.addEventListener('click', event => {
     document.querySelector('.mobile-toggle').setAttribute('aria-expanded', String(open));
   } else if (action === 'close-menu') {
     closeMenu();
+  } else if (action === 'open-absence-form') {
+    openAbsenceForm();
+  } else if (action === 'close-absence-form') {
+    absenceFormModal.close();
   } else if (action === 'close-modal') {
     modal.close();
   } else if (action === 'help') {
     openModal(
       'Long-term absence help',
-      '<p>Use the form to record a resident absence, emergency contact and handling instructions.</p><p><strong>Current</strong> shows active and upcoming absences.</p><p><strong>Past</strong> shows notices that have already ended.</p>'
+      '<p>Choose <strong>+ Record absence</strong> to record a resident absence, emergency contact and handling instructions.</p><p><strong>Current</strong> shows active and upcoming absences.</p><p><strong>Past</strong> shows notices that have already ended.</p>'
     );
   }
 });
@@ -173,3 +192,9 @@ lightingPicker?.addEventListener('change', () => {
 
 resetAbsenceForm();
 renderTable();
+
+absenceFormModal.addEventListener('click', event => {
+  if (event.target !== absenceFormModal) return;
+  const bounds = absenceFormModal.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) absenceFormModal.close();
+});

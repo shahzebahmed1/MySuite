@@ -1,0 +1,26 @@
+/* These controls and colors affect Maintenance only. */
+body.concierge-sidebar.concierge-square.maintenance-page { background: var(--maintenance-canvas-bg, var(--cream)); }
+body.maintenance-page main { background: var(--maintenance-canvas-bg, transparent); min-height: 100vh; }
+body.concierge-sidebar.concierge-square.maintenance-page .desk-list-card {
+  border-radius: 0 !important;
+  background: var(--maintenance-card-bg, linear-gradient(135deg, #fffdf9, #fbf7f2));
+  --espresso: var(--maintenance-card-ink, #35261e);
+  --muted: var(--maintenance-card-secondary, #716454);
+  --line: var(--maintenance-card-line, #e8ded4);
+  color: var(--espresso);
+}
+body.maintenance-page .desk-list-card .portal-page-header { background: transparent; }
+body.maintenance-page .desk-list-card :is(.portal-secondary, .portal-details, .portal-details summary, .portal-table th, .desk-list-footer) { color: var(--maintenance-card-secondary, #716454); }
+body.maintenance-page .desk-list-card .welcome-note { color: var(--maintenance-card-secondary, #716454) !important; }
+body.concierge-sidebar.maintenance-page .desk-list-card .portal-create-button {
+  background: var(--maintenance-log-button-bg, var(--caramel));
+  border-color: var(--maintenance-log-button-bg, var(--caramel));
+  color: var(--maintenance-log-button-ink, #fff);
+}
+body.concierge-sidebar.maintenance-page .desk-list-card .portal-create-button:hover {
+  background: var(--maintenance-log-button-hover, var(--caramel-dark));
+  border-color: var(--maintenance-log-button-hover, var(--caramel-dark));
+}
+.maintenance-color-fields { margin: 0 0 16px; padding: 0; border: 0; min-width: 0; }
+.maintenance-color-fields legend { margin-bottom: 8px; padding: 0; font-size: 13px; font-weight: 600; }
+.maintenance-color-fields .sidebar-color-label { font-size: 12px; }

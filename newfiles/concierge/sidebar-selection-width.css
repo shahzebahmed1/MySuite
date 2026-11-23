@@ -1,0 +1,6 @@
+.sidebar-full-width-highlight { position: absolute; left: 0; right: 0; z-index: 0; background: var(--custom-nav-selection,var(--navigation-treatment-fill,var(--sidebar-highlight,#ffffff14))); box-shadow: inset 0 0 0 1px var(--navigation-treatment-edge,transparent); pointer-events: none; }
+.sidebar-full-width-highlight[hidden] { display: none; }
+body.concierge-sidebar[data-sidebar-palette][data-full-width-selection] .sidebar > :is(.brand,nav,.sidebar-bottom) { position: relative; z-index: 1; }
+body.concierge-sidebar[data-sidebar-palette][data-full-width-selection] .sidebar .nav-item.active { background: transparent; box-shadow: none; border-color: transparent; }
+.sidebar-selection-width-toggle { display: flex; align-items: center; gap: 8px; color: inherit; font-size: 12px; line-height: 1.5; cursor: pointer; }
+.sidebar-selection-width-toggle input { width: 15px; height: 15px; margin: 0; flex-shrink: 0; accent-color: #a66b38; }

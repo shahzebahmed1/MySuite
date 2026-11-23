@@ -1,0 +1,51 @@
+/* Finished home view: saved appearance still applies, editing UI stays off the page. */
+body.sidebar-merge :is(
+ [data-home-editor], [data-home-sidebar-control], .sidebar-rgb-controls,
+ .sidebar-quick-controls-toggle, .sidebar-greeting-size, .dashboard-pattern-switcher,
+ .sidebar-pattern-independent, .sidebar-pattern-extension, .dashboard-design-cycle,
+ .dashboard-design-switch, .dashboard-layout-toolbar, .dashboard-layout-status,
+ .dashboard-card-movebar, .dashboard-layout-tools-card, .dashboard-header-tools-top,
+ .home-tools-toggle, .home-tools-restore, .home-text-resize, .home-text-reset,
+ .header-lab, .concierge-nav-comparison, .navigation-treatment-options,
+ .concierge-color-settings, .lighting-picker, [data-topbar="settings"]
+) { display:none !important; }
+body.sidebar-merge .home-arrange-text { outline:none !important; cursor:inherit !important; }
+
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar {
+ background:#0f172a !important;
+}
+
+/* Midnight navigation, restrained white selection and cobalt actions. */
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar .nav-item.active {
+  background:rgba(255,255,255,.1) !important; color:#fff !important; border:0 !important; border-radius:12px; box-shadow:none !important;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar .nav-item.active svg { color:#fff !important; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar .nav-item:not(.active) { color:#cbd5e1 !important; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar .nav-item:not(.active) svg { color:#b8c5d6 !important; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar .nav-item:not(.active):hover { background:rgba(255,255,255,.05) !important; color:#fff !important; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar .brand,
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar .brand > span {
+ font-family:'Inter Sidebar',sans-serif !important; font-weight:750 !important; letter-spacing:-.04em !important; color:#fff !important;
+}
+html[data-dashboard-shell="monochrome"] body.sidebar-merge.concierge-sidebar[data-sidebar-palette] .sidebar .brand { font-size:32px; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .home-topbar .topbar-primary,
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .dashboard .button:not(.outline) { background:#2563eb !important; border-color:#2563eb !important; color:#fff !important; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .home-topbar .topbar-primary:hover,
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .dashboard .button:not(.outline):hover { background:#1d4ed8 !important; border-color:#1d4ed8 !important; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-announcement-list .tile-icon { background:#eff6ff !important; color:#2563eb !important; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-announcement-list .tile-icon svg { color:#2563eb !important; }
+html[data-dashboard-shell="monochrome"] body.sidebar-merge .home-topbar :is([data-action="notifications"],.topbar-assistant) svg { color:#2563eb; }
+
+/* Use consistent white surfaces for every package and maintenance preview. */
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-row,
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #maint-list .queue-row {
+  background:#fff !important;
+}
+
+/* Account access remains in the top bar; keep the sidebar focused on navigation. */
+body.sidebar-merge .sidebar :is(.home-sidebar-rotation,.sidebar-user) { display:none !important; }
+
+/* Package previews fit their contents rather than reserving empty status space. */
+html[data-dashboard-shell="monochrome"] body.sidebar-merge #home-package-list .package-row {
+ min-height:0; height:auto; padding:18px 22px; align-items:center;
+}

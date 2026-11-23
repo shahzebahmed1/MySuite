@@ -1,0 +1,16 @@
+body.sidebar-merge[data-dashboard-card-layout] .dashboard > #payments { margin:0; padding:0; background:transparent !important; border:0 !important; box-shadow:none !important; border-radius:0; }
+body.sidebar-merge .dashboard-payments h2 { margin:0 0 12px; color:#191919; font-size:22px; font-weight:500; line-height:1.25; letter-spacing:-.025em; }
+.dashboard-payments-panel { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:76px; padding:16px 18px; box-sizing:border-box; background:#fff; border-radius:18px; }
+.dashboard-payments-panel strong { color:#191919; font-size:27px; font-weight:500; line-height:1.2; font-variant-numeric:tabular-nums; }
+.dashboard-payments-panel span { color:#626262; font-size:12px; }
+html[data-home-mode="dark"] body.sidebar-merge .dashboard-payments h2,html[data-home-mode="dark"] .dashboard-payments-panel strong { color:#edf0f5; }
+html[data-home-mode="dark"] .dashboard-payments-panel { background:#1b222d; }
+html[data-home-mode="dark"] .dashboard-payments-panel span { color:#b1bdcd; }
+@media(min-width:1100px) and (max-height:760px){body.sidebar-merge .dashboard-payments h2 {font-size:20px;margin-bottom:8px;}.dashboard-payments-panel {min-height:64px;padding:12px 18px;}}
+
+body.sidebar-merge[data-dashboard-card-layout] .dashboard > #payments .card-heading {border:0;padding:0;min-height:0;}
+
+/* Payments uses the same typography and baseline as the other dashboard headings. */
+html[data-dashboard-shell="monochrome"] body.sidebar-merge[data-dashboard-card-layout] .dashboard > :is(#packages,#announcements,#maint-queue,#schedule,#payments,#shop,#booking-promo) > .card-heading h2 {
+ font-weight:500 !important; margin:0; font-family:inherit; letter-spacing:-.03em;
+}

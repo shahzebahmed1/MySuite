@@ -1,0 +1,56 @@
+.directory-layout-controls { min-width: 0; }
+.directory-layout-chooser { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 0 4px; }
+.directory-layout-chooser button { padding: 8px 12px; border: 1px solid #dce1e7; border-radius: 8px; background: #fff; color: #475569; font: 500 13px/1.4 "Segoe UI", sans-serif; }
+.directory-layout-chooser button:hover { background: #f1f5f9; }
+.directory-layout-chooser button[aria-pressed="true"] { background: #1e293b; border-color: #1e293b; color: #fff; }
+.directory-alternative-view[hidden], body.directory-saas .dir-table-wrap[hidden] { display: none; }
+.directory-layout-empty { padding: 30px 0; color: #64748b; }
+body.directory-saas[data-directory-layout="b"], body.directory-saas[data-directory-layout="b"] main { background: #f3f4f6; }
+body.directory-saas[data-directory-layout="b"] .dir-page-header { background: transparent; }
+body.directory-saas[data-directory-layout="b"] .dir-search { flex: 1; }
+.directory-profile-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding: 8px 0 24px; }
+.directory-profile-card { position: relative; min-width: 0; padding: 22px; border-radius: 14px; background: #fff; box-shadow: 0 4px 6px -1px #0000001a; }
+.directory-profile-card:has(.directory-suite-badge) { padding-top: 48px; }
+.directory-suite-badge { position: absolute; top: 14px; right: 16px; padding: 4px 8px; border-radius: 6px; background: #f1f5f9; color: #334155; font-size: 12px; font-weight: 600; }
+.directory-profile-card header { display: flex; gap: 12px; align-items: center; min-width: 0; }
+.directory-profile-card h2 { margin: 0; color: #111827; font: 650 18px/1.35 "Segoe UI", sans-serif; overflow-wrap: anywhere; }
+.directory-profile-card header p { margin: 4px 0 0; color: #64748b; font-size: 13px; }
+.directory-avatar { display: inline-grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border-radius: 50%; font-size: 14px; font-weight: 650; background: #e2e8f0; color: #1e293b; }
+.directory-avatar.is-large { width: 64px; height: 64px; flex-basis: 64px; font-size: 22px; }
+.directory-profile-contacts { display: grid; gap: 16px; margin: 22px 0 0; }
+.directory-profile-contacts div { min-width: 0; }
+.directory-profile-contacts dt { margin-bottom: 4px; color: #64748b; font-size: 12px; font-weight: 500; }
+.directory-profile-contacts dd { margin: 0; color: #334155; font-size: 14px; overflow-wrap: anywhere; }
+.directory-profile-contacts a:hover { color: #2563eb; text-decoration: underline; text-underline-offset: 3px; }
+.directory-contractor-details { margin-top: 20px; }
+.directory-split-view { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); min-height: 430px; border: 1px solid #dce1e7; border-radius: 12px; overflow: hidden; }
+.directory-master-list { max-height: min(600px, calc(100dvh - 280px)); min-height: 300px; overflow-y: auto; border-right: 1px solid #e2e8f0; padding: 8px; background: #fff; }
+.directory-master-list button { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; width: 100%; padding: 15px 12px; border: 0; border-radius: 7px; background: transparent; text-align: left; font: 500 14px/1.4 "Segoe UI", sans-serif; color: #334155; }
+.directory-master-list button small { flex-shrink: 0; color: #64748b; font-size: 12px; }
+.directory-master-list button:hover { background: #f1f5f9; }
+.directory-master-list button[aria-selected="true"] { background: #f3f4f6; color: #1e293b; font-weight: 700; }
+.directory-detail-panel { min-width: 0; padding: 32px; background: #f8fafc; }
+.directory-detail-heading { display: flex; gap: 18px; align-items: center; }
+.directory-detail-heading h2 { margin: 0; color: #111827; font: 700 26px/1.2 "Segoe UI", sans-serif; overflow-wrap: anywhere; }
+.directory-detail-heading p { margin: 8px 0 0; color: #64748b; font-size: 14px; }
+.directory-detail-panel .directory-profile-contacts { margin-top: 30px; gap: 24px; }
+.directory-detail-panel .directory-profile-contacts a[href^="tel:"] { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid #d9e0e8; border-radius: 8px; background: #f1f5f9; color: #1e293b; font-weight: 600; }
+.directory-detail-panel .directory-profile-contacts a[href^="tel:"]:hover { background: #e2e8f0; border-color: #b8c4d2; color: #2563eb; text-decoration: none; }
+.directory-profile-contacts svg { width: 16px; height: 16px; flex-shrink: 0; }
+.directory-detail-notes { margin-top: 28px; border-top: 1px solid #edf0f3; padding-top: 22px; }
+.directory-detail-notes h3 { margin: 0 0 8px; color: #334155; font-size: 14px; font-weight: 650; }
+.directory-detail-notes p { margin: 0; color: #475569; font-size: 14px; white-space: pre-wrap; }
+body.directory-saas[data-directory-layout="d"] .dir-card { display: flex; flex-direction: column; height: calc(100dvh - 36px); min-height: 420px; overflow: hidden; }
+body.directory-saas[data-directory-layout="d"] .directory-layout-controls { position: sticky; top: 0; z-index: 3; flex-shrink: 0; background: #fff; box-shadow: 0 4px 10px #11182709; }
+body.directory-saas[data-directory-layout="d"] .dir-table-wrap { min-height: 0; flex: 1; overflow: auto; }
+body.directory-saas[data-directory-layout="d"] .dir-table th { position: sticky; top: 0; z-index: 2; background: #f1f3f6; font-weight: 700; }
+body.directory-saas[data-directory-layout="d"] .dir-table tr:hover td { background: #e8eef5; font-weight: 600; }
+@media (min-width: 1600px) { .directory-profile-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 1200px) { .directory-profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .directory-detail-panel { padding: 24px; } }
+@media (max-width: 800px) { .directory-split-view { grid-template-columns: 1fr; } .directory-master-list { max-height: 230px; min-height: 0; border-right: 0; border-bottom: 1px solid #cbd5e1; } }
+@media (max-width: 560px) { .directory-profile-grid { grid-template-columns: 1fr; } .directory-detail-heading { align-items: flex-start; gap: 12px; } .directory-detail-heading h2 { font-size: 22px; } }
+
+body[data-directory-combined-filters] .dir-toolbar { padding-top: 12px; }
+body[data-directory-combined-filters] #dir-filters { max-width: 100%; flex-shrink: 0; }
+body[data-directory-combined-filters] .dir-chip { white-space: nowrap; }
+body[data-directory-combined-filters] .dir-search { min-width: min(280px,100%); flex: 1; }

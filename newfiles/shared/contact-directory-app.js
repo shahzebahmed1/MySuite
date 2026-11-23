@@ -8,6 +8,7 @@
   const buildingOnly = role === 'resident' || document.body.dataset.directoryScope === 'building';
   const canViewContractorDetails = ['resident', 'board', 'concierge', 'technician'].includes(role);
   const canManageContractors = role === 'manager';
+  const combinedFilters = role === 'concierge' && !buildingOnly && document.body.hasAttribute('data-directory-combined-filters');
   let editorSaving = false;
   let pendingContractorFiles = [];
   let removedContractorDocumentIds = new Set();
@@ -49,6 +50,10 @@
   }
 
   function currentRows() {
+    if(combinedFilters && activeFilter==='all'){
+      const residents=getDirectoryResidents().map(row=>({...row,roleLabel:`${row.kind==='owner'?'Owner':'Tenant'} ? Suite ${row.suite}`}));
+      return [...residents,...getDirectoryBuildingContacts(),...getDirectoryContractors()].filter(matchesQuery);
+    }
     if (activeTab === 'contractors') {
       return getDirectoryContractors().filter(matchesQuery);
     }
@@ -56,12 +61,12 @@
       return getDirectoryBuildingContacts().filter(matchesQuery);
     }
     return getDirectoryResidents()
-      .filter(r => activeFilter === 'all' || r.kind === activeFilter)
+      .filter(r => activeFilter === 'all' || (combinedFilters && activeFilter === 'board' ? r.board === true : r.kind === activeFilter))
       .filter(matchesQuery);
   }
 
   function showContractorActions() {
-    return (canViewContractorDetails || canManageContractors) && activeTab === 'contractors';
+    return (canViewContractorDetails || canManageContractors) && (activeTab === 'contractors' || (combinedFilters && activeFilter === 'all'));
   }
 
   function phoneHref(phone) {
@@ -88,6 +93,11 @@
     if (actionsHead) actionsHead.hidden = !showActions;
 
     const rows = currentRows();
+    const publishRows = () => {
+      if (role === 'concierge' && document.body.hasAttribute('data-directory-experiments')) {
+        document.dispatchEvent(new CustomEvent('directory:rendered', { detail: { rows, tab: activeTab, showSuite, showActions } }));
+      }
+    };
     if (rows.length === 0) {
       tbody.innerHTML = '';
       if (empty) {
@@ -96,6 +106,7 @@
           ? 'No approved contractors match that search.'
           : 'No contacts match that search.';
       }
+      publishRows();
       return;
     }
     if (empty) empty.hidden = true;
@@ -103,9 +114,9 @@
     tbody.innerHTML = rows.map(row => {
       const sub = row.roleLabel ? `<span class="dir-role-label">${escapeHtml(row.roleLabel)}</span>` : '';
       const suiteCell = showSuite ? `<td class="dir-suite">${escapeHtml(row.suite || '—')}</td>` : '';
-      const actionsCell = showActions
+      const actionsCell = showActions && (!combinedFilters || activeTab==='contractors' || row.kind==='contractor')
         ? `<td class="dir-actions"><button type="button" class="button outline compact" data-action="${canManageContractors ? 'edit-contractor' : 'view-contractor'}" data-contractor-id="${escapeHtml(row.id)}">${canManageContractors ? 'Edit' : 'View details'}</button></td>`
-        : '';
+        : showActions ? '<td class="dir-actions"></td>' : '';
       return `<tr>
         ${suiteCell}
         <td>
@@ -119,6 +130,7 @@
       </tr>`;
     }).join('');
     renderIcons(tbody);
+    publishRows();
   }
 
   function setTab(tab) {
@@ -133,17 +145,41 @@
     });
     const filters = document.querySelector('#dir-filters');
     if (filters) {
-      filters.hidden = buildingOnly || tab !== 'residents';
+      filters.hidden = buildingOnly || (!combinedFilters && tab !== 'residents');
       if (tab !== 'residents') activeFilter = 'all';
+      else updateFilterIndicator();
     }
     renderTable();
   }
 
+  function updateFilterIndicator() {
+    if (document.body.dataset.portalRole !== 'concierge') return;
+    const filters = document.querySelector('#dir-filters');
+    const selected = filters?.querySelector('.dir-chip.active');
+    if (!filters || filters.hidden || !selected) return;
+    const groupRect = filters.getBoundingClientRect();
+    const selectedRect = selected.getBoundingClientRect();
+    if (!selectedRect.width) return;
+    filters.style.setProperty('--dir-filter-x', `${selectedRect.left - groupRect.left - filters.clientLeft}px`);
+    filters.style.setProperty('--dir-filter-y', `${selectedRect.top - groupRect.top - filters.clientTop}px`);
+    filters.style.setProperty('--dir-filter-width', `${selectedRect.width}px`);
+    filters.style.setProperty('--dir-filter-height', `${selectedRect.height}px`);
+    filters.classList.add('has-filter-indicator');
+  }
+  window.addEventListener('resize', updateFilterIndicator);
+  document.fonts?.ready.then(updateFilterIndicator);
+
   function setFilter(filter) {
+    if(combinedFilters){
+      filter=['all','owner','tenant','board','staff','contractors'].includes(filter)?filter:'all';
+      activeTab=filter==='staff'?'building':filter==='contractors'?'contractors':filter==='all'?'all':'residents';
+    }
     activeFilter = filter;
     document.querySelectorAll('.dir-chip').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.filter === filter);
+      btn.setAttribute('aria-pressed',String(btn.dataset.filter===filter));
     });
+    updateFilterIndicator();
     renderTable();
   }
 
@@ -659,7 +695,7 @@
         'Contact directory help',
         buildingOnly
           ? '<p>Browse building contacts and approved contractors by name, trade, or phone.</p><p>On Approved contractors, use <strong>View details</strong> to see contact info and documents shared by management.</p>'
-          : '<p>Search residents, building contacts, and approved contractors by name, suite, or phone.</p><p>Use the tabs to switch lists.</p>'
+          : '<p>Search residents, building contacts, and approved contractors by name, suite, or phone.</p>' + (combinedFilters ? '<p>Use the category filters to switch lists.</p>' : '<p>Use the tabs to switch lists.</p>')
       );
     }
   });

@@ -1,0 +1,41 @@
+/* Original cream concierge navigation, shared across concierge pages. */
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar { background: var(--nav-sidebar-background, #f8f4ee); color: var(--custom-sidebar-text, #4a3f35); }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar :is(.nav-item:not(.active), .logout, .sidebar-bottom, .sidebar-rgb-controls) { color: var(--custom-sidebar-text, #4a3f35); }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .brand { color: var(--custom-sidebar-text, #35261e); border-bottom-color: transparent; display: block; text-align: center; font-size: 34px; line-height: 1.3; padding-inline: 12px; margin-inline: 0; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .brand-dot { color: #c4a07a; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .nav-item { font-size: 14px; font-weight: 500; padding: 8px 12px; margin: 1px 0; gap: 10px; line-height: 20px; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .nav-item.active { background: var(--sidebar-highlight, #f3f4f6); color: var(--sidebar-highlight-text, #27313f); font-weight: var(--nav-highlight-weight, 600); border-radius: var(--nav-highlight-radius, 6px); }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .nav-item:not(.active):hover { background: #f0e8df; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .nav-divider { background: var(--custom-sidebar-divider, #e5ddd3); margin: 8px 12px; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .sidebar-bottom { border-color: var(--custom-sidebar-divider, #e5ddd3); }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .sidebar-bottom small { color: var(--custom-sidebar-text, #8a7b6c); }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .avatar.small { background: #e8dccf; color: #35261e; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .nav-item svg { width: 20px; height: 20px; stroke-width: 1.6; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar :is(button, a, summary):focus-visible { outline-color: #855027; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar[data-custom-sidebar] { background: var(--custom-sidebar-bg); }
+
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .nav-item.active svg { color: var(--nav-highlight-icon, #6577b9); }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .sidebar-rgb-controls { margin: 2px 0; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar .sidebar-rgb-controls summary { padding: 6px 12px; font-size: 12px; line-height: 18px; font-weight: 400; }
+.sidebar-ink-fields { padding: 0; margin: 0 0 16px; border: 0; min-width: 0; }
+.sidebar-ink-fields legend { padding: 0; margin-bottom: 8px; font-size: 13px; font-weight: 600; }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar[data-custom-logo-color] .brand { color: var(--sidebar-logo-color); }
+body.concierge-sidebar[data-sidebar-palette="original-cream"] .sidebar[data-custom-icons-color] :is(.nav-item, .logout) svg { color: var(--sidebar-icons-color); }
+/* Keep navigation scrollable without the bright native scrollbar gutter. */
+body.concierge-sidebar .sidebar > nav {
+  scrollbar-width: none;
+  scrollbar-color: color-mix(in srgb, currentColor 28%, transparent) transparent;
+  scrollbar-gutter: auto;
+  padding-right: 4px;
+}
+body.concierge-sidebar .sidebar > nav::-webkit-scrollbar { display: none; width: 0; background: transparent; }
+body.concierge-sidebar .sidebar > nav::-webkit-scrollbar-track { background: transparent; }
+body.concierge-sidebar .sidebar > nav::-webkit-scrollbar-thumb { background: #8c929b66; border-radius: 999px; }
+body.concierge-sidebar .sidebar > nav::-webkit-scrollbar-thumb:hover { background: #8c929b99; }
+body.concierge-sidebar .sidebar > nav::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+body.concierge-sidebar .sidebar > nav::-webkit-scrollbar-corner { background: transparent; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand {
+  font-size: var(--sidebar-logo-size, 34px);
+  transform: translate(var(--sidebar-logo-x, 0px), var(--sidebar-logo-y, 0px));
+  margin-bottom: calc(8px + max(0px, var(--sidebar-logo-y, 0px)));
+}

@@ -1,0 +1,6 @@
+.header-text-lock-toggle { margin-top: 16px; line-height: 1.5; }
+body.sidebar-merge[data-dashboard-header][data-header-adjustments] .welcome[data-fixed-greeting-size] .welcome-copy > h1 { font-size: var(--locked-greeting-heading); }
+body.sidebar-merge[data-dashboard-header][data-header-adjustments] .welcome[data-fixed-greeting-size] .welcome-note { font-size: var(--locked-greeting-subtitle); }
+body.sidebar-merge .welcome[data-classic-welcome][data-fixed-greeting-size] .classic-welcome-copy h2 { font-size: var(--locked-greeting-classic); }
+body.sidebar-merge .welcome[data-fixed-greeting-size] .classic-welcome-copy p { font-size: var(--locked-greeting-details); }
+body.sidebar-merge .welcome[data-fixed-greeting-size] .classic-welcome-badge { font-size: var(--locked-greeting-badge); }

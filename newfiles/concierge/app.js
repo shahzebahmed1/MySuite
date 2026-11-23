@@ -10,7 +10,7 @@ applyLoggedInUser('concierge');
   const viewAll = document.querySelector('#home-package-view-all');
   if (!listEl) return;
   const pending = sortPackagesNewestFirst(getPackages()).filter(p => p.status === 'pending');
-  if (viewAll) viewAll.textContent = `View all pending (${pending.length})`;
+  if (viewAll) viewAll.textContent = `View All (${pending.length})`;
   if (pending.length === 0) {
     listEl.innerHTML = `
       <div class="pkg-empty-state">
@@ -19,6 +19,7 @@ applyLoggedInUser('concierge');
     return;
   }
   listEl.innerHTML = pending.slice(0, 3).map(pkg => renderPackageRow(pkg)).join('');
+  listEl.querySelectorAll('.package-row > .badge').forEach(badge => badge.remove());
 })();
 
 const BOOKING_SOON_MS = 15 * 60 * 1000;
@@ -143,10 +144,10 @@ document.addEventListener('visibilitychange', () => {
   const viewAll = document.querySelector('#home-maint-view-all');
   if (!listEl) return;
   const pending = sortMaintenanceNewestFirst(getMaintenance()).filter(m => m.status === 'pending');
-  if (viewAll) viewAll.textContent = `View all pending (${pending.length})`;
+  if (viewAll) viewAll.textContent = `View All (${pending.length})`;
   const items = pending.slice(0, 3);
   if (items.length === 0) {
-    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No pending maintenance requests.</p>';
+    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No maintenance requests to show.</p>';
     return;
   }
   listEl.innerHTML = items.map(item => `
@@ -155,14 +156,14 @@ document.addEventListener('visibilitychange', () => {
         <strong>${item.suite}</strong>
         <span class="queue-issue">${maintenanceSummary(item)}</span>
       </span>
-      <span class="badge pending-badge">Pending</span>
     </button>`).join('');
 })();
 
 (function renderHomeAnnouncements() {
   const listEl = document.querySelector('#home-announcement-list');
   if (!listEl) return;
-  const items = sortAnnouncementsNewestFirst(getAnnouncements()).slice(0, 3);
+  const existing = getAnnouncements();
+  const items = sortAnnouncementsNewestFirst([...existing, ...ANNOUNCEMENT_SEED.filter(seed => !existing.some(item => item.id === seed.id))]).slice(0, 2);
   if (items.length === 0) {
     listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No recent announcements.</p>';
     return;
@@ -194,6 +195,7 @@ const actions = {
   'close-menu': closeMenu,
   'close-modal': () => modal.close(),
 
+  'view-payments': () => openModal('Payments', '<p>No payments to display.</p>'),
   notifications: () => openModal('Notifications', '<p>No new notifications.</p>'),
   profile: () => {
     const concierge = getCurrentConcierge();

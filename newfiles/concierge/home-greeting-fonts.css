@@ -1,0 +1,26 @@
+@font-face { font-family: "Greeting Theinhardt"; src: url("../assets/fonts/greeting/theinhardt-regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Theinhardt"; src: url("../assets/fonts/greeting/theinhardt-bold.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Bw Diagrid"; src: url("../assets/fonts/greeting/bw-diagrid-regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Averta"; src: url("../assets/fonts/greeting/averta-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Averta"; src: url("../assets/fonts/greeting/averta-bold.otf") format("opentype"); font-weight: 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Circular Std"; src: url("../assets/fonts/greeting/circular-regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Degular"; src: url("../assets/fonts/greeting/degular-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Degular"; src: url("../assets/fonts/greeting/degular-bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting GT Walsheim"; src: url("../assets/fonts/greeting/gt-walsheim-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting GT Walsheim"; src: url("../assets/fonts/greeting/gt-walsheim-bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Metropolis"; src: url("../assets/fonts/greeting/metropolis-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Metropolis"; src: url("../assets/fonts/greeting/metropolis-bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting National"; src: url("../assets/fonts/greeting/national-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting National"; src: url("../assets/fonts/greeting/national-bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting PP Mori"; src: url("../assets/fonts/greeting/pp-mori-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting PP Mori"; src: url("../assets/fonts/greeting/pp-mori-bold.otf") format("opentype"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Proxima Nova"; src: url("../assets/fonts/greeting/proxima-nova-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Proxima Nova"; src: url("../assets/fonts/greeting/proxima-nova-bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Sailec"; src: url("../assets/fonts/greeting/sailec-regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Sailec"; src: url("../assets/fonts/greeting/sailec-bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Sofia Pro"; src: url("../assets/fonts/greeting/sofia-pro-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Sofia Pro"; src: url("../assets/fonts/greeting/sofia-pro-bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting S?hne"; src: url("../assets/fonts/greeting/sohne-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting S?hne"; src: url("../assets/fonts/greeting/sohne-bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Soleil"; src: url("../assets/fonts/greeting/soleil-regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Greeting Soleil"; src: url("../assets/fonts/greeting/soleil-bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }

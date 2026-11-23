@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MySuite ? Activity Log</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
+  <link rel="stylesheet" href="activity-log.css?v=a379ad2cee15">
+  <script src="../shared/icons.js" defer></script>
+  <script src="../shared/mockdata.js" defer></script>
+  <script src="activity-log.js?v=f49517ee79a9" defer></script>
+</head>
+<body class="resident-portal resident-activity" data-breadcrumb="Activity Log">
+  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-log-menu><i data-icon="menu"></i></button>
+  <div class="scrim" data-log-close-menu></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
+    <nav>
+      <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
+      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
+      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
+      <a class="nav-item" href="elevator-booking.html"><i data-icon="elevator"></i>Book elevator</a>
+      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="./#calendar" data-home-extra="calendar"><i data-icon="calendar"></i>Calendar</a>
+      <a class="nav-item" href="documents.html"><i data-icon="file"></i>Documents</a>
+      <a class="nav-item" href="./#shop" data-home-extra="shop"><i data-icon="bag"></i>Shop</a>
+      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
+      <a class="nav-item" href="#"><i data-icon="alert"></i>Incident report</a>
+      <a class="nav-item active" aria-current="page" href="activity-log.html"><i data-icon="clipboard"></i>Activity Log</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+  </aside>
+  <main>
+    <div class="resident-log-layout">
+      <section class="resident-journal" aria-labelledby="activity-title">
+        <header class="resident-log-heading">
+          <div><h1 id="activity-title">Activity Log</h1><p>Record your activity and keep important notes close by.</p></div>
+          <nav class="resident-log-shortcuts" aria-label="Quick actions">
+            <a href="amenities.html"><span><i data-icon="calendar"></i></span>Book Amenity</a>
+            <a href="maintenance.html"><span><i data-icon="wrench"></i></span>Maintenance</a>
+            <a href="long-term-absence.html"><span><i data-icon="suitcase"></i></span>Record Absence</a>
+          </nav>
+        </header>
+        <div class="resident-log-date"><button class="icon-button" type="button" data-day="-1" aria-label="Previous day"><i data-icon="left"></i></button><label><span class="sr-only">Activity date</span><input type="date" id="activity-date" required></label><button class="icon-button" type="button" data-day="1" aria-label="Next day"><i data-icon="chevron"></i></button></div>
+        <div class="resident-log-scroll"><table><thead><tr><th scope="col">Time</th><th scope="col">Entry</th><th scope="col">Recorded By</th><th scope="col"><span class="sr-only">Entry options</span></th></tr></thead><tbody id="activity-rows"></tbody></table><p class="resident-log-empty" id="activity-empty">No entries for this day. Add your first entry below.</p></div>
+        <form id="activity-form" class="resident-log-composer"><label><span class="sr-only">Entry time</span><input type="time" id="activity-time" required></label><label><span class="sr-only">Log entry</span><textarea id="activity-entry" placeholder="Write a log entry?" maxlength="2000" rows="1" required></textarea></label><button class="button" type="submit">Save</button><button class="button outline" type="button" id="activity-cancel" hidden>Cancel edit</button></form>
+      </section>
+      <section class="resident-notes" aria-labelledby="notes-title">
+        <header><h2 id="notes-title"><i data-icon="clipboard"></i>Important notes</h2></header>
+        <div class="resident-note-scroll"><table><thead><tr><th scope="col">Note</th><th scope="col">Recorded By</th><th scope="col"><span class="sr-only">Note options</span></th></tr></thead><tbody id="note-rows"></tbody></table><p class="resident-log-empty" id="notes-empty">Keep reminders and important details here.</p></div>
+        <form id="note-form" class="resident-note-composer"><label><span class="sr-only">Important note</span><textarea id="note-entry" placeholder="Write an important note?" maxlength="2000" rows="1" required></textarea></label><button class="button" type="submit">Save</button><button class="button outline" type="button" id="note-cancel" hidden>Cancel edit</button></form>
+      </section>
+    </div>
+    <p id="activity-status" class="resident-log-status" role="status" aria-live="polite"></p>
+  </main>
+</body>
+</html>

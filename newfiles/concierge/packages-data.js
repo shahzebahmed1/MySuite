@@ -508,29 +508,38 @@ function parseArrivalInput(value) {
 }
 
 function addPackage(fields) {
-  const suite = String(fields.suite || '').trim();
-  const resident = findResidentBySuite(suite);
+  return addPackages([fields])[0];
+}
+
+function addPackages(rows) {
+  if (!Array.isArray(rows) || !rows.length) return [];
   const concierge = getCurrentConcierge();
   const list = getPackages();
-  const entry = {
-    id: `pkg-${Date.now()}`,
-    suite,
-    residentName: (fields.residentName || resident?.name || 'Unknown resident').trim(),
-    receivedBy: (concierge?.name || fields.receivedBy || 'Concierge').trim(),
-    receivedById: concierge?.id || null,
-    carrier: fields.carrier || 'Other',
-    parcelType: fields.parcelType || 'Package',
-    trackingLast6: String(fields.trackingLast6 || '').trim(),
-    note: (fields.note || '').trim(),
-    status: 'pending',
-    receivedAt: parseArrivalInput(fields.arrivedAt),
-    deliveredBy: null,
-    deliveredAt: null,
-    pickedUpAt: null
-  };
-  list.push(entry);
-  setPackages(list);
-  return entry;
+  const arrivedAt = new Date().toISOString();
+  const entries = rows.map(fields => {
+    const suite = String(fields.suite || '').trim();
+    const resident = findResidentBySuite(suite);
+    return {
+      id: `pkg-${crypto.randomUUID()}`,
+      suite,
+      residentName: (fields.residentName || resident?.name || 'Unknown resident').trim(),
+      receivedBy: (concierge?.name || fields.receivedBy || 'Concierge').trim(),
+      receivedById: concierge?.id || null,
+      carrier: fields.carrier || 'Other',
+      parcelType: fields.parcelType || 'Package',
+      trackingLast6: String(fields.trackingLast6 || '').trim(),
+      note: (fields.note || '').trim(),
+      perishable: fields.perishable === true,
+      storageSpot: String(fields.storageSpot || '').trim(),
+      status: 'pending',
+      receivedAt: parseArrivalInput(fields.arrivedAt || arrivedAt),
+      deliveredBy: null,
+      deliveredAt: null,
+      pickedUpAt: null
+    };
+  });
+  setPackages([...list, ...entries]);
+  return entries;
 }
 
 function recordPackageCompletion(action, before, after) {
@@ -539,65 +548,81 @@ function recordPackageCompletion(action, before, after) {
   if (hasHistory) recordPackageChange(action, before, after, { reason: '', note: '' });
 }
 
-function markPackagesDelivered(ids, by = getCurrentConcierge()?.name || 'Concierge') {
-  const idSet = new Set((ids || []).map(String));
-  if (idSet.size === 0) return [];
+const PACKAGE_RELEASE_STORAGE_KEY = 'mysuite-concierge-package-releases-v1';
+
+function releasePackagesWithActivity(selections) {
+  if (!Array.isArray(selections) || !selections.length) return { packages: [], error: 'Choose at least one package to release.' };
+  const requests = new Map();
+  for (const item of selections) {
+    const name = String(item.name || '').trim().replace(/\s+/g, ' ');
+    const idType = String(item.idType || '').trim();
+    if (!item.id || requests.has(item.id) || !['delivered', 'picked-up'].includes(item.method)) return { packages: [], error: 'Review the release method for each package.' };
+    if (item.method === 'picked-up' && (!name || name.length > 120 || (idType && !PACKAGE_PICKUP_ID_TYPES.includes(idType)))) return { packages: [], error: 'Enter the collector name and choose a valid optional ID type for each pickup.' };
+    requests.set(item.id, { ...item, name, idType });
+  }
+  const list = getPackages();
+  if (selections.some(item => !list.some(pkg => pkg.id === item.id && pkg.status === 'pending'))) return { packages: [], error: 'The pending list has changed. Review the packages and try again.' };
+  const actor = getCurrentConcierge();
   const now = new Date().toISOString();
-  const concierge = getCurrentConcierge();
-  const delivered = [];
-  const list = getPackages().map(p => {
-    if (!idSet.has(p.id) || p.status !== 'pending') return p;
-    const next = {
-      ...p,
-      status: 'delivered',
-      deliveredAt: now,
-      deliveredBy: concierge?.name || by,
-      deliveredById: concierge?.id || null,
-      pickedUpAt: null,
-      pickedUpBy: null,
-      pickedUpRecordedBy: null,
-      pickedUpRecordedById: null,
-      pickupIdVerified: null, pickupIdType: null
+  const release = { id: `release-${crypto.randomUUID()}`, releasedAt: now, recordedBy: actor?.name || 'Concierge', recordedById: actor?.id || null, items: [] };
+  const changes = [];
+  const nextPackages = list.map(pkg => {
+    const request = requests.get(pkg.id);
+    if (!request) return pkg;
+    const pickedUp = request.method === 'picked-up';
+    const next = { ...pkg, status: request.method,
+      deliveredAt: pickedUp ? null : now, deliveredBy: pickedUp ? null : release.recordedBy, deliveredById: pickedUp ? null : release.recordedById,
+      pickedUpAt: pickedUp ? now : null, pickedUpBy: pickedUp ? request.name : null,
+      pickedUpRecordedBy: pickedUp ? release.recordedBy : null, pickedUpRecordedById: pickedUp ? release.recordedById : null,
+      pickupIdVerified: pickedUp ? Boolean(request.idType) : null, pickupIdType: pickedUp ? request.idType || null : null
     };
-    recordPackageCompletion('deliver', p, next);
-    delivered.push(next);
+    changes.push({ before: pkg, after: next });
+    release.items.push({ packageId: pkg.id, suite: String(pkg.suite || '').trim(), residentName: pkg.residentName || 'Unknown resident', trackingNumber: pkg.trackingLast6 || '', method: request.method, pickedUpBy: next.pickedUpBy, pickupIdVerified: next.pickupIdVerified, pickupIdType: next.pickupIdType });
     return next;
   });
-  setPackages(list);
-  return delivered;
+  const storedReleases = readSaved(PACKAGE_RELEASE_STORAGE_KEY, []);
+  const releases = Array.isArray(storedReleases) ? storedReleases : [];
+  const storedAudit = readSaved(PACKAGE_AUDIT_KEY, []);
+  const audit = Array.isArray(storedAudit) ? [...storedAudit] : [];
+  changes.forEach(({ before, after }) => {
+    if (!audit.some(record => record?.packageId === before.id && ['edit', 'delete', 'move-to-pending', 'restore', 'deliver', 'pickup'].includes(record.action))) return;
+    audit.push({ id: `package-change-${crypto.randomUUID()}`, packageId: before.id, action: after.status === 'delivered' ? 'deliver' : 'pickup', reason: '', note: '', actorId: release.recordedById, actorName: release.recordedBy, recordedAt: now, before, after });
+  });
+  const entry = createPackageReleaseLogEntry(release);
+  const logs = getDailyLogs();
+  const writes = [
+    [PACKAGE_STORAGE_KEY, nextPackages], [PACKAGE_AUDIT_KEY, audit],
+    [PACKAGE_RELEASE_STORAGE_KEY, [...releases, release]], [DAILY_LOG_STORAGE_KEY, [...logs, entry]]
+  ];
+  // localStorage has no multi-key transaction. Restore completed writes if a save fails.
+  const previous = new Map();
+  const written = [];
+  try {
+    writes.forEach(([key, value]) => {
+      previous.set(key, localStorage.getItem(key));
+      localStorage.setItem(key, JSON.stringify(value));
+      written.push(key);
+    });
+  } catch {
+    let restored = true;
+    written.reverse().forEach(key => {
+      try {
+        const value = previous.get(key);
+        if (value === null) localStorage.removeItem(key);
+        else localStorage.setItem(key, value);
+      } catch { restored = false; }
+    });
+    return { packages: [], error: restored ? 'The release could not be saved. No packages were released. Please try again.' : 'Browser storage failed. Reload and check package history before trying again.' };
+  }
+  return { packages: changes.map(change => change.after), release, entry };
+}
+
+function markPackagesDelivered(ids) {
+  return releasePackagesWithActivity([...new Set((ids || []).map(String))].map(id => ({ id, method: 'delivered' }))).packages;
 }
 
 function markPackagesPickedUp(ids, pickedUpBy, idVerified = false, idType = '') {
-  const collector = String(pickedUpBy || '').trim();
-  if (!collector || collector.length > 120) return [];
-  const verifiedIdType = idVerified === true ? String(idType || '').trim() : null;
-  if (idVerified === true && !PACKAGE_PICKUP_ID_TYPES.includes(verifiedIdType)) return [];
-  const idSet = new Set((ids || []).map(String));
-  if (idSet.size === 0) return [];
-  const now = new Date().toISOString();
-  const concierge = getCurrentConcierge();
-  const picked = [];
-  const list = getPackages().map(p => {
-    if (!idSet.has(p.id) || p.status !== 'pending') return p;
-    const next = {
-      ...p,
-      status: 'picked-up',
-      pickedUpBy: collector,
-      pickupIdVerified: idVerified === true,
-      pickupIdType: verifiedIdType,
-      pickedUpAt: now,
-      pickedUpRecordedBy: concierge?.name || 'Concierge',
-      pickedUpRecordedById: concierge?.id || null,
-      deliveredAt: null,
-      deliveredBy: null,
-      deliveredById: null
-    };
-    recordPackageCompletion('pickup', p, next);
-    picked.push(next);
-    return next;
-  });
-  setPackages(list);
-  return picked;
+  return releasePackagesWithActivity([...new Set((ids || []).map(String))].map(id => ({ id, method: 'picked-up', name: pickedUpBy, idType: idVerified === true ? idType : '' }))).packages;
 }
 
 function packageStatusLabel(status) {
@@ -632,4 +657,189 @@ function renderPackageRow(pkg) {
     </span>
     <span class="badge ${packageStatusClass(pkg.status)}">${packageStatusLabel(pkg.status)}</span>
   </div>`;
+}
+
+// Shared package workflow dialogs for Activity Log and Package tracking.
+function initPackageReleaseDialog(options = {}) {
+  const dialog = document.querySelector('#activity-release-modal');
+  const form = document.querySelector('#activity-release-form');
+  const rows = document.querySelector('#activity-release-rows');
+  const error = document.querySelector('#activity-release-error');
+  const submit = document.querySelector('#activity-release-submit');
+
+  function selections() {
+    return [...rows.querySelectorAll('select[data-release-method]')].filter(select => select.value).map(select => ({
+      id: select.dataset.releaseMethod,
+      method: select.value,
+      name: select.closest('tr').querySelector('[data-pickup-name]').value.trim(),
+      idType: select.closest('tr').querySelector('[data-pickup-id]').value
+    }));
+  }
+
+  function showError(message) {
+    error.textContent = message;
+    error.hidden = !message;
+  }
+
+  function syncSelection() {
+    const total = rows.querySelectorAll('select[data-release-method]').length;
+    const chosen = selections();
+    rows.querySelectorAll('select[data-release-method]').forEach(select => {
+      const pickup = select.closest('tr').querySelector('[data-row-pickup]');
+      pickup.hidden = select.value !== 'picked-up';
+      pickup.disabled = pickup.hidden;
+    });
+    document.querySelector('#activity-release-count').textContent = `${chosen.length} of ${total} ready to release`;
+    submit.disabled = chosen.length === 0 || chosen.some(item => !['delivered', 'picked-up'].includes(item.method));
+  }
+
+  function renderPending(keepSelected = []) {
+    options.onChange?.();
+    const pending = sortPackagesNewestFirst(getPackages().filter(pkg => pkg.status === 'pending'));
+    const selected = new Map(keepSelected.map(item => [item.id, item]));
+    rows.innerHTML = pending.map(pkg => {
+      const escape = escapeLogHtml;
+      const fullName = String(pkg.residentName || '').trim();
+      const nameParts = fullName.split(/\s+/);
+      const residentLabel = !fullName || fullName === 'Unknown resident' ? 'Unknown resident' : nameParts.length > 1 ? `${nameParts[0]} ${Array.from(nameParts[nameParts.length - 1])[0]}.` : fullName;
+      const chosen = selected.get(pkg.id);
+      const arrival = new Date(pkg.receivedAt);
+      const date = Number.isNaN(arrival.getTime()) ? 'Not recorded' : arrival.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const time = Number.isNaN(arrival.getTime()) ? '' : formatPackageTime(pkg.receivedAt);
+      return `<tr><td><strong>${escape(residentLabel)}</strong><span>Suite ${escape(pkg.suite)}</span></td><td>${escape(pkg.carrier || 'Other')} &middot; ${escape(pkg.parcelType || 'Package')}<span>Tracking # ${escape(pkg.trackingLast6 || 'Not recorded')}</span></td><td class="activity-release-arrival">${escape(time)}<span>${escape(date)}</span></td><td><div class="activity-release-controls"><select data-release-method="${escape(pkg.id)}" aria-label="Release method for Suite ${escape(pkg.suite)}, tracking ${escape(pkg.trackingLast6 || 'not recorded')}"><option value="">Choose</option><option value="delivered"${chosen?.method === 'delivered' ? ' selected' : ''}>Delivered</option><option value="picked-up"${chosen?.method === 'picked-up' ? ' selected' : ''}>Picked up</option></select><fieldset data-row-pickup class="activity-release-row-pickup" hidden disabled><legend class="sr-only">Pickup details for Suite ${escape(pkg.suite)}</legend><label>Collected by<input data-pickup-name value="${escape(chosen?.name || '')}" placeholder="Full name" maxlength="120" required autocomplete="off"></label><label>ID checked &middot; optional<select data-pickup-id><option value="">Not recorded</option>${PACKAGE_PICKUP_ID_TYPES.map(type => `<option value="${escape(type)}"${chosen?.idType === type ? ' selected' : ''}>${escape(type)}</option>`).join('')}</select></label></fieldset></div></td></tr>`;
+    }).join('');
+    document.querySelector('#activity-release-empty').hidden = pending.length > 0;
+    syncSelection();
+  }
+
+  document.querySelector('#activity-release-trigger').addEventListener('click', () => {
+    form.reset();
+    showError('');
+    renderPending();
+    dialog.showModal();
+  });
+  dialog.querySelectorAll('[data-close-activity-release]').forEach(button => button.addEventListener('click', () => dialog.close()));
+  form.addEventListener('change', () => { showError(''); syncSelection(); });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const chosen = selections();
+    const ids = chosen.map(item => item.id);
+    const pickups = chosen.filter(item => item.method === 'picked-up');
+    if (!ids.length || chosen.some(item => !['delivered', 'picked-up'].includes(item.method))) {
+      showError('Choose Delivered or Picked up beside at least one package.');
+      return;
+    }
+    if (!form.reportValidity()) return;
+    if (pickups.some(item => !item.name || item.name.length > 120)) {
+      showError('Enter the full name of the person collecting each package marked Picked up.');
+      return;
+    }
+    if (pickups.some(item => item.idType && !PACKAGE_PICKUP_ID_TYPES.includes(item.idType))) {
+      showError('Choose a valid ID type or leave it as Not recorded.');
+      return;
+    }
+    const pendingIds = new Set(getPackages().filter(pkg => pkg.status === 'pending').map(pkg => pkg.id));
+    if (ids.some(id => !pendingIds.has(id))) {
+      renderPending(chosen);
+      showError('The pending list has changed. Review your selection and release again.');
+      return;
+    }
+    submit.disabled = true;
+    const result = releasePackagesWithActivity(chosen);
+    if (result.error) {
+      renderPending(chosen);
+      showError(result.error);
+      return;
+    }
+    const delivered = result.packages.filter(pkg => pkg.status === 'delivered');
+    const pickedUp = result.packages.filter(pkg => pkg.status === 'picked-up');
+    options.onChange?.();
+    dialog.close();
+    options.onReleased?.(result);
+    const summary = [delivered.length ? `${delivered.length} delivered` : '', pickedUp.length ? `${pickedUp.length} picked up` : ''].filter(Boolean).join(', ');
+    toast(`Packages released: ${summary}.`);
+  });
+  window.addEventListener('storage', event => {
+    if (event.key === PACKAGE_STORAGE_KEY || event.key === null) options.onChange?.();
+    options.onStorage?.(event);
+    if (dialog.open && (event.key === PACKAGE_STORAGE_KEY || event.key === null)) {
+      renderPending(selections());
+      showError('The pending list has been updated. Review your selection before releasing.');
+    }
+  });
+}
+
+function initPackageLogDialog(options = {}) {
+  const dialog = document.querySelector('#activity-package-log-modal');
+  const form = document.querySelector('#activity-package-log-form');
+  const rows = document.querySelector('#activity-package-log-rows');
+  const error = document.querySelector('#activity-package-log-error');
+  const saveButton = document.querySelector('#activity-package-log-save');
+  const carriers = ['Amazon', 'UPS', 'FedEx', 'Canada Post', 'Other'];
+  const types = ['Package', 'Box', 'Envelope'];
+  let nextRow = 0;
+  let saving = false;
+
+  function clearError() {
+    error.textContent = '';
+    error.hidden = true;
+  }
+
+  function addRow() {
+    const index = ++nextRow;
+    const label = text => escapeLogHtml(`${text}, row ${index}`);
+    rows.insertAdjacentHTML('beforeend', `<tr data-package-entry-row>
+      <td><input data-field="suite" inputmode="numeric" aria-label="${label('Suite')}" placeholder="Suite" maxlength="30" required autocomplete="off"></td><td><input data-field="residentName" aria-label="${label('Resident name')}" placeholder="Resident name" maxlength="120" required autocomplete="off"></td>
+      <td><div class="activity-package-type"><select data-field="carrier" aria-label="${label('Carrier')}" required><option value="">Carrier</option>${carriers.map(carrier => `<option value="${carrier}">${carrier}</option>`).join('')}</select><select data-field="parcelType" aria-label="${label('Package type')}">${types.map(type => `<option value="${type}">${type}</option>`).join('')}</select></div></td>
+      <td><input data-field="trackingLast6" aria-label="${label('Tracking number (optional)')}" placeholder="Optional" pattern="[A-Za-z0-9]+" maxlength="100" autocomplete="off"></td>
+      <td><input data-field="storageSpot" aria-label="${label('Storage Location (optional)')}" placeholder="Optional" maxlength="100" autocomplete="off"></td>
+    </tr>`);
+    rows.lastElementChild.querySelector('[data-field="suite"]').focus();
+  }
+
+  document.querySelector('#activity-log-package-trigger').addEventListener('click', () => {
+    rows.innerHTML = '';
+    nextRow = 0;
+    clearError();
+    dialog.showModal();
+    addRow();
+  });
+  document.querySelector('#activity-package-add-row').addEventListener('click', addRow);
+  dialog.querySelectorAll('[data-close-activity-package-log]').forEach(button => button.addEventListener('click', () => dialog.close()));
+  rows.addEventListener('input', event => {
+    clearError();
+    const field = event.target;
+    if (field.dataset.field !== 'suite') return;
+    const row = field.closest('[data-package-entry-row]');
+    const resident = findResidentBySuite(field.value.trim());
+    row.querySelector('[data-field="residentName"]').value = resident?.name || '';
+  });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (saving || !form.reportValidity()) return;
+    const entries = [...rows.querySelectorAll('[data-package-entry-row]')].map(row => {
+      const value = name => row.querySelector(`[data-field="${name}"]`).value.trim();
+      return { suite: value('suite'), residentName: value('residentName'), carrier: value('carrier'), trackingLast6: value('trackingLast6'), parcelType: value('parcelType'), storageSpot: value('storageSpot') };
+    });
+    if (!entries.length || entries.some(entry => !entry.suite || entry.suite.length > 30 || !entry.residentName || entry.residentName.length > 120 || !carriers.includes(entry.carrier) || !types.includes(entry.parcelType) || entry.trackingLast6.length > 100 || (entry.trackingLast6 && !/^[A-Za-z0-9]+$/.test(entry.trackingLast6)) || entry.storageSpot.length > 100)) {
+      error.textContent = 'Complete the suite, resident and carrier in every row, and check any tracking numbers.';
+      error.hidden = false;
+      return;
+    }
+    saving = true;
+    saveButton.disabled = true;
+    try {
+      const saved = addPackages(entries);
+      options.onChange?.();
+      dialog.close();
+      options.onLogged?.(saved);
+      toast(`${saved.length} ${saved.length === 1 ? 'package' : 'packages'} logged.`);
+    } catch {
+      error.textContent = 'The packages could not be saved. Your entries are still here; please try again.';
+      error.hidden = false;
+    } finally {
+      saving = false;
+      saveButton.disabled = false;
+    }
+  });
 }

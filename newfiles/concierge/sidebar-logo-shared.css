@@ -1,0 +1,18 @@
+/* All concierge routes use the same saved logo geometry and color settings. */
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand {
+  display: block;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: var(--sidebar-logo-size, 43px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -1.8px;
+  text-align: left;
+  padding: 0 12px 10px;
+  margin: 0 0 calc(8px + max(0px, var(--sidebar-logo-y, 0px)));
+  border-bottom: 1px solid transparent;
+  color: var(--sidebar-logo-color, #35261e);
+  transform: translate(var(--sidebar-logo-x, 0px), var(--sidebar-logo-y, 0px));
+}
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand-dot { color: var(--custom-logo-dot, #c4a07a); }
+body.concierge-sidebar[data-sidebar-palette] .sidebar[data-logo-finish] .brand { color: var(--logo-finish-text); }
+body.concierge-sidebar[data-sidebar-palette] .sidebar[data-logo-finish] .brand-dot { color: var(--logo-finish-dot); }

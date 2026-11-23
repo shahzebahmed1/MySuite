@@ -1,20 +1,54 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="concierge-shared-appearance.js?v=4bdde979be54"></script>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#35261e"><title>MySuite — Maintenance</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
-  <link rel="stylesheet" href="maintenance.css?v=deecf8dfa166">
+  <link rel="stylesheet" href="dashboard.css?v=0795f7f8682a">
+  <link rel="stylesheet" href="maintenance.css?v=bacf02d4abe5">
+  <link rel="stylesheet" href="concierge-theme.css?v=820a96672c3b">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
   <script src="maintenance-data.js" defer></script>
-  <script src="maintenance.js?v=afef46526891" defer></script>
+  <script src="maintenance.js?v=2bec82d0e9d1" defer></script>
+  <script src="color-settings.js?v=98c9ea4d93f2" defer></script>
+  <link rel="stylesheet" href="nav-style-preview.css?v=a5728f68f9c7">
+  <script src="nav-style-preview.js?v=0ffcc69676bd" defer></script>
+  <link rel="stylesheet" href="concierge-sidebar.css?v=d695b6832c78">
+  <link rel="stylesheet" href="maintenance-appearance.css?v=c808d706c390">
+  <script src="maintenance-appearance.js?v=307a0bc8a004" defer></script>
+  <script src="sidebar-ink-colors.js?v=cc47d5c5587a" defer></script>
+  <link rel="stylesheet" href="sidebar-dividers.css?v=e2a573041e86">
+  <script src="sidebar-dividers.js?v=2022d31f2f5b" defer></script>
+  <link rel="stylesheet" href="sidebar-navigation-options.css?v=dcc86218290c">
+  <script src="sidebar-navigation-options.js?v=4cf4b2876ec1" defer></script>
+  <link rel="stylesheet" href="logo-cream-options.css?v=2b4699363092">
+  <script src="logo-cream-options.js?v=2f9f5181b42c" defer></script>
+  <link rel="preload" href="../assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="sidebar-font.css?v=94a4d1f2c251">
+  <script src="sidebar-logo-position.js?v=5f5c7c2c1dec" defer></script>
+  <link rel="stylesheet" href="sidebar-shape.css?v=da8610f99345">
+  <script src="sidebar-shape.js?v=5fb61a65d45f" defer></script>
+  <link rel="stylesheet" href="sidebar-nav-colors.css?v=9a7a537f4af5">
+  <script src="sidebar-nav-colors.js?v=f8be49ffdab9" defer></script>
+  <link rel="stylesheet" href="sidebar-logo-shared.css?v=c00e620b222b">
+  <link rel="stylesheet" href="sidebar-icon-toggle.css?v=87b7452a85e3">
+  <script src="sidebar-icon-toggle.js?v=0626678becfd" defer></script>
+  <link rel="stylesheet" href="sidebar-selection-width.css?v=abe2c8ce2f99">
+  <script src="sidebar-selection-width.js?v=cfca32f38c5a" defer></script>
+  <link rel="stylesheet" href="sidebar-row-alignment.css?v=22387f0ef696">
+  <script src="sidebar-icon-weight.js?v=a00e08e57648" defer></script>
+  <link rel="stylesheet" href="sidebar-logo-styles.css?v=d55b2a6c6d67">
+  <script src="sidebar-logo-styles.js?v=593d53f9bf25" defer></script>
+  <link rel="stylesheet" href="concierge-shared-appearance.css?v=53f150935ee2">
+  <link rel="stylesheet" href="concierge-supplied-logo.css?v=83d97b5a06c4">
+  <script src="concierge-supplied-logo.js?v=da567e51a7c7" defer></script>
 </head>
-<body class="concierge-sidebar maintenance-page" data-time="afternoon" data-breadcrumb="Maintenance">
+<body class="concierge-square concierge-sidebar maintenance-page" data-sidebar-palette="original-cream" data-time="afternoon" data-breadcrumb="Maintenance">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -23,10 +57,10 @@
       <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
       <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
       <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
-      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
-      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident Reports</a>
+      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Activity Log</a>
       <div class="nav-divider"></div>
-      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
       <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
       <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
       <a class="nav-item active" aria-current="page" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
@@ -35,32 +69,22 @@
     <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
-    <header class="page-header">
-      <div>
-        <p class="eyebrow">CONCIERGE</p>
-        <h1>Maintenance</h1>
-        <p class="welcome-note">Log a request on the left. Review pending work on the right.</p>
-      </div>
-      <div class="header-tools">
-        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
-      </div>
-    </header>
+
 
     <div class="packages-layout desk-layout">
-      <section id="log-panel" class="log-panel desk-form-card card" aria-label="Log a maintenance request">
-        <div class="log-panel-top">
-          <h2><i data-icon="wrench"></i>Log a request</h2>
-        </div>
-        <div id="form-slot-panel"></div>
-      </section>
 
-      <section class="packages-table-card desk-list-card card" aria-label="Maintenance list">
+
+      <section class="packages-table-card desk-list-card card portal-list-card" aria-label="Maintenance list">
+        <header class="page-header portal-page-header">
+          <div class="portal-header-content"><div class="portal-header-copy"><h1>Maintenance</h1><p class="welcome-note">Log requests and review pending work and completed repairs.</p></div></div>
+          <button type="button" class="button portal-create-button" data-action="open-maintenance-form" aria-haspopup="dialog" aria-controls="maintenance-form-modal"><span aria-hidden="true">+</span>Log request</button>
+        </header>
         <div class="pkg-tabs" role="tablist" aria-label="Maintenance requests">
           <button type="button" class="pkg-tab active" role="tab" aria-selected="true" aria-controls="maintenance-panel" data-tab="awaiting" id="tab-pending">Pending</button>
           <button type="button" class="pkg-tab" role="tab" aria-selected="false" aria-controls="maintenance-panel" tabindex="-1" data-tab="history" id="tab-history">History</button>
         </div>
         <div class="desk-search"><i data-icon="search"></i><label class="sr-only" for="maintenance-search">Search maintenance requests</label><input id="maintenance-search" type="search" placeholder="Search location, request title or notes..." aria-controls="maintenance-list"></div>
-        <div id="maintenance-panel" role="tabpanel" aria-labelledby="tab-pending"><div id="maintenance-list"></div><p id="maintenance-empty" class="desk-empty" hidden>No maintenance requests in this list.</p></div>
+        <div id="maintenance-panel" role="tabpanel" aria-labelledby="tab-pending"><div class="portal-table-scroll" role="region" aria-label="Maintenance requests" tabindex="0"><table class="portal-table"><caption class="sr-only">Maintenance requests</caption><thead><tr><th scope="col">Location</th><th scope="col">Request</th><th scope="col">Reported</th><th scope="col">Status</th><th scope="col">Actions</th></tr></thead><tbody id="maintenance-list"></tbody></table></div><p id="maintenance-empty" class="desk-empty" hidden>No maintenance requests in this list.</p></div>
         <div class="desk-list-footer"><p id="maintenance-range" role="status" aria-live="polite"></p><nav class="desk-pagination" aria-label="Maintenance pages"><button type="button" id="maintenance-previous" class="desk-page-arrow" aria-label="Previous page"><i data-icon="left"></i></button><label class="desk-page-picker"><span class="sr-only">Maintenance page</span><select id="maintenance-page"></select><i data-icon="chevron"></i></label><button type="button" id="maintenance-next" class="desk-page-arrow" aria-label="Next page"><i data-icon="chevron"></i></button></nav></div>
       </section>
     </div>
@@ -102,11 +126,16 @@
 
       <p id="maintenance-form-message" class="desk-form-message" role="alert" tabindex="-1" hidden></p>
       <div class="form-actions desk-form-actions">
-        <button type="button" class="button outline" data-cancel-log>Clear</button>
+        <button type="button" class="button outline" data-action="close-maintenance-form">Cancel</button>
         <button class="button" type="submit">Log request</button>
       </div>
     </form>
   </template>
+
+  <dialog id="maintenance-form-modal" class="portal-form-dialog" aria-labelledby="maintenance-form-modal-title">
+    <div class="dialog-top"><h2 id="maintenance-form-modal-title" class="portal-dialog-title">Log maintenance request</h2><button type="button" class="icon-button" data-action="close-maintenance-form" aria-label="Close log maintenance request dialog"><i data-icon="close"></i></button></div>
+    <div id="maintenance-form-slot-modal"></div>
+  </dialog>
 
   <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
   <div class="toast" id="toast" role="status"></div>

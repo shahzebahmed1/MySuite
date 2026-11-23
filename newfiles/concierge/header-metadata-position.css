@@ -1,0 +1,11 @@
+.header-metadata-position-controls { margin: 16px 0 0; padding: 12px 0 0; border: 0; border-top: 1px solid var(--finish-border,#e7ddd1); }
+.header-metadata-position-controls legend { padding-right: 8px; font-size: 13px; font-weight: 600; }
+.header-metadata-position-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.header-metadata-position-grid section { display: grid; gap: 10px; min-width: 0; }
+.header-metadata-position-grid h4 { margin: 0; font-size: 13px; }
+.header-metadata-position-grid label { display: grid; gap: 6px; font-size: 12px; }
+.header-metadata-position-grid select { width: 100%; padding: 7px; border: 1px solid var(--finish-border,#dfd4c8); border-radius: 6px; background: var(--finish-card,#fffdf9); color: inherit; font: inherit; }
+.header-metadata-position-grid button { justify-self: start; padding: 4px 0; border: 0; background: transparent; color: inherit; text-decoration: underline; text-underline-offset: 3px; font: inherit; font-size: 11px; cursor: pointer; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome[data-metadata-positioning] .premium-card-meta { display: contents; position: static; }
+body.sidebar-merge[data-dashboard-header="premium-welcome-card"] .dashboard .welcome[data-metadata-positioning] .premium-card-meta > :is(.greeting-date,.premium-weather-group) { position: absolute; z-index: 4; }
+@media (max-width: 600px) { .header-metadata-position-grid { grid-template-columns: 1fr; } }

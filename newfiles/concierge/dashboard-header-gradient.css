@@ -1,0 +1,13 @@
+.header-gradient-controls { min-width: 0; margin: 18px 0 0; padding: 12px 0 0; border: 0; border-top: 1px solid var(--finish-border, #e8ded4); }
+.header-gradient-controls legend { padding-right: 8px; color: var(--finish-ink, #1e293b); font-size: 13px; font-weight: 600; }
+.header-gradient-controls .header-adjustment-fields { margin-top: 0; }
+.header-gradient-controls input[type="color"] { width: 100%; height: 36px; padding: 3px; border: 1px solid var(--finish-border, #dfd4c8); border-radius: 7px; background: var(--finish-card, #fff); }
+.header-gradient-controls input[type="range"] { width: 100%; padding: 0; margin: 0; accent-color: var(--finish-accent, #293e55); }
+.header-gradient-controls .sidebar-rgb-fields { margin-top: 12px; }
+.header-gradient-controls button { margin-top: 12px; padding: 4px 0; border: 0; background: transparent; color: var(--finish-ink, #855027); font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+body.sidebar-merge[data-dashboard-header][data-header-adjustments][data-custom-header-gradient]:not(:is([data-dashboard-header="split-header"], [data-dashboard-header="square-split-card"], [data-dashboard-header="rounded-split-card"], [data-dashboard-header="split-overlap"], [data-dashboard-header="editorial-split"], [data-dashboard-header="asymmetrical-cutout"])) .welcome::after {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--header-gradient-color) var(--header-gradient-strength), transparent) 0%, color-mix(in srgb, var(--header-gradient-color) var(--header-gradient-strength), transparent) 3%, color-mix(in srgb, var(--header-gradient-color) calc(var(--header-gradient-strength) * .7), transparent) 34%, color-mix(in srgb, var(--header-gradient-color) calc(var(--header-gradient-strength) * .35), transparent) 58%, transparent 85%);
+}
+body.sidebar-merge:is([data-dashboard-header="split-header"], [data-dashboard-header="square-split-card"], [data-dashboard-header="rounded-split-card"], [data-dashboard-header="split-overlap"])[data-header-adjustments][data-custom-header-gradient] .welcome::after {
+  background: linear-gradient(var(--dashboard-split-angle, 115deg), var(--dashboard-split-surface, #f5efe5) 0%, var(--dashboard-split-surface, #f5efe5) var(--dashboard-split-position, 42%), color-mix(in srgb, var(--header-gradient-color) calc(var(--header-gradient-strength) * .2), transparent) var(--dashboard-split-edge, 42.15%), transparent 100%);
+}

@@ -111,10 +111,7 @@ function ensureFormMounted() {
 }
 
 function openPackageLog() {
-  ensureFormMounted();
-  resetForm();
-  if (!packageLogModal.open) packageLogModal.showModal();
-  document.querySelector('#pkg-suite')?.focus();
+  document.querySelector('#activity-log-package-trigger').click();
 }
 
 function currentConciergeName() {
@@ -263,7 +260,7 @@ function renderTrackingRecord(pkg, auditRecords = []) {
       ? `${completionDate && !Number.isNaN(completionDate.getTime()) ? `<time datetime="${escape(completedAt)}">${escape(completionWhen)}</time>` : '<span class="history-release-date">Not recorded</span>'}<span class="pending-logged-by">${completedLabel} by ${escape(shortPackageName(completedBy || 'Not recorded'))}</span>`
       : escape(packageStatusLabel(pkg.status));
   const pickupMeta = pkg.status === 'picked-up' ? [
-    pkg.pickedUpRecordedBy ? `Recorded by ${shortPackageName(pkg.pickedUpRecordedBy)}` : '',
+    pkg.pickedUpRecordedBy ? `Logged by ${shortPackageName(pkg.pickedUpRecordedBy)}` : '',
     pkg.pickupIdVerified === true ? pkg.pickupIdType ? `ID: ${pkg.pickupIdType}` : 'ID verified' : ''
   ].filter(Boolean).join(' \u00b7 ') : '';
   const tracking = pkg.trackingLast6 ? `<span class="pending-tracking">Tracking # ${escape(pkg.trackingLast6)}</span>` : '';
@@ -271,28 +268,25 @@ function renderTrackingRecord(pkg, auditRecords = []) {
   const undo = deleted && canManagePackageEntry(pkg) ? `<button type="button" class="package-undo-delete" data-action="undo-delete-package" data-package-id="${escape(pkg.id)}" data-deletion-id="${escape(pkg.deletionAudit.id || '')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 4-6 6 6 6M3 10h11a6 6 0 0 1 0 12"/></svg>Undo delete</button>` : '';
   return `<tr class="pending-package-row history-package-row${deleted ? ' is-deleted' : ''}" data-package-id="${escape(pkg.id)}">
     <td><strong class="pending-resident-name">${escape(pkg.residentName || 'Unknown resident')}</strong><span class="pending-suite">Suite ${escape(pkg.suite)}</span></td>
-    <td><div class="pending-carrier"><img src="${escape(carrierLogoSrc(carrier))}" alt="" width="30" height="26"><div><strong>${escape(carrier)} &middot; ${escape(pkg.parcelType || 'Package')}</strong>${tracking}${note}</div></div></td>
+    <td><div class="pending-carrier"><span class="pending-carrier-logo"><img src="${escape(carrierLogoSrc(carrier))}" alt="" width="30" height="26"></span><div><strong>${escape(carrier)} &middot; ${escape(pkg.parcelType || 'Package')}</strong>${tracking}${note}</div></div></td>
     <td class="pending-arrived"><time datetime="${escape(pkg.receivedAt)}">${escape(arrived)}</time><span class="pending-logged-by">Logged by ${escape(shortPackageName(pkg.receivedBy || 'Concierge'))}</span></td>
     <td class="pending-arrived history-released">${released}${pickupMeta ? `<span class="pending-logged-by">${escape(pickupMeta)}</span>` : ''}</td>
     <td><div class="history-actions">${renderPackageEntryMenu(pkg)}${undo}</div></td>
   </tr>`;
 }
 
-function renderPendingPackage(pkg, auditRecords = [], releaseVariant = '') {
+function renderPendingPackage(pkg, auditRecords = []) {
   const escape = escapePackageHtml;
   const date = new Date(pkg.receivedAt);
   const arrived = Number.isNaN(date.getTime()) ? 'Date unavailable'
     : `${date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })} at ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).replace('AM', 'a.m.').replace('PM', 'p.m.')}`;
   const carrier = pkg.carrier || 'Other';
   const tracking = pkg.trackingLast6 ? `<span class="pending-tracking">Tracking # ${escape(pkg.trackingLast6)}</span>` : '';
-  const releaseButton = releaseVariant
-    ? `<button type="button" class="button pending-release-button is-release-${escape(releaseVariant)}" data-action="release-package" data-package-id="${escape(pkg.id)}" aria-label="Release package for Suite ${escape(pkg.suite)}">Release package</button>`
-    : `<button type="button" class="button outline pending-collect-button" data-pickup="${escape(pkg.id)}" aria-label="Mark package for Suite ${escape(pkg.suite)} as collected">Mark collected</button>`;
   return `<tr class="pending-package-row" data-package-id="${escape(pkg.id)}">
     <td><strong class="pending-resident-name">${escape(pkg.residentName || 'Unknown resident')}</strong><span class="pending-suite">Suite ${escape(pkg.suite)}</span></td>
-    <td><div class="pending-carrier"><img src="${escape(carrierLogoSrc(carrier))}" alt="" width="30" height="26"><div><strong>${escape(carrier)} &middot; ${escape(pkg.parcelType || 'Package')}</strong>${tracking}${pkg.note ? `<p class="pending-package-note">${escape(pkg.note)}</p>` : ''}</div></div></td>
+    <td><div class="pending-carrier"><span class="pending-carrier-logo"><img src="${escape(carrierLogoSrc(carrier))}" alt="" width="30" height="26"></span><div><strong>${escape(carrier)} &middot; ${escape(pkg.parcelType || 'Package')}</strong>${tracking}${pkg.note ? `<p class="pending-package-note">${escape(pkg.note)}</p>` : ''}</div></div></td>
     <td class="pending-arrived"><time datetime="${escape(pkg.receivedAt)}">${escape(arrived)}</time><span class="pending-logged-by">Logged by ${escape(shortPackageName(pkg.receivedBy || 'Concierge'))}</span></td>
-    <td><div class="pending-actions">${releaseButton}${renderPackageEntryMenu(pkg)}</div></td>
+    <td><div class="pending-actions"><button type="button" class="pending-release-inline" data-action="release-package" data-package-id="${escape(pkg.id)}">Release</button>${renderPackageEntryMenu(pkg)}</div></td>
   </tr>`;
 }
 
@@ -332,6 +326,7 @@ function refreshTable() {
   syncPackageDateControls();
   const auditRecords = getPackageAuditRecords();
   const live = getPackages();
+  updatePackageHeaderCount();
   const liveIds = new Set(live.map(pkg => pkg.id));
   const deletions = new Map();
   auditRecords.filter(record => record.action === 'delete' && !liveIds.has(record.packageId)).forEach(record => {
@@ -341,8 +336,6 @@ function refreshTable() {
   const packages = sortPackagesNewestFirst([...live, ...Array.from(deletions.values(), record => ({ ...record.before, deletionAudit: record }))]);
   const pending = packages.filter(pkg => pkg.status === 'pending' && !pkg.deletionAudit);
   const history = packages.filter(pkg => pkg.status !== 'pending' || pkg.deletionAudit);
-  const releaseVariants = ['caramel', 'grey', 'sage', 'blue'];
-  const releasePreviews = new Map(pending.slice(0, 4).map((pkg, index) => [pkg.id, releaseVariants[index]]));
   updateTabCounts(pending.length);
   const isHistory = activeTab === 'history';
   const source = isHistory ? history : sortPendingPackages(pending);
@@ -370,7 +363,7 @@ function refreshTable() {
   document.querySelector('[data-action="next-package-page"]').disabled = page === pageCount;
   const list = document.querySelector(isHistory ? '#history-list' : '#pending-list');
   const empty = document.querySelector(isHistory ? '#pkg-empty' : '#pending-empty');
-  list.innerHTML = filtered.slice(offset, offset + packagePageSize).map(pkg => (isHistory ? renderTrackingRecord : renderPendingPackage)(pkg, auditRecords.filter(record => record.packageId === pkg.id), releasePreviews.get(pkg.id))).join('');
+  list.innerHTML = filtered.slice(offset, offset + packagePageSize).map(pkg => (isHistory ? renderTrackingRecord : renderPendingPackage)(pkg, auditRecords.filter(record => record.packageId === pkg.id))).join('');
   empty.hidden = filtered.length > 0;
   empty.textContent = query ? 'No packages match your search.' : packageDate ? `No packages arrived on ${packageFilterDateLabel(packageDate)}.` : isHistory ? 'No package history yet.' : 'Nothing pending. Log a package when one arrives.';
 }
@@ -457,10 +450,10 @@ function askPickupConfirm(id) {
       idTypeSelect.focus();
       return;
     }
-    const picked = markPackagesPickedUp([id], name, idVerified, idType);
-    if (!picked.length) {
+    const result = releasePackagesWithActivity([{ id, method: 'picked-up', name, idType: idVerified ? idType : '' }]);
+    if (result.error) {
       const error = document.querySelector('#package-pickup-error');
-      error.textContent = 'This package is no longer pending.';
+      error.textContent = result.error;
       error.hidden = false;
       return;
     }
@@ -684,10 +677,11 @@ document.addEventListener('click', event => {
     toast(moved ? 'Package moved to Pending.' : 'This package is no longer in History.');
   } else if (action === 'confirm-deliver') {
     const id = button.dataset.packageId;
+    const result = releasePackagesWithActivity([{ id, method: 'delivered' }]);
+    if (result.error) { toast(result.error); return; }
     modal.close();
-    const delivered = markPackagesDelivered([id], currentConciergeName());
     refreshTable();
-    toast(delivered.length ? `Package marked delivered by ${currentConciergeName()}.` : 'This package is no longer pending.');
+    toast(`Package marked delivered by ${currentConciergeName()}.`);
   } else if (action === 'open-package-date') {
     openPackageDatePicker();
   } else if (action === 'clear-package-date') {
@@ -763,3 +757,35 @@ document.addEventListener('focusin', event => {
 });
 window.addEventListener('resize', () => closePackageEntryMenu());
 document.addEventListener('scroll', () => closePackageEntryMenu(), true);
+
+function updatePackageHeaderCount() {
+  const count = getPackages().filter(pkg => pkg.status === 'pending').length;
+  document.querySelector('#package-header-pending-count').textContent = String(count);
+  document.querySelector('#activity-release-trigger').setAttribute('aria-label', `Release Package, ${count} pending ${count === 1 ? 'package' : 'packages'}`);
+}
+
+initPackageReleaseDialog({
+  onChange: updatePackageHeaderCount,
+  onReleased: refreshTable,
+  onStorage(event) {
+    if ([PACKAGE_STORAGE_KEY, PACKAGE_AUDIT_KEY, null].includes(event.key)) refreshTable();
+  }
+});
+initPackageLogDialog({
+  onChange: updatePackageHeaderCount,
+  onLogged() {
+    packagePages.awaiting = 1;
+    packageSearch.awaiting = '';
+    packageDates.awaiting = '';
+    setTab('awaiting');
+  }
+});
+window.addEventListener('pageshow', updatePackageHeaderCount);
+
+// Open the logging dialog for direct logging links.
+const packageShortcutUrl = new URL(window.location.href);
+if (packageShortcutUrl.searchParams.get('action') === 'log-package') {
+  openPackageLog();
+  packageShortcutUrl.searchParams.delete('action');
+  window.history.replaceState(window.history.state, '', packageShortcutUrl.href);
+}

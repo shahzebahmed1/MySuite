@@ -1,0 +1,39 @@
+@font-face { font-family: 'MySuite Rounded'; src: url('../assets/fonts/greeting/circular-regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+.sidebar-logo-style-control { margin-top: 10px; }
+.sidebar-logo-style-control > span { display: block; margin-bottom: 5px; font-size: 10px; line-height: 1.4; opacity: .8; }
+.sidebar-logo-style-control button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 6px 9px; border: 1px solid color-mix(in srgb,currentColor 22%,transparent); border-radius: 6px; background: color-mix(in srgb,currentColor 5%,transparent); color: inherit; font: 500 12px/1.4 'Inter Sidebar','Segoe UI',sans-serif; cursor: pointer; }
+.sidebar-logo-style-control button:hover { background: color-mix(in srgb,currentColor 11%,transparent); }
+.sidebar-logo-style-control button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.sidebar-logo-style-control svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand:is([data-logo-style="rounded"],[data-logo-style="spaced"],[data-logo-style="mixed"]) { white-space: nowrap; text-decoration: none; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="rounded"],
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="rounded"] > span:not(.brand-dot) { font-family: 'MySuite Rounded','Inter Sidebar',sans-serif !important; font-weight: 400; letter-spacing: .015em; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand:is([data-logo-style="rounded"],[data-logo-style="spaced"]) > .brand-dot { display: none; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="spaced"] { font-family: 'Inter Sidebar',sans-serif; font-size: calc(var(--sidebar-logo-size,43px) * .62); font-weight: 650; letter-spacing: .25em; padding-bottom: 23px; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="spaced"] > span { font-family: inherit !important; font-weight: inherit; letter-spacing: inherit; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="spaced"]::after { content: ''; display: block; width: 25px; height: 3px; margin: 10px auto -10px; background: var(--custom-logo-dot,var(--logo-finish-dot,#d9b67a)); }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="mixed"] { font-family: 'Inter Sidebar',sans-serif; font-weight: 400; letter-spacing: -.045em; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="mixed"] > .brand-my { font-family: inherit !important; font-weight: 300; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="mixed"] > .brand-suite { font-family: inherit !important; font-weight: 750; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="mixed"] > .brand-dot { font-family: inherit !important; font-weight: 750; }
+
+/* Source screenshots are displayed intact: no font reconstruction or recolouring. */
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-exact-logo] {
+  font-size: var(--sidebar-logo-size,43px); line-height: 1;
+  letter-spacing: normal; padding-bottom: 10px;
+}
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-exact-logo] > :is(.brand-my,.brand-suite,.brand-dot) { display: none; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-exact-logo]::after { display: none; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand > .brand-exact-artwork {
+  display: block; width: min(100%,calc(var(--sidebar-logo-size,43px) * 4.5));
+  height: auto; max-width: 100%; object-fit: contain; margin: 0;
+  border: 0; border-radius: 0; filter: none; mix-blend-mode: normal;
+}
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand > .brand-exact-artwork[hidden] { display: none; }
+
+@font-face { font-family: 'MySuite Modern'; src: url('../assets/fonts/red-hat-display/RedHatDisplay-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="modern"],
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="modern"] > span {
+  font-family: 'MySuite Modern','Inter Sidebar',sans-serif !important; font-weight: 700; letter-spacing: -.035em;
+}
+body.concierge-sidebar[data-sidebar-palette] .sidebar .brand[data-logo-style="modern"] { text-align: left; line-height: 1.15; }

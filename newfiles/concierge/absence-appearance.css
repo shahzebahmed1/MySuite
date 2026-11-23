@@ -1,0 +1,11 @@
+/* Card color is separate from the Long-term Absence page background. */
+body.concierge-sidebar.concierge-square.absence-page .desk-list-card {
+  background: var(--absence-card-background, #fff);
+  --espresso: var(--absence-card-ink, #35261e);
+  --muted: var(--absence-card-secondary, #716454);
+  --line: var(--absence-card-line, #e8ded4);
+  color: var(--espresso);
+}
+body.absence-page .desk-list-card .portal-page-header { background: transparent; }
+body.absence-page .desk-list-card :is(.portal-secondary, .portal-table th, .desk-list-footer p) { color: var(--absence-card-secondary, #716454); }
+body.absence-page .desk-list-card .welcome-note { color: var(--absence-card-secondary, #716454) !important; }

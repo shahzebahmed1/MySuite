@@ -1,0 +1,30 @@
+/* Navigation treatments deliberately leave the brand and sidebar surface alone. */
+body.concierge-sidebar[data-navigation-treatment] .sidebar .nav-item { font: 450 14px/20px "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: .05px; }
+body.concierge-sidebar[data-navigation-treatment] .sidebar .nav-item:not(.active) { color: var(--navigation-treatment-normal); }
+body.concierge-sidebar[data-navigation-treatment] .sidebar .nav-item:not(.active):hover { background: var(--navigation-treatment-hover); }
+body.concierge-sidebar[data-navigation-treatment] .sidebar .nav-item.active { background: var(--navigation-treatment-fill); color: var(--navigation-treatment-text); border-radius: 8px; box-shadow: inset 0 0 0 1px var(--navigation-treatment-edge); font-weight: 600; backdrop-filter: none; -webkit-backdrop-filter: none; }
+body.concierge-sidebar[data-navigation-treatment] .sidebar .nav-item svg { width: 18px; height: 18px; stroke-width: 1.6; color: var(--sidebar-icons-color, var(--navigation-treatment-icon)); }
+body.concierge-sidebar[data-navigation-treatment] .sidebar .nav-item.active svg { color: var(--sidebar-icons-color, var(--navigation-treatment-activeIcon)); }
+body.concierge-sidebar[data-navigation-treatment] .sidebar .nav-divider { background: var(--navigation-treatment-divider); }
+body.concierge-sidebar[data-navigation-treatment] .sidebar .sidebar-bottom { border-color: var(--navigation-treatment-divider); }
+body.concierge-sidebar[data-navigation-treatment] .sidebar .nav-item.active::before { display: none; }
+.navigation-treatment-options { padding: 24px 0; border-top: 1px solid #e8ded4; margin-top: 18px; }
+.navigation-treatment-options h2 { margin: 0 0 6px; font: 600 20px/1.4 "Segoe UI", sans-serif; }
+.navigation-treatment-options > p { margin: 0 0 20px; color: #716454; font-size: 14px; }
+.navigation-treatment-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.navigation-treatment-grid article { min-width: 0; }
+.navigation-treatment-grid h3 { margin: 0 0 6px; font: 600 16px/1.4 "Segoe UI", sans-serif; }
+.navigation-treatment-grid article > p { min-height: 42px; margin: 0 0 14px; font-size: 14px; color: #716454; }
+.navigation-treatment-preview { padding: 20px 12px; border-radius: 12px; margin-bottom: 12px; }
+.navigation-treatment-logo { padding: 0 12px 18px; font: 700 30px/1.3 Georgia, serif; letter-spacing: -1.4px; }
+.navigation-treatment-row { display: flex; align-items: center; gap: 10px; margin: 2px 0; padding: 9px 12px; border-radius: 8px; color: var(--navigation-treatment-normal); font: 450 14px/20px "Segoe UI", sans-serif; }
+.navigation-treatment-row svg { width: 18px; height: 18px; stroke-width: 1.6; flex-shrink: 0; color: var(--navigation-treatment-icon); }
+.navigation-treatment-row.is-selected svg { color: var(--navigation-treatment-activeIcon); }
+.navigation-treatment-row.is-selected { background: var(--navigation-treatment-fill); color: var(--navigation-treatment-text); box-shadow: inset 0 0 0 1px var(--navigation-treatment-edge); font-weight: 600; }
+.navigation-treatment-preview-divider { height: 1px; margin: 8px 12px; background: var(--navigation-treatment-divider); }
+.navigation-treatment-grid button { width: 100%; min-height: 40px; border: 1px solid #ccb6a3; border-radius: 8px; background: transparent; color: #69452d; font: 600 14px/1.4 "Segoe UI", sans-serif; }
+.navigation-treatment-grid button[aria-pressed="true"] { background: #4a3424; color: #fff; border-color: #4a3424; }
+.navigation-treatment-label { display: grid; gap: 6px; font-size: 13px; }
+.navigation-treatment-label select { width: 100%; min-height: 34px; padding: 6px; border: 1px solid #cbbfb3; border-radius: 6px; background: #fffcf8; color: #35261e; }
+.navigation-treatment-label + a { display: inline-block; margin-top: 10px; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 1100px) { .navigation-treatment-grid { grid-template-columns: 1fr; } }

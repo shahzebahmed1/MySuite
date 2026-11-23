@@ -1,0 +1,12 @@
+body.directory-saas[data-directory-surface="soft-grey"] { --directory-panel-bg: #f1f2f4; --directory-detail-bg: #e9ebee; --directory-panel-edge: #d5d9df; --directory-row-hover: #e5e8ed; --directory-row-selected: #dce2e9; }
+body.directory-saas[data-directory-surface="warm-grey"] { --directory-panel-bg: #f1efeb; --directory-detail-bg: #e9e6e0; --directory-panel-edge: #d8d3cb; --directory-row-hover: #e7e3dd; --directory-row-selected: #dfd9cf; }
+body.directory-saas[data-directory-surface]:not([data-directory-surface="white"]) .directory-master-list,
+body.directory-saas[data-directory-surface]:not([data-directory-surface="white"]) .directory-profile-card { background: var(--directory-panel-bg); }
+body.directory-saas[data-directory-surface]:not([data-directory-surface="white"]) .directory-detail-panel { background: var(--directory-detail-bg); }
+body.directory-saas[data-directory-surface]:not([data-directory-surface="white"]) :is(.directory-split-view,.directory-master-list,.directory-detail-notes) { border-color: var(--directory-panel-edge); }
+body.directory-saas[data-directory-surface]:not([data-directory-surface="white"]) .directory-master-list button:hover { background: var(--directory-row-hover); }
+body.directory-saas[data-directory-surface]:not([data-directory-surface="white"]) .directory-master-list button[aria-selected="true"] { background: var(--directory-row-selected); }
+body.directory-saas[data-directory-surface] .dir-header-content { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.directory-surface-control { display: grid; gap: 5px; flex-shrink: 0; color: #475569; font-size: 11px; font-weight: 500; }
+.directory-surface-control select { min-width: 145px; padding: 7px 10px; border: 1px solid #d5d9df; border-radius: 7px; background: #f8f9fa; color: #253247; font: 500 12px/1.4 'Inter Sidebar','Segoe UI',sans-serif; cursor: pointer; }
+.directory-surface-control select:focus-visible { outline: 2px solid #52677f; outline-offset: 2px; }

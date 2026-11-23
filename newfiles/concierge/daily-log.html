@@ -1,20 +1,53 @@
 <!doctype html>
 <html lang="en-GB">
 <head>
+  <script src="concierge-shared-appearance.js?v=4bdde979be54"></script>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#35261e"><title>MySuite — Daily log</title>
+  <meta name="theme-color" content="#35261e"><title>MySuite — Activity Log</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css?v=b59318c9401b">
-  <link rel="stylesheet" href="daily-log.css?v=266abf2f9456">
+  <link rel="stylesheet" href="dashboard.css?v=0795f7f8682a">
+  <link rel="stylesheet" href="daily-log.css?v=a7d243c4af60">
+  <link rel="stylesheet" href="concierge-theme.css?v=820a96672c3b">
   <script src="../shared/icons.js" defer></script>
   <script src="../shared/breadcrumbs.js" defer></script>
   <script src="../shared/utils.js" defer></script>
   <script src="../shared/mockdata.js" defer></script>
-  <script src="daily-log-data.js?v=50198422dc09" defer></script>
-  <script src="daily-log.js?v=7b62929a9aec" defer></script>
+  <script src="daily-log-data.js?v=38bda97e5c4a" defer></script>
+  <script src="packages-data.js?v=31a21dc7e6c3" defer></script>
+  <script src="daily-log.js?v=hdr1" defer></script>
+  <script src="color-settings.js?v=98c9ea4d93f2" defer></script>
+  <link rel="stylesheet" href="nav-style-preview.css?v=a5728f68f9c7">
+  <script src="nav-style-preview.js?v=0ffcc69676bd" defer></script>
+  <link rel="stylesheet" href="concierge-sidebar.css?v=d695b6832c78">
+  <script src="sidebar-ink-colors.js?v=cc47d5c5587a" defer></script>
+  <link rel="stylesheet" href="sidebar-dividers.css?v=e2a573041e86">
+  <script src="sidebar-dividers.js?v=2022d31f2f5b" defer></script>
+  <link rel="stylesheet" href="sidebar-navigation-options.css?v=dcc86218290c">
+  <script src="sidebar-navigation-options.js?v=4cf4b2876ec1" defer></script>
+  <link rel="stylesheet" href="logo-cream-options.css?v=2b4699363092">
+  <script src="logo-cream-options.js?v=2f9f5181b42c" defer></script>
+  <link rel="preload" href="../assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="sidebar-font.css?v=94a4d1f2c251">
+  <script src="sidebar-logo-position.js?v=5f5c7c2c1dec" defer></script>
+  <link rel="stylesheet" href="sidebar-shape.css?v=da8610f99345">
+  <script src="sidebar-shape.js?v=5fb61a65d45f" defer></script>
+  <link rel="stylesheet" href="sidebar-nav-colors.css?v=9a7a537f4af5">
+  <script src="sidebar-nav-colors.js?v=f8be49ffdab9" defer></script>
+  <link rel="stylesheet" href="sidebar-logo-shared.css?v=c00e620b222b">
+  <link rel="stylesheet" href="sidebar-icon-toggle.css?v=87b7452a85e3">
+  <script src="sidebar-icon-toggle.js?v=0626678becfd" defer></script>
+  <link rel="stylesheet" href="sidebar-selection-width.css?v=abe2c8ce2f99">
+  <script src="sidebar-selection-width.js?v=cfca32f38c5a" defer></script>
+  <link rel="stylesheet" href="sidebar-row-alignment.css?v=22387f0ef696">
+  <script src="sidebar-icon-weight.js?v=a00e08e57648" defer></script>
+  <link rel="stylesheet" href="sidebar-logo-styles.css?v=d55b2a6c6d67">
+  <script src="sidebar-logo-styles.js?v=593d53f9bf25" defer></script>
+  <link rel="stylesheet" href="concierge-shared-appearance.css?v=53f150935ee2">
+  <link rel="stylesheet" href="concierge-supplied-logo.css?v=83d97b5a06c4">
+  <script src="concierge-supplied-logo.js?v=da567e51a7c7" defer></script>
 </head>
-<body class="concierge-sidebar" data-time="afternoon" data-breadcrumb="Daily log">
+<body class="concierge-square concierge-sidebar" data-sidebar-palette="original-cream" data-time="afternoon" data-breadcrumb="Activity Log">
   <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
   <div class="scrim" data-action="close-menu"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -23,10 +56,10 @@
       <a class="nav-item" href="./"><i data-icon="home"></i>Home</a>
       <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
       <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
-      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident report</a>
-      <a class="nav-item active" aria-current="page" href="daily-log.html"><i data-icon="clipboard"></i>Daily log</a>
+      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident Reports</a>
+      <a class="nav-item active" aria-current="page" href="daily-log.html"><i data-icon="clipboard"></i>Activity Log</a>
       <div class="nav-divider"></div>
-      <a class="nav-item" href="#"><i data-icon="pool"></i>Amenities</a>
+      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
       <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
       <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
       <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
@@ -35,22 +68,38 @@
     <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
   </aside>
   <main>
-    <header class="page-header">
-      <div>
-        <p class="eyebrow">CONCIERGE</p>
-        <h1>Daily log</h1>
-        <p class="welcome-note">Record what happened on shift. Click any entry to edit it.</p>
-      </div>
-      <div class="header-tools">
-        <a class="button outline" href="./"><i data-icon="left"></i>Home</a>
-      </div>
-    </header>
+
 
     <div class="daily-log-layout">
 
-      <section class="log-card card" aria-label="Shift log entries">
-        <div class="log-card-top">
-          <h2><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="2" width="18" height="20" rx="2"/><path d="M7 2v20M14 2v7l2-2 2 2V2M10 13h8m-8 4h6"/></svg><span id="shift-heading">Morning Shift Journal</span></h2>
+      <section class="log-card card portal-list-card" aria-label="Shift log entries">
+        <header class="page-header portal-page-header">
+          <div class="portal-header-content"><div class="portal-header-copy"><h1>Activity Log</h1><p class="welcome-note">Record shift activity and review the building journal.</p></div></div>
+          <div class="activity-quick-actions">
+          <nav class="activity-shortcuts" aria-label="Activity shortcuts">
+            <button type="button" class="activity-shortcut" id="activity-start-shift-trigger" aria-label="Start Shift" aria-haspopup="dialog" aria-controls="activity-start-shift-modal" hidden>
+              <span class="activity-shortcut-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+              <span class="activity-shortcut-label" aria-hidden="true">Start Shift</span>
+            </button>
+            <button type="button" class="activity-shortcut" id="activity-release-trigger" aria-label="Release Package" aria-haspopup="dialog" aria-controls="activity-release-modal">
+              <span class="activity-shortcut-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9zm0 9v9M4 7.5l8 4.5 8-4.5M8 5.25l8 4.5"/><path d="M16 15h7m-3-3 3 3-3 3"/></svg><span class="activity-pending-count" id="activity-pending-count">0</span></span>
+              <span class="activity-shortcut-label" aria-hidden="true">Release Package</span>
+            </button>
+            <button type="button" class="activity-shortcut" id="activity-log-package-trigger" aria-label="Log Package" aria-haspopup="dialog" aria-controls="activity-package-log-modal">
+              <span class="activity-shortcut-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 3 8 4.5v9L10 21l-8-4.5v-9zm0 9v9M2 7.5l8 4.5 8-4.5M6 5.25l8 4.5M20 2v6m-3-3h6"/></svg></span>
+              <span class="activity-shortcut-label" aria-hidden="true">Log Package</span>
+            </button>
+            <a class="activity-shortcut" href="incident-report.html?action=log-incident" aria-label="Log Incident">
+              <span class="activity-shortcut-icon"><i data-icon="alert"></i></span>
+              <span class="activity-shortcut-label" aria-hidden="true">Log Incident</span>
+            </a>
+          </nav>
+          </div>
+        </header>
+        <div class="log-card-top"></div>
+
+        <div class="log-table-wrap" tabindex="0" role="region" aria-label="Activity entries for the selected day">
+          <table class="log-table" aria-label="Activity Log entries"><thead><tr><th scope="col">Time</th><th scope="col"><div class="entry-head"><span>Entry</span>
           <div class="date-nav">
           <button type="button" class="date-nav-btn" data-action="prev-day" aria-label="Previous day"><i data-icon="left"></i></button>
           <button type="button" class="date-pill" id="date-pill-btn" aria-label="Choose log date">
@@ -59,28 +108,20 @@
           </button>
           <button type="button" class="date-nav-btn" data-action="next-day" aria-label="Next day"><i data-icon="chevron"></i></button>
           <input id="log-date" class="date-pill-input" type="date" required aria-label="Log date">
-        </div>
-          <div class="shift-tabs" role="tablist" aria-label="Shift" aria-orientation="horizontal">
-            <button type="button" class="shift-tab" role="tab" data-shift="morning" aria-selected="false">Morning</button>
-            <button type="button" class="shift-tab" role="tab" data-shift="evening" aria-selected="false">Evening</button>
-            <button type="button" class="shift-tab" role="tab" data-shift="night" aria-selected="false">Night</button>
-          </div>
-        </div>
-
-        <div class="log-table-wrap">
-          <table class="log-table" aria-label="Daily log entries">
+        </div></div></th><th scope="col">Recorded By</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
             <tbody id="log-tbody"></tbody>
           </table>
           <p id="log-empty" class="pkg-empty" hidden>No entries for this shift yet.</p>
         </div>
 
-        <form id="composer-form" class="composer" aria-label="Add a log entry">
-          <label class="sr-only" for="composer-time">Time</label>
-          <input id="composer-time" name="time" type="text" inputmode="numeric" placeholder="HH:mm" pattern="^([01]\d|2[0-3]):[0-5]\d$" maxlength="5" lang="en-GB" required autocomplete="off" title="Use 24-hour time, e.g. 14:30">
-          <label class="sr-only" for="composer-notes">Log entry</label>
-          <input id="composer-notes" name="notes" type="text" placeholder="Write a log entry…" required autocomplete="off">
-          <button class="button compact" type="submit" id="composer-submit">Save</button>
+        <form id="composer-form" class="composer journal-composer" aria-label="Add a log entry">
+          <label><span class="sr-only">Time (24-hour)</span><input id="composer-time" name="time" type="text" inputmode="numeric" placeholder="HH:mm" pattern="^([01]\d|2[0-3]):[0-5]\d$" maxlength="5" lang="en-GB" required autocomplete="off" title="Use 24-hour time, e.g. 14:30"></label>
+          <label><span class="sr-only">Log entry</span><textarea id="composer-notes" name="notes" rows="1" placeholder="Write a log entry..." required></textarea></label>
+          <button class="button" type="submit" id="composer-submit">Save</button>
         </form>
+
+
+
       </section>
 
       <aside class="notes-card card" aria-label="Important notes">
@@ -88,7 +129,7 @@
           <h2><i data-icon="clipboard"></i>Important notes</h2>
         </div>
         <div class="log-table-wrap">
-          <table class="log-table notes-table">
+          <table class="log-table notes-table"><thead><tr><th scope="col">Note</th><th scope="col">Recorded By</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
             <tbody id="notes-tbody"></tbody>
           </table>
           <p id="notes-empty" class="pkg-empty" hidden>No important notes yet.</p>
@@ -114,6 +155,58 @@
       <button data-action="help">Need a hand?</button>
     </footer>
   </main>
+
+  <dialog id="activity-start-shift-modal" class="portal-form-dialog" aria-labelledby="activity-start-shift-title">
+    <div class="dialog-top"><h2 id="activity-start-shift-title" class="portal-dialog-title">Start shift</h2><button type="button" class="icon-button" data-close-start-shift aria-label="Close start shift"><i data-icon="close"></i></button></div>
+    <form id="activity-start-shift-form" class="activity-start-shift-form">
+      <label>Who did you relieve?<select name="relievedAccountId" required><option value="">Select concierge</option></select></label>
+      <div class="activity-shift-times">
+        <label>Shift start<input name="startedAt" type="datetime-local" required></label>
+        <label>Scheduled end<input name="endsAt" type="datetime-local" required></label>
+      </div>
+      <fieldset class="activity-shift-equipment">
+        <legend>Equipment received</legend>
+        <div class="activity-equipment-options">
+          <label><input type="checkbox" name="equipment" value="Phone">Phone</label>
+          <label><input type="checkbox" name="equipment" value="Master Keys">Master Keys</label>
+          <label><input type="checkbox" name="equipment" value="Radio">Radio</label>
+          <label><input type="checkbox" name="equipment" value="Tablet">Tablet</label>
+        </div>
+        <label id="activity-other-equipment"><span class="activity-shift-field-label">Other equipment<span>Optional</span></span><input name="otherEquipment" placeholder="e.g. Access fob or charger" maxlength="200" autocomplete="off"></label>
+      </fieldset>
+      <label><span class="activity-shift-field-label">Notes<span>Optional</span></span><textarea name="shiftNotes" class="activity-shift-notes" placeholder="Add any handover notes" rows="3" maxlength="1000"></textarea></label>
+      <p id="activity-start-shift-error" class="activity-release-error" role="alert" hidden></p>
+      <div class="portal-form-actions"><button type="button" class="button outline" data-close-start-shift>Cancel</button><button type="submit" class="button" id="activity-start-shift-save">Start shift</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="activity-package-log-modal" class="portal-form-dialog activity-package-log-dialog" aria-labelledby="activity-package-log-title">
+    <div class="dialog-top"><h2 id="activity-package-log-title" class="portal-dialog-title">Log packages</h2><button type="button" class="icon-button" data-close-activity-package-log aria-label="Close log packages"><i data-icon="close"></i></button></div>
+    <form id="activity-package-log-form">
+      <p class="portal-form-context">Add arrivals below. Arrival time and logged-by are recorded automatically.</p>
+      <div class="activity-package-log-scroll" role="region" aria-label="Packages to log" tabindex="0">
+        <table class="activity-package-log-table"><thead><tr><th scope="col">Suite #</th><th scope="col">Resident Name</th><th scope="col">Package</th><th scope="col">Tracking # <span class="sr-only">(optional)</span></th><th scope="col">Storage Location</th></tr></thead><tbody id="activity-package-log-rows"></tbody></table>
+      </div>
+      <button type="button" class="button outline activity-package-add-row" id="activity-package-add-row">+ Add row</button>
+      <p id="activity-package-log-error" class="activity-release-error" role="alert" hidden></p>
+      <div class="portal-form-actions"><button type="button" class="button outline" data-close-activity-package-log>Cancel</button><button type="submit" class="button" id="activity-package-log-save">Save packages</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="activity-release-modal" class="portal-form-dialog activity-release-dialog" aria-labelledby="activity-release-title">
+    <div class="dialog-top"><h2 id="activity-release-title" class="portal-dialog-title">Release packages</h2><button type="button" class="icon-button" data-close-activity-release aria-label="Close release packages"><i data-icon="close"></i></button></div>
+    <form id="activity-release-form">
+      <div class="activity-release-intro"><p class="portal-form-context">Choose Delivered or Picked up beside each package you want to release.</p>
+      <div class="activity-release-selection"><span id="activity-release-count" role="status">0 ready to release</span></div></div>
+      <div class="activity-release-table-wrap" tabindex="0" role="region" aria-label="Pending packages">
+        <table class="activity-release-table"><thead><tr><th scope="col">Resident</th><th scope="col">Package</th><th scope="col">Arrived</th><th scope="col">Release as</th></tr></thead><tbody id="activity-release-rows"></tbody></table>
+        <p id="activity-release-empty" class="pkg-empty" hidden>No pending packages to release.</p>
+      </div>
+      <p id="activity-release-error" class="activity-release-error" role="alert" hidden></p>
+      <div class="portal-form-actions"><button type="button" class="button outline" data-close-activity-release>Cancel</button><button type="submit" id="activity-release-submit" class="button" disabled>Release packages</button></div>
+    </form>
+  </dialog>
+
 
   <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
   <div class="toast" id="toast" role="status"></div>

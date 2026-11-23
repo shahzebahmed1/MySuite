@@ -1,0 +1,19 @@
+.header-text-controls { margin-top: 18px; }
+.header-text-controls fieldset { min-width: 0; margin: 0 0 16px; padding: 14px 0 0; border: 0; border-top: 1px solid var(--finish-border, #e8ded4); }
+.header-text-controls legend { padding: 0 8px 0 0; color: var(--finish-ink, #1e293b); font-size: 13px; font-weight: 600; }
+.header-text-controls label { display: grid; gap: 6px; color: var(--finish-muted, #667085); font-size: 12px; }
+.header-text-controls :is(textarea, input, select) { min-width: 0; width: 100%; margin: 0; padding: 8px; border: 1px solid var(--finish-border, #dfd4c8); border-radius: 7px; background: var(--finish-raised, #fffdf9); color: var(--finish-ink, #35261e); font: inherit; }
+.header-text-controls textarea { resize: vertical; min-height: 58px; line-height: 1.5; }
+.header-text-format { display: grid; grid-template-columns: 1fr 64px 1.25fr; gap: 10px; margin-top: 10px; }
+.header-text-format input[type="color"] { height: 36px; padding: 3px; cursor: pointer; }
+.header-text-controls button { padding: 4px 0; margin-top: 10px; border: 0; background: transparent; color: var(--finish-ink, #855027); font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+body.sidebar-merge .welcome-copy .welcome-portal-label {
+  margin: 0 0 12px;
+  color: #b48a58;
+  font-family: "Inter Sidebar", "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}

@@ -1,0 +1,22 @@
+/* Amenity reservation companion to the Shop promotion. */
+body.sidebar-merge[data-dashboard-card-layout] .dashboard > #booking-promo {
+ background:transparent !important; box-shadow:none !important; border:0 !important; padding:0; border-radius:0; min-width:0;
+}
+body.sidebar-merge #booking-promo .card-heading { margin:0 0 18px; padding:0; border:0; }
+body.sidebar-merge #booking-promo .card-heading h2 { margin:0; color:#191919; font-size:24px; font-weight:500; line-height:1.3; }
+.booking-promo-panel {
+ box-sizing:border-box; height:var(--dashboard-shop-height,160px); min-height:160px; border-radius:22px;
+ padding:22px 26px; display:flex; align-items:center; overflow:hidden;
+ background:linear-gradient(90deg,#fff 0%,#fffffff0 36%,#ffffffb0 52%,transparent 85%),url('../assets/amenity-booking-promo.png') center 55%/cover;
+}
+.booking-promo-content { display:grid; justify-items:start; gap:5px; max-width:min(65%,390px); }
+.booking-promo-content h3 { margin:0; color:#191919; font-size:23px; font-weight:500; line-height:1.15; letter-spacing:-.025em; }
+.booking-promo-content p { margin:0; color:#626262; font-size:13px; line-height:1.4; }
+body.sidebar-merge #booking-promo .button { min-height:34px; padding:7px 14px; font-size:13px; }
+html[data-home-mode="dark"] body.sidebar-merge #booking-promo .card-heading h2 { color:#edf0f5; }
+html[data-home-mode="dark"] .booking-promo-panel {
+ background:linear-gradient(90deg,#1b222d 0%,#1b222ded 36%,#1b222d99 58%,#1b222d33 100%),url('../assets/amenity-booking-promo.png') center 55%/cover;
+}
+html[data-home-mode="dark"] .booking-promo-content h3 { color:#f4f6fa; }
+html[data-home-mode="dark"] .booking-promo-content p { color:#c5ceda; }
+@media(max-width:600px){ .booking-promo-panel { padding:20px; min-height:180px; } .booking-promo-content { max-width:80%; } .booking-promo-content h3 { font-size:21px; } }

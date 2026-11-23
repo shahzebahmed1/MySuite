@@ -1,0 +1,12 @@
+@font-face {
+  font-family: "Inter Sidebar";
+  src: url('../assets/fonts/inter/InterVariable.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+body.concierge-sidebar .sidebar { font-family: "Inter Sidebar", "Segoe UI", sans-serif; font-optical-sizing: auto; }
+body.concierge-sidebar[data-sidebar-palette] .sidebar :is(.nav-item, .logout, .sidebar-bottom, .avatar.small, summary, label, legend, input, select, button) {
+  font-family: "Inter Sidebar", "Segoe UI", sans-serif;
+}
+.navigation-treatment-row, .nav-preview-row { font-family: "Inter Sidebar", "Segoe UI", sans-serif; }

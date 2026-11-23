@@ -1,0 +1,51 @@
+.home-greeting-experiments { margin-bottom: 22px; padding-bottom: 20px; border-bottom: 1px solid var(--finish-border, #e7ddd1); color: var(--finish-ink, #35261e); }
+/* One page font takes precedence over component font shorthands; the logo is excluded. */
+body.sidebar-merge[data-greeting-experiments],
+body.sidebar-merge[data-greeting-experiments] :where(*):not(.brand):not(.brand *) { font-family: var(--dashboard-font-family, 'Segoe UI', sans-serif) !important; }
+.home-greeting-experiments h3 { margin: 0 0 6px; font: 600 15px/1.4 'Inter Sidebar', sans-serif; }
+.home-greeting-experiments p { margin: 0 0 14px; font-size: 12px; line-height: 1.6; color: var(--finish-muted, #7b6a59); }
+.greeting-layout-options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
+.home-greeting-experiments button { border: 1px solid var(--finish-border, #e7ddd1); border-radius: 7px; padding: 7px 10px; background: transparent; color: inherit; font: 500 11px/1.5 'Inter Sidebar', sans-serif; cursor: pointer; }
+.greeting-layout-options button { text-align: left; }
+.greeting-layout-options strong { display: block; font-weight: 600; }
+.greeting-layout-options span { display: block; margin-top: 3px; font-size: 10px; color: var(--finish-muted, #7b6a59); }
+.home-greeting-experiments button[aria-pressed="true"] { background: var(--finish-raised,#eee5d8); border-color: var(--finish-icon,#b0733c); }
+.greeting-font-browser { margin-top: 16px; }
+.greeting-font-browser label, .greeting-weather-input { display: grid; gap: 6px; font-size: 12px; }
+.greeting-font-browser select, .greeting-weather-input input { width: 100%; min-width: 0; margin: 0; min-height: 34px; padding: 7px 9px; border: 1px solid var(--finish-border,#e7ddd1); border-radius: 7px; background: var(--finish-card,#fff); color: var(--finish-ink,#35261e); font: inherit; }
+.greeting-font-browser > div { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+.greeting-font-browser output { margin-left: auto; font-size: 11px; color: var(--finish-muted,#7b6a59); font-variant-numeric: tabular-nums; }
+.greeting-size-label { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-top: 16px; font-size: 12px; }
+.greeting-size-label input { grid-column: 1/-1; width: 100%; padding: 0; margin: 0; min-height: 20px; accent-color: var(--finish-accent,#a66b38); }
+.greeting-word-controls { display: grid; gap: 7px; margin-top: 16px; }
+.greeting-word-controls > div { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 6px; }
+.greeting-word-controls > div > span { font-size: 13px; overflow-wrap: anywhere; }
+.greeting-word-controls [data-format="bold"] { font-weight: 700; }
+.greeting-word-controls [data-format="italic"] { font-style: italic; }
+.greeting-context-options { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-top: 16px; }
+.greeting-context-options > label:not(.greeting-weather-input) { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.greeting-context-options input[type="checkbox"] { width: 14px; height: 14px; margin: 0; accent-color: var(--finish-accent,#a66b38); }
+.greeting-weather-input { flex-basis: 100%; }
+.home-greeting-experiments .greeting-font-note { margin-top: 12px; font-size: 10px; }
+.home-greeting-experiments [hidden], .welcome .greeting-date[hidden], .welcome .greeting-weather[hidden] { display: none; }
+body.sidebar-merge[data-greeting-experiments] .welcome .experimental-greeting { font-size: var(--greeting-experiment-size,42px); font-weight: 400; line-height: 1.16; letter-spacing: -.025em; font-synthesis: weight style; }
+body.sidebar-merge[data-greeting-experiments] .welcome .welcome-copy { max-width: min(58rem,90%); }
+body.sidebar-merge[data-greeting-experiments] .welcome .home-welcome-details, body.sidebar-merge[data-greeting-experiments] .classic-welcome-copy p { gap: 12px; margin-top: 16px; }
+body.sidebar-merge[data-greeting-experiments] .welcome .home-welcome-role { display: inline-flex; align-items: center; max-width: 100%; box-sizing: border-box; background: var(--greeting-role-bg,#e7dfd2); color: var(--greeting-role-ink,#5b5146); border: 1px solid var(--greeting-role-edge,transparent); padding: 4px 11px; border-radius: 6px; font: 600 var(--greeting-details-size,11px)/1.5 'Inter Sidebar','Segoe UI',sans-serif; letter-spacing: 0; white-space: normal; vertical-align: middle; }
+.greeting-date, .greeting-weather { color: #716454; font: 400 var(--greeting-details-size,12px)/1.5 'Inter Sidebar', sans-serif; }
+body.sidebar-merge[data-greeting-experiments] .welcome[data-greeting-layout="stacked"] [data-greeting-part="hello"], body.sidebar-merge[data-greeting-experiments] .welcome[data-greeting-layout="stacked"] [data-greeting-part="comma"] { font-size: .6em; }
+body.sidebar-merge[data-greeting-experiments] .welcome[data-greeting-layout="stacked"] [data-greeting-part="name"] { display: block; margin-top: 2px; }
+body.sidebar-merge[data-greeting-experiments] .welcome .experimental-greeting { overflow-wrap: anywhere; }
+.greeting-role-controls { min-width: 0; margin: 18px 0 0; padding: 16px 0 0; border: 0; border-top: 1px solid var(--finish-border,#e7ddd1); }
+.greeting-role-controls legend { padding-right: 8px; font-size: 13px; font-weight: 600; }
+.greeting-role-controls > label { display: grid; gap: 6px; font-size: 12px; }
+.greeting-role-controls select { width: 100%; min-width: 0; margin: 0; padding: 7px 9px; border: 1px solid var(--finish-border,#e7ddd1); border-radius: 7px; background: var(--finish-card,#fff); color: var(--finish-ink,#35261e); font: inherit; }
+.greeting-role-controls > p { margin: 7px 0 12px; font-size: 10px; }
+.greeting-role-colors { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.greeting-role-colors button { display: inline-flex; align-items: center; gap: 6px; }
+.greeting-role-colors i { width: 12px; height: 12px; border: 1px solid; border-radius: 50%; }
+body.sidebar-merge[data-greeting-experiments] .welcome .home-welcome-role[hidden] { display: none; }
+body.sidebar-merge[data-greeting-experiments] .welcome .greeting-metadata-empty { display: none; }
+body.sidebar-merge[data-greeting-experiments] .welcome .greeting-heading-role { margin-left: 14px; }
+body.sidebar-merge[data-greeting-experiments] .welcome[data-role-placement="above"] .greeting-heading-role { display: table; margin: 0 0 12px; }
+@media (max-width: 560px) { body.sidebar-merge[data-greeting-experiments] .welcome .greeting-heading-role { margin-left: 9px; font-size: 10px; padding: 3px 8px; } body.sidebar-merge[data-greeting-experiments] .welcome[data-role-placement="above"] .greeting-heading-role { margin-left: 0; } }

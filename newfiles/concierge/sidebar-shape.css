@@ -1,0 +1,16 @@
+body.concierge-sidebar[data-sidebar-shape] .sidebar { border-right: 0; border-radius: 0 var(--sidebar-shape-radius) var(--sidebar-shape-radius) 0; box-shadow: 6px 0 var(--sidebar-shape-blur) rgb(0 0 0 / var(--sidebar-shape-shadow)), var(--divider-depth, 0 0 0 transparent); }
+body.concierge-sidebar[data-sidebar-shape] .sidebar::before { content: ''; position: absolute; inset: 0 0 0 auto; z-index: 1; width: var(--sidebar-shape-edge); background: rgb(var(--sidebar-shape-rgb, 81 71 61) / var(--sidebar-shape-opacity)); border-radius: inherit; pointer-events: none; }
+body.concierge-sidebar[data-sidebar-shape][data-sidebar-edge-fade="true"] .sidebar::before { background: linear-gradient(to bottom, transparent, rgb(var(--sidebar-shape-rgb, 81 71 61) / var(--sidebar-shape-opacity)) 20%, rgb(var(--sidebar-shape-rgb, 81 71 61) / var(--sidebar-shape-opacity)) 80%, transparent); }
+@media (min-width: 801px) {
+  body.concierge-sidebar[data-sidebar-shape] .sidebar { width: var(--sidebar-shape-width); }
+  body.concierge-sidebar[data-sidebar-shape] main { margin-left: var(--sidebar-shape-width); }
+}
+.sidebar-shape-controls .sidebar-rgb-panel > label { display: grid; gap: 5px; margin: 12px 0; font-size: 11px; }
+.sidebar-shape-controls label > span { display: flex; justify-content: space-between; gap: 8px; }
+.sidebar-shape-controls input[type="range"] { width: 100%; padding: 0; margin: 0; min-height: 20px; accent-color: #cbb493; }
+.sidebar-shape-controls output { font-variant-numeric: tabular-nums; }
+.sidebar-shape-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.sidebar-shape-controls button { padding: 6px 8px; border: 1px solid currentColor; border-radius: 6px; background: transparent; color: inherit; font: inherit; font-size: 11px; cursor: pointer; }
+.sidebar-shape-controls button[aria-pressed="true"] { background: #eadcc6; color: #192638; border-color: #eadcc6; }
+.sidebar-shape-controls .sidebar-rgb-panel > .sidebar-shape-fade { display: flex; align-items: center; gap: 6px; }
+.sidebar-shape-fade input { width: 14px; height: 14px; margin: 0; }

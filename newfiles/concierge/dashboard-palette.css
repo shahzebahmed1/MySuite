@@ -1,0 +1,43 @@
+/* Dashboard-only palette: 0D1B2A / 1B263B / 415A77 / 778DA9 / E0E1DD. */
+body.sidebar-merge {
+  --cream: #e0e1dd;
+  --paper: #f4f4f2;
+  --espresso: #0d1b2a;
+  --caramel: #415a77;
+  --caramel-dark: #1b263b;
+  --muted: #415a77;
+  --line: #778da94d;
+  --shadow: 0 3px 14px #0d1b2a0a;
+  background: #e0e1dd;
+}
+body.sidebar-merge .sidebar { background: transparent; color: #1b263b; border-right: 0; }
+body.sidebar-merge .sidebar :is(.brand, .nav-item, .logout) { color: #1b263b; }
+body.sidebar-merge .sidebar .brand-dot { color: #778da9; }
+body.sidebar-merge .sidebar :is(.nav-item, .logout):hover { background: #778da926; }
+body.sidebar-merge .sidebar .nav-item.active { background: #415a77; color: #fff; }
+body.sidebar-merge .sidebar .nav-divider { background: #778da94d; }
+body.sidebar-merge .sidebar .sidebar-bottom { border-color: #778da94d; color: #1b263b; }
+body.sidebar-merge .sidebar .sidebar-bottom small { color: #415a77; }
+body.sidebar-merge .sidebar .avatar.small { background: #415a77; color: #fff; }
+body.sidebar-merge .welcome {
+  background: linear-gradient(95deg, #e0e1dd 0%, #e0e1ddf2 18%, #e0e1dd99 36%, transparent 58%), url('../assets/header-afternoon.png') 72% 32% / cover;
+  background-blend-mode: normal, luminosity;
+}
+body.sidebar-merge .welcome::after { background: linear-gradient(to bottom, #e0e1dd00, #e0e1dd); }
+body.sidebar-merge .welcome-copy h1 { color: #0d1b2a; }
+body.sidebar-merge .welcome-note { color: #415a77; }
+body.sidebar-merge .card { background: #f4f4f2; border-color: #778da94d; }
+body.sidebar-merge :is(.package-info small, .announcement small, .announcement em, .queue-issue, .schedule-body span, .schedule-ends, .pkg-empty-state p, .page-footer, .page-footer button) { color: #415a77; }
+body.sidebar-merge :is(.card-heading h2 svg, .announcement > svg) { color: #415a77; }
+body.sidebar-merge .announcement .avatar { background: #e0e1dd; color: #415a77; }
+body.sidebar-merge .queue-row:hover { background: #e0e1dd; }
+body.sidebar-merge .button { background: #415a77; border-color: #415a77; color: #fff; }
+body.sidebar-merge .button:hover { background: #1b263b; border-color: #1b263b; }
+body.sidebar-merge .button.outline { background: transparent; border-color: #415a77; color: #1b263b; }
+body.sidebar-merge .button.outline:hover { background: #e0e1dd; }
+body.sidebar-merge :is(.badge, .status, .pending-badge, .soon-badge) { background: #e0e1dd; color: #1b263b; }
+body.sidebar-merge .active-badge { background: #415a77; color: #fff; }
+body.sidebar-merge .shop { background: linear-gradient(90deg, #f4f4f2 10%, #f4f4f2e6 42%, #f4f4f200 85%), url('../assets/fob.png') center / cover; }
+body.sidebar-merge .shop .muted { color: #415a77; }
+body.sidebar-merge :is(button, a, select):focus-visible { outline-color: #415a77; }
+body.sidebar-merge .sidebar :is(button, a):focus-visible { outline-color: #415a77; }

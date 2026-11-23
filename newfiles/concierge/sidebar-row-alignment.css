@@ -1,0 +1,16 @@
+/* Use one text size and matching icon boxes across every navigation row. */
+body.concierge-sidebar[data-sidebar-palette] .sidebar :is(.nav-item,.logout) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 20px;
+}
+body.concierge-sidebar[data-sidebar-palette] .sidebar :is(.nav-item,.logout) > svg {
+  width: 1em !important;
+  height: 1em !important;
+  flex: 0 0 1em;
+  align-self: center;
+  vertical-align: middle;
+  stroke-width: var(--sidebar-icon-stroke, 1.9) !important;
+}

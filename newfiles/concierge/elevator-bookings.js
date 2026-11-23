@@ -9,6 +9,14 @@ const bookingSearch = { upcoming: '', past: '' };
 const bookingPages = { upcoming: 1, past: 1 };
 const bookingPageSize = 5;
 
+const bookingFormModal = document.querySelector('#booking-form-modal');
+
+function openBookingForm() {
+  resetConciergeBookingForm();
+  if (!bookingFormModal.open) bookingFormModal.showModal();
+  document.querySelector('#booking-suite').focus();
+}
+
 function closeMenu() {
   document.querySelector('.sidebar')?.classList.remove('open');
   document.querySelector('.scrim')?.classList.remove('visible');
@@ -53,6 +61,7 @@ document.querySelector('#concierge-elevator-form').addEventListener('submit', ev
     message.focus();
     return;
   }
+  bookingFormModal.close();
   resetConciergeBookingForm();
   bookingSearch.upcoming = '';
   bookingPages.upcoming = 1;
@@ -86,15 +95,12 @@ function setActiveTab(tab) {
 function renderBookingRecord(booking) {
   const escape = escapeBookingHtml;
   const past = isBookingPast(booking);
-  return `<article class="booking-record">
-    <div class="booking-who"><strong>Suite ${escape(booking.suite)}</strong><span>${escape(booking.residentName || 'Unknown resident')}</span></div>
-    <div class="booking-detail">
-      <div class="booking-heading"><i data-icon="elevator" aria-hidden="true"></i><strong>${escape(booking.elevator || 'Service')} elevator</strong><span class="booking-reason">${escape(booking.reason || 'Reservation')}</span></div>
-      <dl class="booking-meta"><div><dt>Date</dt><dd>${escape(formatBookingDate(booking.date))}</dd></div><div><dt>Time</dt><dd>${escape(formatBookingTimeRange(booking))}</dd></div></dl>
-      ${booking.notes ? `<p class="booking-note">${escape(booking.notes)}</p>` : ''}
-    </div>
-    <span class="booking-status${past ? ' is-past' : ''}">${past ? 'Past booking' : 'Reserved'}</span>
-  </article>`;
+  return `<tr data-booking-id="${escape(booking.id)}">
+    <td><strong class="portal-primary">${escape(booking.residentName || 'Unknown resident')}</strong><span class="portal-secondary">Suite ${escape(booking.suite)}</span></td>
+    <td><strong class="portal-primary">${escape(booking.elevator || 'Service')} elevator</strong><span class="portal-secondary">${escape(booking.reason || 'Reservation')}</span>${booking.notes ? `<details class="portal-details"><summary>Notes</summary><p>${escape(booking.notes)}</p></details>` : ''}</td>
+    <td>${escape(formatBookingDate(booking.date))}<span class="portal-secondary">${escape(formatBookingTimeRange(booking))}</span></td>
+    <td><span class="booking-status${past ? ' is-past' : ''}">${past ? 'Past booking' : 'Reserved'}</span></td>
+  </tr>`;
 }
 
 function renderTable() {
@@ -164,12 +170,16 @@ document.addEventListener('click', event => {
     document.querySelector('.mobile-toggle').setAttribute('aria-expanded', String(open));
   } else if (action === 'close-menu') {
     closeMenu();
+  } else if (action === 'open-booking-form') {
+    openBookingForm();
+  } else if (action === 'close-booking-form') {
+    bookingFormModal.close();
   } else if (action === 'close-modal') {
     modal.close();
   } else if (action === 'help') {
     openModal(
       'Elevator bookings help',
-      '<p>Use the booking form to reserve the service elevator for a resident. Times cannot overlap another reservation.</p><p>Use <strong>Upcoming</strong> for today’s and future bookings, and <strong>Past</strong> for finished ones.</p>'
+      '<p>Choose <strong>+ Book elevator</strong> to reserve the service elevator for a resident. Times cannot overlap another reservation.</p><p>Use <strong>Upcoming</strong> for today’s and future bookings, and <strong>Past</strong> for finished ones.</p>'
     );
   }
 });
@@ -190,3 +200,9 @@ lightingPicker?.addEventListener('change', () => {
 
 resetConciergeBookingForm();
 renderTable();
+
+bookingFormModal.addEventListener('click', event => {
+  if (event.target !== bookingFormModal) return;
+  const bounds = bookingFormModal.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) bookingFormModal.close();
+});

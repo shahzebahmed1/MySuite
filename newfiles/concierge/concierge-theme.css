@@ -1,0 +1,94 @@
+/* Shared square concierge theme, based on Activity Log. Loaded after page styles. */
+body.concierge-sidebar.concierge-square.concierge-white-canvas { background: #fff; }
+body.concierge-white-canvas main { background: #fff; min-height: 100vh; }
+body.concierge-sidebar.concierge-square {
+  --cream: #f8f4ee;
+  --paper: #fffcf8;
+  --caramel: #a66b38;
+  --caramel-dark: #855027;
+  --radius: 0;
+  --theme-bg: #f8f4ee;
+  --theme-surface: #fffcf8;
+  --theme-surface-alt: #fbf7f2;
+  --theme-border: #e8ded4;
+  --theme-text: #35261e;
+  --theme-muted: #716454;
+  --theme-accent: #a66b38;
+  --theme-accent-hover: #855027;
+  --theme-accent-text: #fff;
+  --theme-accent-soft: #f0e5d9;
+  --theme-accent-soft-hover: #e8d7c6;
+  --theme-accent-soft-text: #855027;
+  --theme-font: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cream);
+  color: var(--espresso);
+  font-family: var(--theme-font);
+}
+body.concierge-sidebar.concierge-square :is(.card, .portal-list-card, .dir-card, .packages-table-card, .amenities-card, .amenity-space, .amenity-reservation-sidebar, .schedule-card, .booking-form-card, dialog) {
+  border-radius: 20px !important;
+  background: linear-gradient(135deg, #fffdf9, #fbf7f2);
+  border: 1px solid var(--line);
+}
+body.concierge-sidebar.concierge-square :is(.portal-page-header, .package-page-header, .dir-page-header, .amenities-header) {
+  border-radius: 0;
+  background-color: var(--paper);
+}
+body.concierge-sidebar.concierge-square :is(.journal-composer, .notes-composer) { border-radius: 0; }
+body.concierge-sidebar.concierge-square .button:not(.outline) {
+  background: var(--caramel);
+  border-color: var(--caramel);
+  color: var(--button-text, #fff);
+  border-radius: 9px;
+}
+body.concierge-sidebar.concierge-square .button:not(.outline):hover {
+  background: var(--caramel-dark);
+  border-color: var(--caramel-dark);
+}
+body.concierge-sidebar.concierge-square .button.outline {
+  background: transparent;
+  border: 1px solid #ccb6a3;
+  color: #855027;
+  border-radius: 9px;
+}
+body.concierge-sidebar.concierge-square .button.outline:hover { background: #f0e5d9; }
+body.concierge-sidebar.concierge-square :is(.portal-header-icon, .booking-count, .pkg-tab-count, .dir-tab-count) {
+  background: #f2e3d5;
+  color: #855027;
+}
+body.concierge-sidebar.concierge-square .sidebar {
+  background: #f8f4ee;
+  color: #35261e;
+  border-right: 0;
+  border-radius: 0;
+}
+body.concierge-sidebar.concierge-square .sidebar :is(.brand, .nav-item, .logout) { color: #4a3f35; }
+body.concierge-sidebar.concierge-square .sidebar .brand { color: #35261e; border-bottom-color: transparent; }
+body.concierge-sidebar.concierge-square .sidebar .brand-dot { color: #c4a07a; }
+body.concierge-sidebar.concierge-square .sidebar .nav-item {
+  border-radius: 999px;
+  box-shadow: none;
+  font-weight: 500;
+}
+body.concierge-sidebar.concierge-square .sidebar :is(.nav-item, .logout):hover { background: #f0e8df; }
+body.concierge-sidebar.concierge-square .sidebar .nav-item.active {
+  background: var(--sidebar-highlight, #f2e3d5);
+  color: var(--sidebar-highlight-text, #35261e);
+  box-shadow: none;
+  font-weight: 600;
+}
+body.concierge-sidebar.concierge-square .sidebar .sidebar-bottom { border-color: #e8ded4; color: #4a3f35; }
+body.concierge-sidebar.concierge-square .sidebar .sidebar-bottom small { color: #716454; }
+body.concierge-sidebar.concierge-square .sidebar .avatar.small { background: #e8dccf; color: #35261e; }
+body.concierge-sidebar.concierge-square .sidebar .nav-divider { background: #e8ded4; }
+body.concierge-sidebar.concierge-square :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid #a66b38;
+  outline-offset: 2px;
+}
+
+.concierge-color-settings { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px 22px; margin: 18px 0 10px; padding: 14px 0; border-top: 1px solid var(--line); font-size: 13px; color: #716454; }
+.color-settings-title { margin-right: auto; font-weight: 600; }
+.concierge-color-settings label { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13px; font-weight: 400; }
+.concierge-color-settings input[type="color"] { width: 34px; height: 30px; min-height: 0; padding: 2px; margin: 0; border: 1px solid #ccb6a3; border-radius: 5px; background: var(--paper); cursor: pointer; }
+.concierge-color-settings output { font-size: 12px; font-variant-numeric: tabular-nums; }
+.color-settings-reset { border: 0; padding: 6px 8px; background: transparent; color: #855027; font: inherit; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 560px) { .concierge-color-settings { justify-content: flex-start; } .color-settings-title { width: 100%; } }
