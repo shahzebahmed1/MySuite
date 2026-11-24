@@ -16,8 +16,12 @@ function homeBriefMoney(cents) {
   return `$${(value / 100).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
+/* Accepts "YYYY-MM-DD" and full timestamps alike. Appending a time to a value
+   that already carries one produced an invalid date, which blanked the label. */
 function homeBriefDate(iso) {
-  const parsed = new Date(`${iso}T12:00:00`);
+  const dateOnly = String(iso ?? '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateOnly)) return null;
+  const parsed = new Date(`${dateOnly}T12:00:00`);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
@@ -59,7 +63,8 @@ function homeBriefAge(iso, now = new Date()) {
     return copy;
   };
   const days = Math.round((startOfDay(now) - startOfDay(date)) / 86400000);
-  if (days <= 0) return `today ${date.toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' })}`;
+  if (days < 0) return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  if (days === 0) return `today ${date.toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' })}`;
   if (days === 1) return 'yesterday';
   if (days < 7) return `${days} days ago`;
   if (days < 14) return 'last week';
@@ -113,6 +118,25 @@ function homeNextPayment() {
   return homePaymentsList().find(payment => payment.status === 'due') || null;
 }
 
+/** True once the due date has passed and the charge is still unpaid. */
+function homePaymentOverdue(payment) {
+  if (!payment || payment.status !== 'due') return false;
+  const due = homeBriefDate(payment.dueDate);
+  if (!due) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return due < today;
+}
+
+/** The most recently settled charge, by payment date rather than due date. */
+function homeLastPaidPayment() {
+  const paid = homePaymentsList().filter(item => item.status === 'paid');
+  if (!paid.length) return null;
+  return paid
+    .sort((a, b) => String(a.paidOn || a.dueDate).localeCompare(String(b.paidOn || b.dueDate)))
+    .pop();
+}
+
 function renderHomePayments() {
   const panel = document.querySelector('#home-payments-panel');
   if (!panel) return;
@@ -121,11 +145,8 @@ function renderHomePayments() {
     panel.innerHTML = '<p class="home-due-empty">Nothing due right now.</p>';
     return;
   }
-  const paid = homePaymentsList().filter(item => item.status === 'paid').pop();
-  const dueDate = homeBriefDate(payment.dueDate);
-  const startOfToday = new Date();
-  startOfToday.setHours(0, 0, 0, 0);
-  const dueLine = dueDate && dueDate < startOfToday
+  const paid = homeLastPaidPayment();
+  const dueLine = homePaymentOverdue(payment)
     ? `Overdue · was due ${homeBriefShortDate(payment.dueDate)}`
     : `Due ${homeBriefShortDate(payment.dueDate)} · ${homeBriefRelativeDay(payment.dueDate)}`;
   panel.innerHTML = `<div class="home-due">
@@ -291,16 +312,22 @@ function homePaymentsDialog() {
   try {
     const rows = homePaymentsList().slice().reverse().map(payment => {
       const paid = payment.status === 'paid';
+      const overdue = homePaymentOverdue(payment);
+      const state = paid
+        ? { tone: 'done', label: 'Paid' }
+        : overdue ? { tone: 'needs', label: 'Overdue' } : { tone: 'needs', label: 'Due' };
       const when = paid
         ? `Paid ${homeBriefShortDate(payment.paidOn || payment.dueDate)}`
-        : `Due ${homeBriefShortDate(payment.dueDate)} · ${homeBriefRelativeDay(payment.dueDate)}`;
+        : overdue
+          ? `Overdue · was due ${homeBriefShortDate(payment.dueDate)}`
+          : `Due ${homeBriefShortDate(payment.dueDate)} · ${homeBriefRelativeDay(payment.dueDate)}`;
       return `<li class="home-feed-row">
         <span class="home-feed-icon"><i data-icon="dollar"></i></span>
         <span class="home-feed-copy">
           <strong>${homeBriefEscape(payment.label || 'Charge')}</strong>
           <span>${homeBriefEscape(when)} · ${homeBriefEscape(homeBriefMoney(payment.amountCents))}</span>
         </span>
-        <span class="home-pill is-${paid ? 'done' : 'needs'}">${paid ? 'Paid' : 'Due'}</span>
+        <span class="home-pill is-${state.tone}">${state.label}</span>
       </li>`;
     }).join('');
     const account = typeof getCurrentResident === 'function' ? getCurrentResident() : null;
@@ -327,10 +354,13 @@ function homeNotificationsDialog() {
     homeViolations().filter(item => item.status !== 'paid').forEach(item => {
       push('alert', `${item.category || 'Violation'} · ${item.reference || ''}`.trim(), [homeBriefShortDate(item.issuedOn), homeViolationState(item.status).label]);
     });
-    sortPackagesNewestFirst(getPackages().filter(pkg => pkg.status === 'pending')).slice(0, 2).forEach(pkg => {
-      push('package', `Package for Suite ${pkg.suite}`, [pkg.carrier || 'Other', formatPackageTime(pkg.receivedAt)]);
+    /* Only the signed-in resident's own packages and requests. */
+    const suite = String(getCurrentResident()?.suite || '').trim();
+    const mine = item => !suite || String(item.suite || '').trim() === suite;
+    sortPackagesNewestFirst(getPackages().filter(pkg => pkg.status === 'pending' && mine(pkg))).slice(0, 2).forEach(pkg => {
+      push('package', `Package for Suite ${pkg.suite}`, [pkg.carrier || 'Other', homeBriefAge(pkg.receivedAt)]);
     });
-    sortMaintenanceNewestFirst(getMaintenance()).filter(item => item.status !== 'completed').slice(0, 2).forEach(item => {
+    sortMaintenanceNewestFirst(getMaintenance().filter(item => item.status !== 'completed' && mine(item))).slice(0, 2).forEach(item => {
       push('wrench', maintenanceSummary(item), [`Suite ${item.suite}`, formatMaintenanceWhen(item.reportedAt)]);
     });
   } catch { /* Show whatever did load. */ }

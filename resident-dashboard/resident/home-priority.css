@@ -54,6 +54,7 @@ html[data-home-mode="dark"] .home-pill.is-done { background:#233f30; color:#a6dd
 /* ── White panels and empty states ────────────────────────── */
 .home-panel-block { margin:0; padding:4px 16px; list-style:none; border-radius:14px; background:var(--home-surface); }
 .home-card-empty { margin:0; padding:14px 0; color:var(--home-muted); font-size:13px; line-height:1.45; }
+.home-brief-list > .home-card-empty { padding-inline:20px; }
 
 /* ── Your suite ───────────────────────────────────────────── */
 .home-record-row { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:10px; padding:10px 0; border-top:1px solid var(--home-line); }
@@ -150,6 +151,7 @@ body.sidebar-merge .sidebar .nav-group { margin:14px 0 2px; padding:0 16px; colo
   .home-notice-copy span { white-space:normal; }
   .home-brief-subhead { padding-inline:16px; }
   .home-brief-side { padding-inline:16px; }
+  .home-brief-list > .home-card-empty { padding-inline:16px; }
   .home-panel-block { padding-inline:14px; }
   .home-ack-row { grid-template-columns:minmax(0,1fr); }
   .home-ack-button { justify-self:start; }

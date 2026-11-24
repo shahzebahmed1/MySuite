@@ -1,7 +1,7 @@
 /* Resident package tracking (localStorage).
    Requires: shared/utils.js, shared/mockdata.js (DEMO_RESIDENTS, PACKAGE_SEED, getCurrentResident). */
 
-const PACKAGE_STORAGE_KEY = 'mysuite-resident-packages-v4';
+const PACKAGE_STORAGE_KEY = 'mysuite-resident-packages-v5';
 const PACKAGE_PICKUP_ID_TYPES = ["Driver's licence", 'Provincial photo ID', 'Passport', 'Other photo ID'];
 
 function findResidentBySuite(suite) {
@@ -417,6 +417,25 @@ function formatPackageTime(iso) {
   }
 }
 
+/* "today 9:05 a.m." / "yesterday" / "3 days ago" — an arrival time alone reads
+   as if the package landed this morning, however old it actually is. */
+function formatPackageAge(iso) {
+  if (!iso) return '';
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return '';
+  const startOfDay = value => {
+    const copy = new Date(value);
+    copy.setHours(0, 0, 0, 0);
+    return copy;
+  };
+  const days = Math.round((startOfDay(new Date()) - startOfDay(date)) / 86400000);
+  if (days < 0) return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  if (days === 0) return `today ${formatPackageTime(iso)}`;
+  if (days === 1) return 'yesterday';
+  if (days < 7) return `${days} days ago`;
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
 function formatPackageWhen(iso) {
   if (!iso) return '';
   try {
@@ -653,7 +672,7 @@ function renderPackageRow(pkg) {
     <span class="package-info">
       <strong>Suite ${pkg.suite}${who}</strong>
       <small>${pkg.parcelType || 'Package'} · ${carrier}${tracking}</small>
-      <small>In ${formatPackageTime(pkg.receivedAt)}</small>
+      <small>Received ${formatPackageAge(pkg.receivedAt)}</small>
     </span>
     <span class="badge ${packageStatusClass(pkg.status)}">${packageStatusLabel(pkg.status)}</span>
   </div>`;

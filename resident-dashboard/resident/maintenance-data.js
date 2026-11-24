@@ -1,9 +1,33 @@
 /* Resident maintenance queue (localStorage).
    Requires: shared/utils.js, shared/mockdata.js (DEMO_RESIDENTS, getCurrentResident). */
 
-const MAINTENANCE_STORAGE_KEY = 'mysuite-resident-maintenance-v1';
+const MAINTENANCE_STORAGE_KEY = 'mysuite-resident-maintenance-v2';
 
 const MAINTENANCE_SEED = [
+  {
+    id: 'mnt-4822',
+    suite: '101',
+    residentName: 'Maria Santos',
+    title: 'Kitchen tap dripping',
+    note: 'Cold water tap in the kitchen drips overnight.',
+    status: 'pending',
+    reportedAt: demoDaysAgo(3, 8, 40),
+    reportedBy: 'Front desk',
+    completedAt: null,
+    completedBy: null
+  },
+  {
+    id: 'mnt-4817',
+    suite: '101',
+    residentName: 'Maria Santos',
+    title: 'Hallway light replaced',
+    note: 'Replaced the faulty light fixture outside the suite.',
+    status: 'completed',
+    reportedAt: demoDaysAgo(12, 10, 0),
+    reportedBy: 'Front desk',
+    completedAt: demoDaysAgo(11, 15, 30),
+    completedBy: 'Marcus Torres'
+  },
   {
     id: 'mnt-4821',
     suite: '1204',
@@ -11,7 +35,7 @@ const MAINTENANCE_SEED = [
     title: 'Kitchen sink leak',
     note: 'Water leaking from pipe below the kitchen sink.',
     status: 'pending',
-    reportedAt: '2026-11-05T09:20:00',
+    reportedAt: demoDaysAgo(6, 9, 20),
     reportedBy: 'Front desk',
     completedAt: null,
     completedBy: null
@@ -23,7 +47,7 @@ const MAINTENANCE_SEED = [
     title: 'HVAC noise',
     note: 'Loud humming from HVAC unit at night.',
     status: 'pending',
-    reportedAt: '2026-11-08T14:05:00',
+    reportedAt: demoDaysAgo(5, 14, 5),
     reportedBy: 'Front desk',
     completedAt: null,
     completedBy: null
@@ -35,7 +59,7 @@ const MAINTENANCE_SEED = [
     title: 'Door intercom',
     note: 'Building entry intercom not ringing suite.',
     status: 'pending',
-    reportedAt: '2026-11-10T11:40:00',
+    reportedAt: demoDaysAgo(4, 11, 40),
     reportedBy: 'Front desk',
     completedAt: null,
     completedBy: null

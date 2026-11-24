@@ -110,7 +110,7 @@ const MOCK_DATA = {
       trackingLast6: '482193',
       note: '',
       status: 'pending',
-      receivedAt: '2026-11-12T09:05:00',
+      receivedAt: demoDaysAgo(1, 9, 5),
       deliveredBy: null,
       deliveredAt: null
     },
@@ -124,7 +124,7 @@ const MOCK_DATA = {
       trackingLast6: '019284',
       note: 'Suite not in demo directory',
       status: 'pending',
-      receivedAt: '2026-11-12T10:30:00',
+      receivedAt: demoDaysAgo(1, 10, 30),
       deliveredBy: null,
       deliveredAt: null
     },
@@ -138,7 +138,21 @@ const MOCK_DATA = {
       trackingLast6: '774021',
       note: '',
       status: 'pending',
-      receivedAt: '2026-11-12T11:45:00',
+      receivedAt: demoDaysAgo(1, 11, 45),
+      deliveredBy: null,
+      deliveredAt: null
+    },
+    {
+      id: 'pkg-seed-4',
+      suite: '101',
+      residentName: 'Maria Santos',
+      receivedBy: 'Jordan Kim',
+      carrier: 'Amazon',
+      parcelType: 'Box',
+      trackingLast6: '605117',
+      note: '',
+      status: 'pending',
+      receivedAt: demoDaysAgo(1, 8, 15),
       deliveredBy: null,
       deliveredAt: null
     },
@@ -152,9 +166,9 @@ const MOCK_DATA = {
       trackingLast6: '551902',
       note: '',
       status: 'delivered',
-      receivedAt: '2026-11-11T14:20:00',
+      receivedAt: demoDaysAgo(4, 14, 20),
       deliveredBy: 'Jordan Kim',
-      deliveredAt: '2026-11-11T16:05:00'
+      deliveredAt: demoDaysAgo(4, 16, 5)
     },
     {
       id: 'pkg-seed-hist-2',
@@ -166,9 +180,9 @@ const MOCK_DATA = {
       trackingLast6: '338471',
       note: '',
       status: 'delivered',
-      receivedAt: '2026-11-11T18:40:00',
+      receivedAt: demoDaysAgo(4, 18, 40),
       deliveredBy: 'Aisha Lawal',
-      deliveredAt: '2026-11-11T20:10:00'
+      deliveredAt: demoDaysAgo(4, 20, 10)
     }
   ],
 
@@ -417,12 +431,13 @@ const MOCK_DATA = {
     ]
   },
 
-  /* Status is derived from the clock in resident/app.js — do not hardcode labels */
+  /* Dates are generated relative to today so the card always has a live booking.
+     Status is derived from the clock in resident/app.js — do not hardcode labels. */
   amenitySchedule: [
-    { date: '2026-11-13', time: '2:00 PM', amenity: 'Pool', suite: '501', residentName: 'Emily Larsson', duration: '1 hour' },
-    { date: '2026-11-14', time: '5:00 PM', amenity: 'Gym', suite: '204', residentName: 'Alex Morgan', duration: '2 hours' },
-    { date: '2026-11-14', time: '6:00 PM', amenity: 'Common room', suite: '803', residentName: 'Jamie Chen', duration: '2 hours' },
-    { date: '2026-11-15', time: '10:00 AM', amenity: 'Pool', suite: '312', residentName: 'Maria Santos', duration: '1 hour' }
+    { date: demoDaysAhead(1), time: '2:00 PM', amenity: 'Pool', suite: '101', residentName: 'Maria Santos', duration: '1 hour' },
+    { date: demoDaysAhead(2), time: '5:00 PM', amenity: 'Gym', suite: '204', residentName: 'David Chen', duration: '2 hours' },
+    { date: demoDaysAhead(2), time: '6:00 PM', amenity: 'Common room', suite: '803', residentName: 'Yuki Tanaka', duration: '2 hours' },
+    { date: demoDaysAhead(4), time: '10:00 AM', amenity: 'Pool', suite: '312', residentName: 'Priya Nair', duration: '1 hour' }
   ],
 
   maintenanceQueue: [
@@ -552,6 +567,13 @@ function demoDaysAgo(days, hour = 9, minute = 0) {
   date.setDate(date.getDate() - days);
   const pad = value => String(value).padStart(2, '0');
   return `${demoIsoDate(date)}T${pad(hour)}:${pad(minute)}:00`;
+}
+
+/* A day ahead as a date-only string, for schedules that must stay upcoming. */
+function demoDaysAhead(days) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return demoIsoDate(date);
 }
 
 /* Replace with the real statement endpoint; keep the same shape. */

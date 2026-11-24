@@ -4,12 +4,24 @@
 renderIcons();
 applyLoggedInUser('resident');
 
+/* ── Whose records these are ──────────────────────────────── */
+function residentSuite() {
+  return String(getCurrentResident()?.suite || '').trim();
+}
+
+/** Keep only records that belong to the signed-in resident's suite. */
+function forResidentSuite(list) {
+  const suite = residentSuite();
+  if (!suite) return list;
+  return list.filter(item => String(item.suite || '').trim() === suite);
+}
+
 /* ── Render dashboard cards from MOCK_DATA ─────────────────── */
 (function renderHomePackages() {
   const listEl = document.querySelector('#home-package-list');
   const viewAll = document.querySelector('#home-package-view-all');
   if (!listEl) return;
-  const pending = sortPackagesNewestFirst(getPackages()).filter(p => p.status === 'pending');
+  const pending = forResidentSuite(sortPackagesNewestFirst(getPackages())).filter(p => p.status === 'pending');
   if (viewAll) viewAll.textContent = `View All (${pending.length})`;
   if (pending.length === 0) {
     listEl.innerHTML = `
@@ -165,10 +177,18 @@ function freeWindowSuggestionHtml(now = new Date()) {
   </div>`;
 }
 
+/** The signed-in resident's own upcoming bookings. The free-window suggestion
+    still reads every booking in the building. */
+function residentBookings(now = new Date()) {
+  const suite = residentSuite();
+  const items = liveAmenityBookings(now);
+  return suite ? items.filter(item => String(item.row.suite || '').trim() === suite) : items;
+}
+
 function renderSchedule() {
   const listEl = document.querySelector('#schedule-list');
   if (!listEl) return;
-  const items = liveAmenityBookings().slice(0, 3);
+  const items = residentBookings().slice(0, 3);
   if (items.length === 0) {
     listEl.innerHTML = freeWindowSuggestionHtml();
     renderIcons(listEl);
@@ -176,6 +196,12 @@ function renderSchedule() {
   }
   listEl.innerHTML = items.map(({ row, status, end }) => {
     const name = row.residentName || 'Resident';
+    /* The card is the resident's own schedule now, so their name and suite
+       would repeat on every row. */
+    const who = String(row.suite || '').trim() === residentSuite()
+      ? ''
+      : `<span>${name}</span>
+        <span>Suite ${row.suite}</span>`;
     return `
     <div class="schedule-row">
       <div class="schedule-when">
@@ -184,8 +210,7 @@ function renderSchedule() {
       </div>
       <div class="schedule-body">
         <strong>${row.amenity}</strong>
-        <span>${name}</span>
-        <span>Suite ${row.suite}</span>
+        ${who}
       </div>
       <div class="schedule-meta">
         <span class="badge ${status.pill}">${status.label}</span>
@@ -201,18 +226,16 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') renderSchedule();
 });
 
-const HOME_COMPLETED_MAINTENANCE = { id:'home-completed-maintenance-demo', suite:'204', title:'Hallway light replaced', note:'Replaced the faulty light fixture outside the suite.', status:'completed', reportedAt:'2026-11-18T10:00:00' };
-
 (function renderMaintenance() {
   const listEl = document.querySelector('#maint-list');
   const viewAll = document.querySelector('#home-maint-view-all');
   if (!listEl) return;
-  const requests = sortMaintenanceNewestFirst(getMaintenance());
-  const completed = requests.find(item => item.status === 'completed') || HOME_COMPLETED_MAINTENANCE;
-  const items = [...requests.filter(item => item.status === 'pending').slice(0, 2), completed];
+  const requests = forResidentSuite(sortMaintenanceNewestFirst(getMaintenance()));
+  const completed = requests.find(item => item.status === 'completed');
+  const items = [...requests.filter(item => item.status === 'pending').slice(0, 2), completed].filter(Boolean);
   if (viewAll) viewAll.textContent = `View All (${requests.length})`;
   if (items.length === 0) {
-    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No maintenance requests to show.</p>';
+    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No maintenance requests for your suite.</p>';
     return;
   }
   listEl.innerHTML = items.map(item => `
@@ -261,11 +284,36 @@ const actions = {
   help: () => openModal('Resident help', '<p>See packages, maintenance, bookings, and building announcements for your home.</p><p>Use this dashboard to stay on top of what is happening in your condominium.</p>')
 };
 
+/* ── Standalone copy: pages that live in the full portal ──── */
+/* This dashboard is served on its own, so these destinations would otherwise
+   reload the page with no explanation. */
+const STANDALONE_PAGE_LABELS = {
+  'announcements.html': 'Announcements',
+  'packages.html': 'Packages',
+  'contact-directory.html': 'Contact directory',
+  'amenities.html': 'Amenities',
+  'elevator-bookings.html': 'Elevator bookings',
+  'maintenance.html': 'Maintenance',
+  'long-term-absence.html': 'Long-term absence',
+  'incident-report.html': 'Incident reports',
+  'daily-log.html': 'Activity log',
+  '../': 'Log out'
+};
+
+document.addEventListener('click', event => {
+  const link = event.target.closest('a[href]');
+  if (!link || link.target === '_blank') return;
+  const label = STANDALONE_PAGE_LABELS[link.getAttribute('href')];
+  if (!label) return;
+  event.preventDefault();
+  toast(`${label} is not part of this standalone dashboard.`);
+});
+
 /* ── Event delegation ─────────────────────────────────────── */
 document.addEventListener('click', event => {
   const maint = event.target.closest('[data-maint]');
   if (maint) {
-    const item = getMaintenance().find(m => m.id === maint.dataset.maint) || (maint.dataset.maint === HOME_COMPLETED_MAINTENANCE.id ? HOME_COMPLETED_MAINTENANCE : null);
+    const item = getMaintenance().find(m => m.id === maint.dataset.maint);
     if (item) {
       const when = formatMaintenanceWhen(item.reportedAt);
       const note = item.note ? `<p>${item.note}</p>` : '';
