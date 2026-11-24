@@ -1,0 +1,27 @@
+/* Keep the account group on the right without covering page content. */
+.concierge-account-bar { display:flex; justify-content:flex-end; align-items:center; width:100%; min-height:42px; margin:0 0 20px; color:#191919; font-family:inherit; }
+.concierge-account-bar .home-topbar-account { display:flex; align-items:center; justify-content:flex-end; gap:10px; margin-left:auto; }
+.concierge-account-bar button { cursor:pointer; font-family:inherit; }
+.concierge-account-bar svg { width:17px; height:17px; flex-shrink:0; stroke-width:1.6; }
+.concierge-account-bar :is(.topbar-icon,.home-theme-toggle) { display:inline-flex; align-items:center; justify-content:center; height:38px; padding:0 11px; gap:7px; border:1px solid #e5e5e5; border-radius:22px; background:#fff; color:inherit; font-size:12px; font-weight:500; }
+.concierge-account-bar .topbar-icon { width:38px; padding:0; }
+.concierge-account-bar .topbar-profile { display:inline-flex; align-items:center; gap:10px; height:42px; padding:0 4px 0 2px; border:0; border-radius:22px; background:transparent; color:inherit; }
+.concierge-account-bar .topbar-avatar { display:grid; place-items:center; width:34px; height:34px; border-radius:50%; background:#f0f0f0; color:#626262; font-size:12px; }
+.concierge-account-bar .topbar-profile-copy { display:flex; flex-direction:column; text-align:left; gap:1px; }
+.concierge-account-bar .topbar-profile-copy strong { color:inherit; font-size:13px; font-weight:600; }
+.concierge-account-bar .topbar-profile-copy small { color:#626262; font-size:11px; }
+.concierge-account-bar .topbar-profile > svg { width:13px; transform:rotate(90deg); }
+.concierge-account-bar button:hover { background:#f0f0f0; }
+.concierge-account-bar button:focus-visible,.concierge-account-dialog button:focus-visible { outline:2px solid #2563eb; outline-offset:3px; }
+.concierge-account-dialog { width:min(400px,calc(100vw - 40px)); padding:24px; border:1px solid #e5e5e5; border-radius:16px; background:#fff; color:#191919; }
+.concierge-account-dialog header { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.concierge-account-dialog h2 { margin:0; font-size:22px; }
+.concierge-account-dialog button { border:0; background:transparent; color:inherit; font-size:26px; cursor:pointer; }
+.concierge-account-dialog p { margin-bottom:0; }
+.concierge-account-dialog::backdrop { background:#0006; }
+html[data-concierge-theme="dark"] .concierge-account-bar { color:#edf0f5; }
+html[data-concierge-theme="dark"] .concierge-account-bar :is(.topbar-icon,.home-theme-toggle),html[data-concierge-theme="dark"] .concierge-account-dialog { background:#1b222d; color:#edf0f5; border-color:#343e4c; }
+html[data-concierge-theme="dark"] .concierge-account-bar .topbar-avatar { background:#293548; color:#b1bdcd; }
+html[data-concierge-theme="dark"] .concierge-account-bar .topbar-profile-copy small { color:#b1bdcd; }
+html[data-concierge-theme="dark"] .concierge-account-bar button:hover { background:#293548; }
+@media(max-width:480px) { .concierge-account-bar .home-topbar-account {gap:7px;} .concierge-account-bar .topbar-profile-copy {display:none;} }

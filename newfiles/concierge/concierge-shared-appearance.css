@@ -63,3 +63,17 @@ html[data-concierge-theme="light"]:not([data-dashboard-shell]) body.concierge-si
  color:#111111 !important; font-weight:700 !important; background:transparent !important;
 }
 html[data-concierge-theme="light"]:not([data-dashboard-shell]) body.concierge-sidebar[data-sidebar-palette] .sidebar .nav-item.active svg { color:#111111 !important; }
+
+/* Keep the concierge canvas plain and remove decorative sidebar separators. */
+html[data-concierge-theme] body.concierge-sidebar[data-sidebar-palette] :is(.dashboard-pattern-surface,.sidebar-pattern-surface) { display:none !important; }
+html[data-concierge-theme] body.concierge-sidebar[data-sidebar-palette],
+html[data-concierge-theme] body.concierge-sidebar[data-sidebar-palette] main,
+html[data-concierge-theme] body.concierge-sidebar[data-sidebar-palette] .sidebar { background-image:none !important; }
+html[data-concierge-theme] body.concierge-sidebar[data-sidebar-palette] .sidebar { border-right:0 !important; box-shadow:none !important; }
+html[data-concierge-theme] body.concierge-sidebar[data-sidebar-palette] .sidebar::before,
+html[data-concierge-theme] body.concierge-sidebar[data-sidebar-palette] .sidebar::after { display:none !important; content:none !important; }
+
+/* The directory title belongs to the canvas, not a separate white header box. */
+html[data-concierge-theme] body.concierge-sidebar.directory-saas[data-sidebar-palette] :is(.dir-card,.dir-page-header,.dir-header-copy,.dir-header-content,.directory-layout-controls) {
+ background:transparent !important; background-image:none !important; border:0 !important; box-shadow:none !important;
+}

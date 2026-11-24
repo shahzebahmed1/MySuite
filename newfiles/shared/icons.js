@@ -1,6 +1,7 @@
 /* MySuite icon registry — shared across all role dashboards.
    Call renderIcons() once per page after the DOM is ready. */
 const icons = {
+  paperclip: '<path d="m21 11-8 8a6 6 0 0 1-8.5-8.5L13 2a4 4 0 0 1 5.7 5.7l-8.5 8.5a2 2 0 0 1-2.8-2.8l8-8"/>',
   /* ── Original resident icons ── */
   home:      '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
   building:  '<path d="M3 21V7h6V3h7v8h5v10M9 21V7m7 14V11M1 21h22M6 10v1m0 3v1m6-9v1m0 3v1m0 3v1m7-1v1M11 21v-3h3v3"/>',

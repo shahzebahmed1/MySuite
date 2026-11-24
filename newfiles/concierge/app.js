@@ -139,13 +139,16 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') renderSchedule();
 });
 
+const HOME_COMPLETED_MAINTENANCE = { id:'home-completed-maintenance-demo', suite:'204', title:'Hallway light replaced', note:'Replaced the faulty light fixture outside the suite.', status:'completed', reportedAt:'2026-11-18T10:00:00' };
+
 (function renderMaintenance() {
   const listEl = document.querySelector('#maint-list');
   const viewAll = document.querySelector('#home-maint-view-all');
   if (!listEl) return;
-  const pending = sortMaintenanceNewestFirst(getMaintenance()).filter(m => m.status === 'pending');
-  if (viewAll) viewAll.textContent = `View All (${pending.length})`;
-  const items = pending.slice(0, 3);
+  const requests = sortMaintenanceNewestFirst(getMaintenance());
+  const completed = requests.find(item => item.status === 'completed') || HOME_COMPLETED_MAINTENANCE;
+  const items = [...requests.filter(item => item.status === 'pending').slice(0, 2), completed];
+  if (viewAll) viewAll.textContent = `View All (${requests.length})`;
   if (items.length === 0) {
     listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No maintenance requests to show.</p>';
     return;
@@ -153,8 +156,10 @@ document.addEventListener('visibilitychange', () => {
   listEl.innerHTML = items.map(item => `
     <button class="queue-row" data-maint="${item.id}" type="button">
       <span class="queue-meta">
-        <strong>${item.suite}</strong>
-        <span class="queue-issue">${maintenanceSummary(item)}</span>
+        <strong>${escapeAnnouncementHtml(maintenanceSummary(item))}</strong>
+        <span class="queue-issue">${escapeAnnouncementHtml(item.note || '')}</span>
+        <small class="queue-suite">Suite ${escapeAnnouncementHtml(String(item.suite))}</small>
+        <span class="maintenance-status ${item.status === 'completed' ? 'is-completed' : 'is-pending'}">${item.status === 'completed' ? 'Completed' : 'Pending'}</span>
       </span>
     </button>`).join('');
 })();
@@ -168,7 +173,7 @@ document.addEventListener('visibilitychange', () => {
     listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No recent announcements.</p>';
     return;
   }
-  listEl.innerHTML = items.map(renderAnnouncementRow).join('');
+  listEl.innerHTML = items.map(item => renderAnnouncementRow(item, { showCategory:false, showAttachment:true })).join('');
   renderIcons(listEl);
 })();
 
@@ -210,7 +215,7 @@ const actions = {
 document.addEventListener('click', event => {
   const maint = event.target.closest('[data-maint]');
   if (maint) {
-    const item = getMaintenance().find(m => m.id === maint.dataset.maint);
+    const item = getMaintenance().find(m => m.id === maint.dataset.maint) || (maint.dataset.maint === HOME_COMPLETED_MAINTENANCE.id ? HOME_COMPLETED_MAINTENANCE : null);
     if (item) {
       const when = formatMaintenanceWhen(item.reportedAt);
       const note = item.note ? `<p>${item.note}</p>` : '';
@@ -232,29 +237,6 @@ document.addEventListener('click', event => {
   actions[button.dataset.action]?.();
 });
 
-/* ── Resident lookup form ─────────────────────────────────── */
-document.addEventListener('submit', event => {
-  if (event.target.id === 'lookup-form') {
-    event.preventDefault();
-    const query = document.querySelector('#lookup-input').value.trim().toLowerCase();
-    const resultsEl = document.querySelector('#lookup-results');
-    const matches = DEMO_RESIDENTS.filter(r =>
-      r.suite.includes(query) || r.name.toLowerCase().includes(query)
-    );
-    if (!query) {
-      resultsEl.innerHTML = '<p class="muted">Enter a suite number or resident name.</p>';
-      return;
-    }
-    if (matches.length === 0) {
-      resultsEl.innerHTML = '<p class="muted">No residents match that search.</p>';
-      return;
-    }
-    resultsEl.innerHTML = matches.map(r =>
-      `<div class="lookup-result-item"><span class="tile-icon" style="width:36px;height:36px;font-size:14px;font-weight:650">${r.suite}</span><span><strong>${r.name}</strong><small>${r.role} · Suite ${r.suite}</small></span></div>`
-    ).join('');
-  }
-});
-
 modal.addEventListener('click', event => {
   if (event.target === modal) {
     const r = modal.getBoundingClientRect();
@@ -262,18 +244,3 @@ modal.addEventListener('click', event => {
   }
 });
 document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
-
-/* ── Lighting picker ──────────────────────────────────────── */
-const lightingPicker = document.querySelector('#header-lighting');
-const lightingOptions = ['morning', 'afternoon', 'evening', 'night'];
-const savedLighting = readSaved('mysuite-header-lighting', 'afternoon');
-function setLighting(value) {
-  const selected = lightingOptions.includes(value) ? value : 'afternoon';
-  document.body.dataset.time = selected;
-  lightingPicker.value = selected;
-}
-setLighting(savedLighting);
-lightingPicker.addEventListener('change', () => {
-  setLighting(lightingPicker.value);
-  save('mysuite-header-lighting', lightingPicker.value);
-});

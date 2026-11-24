@@ -6,5 +6,5 @@
   root.dataset.conciergeTheme=mode;
   root.style.setProperty('--concierge-canvas',mode==='dark'?'#11151c':canvas);
  }
- apply();window.addEventListener('storage',apply);
+ apply();window.addEventListener('storage',apply);window.addEventListener('concierge-theme-change',apply);
 })();

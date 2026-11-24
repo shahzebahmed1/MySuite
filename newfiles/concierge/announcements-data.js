@@ -115,14 +115,14 @@ function findAnnouncementById(id) {
   return getAnnouncements().find(a => a.id === id) || null;
 }
 
-function renderAnnouncementRow(item) {
+function renderAnnouncementRow(item, options = {}) {
   const when = formatAnnouncementWhen(item.postedAt);
-  const meta = [item.category, when].filter(Boolean).join(' · ');
+  const meta = [options.showCategory === false ? null : item.category, when].filter(Boolean).join(' · ');
   const icon = ['pool', 'users', 'building', 'megaphone'].includes(item.icon) ? item.icon : 'megaphone';
   return `<button type="button" class="announcement" data-announcement="${escapeAnnouncementHtml(item.id)}">
     <span class="tile-icon"><i data-icon="${icon}"></i></span>
     <span>
-      <strong>${escapeAnnouncementHtml(item.title)}</strong>
+      <strong>${escapeAnnouncementHtml(item.title)}${options.showAttachment ? ' <i data-icon="paperclip"></i>' : ''}</strong>
       <small>${escapeAnnouncementHtml(item.summary)}</small>
       <em>${escapeAnnouncementHtml(meta)}</em>
     </span>

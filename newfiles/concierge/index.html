@@ -1,233 +1,262 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <script src="concierge-shared-appearance.js?v=4bdde979be54"></script>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#35261e"><title>MySuite — Concierge</title>
-  <script src="home-dark-mode.js?v=1eeb4db14ee8"></script>
-  <script src="dashboard-shell.js?v=e4174d9375c7"></script>
-  <script src="home-start-position.js?v=5c8cba3b660c"></script>
-  <script src="home-restore-blue.js?v=66d4e95bc7d5"></script>
-  <script src="home-reference-settings.js?v=ab9301398819"></script>
-  <link rel="stylesheet" href="../shared/tokens.css">
-  <link rel="stylesheet" href="../shared/base.css?v=695979e8e412">
-  <link rel="stylesheet" href="dashboard.css?v=5673926af8ef">
-  <script src="../shared/icons.js" defer></script>
-  <script src="../shared/utils.js" defer></script>
-  <script src="../shared/mockdata.js" defer></script>
-  <script src="packages-data.js?v=0ba191b85f72" defer></script>
-  <script src="maintenance-data.js" defer></script>
-  <script src="announcements-data.js" defer></script>
-  <script src="app.js?v=ad8e4f300bd8" defer></script>
-  <link rel="stylesheet" href="nav-style-preview.css?v=a5728f68f9c7">
-  <script src="nav-style-preview.js?v=0ffcc69676bd" defer></script>
-  <link rel="stylesheet" href="concierge-sidebar.css?v=d695b6832c78">
-  <script src="sidebar-ink-colors.js?v=cc47d5c5587a" defer></script>
-  <link rel="stylesheet" href="sidebar-dividers.css?v=e2a573041e86">
-  <script src="sidebar-dividers.js?v=2022d31f2f5b" defer></script>
-  <link rel="stylesheet" href="sidebar-navigation-options.css?v=dcc86218290c">
-  <script src="sidebar-navigation-options.js?v=4cf4b2876ec1" defer></script>
-  <link rel="stylesheet" href="logo-cream-options.css?v=2b4699363092">
-  <script src="logo-cream-options.js?v=2f9f5181b42c" defer></script>
-  <link rel="preload" href="../assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="sidebar-font.css?v=94a4d1f2c251">
-  <link rel="stylesheet" href="dashboard-header-options.css?v=fd89b716c01f">
-  <script src="dashboard-header-options.js?v=9598af487082" defer></script>
-  <link rel="stylesheet" href="dashboard-header-adjustments.css?v=79834a0b3c26">
-  <script src="dashboard-header-adjustments.js?v=fde045967ac4" defer></script>
-  <link rel="stylesheet" href="dashboard-finishes.css?v=426ee8b76f9f">
-  <script src="dashboard-finishes.js?v=b659acaa13f6" defer></script>
-  <link rel="stylesheet" href="dashboard-header-extras.css?v=ae34eb86a744">
-  <script src="dashboard-split-controls.js?v=b26004bfc007" defer></script>
-  <script src="sidebar-logo-position.js?v=5f5c7c2c1dec" defer></script>
-  <link rel="stylesheet" href="dashboard-card-experiments.css?v=36ebc3319490">
-  <script src="dashboard-card-experiments.js?v=860bdab32f70" defer></script>
-  <link rel="stylesheet" href="dashboard-edge-experiments.css?v=48c8b539a9ed">
-  <script src="dashboard-edge-experiments.js?v=b0f1051b4f8a" defer></script>
-  <link rel="stylesheet" href="sidebar-shape.css?v=da8610f99345">
-  <script src="sidebar-shape.js?v=5fb61a65d45f" defer></script>
-  <link rel="stylesheet" href="dashboard-card-colors.css?v=c06989930905">
-  <script src="dashboard-card-colors.js?v=5b9f9564c401" defer></script>
-  <link rel="stylesheet" href="dashboard-header-text.css?v=8bea7fd49f62">
-  <script src="dashboard-header-text.js?v=0b84e27e069f" defer></script>
-  <link rel="stylesheet" href="dashboard-header-gradient.css?v=45ff62fc3891">
-  <script src="dashboard-header-gradient.js?v=fb787315388e" defer></script>
-  <link rel="stylesheet" href="dashboard-header-fade.css?v=326c03259ff6">
-  <script src="dashboard-header-fade.js?v=5bfd655c9c8a" defer></script>
-  <link rel="stylesheet" href="dashboard-classic-welcome.css?v=872e381f7e5c">
-  <script src="dashboard-classic-welcome.js?v=61ce62952b94" defer></script>
-  <link rel="stylesheet" href="sidebar-nav-colors.css?v=9a7a537f4af5">
-  <script src="sidebar-nav-colors.js?v=f8be49ffdab9" defer></script>
-  <link rel="stylesheet" href="dashboard-header-text-lock.css?v=10c1767257e2">
-  <script src="dashboard-header-text-lock.js?v=a5d5fdd14e93" defer></script>
-  <link rel="stylesheet" href="home-reference.css?v=ecd3be7f05a1">
-  <script src="home-tools.js?v=3c274e7bd1a9" defer></script>
-  <link rel="stylesheet" href="home-sidebar-style.css?v=478a150e8e14">
-  <script src="home-sidebar-style.js?v=17d18d8490f3" defer></script>
-  <script src="home-greeting-details.js?v=0457f769d244" defer></script>
-  <link rel="stylesheet" href="sidebar-logo-shared.css?v=c00e620b222b">
-  <link rel="stylesheet" href="home-greeting-fonts.css?v=326617a2e8c8">
-  <script src="home-greeting-fonts.js?v=c991f60f303f" defer></script>
-  <link rel="stylesheet" href="home-greeting-experiments.css?v=c49077ecbfa8">
-  <script src="home-greeting-experiments.js?v=0d8fe29ad9fd" defer></script>
-  <link rel="stylesheet" href="dashboard-header-finish.css?v=869ad61f8a10">
-  <script src="dashboard-header-finish.js?v=5f321989ec1d" defer></script>
-  <link rel="stylesheet" href="home-layout-experiments.css?v=fc8d9c8e8914">
-  <script src="home-layout-experiments.js?v=d2c2fc557d07" defer></script>
-  <link rel="stylesheet" href="home-restore-blue.css?v=a5240e1262b3">
-  <link rel="stylesheet" href="sidebar-icon-toggle.css?v=87b7452a85e3">
-  <script src="sidebar-icon-toggle.js?v=0626678becfd" defer></script>
-  <link rel="stylesheet" href="sidebar-selection-width.css?v=abe2c8ce2f99">
-  <script src="sidebar-selection-width.js?v=cfca32f38c5a" defer></script>
-  <link rel="stylesheet" href="sidebar-row-alignment.css?v=22387f0ef696">
-  <script src="sidebar-icon-weight.js?v=a00e08e57648" defer></script>
-  <link rel="stylesheet" href="dashboard-card-layout.css?v=63987f8cff60">
-  <script src="dashboard-card-layout.js?v=10cb7c14c352" defer></script>
-  <link rel="stylesheet" href="premium-welcome-card.css?v=ab94e895c476">
-  <script src="premium-welcome-card.js?v=acb39bf1f444" defer></script>
-  <link rel="stylesheet" href="dashboard-background-patterns.css?v=6e69377a6225">
-  <script src="dashboard-background-patterns.js?v=c9a88ae17294" defer></script>
-  <link rel="stylesheet" href="sidebar-greeting-size.css?v=fba37c13f412">
-  <script src="sidebar-greeting-size.js?v=2c7e5ebc1a28" defer></script>
-  <script src="sidebar-quick-controls.js?v=a8f2cbc0ce1f" defer></script>
-  <link rel="stylesheet" href="sidebar-role-placement.css?v=baa8a1bb5f24">
-  <script src="sidebar-role-placement.js?v=330746b79c97" defer></script>
-  <link rel="stylesheet" href="sidebar-logo-styles.css?v=d55b2a6c6d67">
-  <script src="sidebar-logo-styles.js?v=593d53f9bf25" defer></script>
-  <link rel="stylesheet" href="shop-card-height.css?v=477077263da2">
-  <script src="shop-card-height.js?v=3a58d6c5d7f6" defer></script>
-  <link rel="stylesheet" href="header-metadata-position.css?v=10ec3025d77e">
-  <script src="header-metadata-position.js?v=bf638bcc7028" defer></script>
-  <script src="home-sidebar-controls.js?v=68a22f47d0d2" defer></script>
-  <link rel="stylesheet" href="dashboard-shell.css?v=fb9b9ee079e1">
-  <link rel="stylesheet" href="dashboard-framed-workspace.css?v=d4abcfed68b1">
-  <link rel="stylesheet" href="dashboard-soft-monochrome.css?v=d4d67d32ecd4">
-  <link rel="stylesheet" href="dashboard-open-sections.css?v=e2f62c6c4861">
-  <script src="dashboard-open-sections.js?v=f2142d7e0aae" defer></script>
-  <link rel="stylesheet" href="dashboard-monochrome-refinement.css?v=f058834e4518">
-  <link rel="stylesheet" href="dashboard-monochrome-balance.css?v=fb58d87ff57f">
-  <link rel="stylesheet" href="home-text-arrange.css?v=12f3e67d58d8">
-  <script src="home-text-arrange.js?v=82dbc9671f70" defer></script>
-  <link rel="stylesheet" href="home-topbar.css?v=7d235338b029">
-  <script src="home-topbar.js?v=239c65e588a6" defer></script>
-  <link rel="stylesheet" href="home-reference-sidebar.css?v=e2062744d459">
-  <script src="home-reference-sidebar.js?v=be7dc5ef0c0a" defer></script>
-  <link rel="stylesheet" href="home-clean-dashboard.css?v=0c649350d890">
-  <link rel="stylesheet" href="home-sidebar-rotation.css?v=a073a0a56fed">
-  <script src="home-sidebar-rotation.js?v=ce5a3d670ef7" defer></script>
-  <link rel="stylesheet" href="home-dark-mode.css?v=c5e0fecee4cf">
-  <link rel="stylesheet" href="home-light-palette.css?v=4f256c381da0">
-  <link rel="stylesheet" href="concierge-shared-appearance.css?v=53f150935ee2">
-  <link rel="stylesheet" href="concierge-supplied-logo.css?v=83d97b5a06c4">
-  <script src="concierge-supplied-logo.js?v=da567e51a7c7" defer></script>
-  <link rel="stylesheet" href="home-booking-promo.css?v=45cfdeec95b5">
-  <link rel="stylesheet" href="home-fit-overview.css?v=2cc2cf74ab54">
-  <link rel="stylesheet" href="home-balance.css?v=22d63a12b46d">
-</head>
-<body class="sidebar-merge concierge-sidebar" data-sidebar-palette="original-cream" data-time="afternoon" data-home-tools-hidden>
-  <button class="mobile-toggle icon-button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="menu"><i data-icon="menu"></i></button>
-  <div class="scrim" data-action="close-menu"></div>
-  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
-    <a class="brand" href="./">MySuite<span class="brand-dot">.</span></a>
-    <nav>
-      <a class="nav-item active" aria-current="page" href="./"><i data-icon="home"></i>Home</a>
-      <a class="nav-item" href="contact-directory.html"><i data-icon="users"></i>Contact directory</a>
-      <a class="nav-item" href="packages.html"><i data-icon="package"></i>Packages</a>
-      <a class="nav-item" href="incident-report.html"><i data-icon="alert"></i>Incident Reports</a>
-      <a class="nav-item" href="daily-log.html"><i data-icon="clipboard"></i>Activity Log</a>
-      <div class="nav-divider"></div>
-      <a class="nav-item" href="amenities.html"><i data-icon="pool"></i>Amenities</a>
-      <a class="nav-item" href="elevator-bookings.html"><i data-icon="elevator"></i>Book elevator</a>
-      <a class="nav-item" href="long-term-absence.html"><i data-icon="suitcase"></i>Long-term absence</a>
-      <a class="nav-item" href="maintenance.html"><i data-icon="wrench"></i>Maintenance</a>
-      <a class="nav-item" href="announcements.html"><i data-icon="megaphone"></i>Announcements</a>
-    </nav>
-    <div class="sidebar-bottom"><div class="sidebar-user"><span class="avatar small" data-user-initials></span><div><span data-user-name></span><small data-user-subtitle></small></div></div><a class="logout" href="../"><i data-icon="logout"></i>Log out</a></div>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="#fafafa" name="theme-color"/>
+  <title>
+   MySuite ? Concierge
+  </title>
+  <script src="concierge-shared-appearance.js?v=bbf62bc37dee">
+  </script>
+  <script src="home-preferences.js?v=01fd9f25cf9b">
+  </script>
+  <script src="home-dark-mode.js?v=f4466eadf92e">
+  </script>
+  <script src="home-start-position.js?v=9f5832c5b76d">
+  </script>
+  <link href="../shared/tokens.css?v=e0df8a2e8a54" rel="stylesheet"/>
+  <link href="../shared/base.css?v=695979e8e412" rel="stylesheet"/>
+  <link href="home-fonts.css?v=a29019b07f42" rel="stylesheet"/>
+  <link href="home-dashboard.css?v=31481a3b5af7" rel="stylesheet"/>
+  <link href="home-topbar.css?v=63746e04e918" rel="stylesheet"/>
+  <link href="home-dark-mode.css?v=d929640f6459" rel="stylesheet"/>
+  <link href="concierge-supplied-logo.css?v=cc2687299f4b" rel="stylesheet"/>
+  <link href="home-fit-overview.css?v=a54a2b9e8d12" rel="stylesheet"/>
+  <script defer="" src="../shared/icons.js?v=1849b2733794">
+  </script>
+  <script defer="" src="../shared/utils.js?v=4e85d6218aa8">
+  </script>
+  <script defer="" src="../shared/mockdata.js?v=f77e64469fcb">
+  </script>
+  <script defer="" src="packages-data.js?v=31a21dc7e6c3">
+  </script>
+  <script defer="" src="maintenance-data.js?v=79b1be6bb392">
+  </script>
+  <script defer="" src="announcements-data.js?v=fda79a22829d">
+  </script>
+  <script defer="" src="app.js?v=f7357ec5e909">
+  </script>
+  <script defer="" src="home-topbar.js?v=835be6c92dd9">
+  </script>
+  <script defer="" src="concierge-supplied-logo.js?v=da567e51a7c7">
+  </script>
+ </head>
+ <body class="sidebar-merge concierge-sidebar" data-dashboard-card-layout="" data-sidebar-palette="original-cream" data-time="afternoon">
+  <button aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation" class="mobile-toggle icon-button" data-action="menu">
+   <i data-icon="menu">
+   </i>
+  </button>
+  <div class="scrim" data-action="close-menu">
+  </div>
+  <aside aria-label="Main navigation" class="sidebar" id="sidebar">
+   <a class="brand" href="./">
+    MySuite
+    <span class="brand-dot">
+     .
+    </span>
+   </a>
+   <nav>
+    <a aria-current="page" class="nav-item active" href="./">
+     <i data-icon="home">
+     </i>
+     Home
+    </a>
+    <a class="nav-item" href="contact-directory.html">
+     <i data-icon="users">
+     </i>
+     Contact directory
+    </a>
+    <a class="nav-item" href="packages.html">
+     <i data-icon="package">
+     </i>
+     Packages
+    </a>
+    <a class="nav-item" href="incident-report.html">
+     <i data-icon="alert">
+     </i>
+     Incident Reports
+    </a>
+    <a class="nav-item" href="daily-log.html">
+     <i data-icon="clipboard">
+     </i>
+     Activity Log
+    </a>
+    <div class="nav-divider">
+    </div>
+    <a class="nav-item" href="amenities.html">
+     <i data-icon="pool">
+     </i>
+     Amenities
+    </a>
+    <a class="nav-item" href="elevator-bookings.html">
+     <i data-icon="elevator">
+     </i>
+     Book elevator
+    </a>
+    <a class="nav-item" href="long-term-absence.html">
+     <i data-icon="suitcase">
+     </i>
+     Long-term absence
+    </a>
+    <a class="nav-item" href="maintenance.html">
+     <i data-icon="wrench">
+     </i>
+     Maintenance
+    </a>
+    <a class="nav-item" href="announcements.html">
+     <i data-icon="megaphone">
+     </i>
+     Announcements
+    </a>
+   </nav>
+   <div class="sidebar-bottom">
+    <a class="logout" href="../">
+     <i data-icon="logout">
+     </i>
+     Log out
+    </a>
+   </div>
   </aside>
   <main>
-    <header class="welcome">
-      <div class="welcome-copy">
-        <h1 data-user-greeting="Welcome back, {first}"></h1>
-        <p class="welcome-note">Here’s what’s happening in your building today.</p>
+   <section aria-label="Concierge dashboard" class="dashboard">
+    <article class="card announcements" id="announcements">
+     <div class="card-heading">
+      <h2>
+       Announcements
+      </h2>
+      <a class="button outline compact" href="announcements.html">
+       View All
+      </a>
+     </div>
+     <div id="home-announcement-list">
+     </div>
+    </article>
+    <article class="card schedule" id="schedule">
+     <div class="card-heading">
+      <h2>
+       Upcoming Bookings
+      </h2>
+      <a class="button outline compact" href="amenities.html">
+       View Bookings
+      </a>
+     </div>
+     <div id="schedule-list">
+     </div>
+    </article>
+    <article aria-labelledby="dashboard-payments-title" class="card dashboard-payments" id="payments">
+     <div class="card-heading">
+      <h2 id="dashboard-payments-title">
+       Upcoming Payments
+      </h2>
+      <button class="button outline compact" data-action="view-payments" type="button">
+       View Payments
+      </button>
+     </div>
+     <div class="dashboard-payments-panel">
+      <span>
+       No upcoming payments to display.
+      </span>
+     </div>
+    </article>
+    <article class="card maint-queue" id="maint-queue">
+     <div class="card-heading">
+      <h2>
+       Maintenance Requests
+      </h2>
+      <a class="button outline compact" href="maintenance.html" id="home-maint-view-all">
+       View All
+      </a>
+     </div>
+     <div id="maint-list">
+     </div>
+    </article>
+    <article aria-labelledby="booking-promo-title" class="card booking-promo" id="booking-promo">
+     <div class="card-heading">
+      <h2 id="booking-promo-title">
+       Book a Space
+      </h2>
+     </div>
+     <div class="booking-promo-panel">
+      <div class="booking-promo-content">
+       <h3>
+        Find a space.
+        <br/>
+        Make a booking.
+       </h3>
+       <p>
+        Reserve amenities for residents.
+       </p>
+       <a class="button" href="amenities.html">
+        Create Booking
+        <i data-icon="arrow">
+        </i>
+       </a>
       </div>
-    </header>
-    <section class="dashboard" aria-label="Concierge dashboard">
-
-      <div class="dashboard-col">
-        <article class="card packages" id="packages">
-          <div class="card-heading">
-            <h2><i data-icon="package"></i>Package Log</h2>
-            <a class="button outline compact" id="home-package-view-all" href="packages.html">View All</a>
-          </div>
-          <div id="home-package-list"></div>
-        </article>
-
-        <article class="card maint-queue" id="maint-queue">
-          <div class="card-heading">
-            <h2><i data-icon="wrench"></i>Maintenance Queue</h2>
-            <a class="button outline compact" id="home-maint-view-all" href="maintenance.html">View All</a>
-          </div>
-          <div id="maint-list"></div>
-        </article>
+     </div>
+    </article>
+    <article aria-labelledby="shop-title" class="card shop" id="shop">
+     <div class="card-heading">
+      <h2 id="shop-title">
+       Shop
+      </h2>
+     </div>
+     <div class="monochrome-shop-panel">
+      <div class="shop-content">
+       <h3>
+        Little essentials.
+        <br/>
+        One convenient place.
+       </h3>
+       <p class="muted">
+        Fobs, batteries &amp; everyday supplies.
+       </p>
+       <button class="button" data-action="shop" type="button">
+        Browse Shop
+        <i data-icon="arrow">
+        </i>
+       </button>
       </div>
-
-      <div class="dashboard-col">
-        <article class="card announcements" id="announcements">
-          <div class="card-heading">
-            <h2><i data-icon="megaphone"></i>Announcements</h2>
-            <a class="button outline compact" href="announcements.html">View All</a>
-          </div>
-          <div id="home-announcement-list"></div>
-        </article>
-      </div>
-
-      <div class="dashboard-col">
-        <article class="card schedule" id="schedule">
-          <div class="card-heading">
-            <h2><i data-icon="calendar"></i>Upcoming Bookings</h2>
-            <a class="button outline compact" href="amenities.html">View Bookings</a>
-          </div>
-          <div id="schedule-list"></div>
-        </article>
-        <article class="card dashboard-payments" id="payments" aria-labelledby="dashboard-payments-title">
-          <div class="card-heading"><h2 id="dashboard-payments-title">Upcoming Payments</h2><button class="button outline compact" type="button" data-action="view-payments">View Payments</button></div>
-          <div class="dashboard-payments-panel"><span>No upcoming payments to display.</span></div>
-        </article>
-
-        <article class="card shop" id="shop" aria-labelledby="shop-title">
-          <div class="shop-content">
-            <h2 id="shop-title"><i data-icon="bag"></i>Shop</h2>
-            <h3>Little essentials.<br>One convenient place.</h3>
-            <p class="muted">Fobs, batteries &amp; everyday supplies.</p>
-            <button class="button" type="button" data-action="shop">Browse Shop<i data-icon="arrow"></i></button>
-          </div>
-        </article>
-        <article class="card booking-promo" id="booking-promo" aria-labelledby="booking-promo-title">
-          <div class="card-heading"><h2 id="booking-promo-title">Book a Space</h2></div>
-          <div class="booking-promo-panel">
-            <div class="booking-promo-content">
-              <h3>Find a space.<br>Make a booking.</h3>
-              <p>Reserve amenities for residents.</p>
-              <a class="button" href="amenities.html">Create Booking<i data-icon="arrow"></i></a>
-            </div>
-          </div>
-        </article>
-      </div>
-
-    </section>
-    <footer class="page-footer">
-      <span>MySuite · Concierge portal.</span>
-      <label class="lighting-picker" for="header-lighting">Header lighting
-        <select id="header-lighting">
-          <option value="morning">Morning</option>
-          <option value="afternoon" selected>Afternoon</option>
-          <option value="evening">Evening</option>
-          <option value="night">Night</option>
-        </select>
-      </label>
-      <button data-action="help">Need a hand?</button>
-    </footer>
+     </div>
+    </article>
+    <article class="card packages" id="packages">
+     <div class="card-heading">
+      <h2>
+       Recent Packages
+      </h2>
+      <a class="button outline compact" href="packages.html" id="home-package-view-all">
+       View All
+      </a>
+     </div>
+     <div id="home-package-list">
+     </div>
+    </article>
+   </section>
+   <footer class="page-footer">
+    <span>
+     MySuite · Concierge portal.
+    </span>
+    <button data-action="help">
+     Need a hand?
+    </button>
+   </footer>
   </main>
-  <dialog id="modal"><div class="dialog-top"><p class="eyebrow">MYSUITE</p><button class="icon-button" data-action="close-modal" aria-label="Close dialog"><i data-icon="close"></i></button></div><h2 id="modal-title"></h2><div id="modal-body"></div></dialog>
-  <div class="toast" id="toast" role="status"></div>
-</body></html>
+  <dialog id="modal">
+   <div class="dialog-top">
+    <p class="eyebrow">
+     MYSUITE
+    </p>
+    <button aria-label="Close dialog" class="icon-button" data-action="close-modal">
+     <i data-icon="close">
+     </i>
+    </button>
+   </div>
+   <h2 id="modal-title">
+   </h2>
+   <div id="modal-body">
+   </div>
+  </dialog>
+  <div class="toast" id="toast" role="status">
+  </div>
+ </body>
+</html>

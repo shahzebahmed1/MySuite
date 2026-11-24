@@ -1,7 +1,0 @@
-/* Shared sidebar appearance for Contact Directory and Incident Report. */
-body.concierge-sidebar[data-sidebar-palette="limestone"] .sidebar :is(.brand, .nav-item:not(.active), .logout) { color: var(--custom-sidebar-text, #302b27); }
-body.concierge-sidebar[data-sidebar-palette="limestone"] .sidebar .brand-dot { color: var(--custom-sidebar-text, #8f7b68); }
-body.concierge-sidebar[data-sidebar-palette="limestone"] .sidebar .sidebar-bottom { border-color: var(--custom-sidebar-divider, #e5e1db); color: var(--custom-sidebar-text, #302b27); }
-body.concierge-sidebar[data-sidebar-palette="limestone"] .sidebar .sidebar-bottom small { color: var(--custom-sidebar-text, #716a63); }
-body.concierge-sidebar[data-sidebar-palette="limestone"] .sidebar .avatar.small { background: #dedad2; color: #302b27; }
-body.concierge-sidebar[data-sidebar-palette="limestone"] .sidebar .nav-divider { background: var(--custom-sidebar-divider, #e5e1db); }
