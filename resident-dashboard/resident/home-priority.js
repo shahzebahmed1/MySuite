@@ -39,12 +39,31 @@ function homeBriefRelativeDay(iso, now = new Date()) {
 }
 
 /* ── Band heading ─────────────────────────────────────────── */
+/* The band is labelled with the date rather than "Today": nothing inside it is
+   guaranteed to be from today, so every row states its own age instead. */
 function renderHomeBriefDate() {
-  const el = document.querySelector('#home-brief-date');
-  if (!el) return;
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-  const building = MOCK_DATA.building?.name || 'Your building';
-  el.textContent = `${today} · ${building}`;
+  const title = document.querySelector('#home-brief-title');
+  const context = document.querySelector('#home-brief-date');
+  const now = new Date();
+  if (title) title.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  if (context) context.textContent = MOCK_DATA.building?.name || 'Your building';
+}
+
+/** "today 9:20 a.m." / "yesterday" / "5 days ago" / "last week" */
+function homeBriefAge(iso, now = new Date()) {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return '';
+  const startOfDay = value => {
+    const copy = new Date(value);
+    copy.setHours(0, 0, 0, 0);
+    return copy;
+  };
+  const days = Math.round((startOfDay(now) - startOfDay(date)) / 86400000);
+  if (days <= 0) return `today ${date.toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' })}`;
+  if (days === 1) return 'yesterday';
+  if (days < 7) return `${days} days ago`;
+  if (days < 14) return 'last week';
+  return `${Math.round(days / 7)} weeks ago`;
 }
 
 /* ── Announcements ────────────────────────────────────────── */
@@ -67,7 +86,7 @@ function renderHomeNotices() {
   }
   list.innerHTML = items.map(notice => {
     const icon = ['pool', 'building', 'users', 'megaphone'].includes(notice.icon) ? notice.icon : 'megaphone';
-    const meta = [notice.category, formatAnnouncementWhen(notice.postedAt)].filter(Boolean).join(' · ');
+    const meta = [notice.category, homeBriefAge(notice.postedAt)].filter(Boolean).join(' · ');
     return `<li>
       <button class="home-notice" type="button" data-announcement="${homeBriefEscape(notice.id)}">
         <span class="home-notice-icon"><i data-icon="${icon}"></i></span>
@@ -103,11 +122,17 @@ function renderHomePayments() {
     return;
   }
   const paid = homePaymentsList().filter(item => item.status === 'paid').pop();
+  const dueDate = homeBriefDate(payment.dueDate);
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  const dueLine = dueDate && dueDate < startOfToday
+    ? `Overdue · was due ${homeBriefShortDate(payment.dueDate)}`
+    : `Due ${homeBriefShortDate(payment.dueDate)} · ${homeBriefRelativeDay(payment.dueDate)}`;
   panel.innerHTML = `<div class="home-due">
       <span class="home-due-amount">${homeBriefEscape(homeBriefMoney(payment.amountCents))}</span>
       <span class="home-due-copy">
         <strong>${homeBriefEscape(payment.label || 'Upcoming payment')}</strong>
-        <span>Due ${homeBriefEscape(homeBriefShortDate(payment.dueDate))} · ${homeBriefEscape(homeBriefRelativeDay(payment.dueDate))}</span>
+        <span>${homeBriefEscape(dueLine)}</span>
       </span>
       <span class="home-due-flags">
         <span class="home-pill is-${payment.autopay ? 'done' : 'needs'}">${payment.autopay ? 'Autopay on' : 'Autopay off'}</span>
@@ -163,7 +188,7 @@ function renderHomeAcknowledgements() {
     return;
   }
   list.innerHTML = pending.slice(0, 3).map(notice => {
-    const meta = [notice.category, formatAnnouncementWhen(notice.postedAt)].filter(Boolean).join(' · ');
+    const meta = [notice.category, homeBriefAge(notice.postedAt)].filter(Boolean).join(' · ');
     return `<div class="home-ack-row">
       <span class="home-ack-copy">
         <strong>${homeBriefEscape(notice.title)}</strong>

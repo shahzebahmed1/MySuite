@@ -1,27 +1,29 @@
 /* Announcements shared by all local portal roles (localStorage).
    Production requires authenticated server-side publishing permissions. */
 
-const ANNOUNCEMENT_STORAGE_KEY = 'mysuite-resident-announcements-v1';
+const ANNOUNCEMENT_STORAGE_KEY = 'mysuite-resident-announcements-v2';
 
+/* Posted dates are generated relative to today so the sample always reads as
+   recent, and each row on the home dashboard states its own age. */
 const ANNOUNCEMENT_SEED = [
   {
     id: 'ann-1003',
     title: 'Pool maintenance',
     summary: 'Pool will be closed on Friday for scheduled maintenance.',
-    body: 'The pool will be closed on Friday, November 6 for scheduled maintenance. Thank you for your patience while we keep our amenities in great shape.',
+    body: 'The pool will be closed this Friday for scheduled maintenance. Thank you for your patience while we keep our amenities in great shape.',
     category: 'Building update',
     icon: 'pool',
-    postedAt: '2026-11-13T10:00:00',
+    postedAt: demoDaysAgo(0, 9, 20),
     postedBy: 'Building management'
   },
   {
     id: 'ann-1002',
     title: 'Community social',
     summary: 'Meet your neighbours this Saturday in the common room.',
-    body: 'Join your neighbours in the common room on Saturday, November 14, 2026, from 3:00–5:00 PM. Drop by for coffee, conversation, and a chance to meet the community.',
+    body: 'Join your neighbours in the common room this Saturday from 3:00–5:00 PM. Drop by for coffee, conversation, and a chance to meet the community.',
     category: 'Community',
     icon: 'users',
-    postedAt: '2026-11-12T16:30:00',
+    postedAt: demoDaysAgo(1, 16, 30),
     postedBy: 'Building management'
   },
   {
@@ -31,7 +33,7 @@ const ANNOUNCEMENT_SEED = [
     body: 'Elevator B will be offline Monday from 8:00–11:00 AM for a routine safety inspection. Please use Elevator A during that window.',
     category: 'Building update',
     icon: 'building',
-    postedAt: '2026-11-11T09:15:00',
+    postedAt: demoDaysAgo(5, 9, 15),
     postedBy: 'Building management'
   }
 ];

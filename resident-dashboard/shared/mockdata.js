@@ -352,22 +352,22 @@ const MOCK_DATA = {
       id: 'notice-water',
       title: 'Water shut off this Thursday',
       category: 'Building update',
-      postedAt: '2026-11-17T09:00:00',
+      postedAt: demoDaysAgo(2, 9, 0),
       body: 'Water will be shut off Thursday from 9–11 a.m. for riser repairs. Store water if you will need it during that window.'
     },
     {
       id: 'notice-parking',
       title: 'Visitor parking rules',
       category: 'Community',
-      postedAt: '2026-11-14T15:30:00',
+      postedAt: demoDaysAgo(5, 15, 30),
       body: 'Visitor passes are now required after 6 p.m. Register guests at the front desk or through MySuite before they arrive.'
     },
     {
       id: 'notice-fire',
       title: 'Annual fire alarm testing',
       category: 'Safety',
-      postedAt: '2026-11-10T08:00:00',
-      body: 'Alarm testing runs November 12 between 10 a.m. and noon. Alarms will sound intermittently; no evacuation is required.'
+      postedAt: demoDaysAgo(9, 8, 0),
+      body: 'Alarm testing runs next week between 10 a.m. and noon. Alarms will sound intermittently; no evacuation is required.'
     }
   ],
 
@@ -544,6 +544,14 @@ function demoIsoDate(date) {
 function demoMonthDay(monthOffset, day) {
   const now = new Date();
   return demoIsoDate(new Date(now.getFullYear(), now.getMonth() + monthOffset, day));
+}
+
+/* A local timestamp a number of days back, so demo recency stays truthful. */
+function demoDaysAgo(days, hour = 9, minute = 0) {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  const pad = value => String(value).padStart(2, '0');
+  return `${demoIsoDate(date)}T${pad(hour)}:${pad(minute)}:00`;
 }
 
 /* Replace with the real statement endpoint; keep the same shape. */
