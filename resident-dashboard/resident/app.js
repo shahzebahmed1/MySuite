@@ -1,8 +1,8 @@
-/* MySuite — Concierge dashboard.
+/* MySuite — Resident dashboard.
    Requires: shared/icons.js, shared/utils.js, shared/mockdata.js, packages-data.js */
 
 renderIcons();
-applyLoggedInUser('concierge');
+applyLoggedInUser('resident');
 
 /* ── Render dashboard cards from MOCK_DATA ─────────────────── */
 (function renderHomePackages() {
@@ -14,7 +14,7 @@ applyLoggedInUser('concierge');
   if (pending.length === 0) {
     listEl.innerHTML = `
       <div class="pkg-empty-state">
-        <p>No packages needing to be delivered.</p>
+        <p>No packages waiting for you right now.</p>
       </div>`;
     return;
   }
@@ -203,12 +203,13 @@ const actions = {
   'view-payments': () => openModal('Payments', '<p>No payments to display.</p>'),
   notifications: () => openModal('Notifications', '<p>No new notifications.</p>'),
   profile: () => {
-    const concierge = getCurrentConcierge();
-    openModal(concierge?.name || 'Concierge', `<p>${concierge?.title || 'Concierge'}${concierge?.station ? ` · ${concierge.station}` : ''}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">${concierge?.shift ? `Shift: ${concierge.shift} · ` : ''}Concierge portal</div>`);
+    const resident = getCurrentResident();
+    const suite = resident?.suite ? `Suite ${resident.suite}` : '';
+    openModal(resident?.name || 'Resident', `<p>${[resident?.title || 'Resident', suite].filter(Boolean).join(' · ')}<br>${MOCK_DATA.building.name}</p><div class="dialog-info">Resident portal · Track updates in your building</div>`);
   },
 
   shop: () => openModal('Fobs & essentials', '<p>A preview of the essentials available through your building.</p><div class="dialog-info">Entry fobs · Batteries · Everyday supplies</div><p>Ordering is not available yet.</p>'),
-  help: () => openModal('Concierge help', '<p>Manage packages, maintenance, and building updates from your concierge dashboard.</p><p>Concierge can review announcements; managers and board members create them.</p>')
+  help: () => openModal('Resident help', '<p>See packages, maintenance, bookings, and building announcements for your home.</p><p>Use this dashboard to stay on top of what is happening in your condominium.</p>')
 };
 
 /* ── Event delegation ─────────────────────────────────────── */

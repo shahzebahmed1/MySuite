@@ -17,21 +17,21 @@ const types = {
 const server = http.createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
-    if (pathname === '/' || pathname === '/concierge') {
-      res.writeHead(302, { Location: '/concierge/' });
+    if (pathname === '/' || pathname === '/resident') {
+      res.writeHead(302, { Location: '/resident/' });
       return res.end();
     }
     if (pathname === '/favicon.ico') { res.writeHead(204); return res.end(); }
     // Other portal pages are deliberately excluded from this standalone copy.
-    if (pathname.endsWith('.html') && pathname !== '/concierge/index.html') {
-      res.writeHead(302, { Location: '/concierge/' });
+    if (pathname.endsWith('.html') && pathname !== '/resident/index.html') {
+      res.writeHead(302, { Location: '/resident/' });
       return res.end();
     }
-    const relative = pathname === '/concierge/' ? 'concierge/index.html' : pathname.slice(1);
+    const relative = pathname === '/resident/' ? 'resident/index.html' : pathname.slice(1);
     const file = path.resolve(root, relative);
     const inside = path.relative(root, file);
     if (inside.startsWith('..') || path.isAbsolute(inside) ||
-        !['concierge', 'shared', 'assets'].includes(inside.split(path.sep)[0])) {
+        !['resident', 'shared', 'assets'].includes(inside.split(path.sep)[0])) {
       res.writeHead(404); return res.end('Not found');
     }
     const body = await readFile(file);
@@ -50,8 +50,8 @@ server.on('error', error => {
 });
 
 server.listen(port, '127.0.0.1', () => {
-  const url = `http://127.0.0.1:${server.address().port}/concierge/`;
-  console.log(`Concierge home dashboard: ${url}\nPress Ctrl+C to stop.`);
+  const url = `http://127.0.0.1:${server.address().port}/resident/`;
+  console.log(`Resident home dashboard: ${url}\nPress Ctrl+C to stop.`);
   if (process.argv.includes('--no-open')) return;
   const command = process.platform === 'win32' ? 'explorer.exe'
     : process.platform === 'darwin' ? 'open' : 'xdg-open';

@@ -1,7 +1,7 @@
-/* Concierge maintenance queue (localStorage).
-   Requires: shared/utils.js, shared/mockdata.js (DEMO_RESIDENTS, getCurrentConcierge). */
+/* Resident maintenance queue (localStorage).
+   Requires: shared/utils.js, shared/mockdata.js (DEMO_RESIDENTS, getCurrentResident). */
 
-const MAINTENANCE_STORAGE_KEY = 'mysuite-concierge-maintenance-v1';
+const MAINTENANCE_STORAGE_KEY = 'mysuite-resident-maintenance-v1';
 
 const MAINTENANCE_SEED = [
   {
@@ -106,7 +106,7 @@ function addMaintenance(fields) {
   const suite = String(fields.suite || '').trim();
   const title = String(fields.title || '').trim();
   const note = String(fields.note || '').trim();
-  const concierge = getCurrentConcierge();
+  const resident = getCurrentResident();
   const list = getMaintenance();
   const entry = {
     id: `mnt-${Date.now()}`,
@@ -116,7 +116,7 @@ function addMaintenance(fields) {
     note,
     status: 'pending',
     reportedAt: parseMaintenanceReportedAt(fields.reportedAt),
-    reportedBy: (fields.reportedBy || concierge?.name || 'Concierge').trim(),
+    reportedBy: (fields.reportedBy || resident?.name || 'Resident').trim(),
     completedAt: null,
     completedBy: null
   };
@@ -125,7 +125,7 @@ function addMaintenance(fields) {
   return entry;
 }
 
-function markMaintenanceCompleted(ids, by = getCurrentConcierge()?.name || 'Concierge') {
+function markMaintenanceCompleted(ids, by = getCurrentResident()?.name || 'Resident') {
   const idSet = new Set((ids || []).map(String));
   if (idSet.size === 0) return [];
   const now = new Date().toISOString();

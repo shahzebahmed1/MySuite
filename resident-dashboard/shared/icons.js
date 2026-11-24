@@ -23,7 +23,7 @@ const icons = {
   send:      '<path d="m22 2-7 20-4-9L2 9zm-11 11L22 2"/>',
   menu:      '<path d="M3 6h18M3 12h18M3 18h18"/>',
   close:     '<path d="m6 6 12 12M6 18 18 6"/>',
-  /* ── Concierge & manager icons ── */
+  /* ── Portal icons ── */
   package:   '<path d="m12 2 10 6v8l-10 6-10-6V8zm0 0v14M2 8l10 6 10-6"/>',
   person:    '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>',
   key:       '<path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/>',

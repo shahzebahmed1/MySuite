@@ -1,8 +1,8 @@
 {
-  "name": "concierge-home-dashboard",
+  "name": "resident-home-dashboard",
   "version": "1.0.0",
   "private": true,
-  "description": "Standalone copy of the MySuite concierge home dashboard",
+  "description": "Standalone MySuite resident dashboard for condominium updates",
   "scripts": {
     "start": "node server.mjs",
     "dev": "node server.mjs"

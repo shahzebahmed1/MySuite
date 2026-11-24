@@ -1,7 +1,7 @@
-/* Concierge package log logic (localStorage).
-   Requires: shared/utils.js, shared/mockdata.js (DEMO_RESIDENTS, PACKAGE_SEED, getCurrentConcierge). */
+/* Resident package tracking (localStorage).
+   Requires: shared/utils.js, shared/mockdata.js (DEMO_RESIDENTS, PACKAGE_SEED, getCurrentResident). */
 
-const PACKAGE_STORAGE_KEY = 'mysuite-concierge-packages-v4';
+const PACKAGE_STORAGE_KEY = 'mysuite-resident-packages-v4';
 const PACKAGE_PICKUP_ID_TYPES = ["Driver's licence", 'Provincial photo ID', 'Passport', 'Other photo ID'];
 
 function findResidentBySuite(suite) {
@@ -163,12 +163,12 @@ const PACKAGE_HISTORY_EXAMPLES = [
 ];
 
 const PACKAGE_SAMPLE_PICKUP_RECORDERS = {
-  'pkg-history-example-1': { name: 'Aisha Lawal', id: 'acct-concierge-aisha' },
-  'pkg-history-example-3': { name: 'Shahzeb', id: 'acct-concierge-shahzeb' },
-  'pkg-history-example-5': { name: 'Jordan Kim', id: 'acct-concierge-jordan' },
-  'pkg-history-example-7': { name: 'Shahzeb', id: 'acct-concierge-shahzeb' },
-  'pkg-history-example-9': { name: 'Shahzeb', id: 'acct-concierge-shahzeb' },
-  'pkg-history-example-10': { name: 'Aisha Lawal', id: 'acct-concierge-aisha' }
+  'pkg-history-example-1': { name: 'Aisha Lawal', id: 'acct-staff-aisha' },
+  'pkg-history-example-3': { name: 'Shahzeb', id: 'acct-staff-shahzeb' },
+  'pkg-history-example-5': { name: 'Jordan Kim', id: 'acct-staff-jordan' },
+  'pkg-history-example-7': { name: 'Shahzeb', id: 'acct-staff-shahzeb' },
+  'pkg-history-example-9': { name: 'Shahzeb', id: 'acct-staff-shahzeb' },
+  'pkg-history-example-10': { name: 'Aisha Lawal', id: 'acct-staff-aisha' }
 };
 
 function withPackageSamplePickupRecorder(pkg) {
@@ -208,44 +208,44 @@ function getPackages() {
     if (attributed !== next) changed = true;
     return attributed;
   });
-  const examplesKey = 'mysuite-concierge-package-history-examples-v1';
+  const examplesKey = 'mysuite-resident-package-history-examples-v1';
   const needsExamples = !readSaved(examplesKey, false);
   if (needsExamples) {
     const ids = new Set(packages.map(pkg => pkg.id));
     const extra = PACKAGE_HISTORY_EXAMPLES.filter(pkg => !ids.has(pkg.id));
     if (extra.length) { packages.push(...extra.map(pkg => withPackageSamplePickupRecorder({ ...pkg }))); changed = true; }
   }
-  const ownExampleKey = 'mysuite-concierge-pending-shahzeb-example-v1';
+  const ownExampleKey = 'mysuite-resident-pending-shahzeb-example-v1';
   const needsOwnExample = !readSaved(ownExampleKey, false);
   if (needsOwnExample && !packages.some(pkg => pkg.id === 'pkg-pending-shahzeb-example')) {
     packages.push({
       id: 'pkg-pending-shahzeb-example', suite: '501', residentName: 'Emily Larsson',
-      receivedBy: 'Shahzeb', receivedById: 'acct-concierge-shahzeb',
+      receivedBy: 'Shahzeb', receivedById: 'acct-staff-shahzeb',
       carrier: 'UPS', parcelType: 'Box', trackingLast6: '620153', note: '',
       status: 'pending', receivedAt: '2026-11-18T10:20:00',
       deliveredAt: null, deliveredBy: null, pickedUpAt: null
     });
     changed = true;
   }
-  const permissionExamplesKey = 'mysuite-concierge-package-permission-examples-v1';
+  const permissionExamplesKey = 'mysuite-resident-package-permission-examples-v1';
   const needsPermissionExamples = !readSaved(permissionExamplesKey, false);
   if (needsPermissionExamples) {
     const examples = [
       {
         id: 'pkg-permission-other-delivery', suite: '1204', residentName: 'Alex Morgan',
-        receivedBy: 'Shahzeb', receivedById: 'acct-concierge-shahzeb',
+        receivedBy: 'Shahzeb', receivedById: 'acct-staff-shahzeb',
         carrier: 'UPS', parcelType: 'Box', trackingLast6: '754920', note: '',
         receivedAt: '2026-11-18T09:15:00', status: 'delivered',
         deliveredAt: '2026-11-18T10:15:00', deliveredBy: 'Aisha Lawal',
-        deliveredById: 'acct-concierge-aisha', pickedUpAt: null
+        deliveredById: 'acct-staff-aisha', pickedUpAt: null
       },
       {
         id: 'pkg-permission-own-delivery', suite: '501', residentName: 'Emily Larsson',
-        receivedBy: 'Shahzeb', receivedById: 'acct-concierge-shahzeb',
+        receivedBy: 'Shahzeb', receivedById: 'acct-staff-shahzeb',
         carrier: 'FedEx', parcelType: 'Envelope', trackingLast6: '286431', note: '',
         receivedAt: '2026-11-18T08:45:00', status: 'delivered',
         deliveredAt: '2026-11-18T09:40:00', deliveredBy: 'Shahzeb',
-        deliveredById: 'acct-concierge-shahzeb', pickedUpAt: null
+        deliveredById: 'acct-staff-shahzeb', pickedUpAt: null
       }
     ];
     const ids = new Set(packages.map(pkg => pkg.id));
@@ -270,24 +270,24 @@ function setPackages(list) {
   save(PACKAGE_STORAGE_KEY, list);
 }
 
-function canManagePackageEntry(pkg, account = getCurrentConcierge()) {
-  return Boolean(pkg && account?.id && account.role === 'concierge');
+function canManagePackageEntry(pkg, account = getCurrentResident()) {
+  return Boolean(pkg && account?.id && account.role === 'resident');
 }
 
-function canManagePackageDelivery(pkg, account = getCurrentConcierge()) {
+function canManagePackageDelivery(pkg, account = getCurrentResident()) {
   return pkg?.status === 'delivered' && canManagePackageEntry(pkg, account);
 }
 
-function canManagePackagePickup(pkg, account = getCurrentConcierge()) {
+function canManagePackagePickup(pkg, account = getCurrentResident()) {
   return pkg?.status === 'picked-up' && canManagePackageEntry(pkg, account);
 }
 
-function canReturnPackageToPending(pkg, account = getCurrentConcierge()) {
+function canReturnPackageToPending(pkg, account = getCurrentResident()) {
   return canManagePackageDelivery(pkg, account) || canManagePackagePickup(pkg, account);
 }
 
 const PACKAGE_CHANGE_REASONS = ['Duplicate entry', 'Wrong suite', 'Logged in error', 'Other'];
-const PACKAGE_AUDIT_KEY = 'mysuite-concierge-package-audit-v1';
+const PACKAGE_AUDIT_KEY = 'mysuite-resident-package-audit-v1';
 
 function packageChangeReason(pkg, fields = {}) {
   const reason = String(fields.changeReason || '').trim();
@@ -302,11 +302,11 @@ function packageChangeReason(pkg, fields = {}) {
 function recordPackageChange(action, before, after, change) {
   const stored = readSaved(PACKAGE_AUDIT_KEY, []);
   const records = Array.isArray(stored) ? stored : [];
-  const actor = getCurrentConcierge();
+  const actor = getCurrentResident();
   records.push({
     id: `package-change-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
     packageId: before.id, action, reason: change.reason, note: change.note,
-    actorId: actor?.id || null, actorName: actor?.name || 'Concierge',
+    actorId: actor?.id || null, actorName: actor?.name || 'Resident',
     recordedAt: new Date().toISOString(),
     before: JSON.parse(JSON.stringify(before)), after: after ? JSON.parse(JSON.stringify(after)) : null
   });
@@ -322,7 +322,7 @@ function packageTimesMatchAtMinute(first, second) {
 }
 
 function preparePackageEntryUpdate(current, fields) {
-  if (!canManagePackageEntry(current)) return { error: 'Sign in as concierge to edit packages.' };
+  if (!canManagePackageEntry(current)) return { error: 'Sign in as resident to edit packages.' };
   const suite = String(fields.suite || '').trim();
   const residentName = String(fields.residentName || '').trim();
   const trackingLast6 = String(fields.trackingLast6 || '').trim();
@@ -513,7 +513,7 @@ function addPackage(fields) {
 
 function addPackages(rows) {
   if (!Array.isArray(rows) || !rows.length) return [];
-  const concierge = getCurrentConcierge();
+  const resident = getCurrentResident();
   const list = getPackages();
   const arrivedAt = new Date().toISOString();
   const entries = rows.map(fields => {
@@ -523,8 +523,8 @@ function addPackages(rows) {
       id: `pkg-${crypto.randomUUID()}`,
       suite,
       residentName: (fields.residentName || resident?.name || 'Unknown resident').trim(),
-      receivedBy: (concierge?.name || fields.receivedBy || 'Concierge').trim(),
-      receivedById: concierge?.id || null,
+      receivedBy: (resident?.name || fields.receivedBy || 'Resident').trim(),
+      receivedById: resident?.id || null,
       carrier: fields.carrier || 'Other',
       parcelType: fields.parcelType || 'Package',
       trackingLast6: String(fields.trackingLast6 || '').trim(),
@@ -548,7 +548,7 @@ function recordPackageCompletion(action, before, after) {
   if (hasHistory) recordPackageChange(action, before, after, { reason: '', note: '' });
 }
 
-const PACKAGE_RELEASE_STORAGE_KEY = 'mysuite-concierge-package-releases-v1';
+const PACKAGE_RELEASE_STORAGE_KEY = 'mysuite-resident-package-releases-v1';
 
 function releasePackagesWithActivity(selections) {
   if (!Array.isArray(selections) || !selections.length) return { packages: [], error: 'Choose at least one package to release.' };
@@ -562,9 +562,9 @@ function releasePackagesWithActivity(selections) {
   }
   const list = getPackages();
   if (selections.some(item => !list.some(pkg => pkg.id === item.id && pkg.status === 'pending'))) return { packages: [], error: 'The pending list has changed. Review the packages and try again.' };
-  const actor = getCurrentConcierge();
+  const actor = getCurrentResident();
   const now = new Date().toISOString();
-  const release = { id: `release-${crypto.randomUUID()}`, releasedAt: now, recordedBy: actor?.name || 'Concierge', recordedById: actor?.id || null, items: [] };
+  const release = { id: `release-${crypto.randomUUID()}`, releasedAt: now, recordedBy: actor?.name || 'Resident', recordedById: actor?.id || null, items: [] };
   const changes = [];
   const nextPackages = list.map(pkg => {
     const request = requests.get(pkg.id);

@@ -1,17 +1,17 @@
-/* Approved concierge dashboard. No experimental layouts or editing controls. */
+/* Approved resident dashboard. No experimental layouts or editing controls. */
 body.sidebar-merge {
  --home-surface:#fff; --home-ink:#191919; --home-muted:#626262; --home-line:#e5e5e5;
  --home-action:#2563eb; --home-action-hover:#1d4ed8; --home-icon-tint:#f0f0f0;
  --home-nav-ink:#4d5560; --home-nav-active:#111; --home-hover:#00000006;
  --espresso:var(--home-ink); --paper:var(--home-surface); --line:var(--home-line);
- --cream:var(--concierge-canvas,#fafafa); --caramel:var(--home-action);
- color:var(--home-ink); background:var(--concierge-canvas,#fafafa);
+ --cream:var(--resident-canvas,#fafafa); --caramel:var(--home-action);
+ color:var(--home-ink); background:var(--resident-canvas,#fafafa);
  font-family:var(--dashboard-font-family,'Red Hat Display',sans-serif);
 }
-body.sidebar-merge main { margin-left:calc(var(--sidebar-shape-width,250px) * 1.05 + 12px); padding:18px 24px 24px; max-width:none; min-width:0; min-height:100dvh; background:var(--concierge-canvas,#fafafa); }
+body.sidebar-merge main { margin-left:calc(var(--sidebar-shape-width,250px) * 1.05 + 12px); padding:18px 24px 24px; max-width:none; min-width:0; min-height:100dvh; background:var(--resident-canvas,#fafafa); }
 body.sidebar-merge .sidebar {
  left:12px; top:8px; bottom:16px; height:calc(100dvh - 24px); width:calc(var(--sidebar-shape-width,250px) * 1.05);
- padding:0 16px 16px; border:0; border-radius:24px; box-shadow:none; background:var(--concierge-canvas,#fafafa); color:var(--home-nav-ink); font-family:inherit;
+ padding:0 16px 16px; border:0; border-radius:24px; box-shadow:none; background:var(--resident-canvas,#fafafa); color:var(--home-nav-ink); font-family:inherit;
 }
 body.sidebar-merge .sidebar > nav { flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; }
 body.sidebar-merge .sidebar > nav::-webkit-scrollbar { display:none; }

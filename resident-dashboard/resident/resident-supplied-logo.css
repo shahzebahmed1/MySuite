@@ -1,0 +1,22 @@
+/* The selected transparent horizontal logo; no logo picker or alternate wordmarks. */
+html body.resident-sidebar[data-sidebar-palette] .sidebar .brand[data-supplied-logo] {
+ display:flex !important;position:relative;align-items:center;justify-content:flex-start !important;
+ min-height:74px;padding:6px 12px !important;line-height:1;border:0;text-decoration:none;transform:none !important;
+}
+html body.resident-sidebar[data-sidebar-palette] .sidebar .brand[data-supplied-logo] > .supplied-logo-crop {
+ display:block !important;flex:0 1 140px;width:140px;max-width:100%;aspect-ratio:var(--logo-frame-aspect);
+ position:relative;overflow:hidden;line-height:0;mix-blend-mode:normal;
+}
+html body.resident-sidebar[data-sidebar-palette] .sidebar .brand[data-supplied-logo] .supplied-logo-image {
+ display:block !important;position:absolute;width:var(--logo-image-width) !important;max-width:none !important;height:auto !important;
+ left:var(--logo-image-left);top:var(--logo-image-top);margin:0;border:0;border-radius:0;object-fit:initial;
+}
+html[data-home-mode="dark"] body.resident-sidebar[data-sidebar-palette] .sidebar .brand[data-supplied-logo] > .supplied-logo-crop,
+html[data-resident-theme="dark"] body.resident-sidebar[data-sidebar-palette] .sidebar .brand[data-supplied-logo] > .supplied-logo-crop {background:#fff;border-radius:7px;}
+@media(min-width:801px){
+ html body.resident-sidebar[data-sidebar-palette] .sidebar {padding-top:0 !important;}
+ html body.resident-sidebar[data-sidebar-palette] .sidebar .brand[data-supplied-logo] {min-height:64px !important;height:64px;margin-bottom:0 !important;top:0 !important;}
+}
+html body.resident-sidebar[data-sidebar-palette] .sidebar nav {top:0 !important;}
+html body.resident-sidebar[data-sidebar-palette] .sidebar .nav-item {padding-top:7px !important;padding-bottom:7px !important;margin-block:0 !important;}
+html body.resident-sidebar[data-sidebar-palette] .sidebar .nav-divider {margin-block:10px !important;}

@@ -1,7 +1,7 @@
 /* Announcements shared by all local portal roles (localStorage).
    Production requires authenticated server-side publishing permissions. */
 
-const ANNOUNCEMENT_STORAGE_KEY = 'mysuite-concierge-announcements-v1';
+const ANNOUNCEMENT_STORAGE_KEY = 'mysuite-resident-announcements-v1';
 
 const ANNOUNCEMENT_SEED = [
   {

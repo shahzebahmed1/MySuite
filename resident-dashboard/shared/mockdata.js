@@ -11,7 +11,6 @@ const MOCK_DATA = {
 
   /* Demo sessions — who is “logged in” per portal until real auth exists */
   session: {
-    conciergeId: 'acct-concierge-shahzeb',
     residentId: 'acct-resident-maria',
     boardId: 'acct-board-alex',
     managerId: 'acct-manager-sarah',
@@ -36,38 +35,38 @@ const MOCK_DATA = {
       suite: '1204'
     },
     {
-      id: 'acct-concierge-jordan',
+      id: 'acct-staff-jordan',
       name: 'Jordan Kim',
       initials: 'JK',
-      role: 'concierge',
-      title: 'Concierge',
+      role: 'staff',
+      title: 'Building staff',
       station: 'Main Lobby',
       shift: '8:00 AM – 4:00 PM'
     },
     {
-      id: 'acct-concierge-shahzeb',
+      id: 'acct-staff-shahzeb',
       name: 'Shahzeb',
       initials: 'SZ',
-      role: 'concierge',
-      title: 'Concierge',
+      role: 'staff',
+      title: 'Building staff',
       station: 'Main Lobby',
       shift: '7:00 AM – 3:00 PM'
     },
     {
-      id: 'acct-concierge-aisha',
+      id: 'acct-staff-aisha',
       name: 'Aisha Lawal',
       initials: 'AL',
-      role: 'concierge',
-      title: 'Concierge',
+      role: 'staff',
+      title: 'Building staff',
       station: 'Main Lobby',
       shift: '4:00 PM – 12:00 AM'
     },
     {
-      id: 'acct-concierge-alsina',
+      id: 'acct-staff-alsina',
       name: 'Alsina Butt',
       initials: 'AB',
-      role: 'concierge',
-      title: 'Concierge',
+      role: 'staff',
+      title: 'Building staff',
       station: 'Main Lobby',
       shift: '3:00 PM – 11:00 PM'
     },
@@ -197,7 +196,7 @@ const MOCK_DATA = {
       date: '2026-11-12',
       shift: 'morning',
       happenedAt: '2026-11-12T08:55:00',
-      notes: 'Benjamin for Donaldson, let in the building by concierge',
+      notes: 'Benjamin for Donaldson, let in the building by resident',
       loggedBy: 'Jordan Kim',
       updatedAt: null
     },
@@ -251,7 +250,7 @@ const MOCK_DATA = {
       date: '2026-11-12',
       shift: 'evening',
       happenedAt: '2026-11-12T14:55:00',
-      notes: 'Let in Ms. Waslen Suite #1101 (she had been waiting outside for 1/2 hour as had forgotten her fob key inside and no concierge at desk), let her in elevator too',
+      notes: 'Let in Ms. Waslen Suite #1101 (she had been waiting outside for 1/2 hour as had forgotten her fob key inside and no resident at desk), let her in elevator too',
       loggedBy: 'Alsina Butt',
       updatedAt: null
     },
@@ -329,7 +328,7 @@ const MOCK_DATA = {
     { id: 'vis-2', name: 'Sarah Park', suite: '1108', signedInAt: '11:02 AM' }
   ],
 
-  /* Status is derived from the clock in concierge/app.js — do not hardcode labels */
+  /* Status is derived from the clock in resident/app.js — do not hardcode labels */
   amenitySchedule: [
     { date: '2026-11-13', time: '2:00 PM', amenity: 'Pool', suite: '501', residentName: 'Emily Larsson', duration: '1 hour' },
     { date: '2026-11-14', time: '5:00 PM', amenity: 'Gym', suite: '204', residentName: 'Alex Morgan', duration: '2 hours' },
@@ -374,8 +373,8 @@ function getSessionAccount(roleKey) {
   return findAccountById(id);
 }
 
-function getCurrentConcierge() {
-  return getSessionAccount('concierge') || findAccountById('acct-concierge-jordan');
+function getCurrentResident() {
+  return getSessionAccount('resident') || findAccountById('acct-resident-maria');
 }
 
 function accountFirstName(account) {
@@ -390,7 +389,7 @@ function accountSubtitle(account) {
     if (account.suite) bits.push(`Suite ${account.suite}`);
     return bits.join(' · ');
   }
-  if (account.role === 'concierge') {
+  if (account.role === 'staff') {
     return [account.title, account.station].filter(Boolean).join(' · ');
   }
   return account.title || '';
@@ -446,7 +445,7 @@ function applyPortalAccounts() {
   });
 }
 
-/* Back-compat aliases used by existing concierge scripts */
+/* Back-compat aliases used by existing resident scripts */
 const DEMO_RESIDENTS = MOCK_DATA.residents;
 const PACKAGE_SEED = MOCK_DATA.packageSeed;
 const DAILY_LOG_SEED = MOCK_DATA.dailyLogSeed;
