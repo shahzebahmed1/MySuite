@@ -226,19 +226,6 @@ const HOME_COMPLETED_MAINTENANCE = { id:'home-completed-maintenance-demo', suite
     </button>`).join('');
 })();
 
-(function renderHomeAnnouncements() {
-  const listEl = document.querySelector('#home-announcement-list');
-  if (!listEl) return;
-  const existing = getAnnouncements();
-  const items = sortAnnouncementsNewestFirst([...existing, ...ANNOUNCEMENT_SEED.filter(seed => !existing.some(item => item.id === seed.id))]).slice(0, 2);
-  if (items.length === 0) {
-    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0">No recent announcements.</p>';
-    return;
-  }
-  listEl.innerHTML = items.map(item => renderAnnouncementRow(item, { showCategory:false, showAttachment:true })).join('');
-  renderIcons(listEl);
-})();
-
 /* ── Sidebar ──────────────────────────────────────────────── */
 function closeMenu() {
   document.querySelector('.sidebar').classList.remove('open');

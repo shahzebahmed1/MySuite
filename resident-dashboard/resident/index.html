@@ -23,7 +23,7 @@
   <link href="home-dark-mode.css?v=d929640f6459" rel="stylesheet"/>
   <link href="resident-supplied-logo.css?v=cc2687299f4b" rel="stylesheet"/>
   <link href="home-fit-overview.css?v=a54a2b9e8d12" rel="stylesheet"/>
-  <link href="home-priority.css?v=home-brief-1" rel="stylesheet"/>
+  <link href="home-priority.css?v=home-brief-2" rel="stylesheet"/>
   <script defer="" src="../shared/icons.js?v=1849b2733794">
   </script>
   <script defer="" src="../shared/utils.js?v=4e85d6218aa8">
@@ -36,9 +36,9 @@
   </script>
   <script defer="" src="announcements-data.js?v=fda79a22829d">
   </script>
-  <script defer="" src="app.js?v=home-brief-1">
+  <script defer="" src="app.js?v=home-brief-2">
   </script>
-  <script defer="" src="home-priority.js?v=home-brief-1">
+  <script defer="" src="home-priority.js?v=home-brief-2">
   </script>
   <script defer="" src="home-topbar.js?v=835be6c92dd9">
   </script>
@@ -138,37 +138,35 @@
      </span>
     </div>
     <div class="home-brief-panel">
-     <div class="home-brief-needs">
-      <h3 class="home-brief-subtitle">
-       Needs you
-      </h3>
+     <div class="home-brief-feed">
+      <div class="home-brief-subhead">
+       <h3 class="home-brief-subtitle">
+        Announcements
+       </h3>
+       <a class="home-brief-more" href="announcements.html">
+        View all
+        <i data-icon="chevron">
+        </i>
+       </a>
+      </div>
       <ul class="home-brief-list" id="home-brief-list">
       </ul>
      </div>
-     <aside aria-labelledby="home-status-title" class="home-status">
-      <h3 class="home-brief-subtitle" id="home-status-title">
-       Building status
-      </h3>
-      <ul class="home-status-list" id="home-status-list">
-      </ul>
-      <p class="home-desk" id="home-desk-line">
-      </p>
+     <aside aria-labelledby="home-payments-title" class="home-brief-side">
+      <div class="home-brief-subhead">
+       <h3 class="home-brief-subtitle" id="home-payments-title">
+        Upcoming payments
+       </h3>
+       <button class="home-brief-more" data-action="view-payments" type="button">
+        View payments
+       </button>
+      </div>
+      <div id="home-payments-panel">
+      </div>
      </aside>
     </div>
    </section>
    <section aria-label="Resident dashboard" class="dashboard">
-    <article class="card announcements" id="announcements">
-     <div class="card-heading">
-      <h2>
-       Announcements
-      </h2>
-      <a class="button outline compact" href="announcements.html">
-       View All
-      </a>
-     </div>
-     <div id="home-announcement-list">
-     </div>
-    </article>
     <article class="card schedule" id="schedule">
      <div class="card-heading">
       <h2>
@@ -181,18 +179,6 @@
      <div id="schedule-list">
      </div>
     </article>
-    <article aria-labelledby="dashboard-payments-title" class="card dashboard-payments" id="payments">
-     <div class="card-heading">
-      <h2 id="dashboard-payments-title">
-       Upcoming Payments
-      </h2>
-      <button class="button outline compact" data-action="view-payments" type="button">
-       View Payments
-      </button>
-     </div>
-     <div id="home-payments-panel">
-     </div>
-    </article>
     <article class="card maint-queue" id="maint-queue">
      <div class="card-heading">
       <h2>
@@ -203,6 +189,43 @@
       </a>
      </div>
      <div id="maint-list">
+     </div>
+    </article>
+    <article aria-labelledby="suite-record-title" class="card home-record" id="suite-record">
+     <div class="card-heading">
+      <h2 id="suite-record-title">
+       Your suite
+      </h2>
+      <a class="button outline compact" href="contact-directory.html">
+       Front desk
+      </a>
+     </div>
+     <ul class="home-panel-block" id="suite-record-list">
+     </ul>
+     <p class="home-record-desk" id="suite-record-desk">
+     </p>
+    </article>
+    <article aria-labelledby="violations-title" class="card home-violations" id="violations">
+     <div class="card-heading">
+      <h2 id="violations-title">
+       Violations
+      </h2>
+      <button class="button outline compact" data-violations-all="" id="violations-view-all" type="button">
+       View all
+      </button>
+     </div>
+     <div class="home-panel-block" id="violations-list">
+     </div>
+    </article>
+    <article aria-labelledby="ack-title" class="card home-acknowledgements" id="acknowledgements">
+     <div class="card-heading">
+      <h2 id="ack-title">
+       Notices to acknowledge
+      </h2>
+      <span class="home-count" id="ack-count">
+      </span>
+     </div>
+     <div class="home-panel-block" id="ack-list">
      </div>
     </article>
     <article aria-labelledby="booking-promo-title" class="card booking-promo" id="booking-promo">

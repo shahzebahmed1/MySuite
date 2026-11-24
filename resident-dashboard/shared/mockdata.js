@@ -332,7 +332,8 @@ const MOCK_DATA = {
      relative to today so the overview always has a genuine next payment. */
   payments: demoResidentPayments(),
 
-  /* Planned work and closures shown in the home overview status panel. */
+  /* Building operations and closures. Used by the manager overview, not the
+     resident dashboard. */
   buildingStatus: [
     { id: 'bs-elevator', title: 'Elevator B offline', detail: 'Monday, 8–11 a.m. · safety inspection', icon: 'elevator' },
     { id: 'bs-water', title: 'Water shut off', detail: 'Thursday, 9–11 a.m. · whole building', icon: 'alert' },
@@ -343,6 +344,77 @@ const MOCK_DATA = {
     hours: '7 a.m. – 10 p.m. daily',
     phone: '(403) 555-0142',
     afterHours: '(403) 555-0199'
+  },
+
+  /* Notices the resident is asked to confirm they have read. */
+  notices: [
+    {
+      id: 'notice-water',
+      title: 'Water shut off this Thursday',
+      category: 'Building update',
+      postedAt: '2026-11-17T09:00:00',
+      body: 'Water will be shut off Thursday from 9–11 a.m. for riser repairs. Store water if you will need it during that window.'
+    },
+    {
+      id: 'notice-parking',
+      title: 'Visitor parking rules',
+      category: 'Community',
+      postedAt: '2026-11-14T15:30:00',
+      body: 'Visitor passes are now required after 6 p.m. Register guests at the front desk or through MySuite before they arrive.'
+    },
+    {
+      id: 'notice-fire',
+      title: 'Annual fire alarm testing',
+      category: 'Safety',
+      postedAt: '2026-11-10T08:00:00',
+      body: 'Alarm testing runs November 12 between 10 a.m. and noon. Alarms will sound intermittently; no evacuation is required.'
+    }
+  ],
+
+  /* Violations recorded against the signed-in resident's suite. */
+  violations: [
+    {
+      id: 'vio-1',
+      reference: 'V-26-041',
+      category: 'Noise',
+      issuedOn: '2026-11-09',
+      summary: 'Noise complaint from Suite 903 at 10:40 p.m. Quiet hours begin at 10 p.m.',
+      status: 'open',
+      fineCents: 10000,
+      dueOn: '2026-12-01'
+    },
+    {
+      id: 'vio-2',
+      reference: 'V-26-037',
+      category: 'Parking',
+      issuedOn: '2026-10-21',
+      summary: 'Vehicle left in a visitor stall overnight without a pass.',
+      status: 'paid',
+      fineCents: 7500,
+      dueOn: '2026-11-05',
+      paidOn: '2026-11-03'
+    },
+    {
+      id: 'vio-3',
+      reference: 'V-26-029',
+      category: 'Amenity',
+      issuedOn: '2026-09-30',
+      summary: 'Common room occupied after posted hours; lights and chairs left out.',
+      status: 'disputed',
+      fineCents: 5000,
+      dueOn: '2026-10-14'
+    }
+  ],
+
+  /* What the building holds on file for the signed-in suite. */
+  suiteRecord: {
+    rows: [
+      { label: 'Entry fob', value: 'Expires Jun 2027', pill: 'Active', tone: 'done' },
+      { label: 'Parking', value: 'P2 · Stall 114' },
+      { label: 'Storage', value: 'Locker 2B' },
+      { label: 'Insurance', value: 'Wawanesa · expires Mar 15, 2027', pill: 'On file', tone: 'done' },
+      { label: 'Emergency contact', value: 'Ana Santos · (403) 555-0188' }
+    ]
   },
 
   /* Status is derived from the clock in resident/app.js — do not hardcode labels */

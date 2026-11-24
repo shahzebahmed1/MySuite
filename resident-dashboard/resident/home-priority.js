@@ -1,8 +1,9 @@
-/* MySuite — Resident home brief.
-   Ranks what needs the resident today, then fills the building-status panel,
-   the payments card, and the notifications feed from the same local records the
-   dedicated pages already use. Load after app.js. */
+/* MySuite — Resident home.
+   Today band (announcements + upcoming payments), the suite record, notices that
+   need acknowledgement, and violations. Reads the same local records as the
+   dedicated pages. Load after app.js. */
 
+/* ── Helpers ──────────────────────────────────────────────── */
 function homeBriefEscape(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -37,6 +38,52 @@ function homeBriefRelativeDay(iso, now = new Date()) {
   return days > 0 ? `in ${days} days` : `${Math.abs(days)} days ago`;
 }
 
+/* ── Band heading ─────────────────────────────────────────── */
+function renderHomeBriefDate() {
+  const el = document.querySelector('#home-brief-date');
+  if (!el) return;
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const building = MOCK_DATA.building?.name || 'Your building';
+  el.textContent = `${today} · ${building}`;
+}
+
+/* ── Announcements ────────────────────────────────────────── */
+function homeAnnouncements() {
+  const existing = getAnnouncements();
+  const seeds = typeof ANNOUNCEMENT_SEED !== 'undefined' ? ANNOUNCEMENT_SEED : [];
+  return sortAnnouncementsNewestFirst([
+    ...existing,
+    ...seeds.filter(seed => !existing.some(item => item.id === seed.id))
+  ]);
+}
+
+function renderHomeNotices() {
+  const list = document.querySelector('#home-brief-list');
+  if (!list) return;
+  const items = homeAnnouncements().slice(0, 3);
+  if (!items.length) {
+    list.innerHTML = '<li class="home-card-empty">No announcements right now.</li>';
+    return;
+  }
+  list.innerHTML = items.map(notice => {
+    const icon = ['pool', 'building', 'users', 'megaphone'].includes(notice.icon) ? notice.icon : 'megaphone';
+    const meta = [notice.category, formatAnnouncementWhen(notice.postedAt)].filter(Boolean).join(' · ');
+    return `<li>
+      <button class="home-notice" type="button" data-announcement="${homeBriefEscape(notice.id)}">
+        <span class="home-notice-icon"><i data-icon="${icon}"></i></span>
+        <span class="home-notice-copy">
+          <strong>${homeBriefEscape(notice.title)}</strong>
+          <span>${homeBriefEscape(notice.summary || notice.body || '')}</span>
+          <em>${homeBriefEscape(meta)}</em>
+        </span>
+        <i data-icon="chevron"></i>
+      </button>
+    </li>`;
+  }).join('');
+  renderIcons(list);
+}
+
+/* ── Upcoming payments ────────────────────────────────────── */
 function homePaymentsList() {
   return (MOCK_DATA.payments || [])
     .slice()
@@ -47,174 +94,174 @@ function homeNextPayment() {
   return homePaymentsList().find(payment => payment.status === 'due') || null;
 }
 
-/* ── What needs you ───────────────────────────────────────── */
-function homeBriefItems(now = new Date()) {
-  const items = [];
-
-  const payment = homeNextPayment();
-  if (payment) {
-    items.push({
-      rank: 1,
-      icon: 'dollar',
-      tone: 'needs',
-      pill: 'Needs you',
-      title: `Condo fee due ${homeBriefShortDate(payment.dueDate)}`,
-      meta: `${homeBriefMoney(payment.amountCents)} · ${payment.autopay ? 'autopay on' : 'autopay off'}`,
-      action: 'view-payments'
-    });
-  }
-
-  let booking = null;
-  if (typeof liveAmenityBookings === 'function') {
-    try { booking = liveAmenityBookings(now)[0] || null; } catch { booking = null; }
-  }
-  if (booking) {
-    const when = typeof bookingDayLabel === 'function'
-      ? bookingDayLabel(booking.row.date, now)
-      : homeBriefShortDate(booking.row.date);
-    const soon = ['Active', 'Starting soon'].includes(booking.status.label);
-    items.push({
-      rank: 2,
-      icon: 'calendar',
-      tone: soon ? 'needs' : 'progress',
-      pill: booking.status.label === 'Upcoming' ? 'Booked' : booking.status.label,
-      title: `${booking.row.amenity} · ${when} ${booking.row.time || ''}`.trim(),
-      meta: [booking.row.duration, booking.row.suite ? `Suite ${booking.row.suite}` : ''].filter(Boolean).join(' · '),
-      href: 'amenities.html'
-    });
-  }
-
-  if (typeof getPackages === 'function' && typeof sortPackagesNewestFirst === 'function') {
-    const pending = sortPackagesNewestFirst(getPackages().filter(pkg => pkg.status === 'pending'));
-    if (pending.length) {
-      const resident = typeof getCurrentResident === 'function' ? getCurrentResident() : null;
-      const mine = pending.filter(pkg => String(pkg.suite) === String(resident?.suite || ''));
-      const shown = mine.length ? mine[0] : pending[0];
-      const time = typeof formatPackageTime === 'function' ? formatPackageTime(shown.receivedAt) : '';
-      items.push({
-        rank: 3,
-        icon: 'package',
-        tone: 'progress',
-        pill: 'At the desk',
-        title: mine.length
-          ? `${mine.length} package${mine.length === 1 ? '' : 's'} for Suite ${mine[0].suite}`
-          : `${pending.length} packages at the desk`,
-        meta: [shown.carrier || 'Other', time].filter(Boolean).join(' · '),
-        href: 'packages.html'
-      });
-    }
-  }
-
-  if (typeof getMaintenance === 'function' && typeof sortMaintenanceNewestFirst === 'function') {
-    const open = sortMaintenanceNewestFirst(getMaintenance()).filter(item => item.status !== 'completed');
-    if (open.length) {
-      const first = open[0];
-      items.push({
-        rank: 4,
-        icon: 'wrench',
-        tone: 'progress',
-        pill: open.length > 1 ? `${open.length} open` : 'In progress',
-        title: typeof maintenanceSummary === 'function' ? maintenanceSummary(first) : 'Maintenance request',
-        meta: [
-          `Suite ${first.suite}`,
-          typeof formatMaintenanceWhen === 'function' && first.reportedAt
-            ? `reported ${formatMaintenanceWhen(first.reportedAt)}`
-            : ''
-        ].filter(Boolean).join(' · '),
-        href: 'maintenance.html'
-      });
-    }
-  }
-
-  return items.sort((a, b) => a.rank - b.rank).slice(0, 4);
-}
-
-function homeBriefRowHtml(item) {
-  const body = `<span class="home-brief-icon"><i data-icon="${homeBriefEscape(item.icon || 'info')}"></i></span>`
-    + `<span class="home-brief-copy"><strong>${homeBriefEscape(item.title)}</strong><span>${homeBriefEscape(item.meta)}</span></span>`
-    + `<span class="home-pill is-${homeBriefEscape(item.tone)}">${homeBriefEscape(item.pill)}</span>`;
-  if (item.href) return `<a class="home-need" href="${homeBriefEscape(item.href)}">${body}</a>`;
-  return `<button class="home-need" type="button" data-action="${homeBriefEscape(item.action || '')}">${body}</button>`;
-}
-
-function renderHomeBrief() {
-  const list = document.querySelector('#home-brief-list');
-  if (!list) return;
-  let items = [];
-  try { items = homeBriefItems(); } catch { items = []; }
-  if (items.length) {
-    list.innerHTML = items.map(item => `<li class="home-brief-item">${homeBriefRowHtml(item)}</li>`).join('');
-  } else {
-    list.innerHTML = `<li class="home-brief-item">
-      <div class="home-need is-empty">
-        <span class="home-brief-icon"><i data-icon="check"></i></span>
-        <span class="home-brief-copy"><strong>Nothing needs you today</strong><span>Bookings, packages, and requests are all up to date.</span></span>
-      </div>
-    </li>`;
-  }
-  renderIcons(list);
-}
-
-function renderHomeBriefDate() {
-  const el = document.querySelector('#home-brief-date');
-  if (!el) return;
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-  const building = MOCK_DATA.building?.name || 'Your building';
-  el.textContent = `${today} · ${building}`;
-}
-
-/* ── Building status ──────────────────────────────────────── */
-function renderHomeStatus() {
-  const list = document.querySelector('#home-status-list');
-  if (!list) return;
-  const status = Array.isArray(MOCK_DATA.buildingStatus) ? MOCK_DATA.buildingStatus : [];
-  list.innerHTML = status.length
-    ? status.map(item => `<li class="home-status-item">
-        <i data-icon="${homeBriefEscape(item.icon || 'info')}"></i>
-        <span><strong>${homeBriefEscape(item.title)}</strong><span>${homeBriefEscape(item.detail)}</span></span>
-      </li>`).join('')
-    : `<li class="home-status-item">
-        <i data-icon="check"></i>
-        <span><strong>All systems normal</strong><span>No closures or planned work today.</span></span>
-      </li>`;
-  renderIcons(list);
-
-  const desk = document.querySelector('#home-desk-line');
-  if (!desk) return;
-  const info = MOCK_DATA.frontDesk;
-  if (!info) { desk.hidden = true; return; }
-  const phone = String(info.phone || '');
-  const afterHours = String(info.afterHours || '');
-  desk.hidden = false;
-  desk.innerHTML = `Front desk ${homeBriefEscape(info.hours || '')}`
-    + (phone ? ` · <a href="tel:${homeBriefEscape(phone.replace(/[^\d+]/g, ''))}">${homeBriefEscape(phone)}</a>` : '')
-    + (afterHours ? `<br>After hours ${homeBriefEscape(afterHours)}` : '');
-}
-
-/* ── Payments ─────────────────────────────────────────────── */
 function renderHomePayments() {
   const panel = document.querySelector('#home-payments-panel');
   if (!panel) return;
   const payment = homeNextPayment();
   if (!payment) {
-    panel.innerHTML = '<div class="dashboard-payments-panel"><span>No upcoming payments to display.</span></div>';
+    panel.innerHTML = '<p class="home-due-empty">Nothing due right now.</p>';
     return;
   }
   const paid = homePaymentsList().filter(item => item.status === 'paid').pop();
-  panel.innerHTML = `<button class="home-payment" type="button" data-action="view-payments">
-    <span class="home-payment-amount">${homeBriefEscape(homeBriefMoney(payment.amountCents))}</span>
-    <span class="home-payment-copy">
-      <strong>${homeBriefEscape(payment.label || 'Upcoming payment')}</strong>
-      <span>Due ${homeBriefEscape(homeBriefShortDate(payment.dueDate))} · ${homeBriefEscape(homeBriefRelativeDay(payment.dueDate))}</span>
-      <span class="home-payment-flags">
-        <span class="home-pill is-${payment.autopay ? 'done' : 'needs'}">${payment.autopay ? 'Autopay on' : 'Autopay off'}</span>
-        ${paid ? `<span class="home-payment-last">Last paid ${homeBriefEscape(homeBriefShortDate(paid.paidOn || paid.dueDate))}</span>` : ''}
+  panel.innerHTML = `<div class="home-due">
+      <span class="home-due-amount">${homeBriefEscape(homeBriefMoney(payment.amountCents))}</span>
+      <span class="home-due-copy">
+        <strong>${homeBriefEscape(payment.label || 'Upcoming payment')}</strong>
+        <span>Due ${homeBriefEscape(homeBriefShortDate(payment.dueDate))} · ${homeBriefEscape(homeBriefRelativeDay(payment.dueDate))}</span>
       </span>
-    </span>
-  </button>`;
+      <span class="home-due-flags">
+        <span class="home-pill is-${payment.autopay ? 'done' : 'needs'}">${payment.autopay ? 'Autopay on' : 'Autopay off'}</span>
+        ${paid ? `<span class="home-due-last">Last paid ${homeBriefEscape(homeBriefShortDate(paid.paidOn || paid.dueDate))}</span>` : ''}
+      </span>
+    </div>
+    ${payment.covers ? `<p class="home-due-caption">${homeBriefEscape(payment.covers)}</p>` : ''}`;
 }
 
-/* ── Dialogs used by the topbar bell and the payments card ── */
+/* ── Your suite ───────────────────────────────────────────── */
+function renderHomeSuiteRecord() {
+  const list = document.querySelector('#suite-record-list');
+  if (!list) return;
+  const rows = Array.isArray(MOCK_DATA.suiteRecord?.rows) ? MOCK_DATA.suiteRecord.rows : [];
+  list.innerHTML = rows.length
+    ? rows.map(row => `<li class="home-record-row">
+        <span class="home-record-label">${homeBriefEscape(row.label)}</span>
+        <span class="home-record-value">${homeBriefEscape(row.value)}${row.pill ? ` <span class="home-pill is-${homeBriefEscape(row.tone || 'done')}">${homeBriefEscape(row.pill)}</span>` : ''}</span>
+      </li>`).join('')
+    : '<li class="home-card-empty">Suite details are not available.</li>';
+
+  const desk = document.querySelector('#suite-record-desk');
+  if (!desk) return;
+  const info = MOCK_DATA.frontDesk;
+  if (!info) { desk.hidden = true; return; }
+  const phone = String(info.phone || '');
+  desk.hidden = false;
+  desk.innerHTML = `Front desk ${homeBriefEscape(info.hours || '')}`
+    + (phone ? ` · <a href="tel:${homeBriefEscape(phone.replace(/[^\d+]/g, ''))}">${homeBriefEscape(phone)}</a>` : '');
+}
+
+/* ── Notices to acknowledge ───────────────────────────────── */
+const HOME_ACK_KEY = 'mysuite-resident-notice-acks-v1';
+
+function homeNoticeAcks() {
+  const stored = readSaved(HOME_ACK_KEY, {});
+  return stored && typeof stored === 'object' && !Array.isArray(stored) ? stored : {};
+}
+
+function homePendingNotices() {
+  const acks = homeNoticeAcks();
+  return (MOCK_DATA.notices || []).filter(notice => !acks[notice.id]);
+}
+
+function renderHomeAcknowledgements() {
+  const list = document.querySelector('#ack-list');
+  if (!list) return;
+  const count = document.querySelector('#ack-count');
+  const pending = homePendingNotices();
+  if (count) count.textContent = pending.length ? `${pending.length} open` : '';
+  if (!pending.length) {
+    list.innerHTML = '<p class="home-card-empty">Every notice has been acknowledged.</p>';
+    return;
+  }
+  list.innerHTML = pending.slice(0, 3).map(notice => {
+    const meta = [notice.category, formatAnnouncementWhen(notice.postedAt)].filter(Boolean).join(' · ');
+    return `<div class="home-ack-row">
+      <span class="home-ack-copy">
+        <strong>${homeBriefEscape(notice.title)}</strong>
+        <span>${homeBriefEscape(meta)}</span>
+      </span>
+      <button class="home-ack-button" type="button" data-ack="${homeBriefEscape(notice.id)}">Acknowledge</button>
+    </div>`;
+  }).join('');
+}
+
+function acknowledgeNotice(id) {
+  const all = homeNoticeAcks();
+  all[id] = new Date().toISOString();
+  save(HOME_ACK_KEY, all);
+  const notice = (MOCK_DATA.notices || []).find(item => item.id === id);
+  renderHomeAcknowledgements();
+  toast(notice ? `Acknowledged · ${notice.title}` : 'Notice acknowledged.');
+}
+
+/* ── Violations ───────────────────────────────────────────── */
+function homeViolations() {
+  return (MOCK_DATA.violations || [])
+    .slice()
+    .sort((a, b) => String(b.issuedOn).localeCompare(String(a.issuedOn)));
+}
+
+function homeViolationState(status) {
+  if (status === 'paid') return { tone: 'done', label: 'Paid' };
+  if (status === 'disputed') return { tone: 'progress', label: 'Disputed' };
+  return { tone: 'needs', label: 'Open' };
+}
+
+function renderHomeViolations() {
+  const list = document.querySelector('#violations-list');
+  if (!list) return;
+  const all = homeViolations();
+  const open = all.filter(item => item.status !== 'paid');
+  const viewAll = document.querySelector('#violations-view-all');
+  if (viewAll) viewAll.textContent = all.length ? `View all (${all.length})` : 'View all';
+  if (!open.length) {
+    list.innerHTML = '<p class="home-card-empty">Nothing on file against your suite.</p>';
+    return;
+  }
+  list.innerHTML = open.slice(0, 2).map(item => {
+    const state = homeViolationState(item.status);
+    const meta = [
+      item.reference,
+      homeBriefShortDate(item.issuedOn),
+      item.fineCents ? `${homeBriefMoney(item.fineCents)} fine` : ''
+    ].filter(Boolean).join(' · ');
+    return `<button class="home-violation" type="button" data-violation="${homeBriefEscape(item.id)}">
+      <span class="home-violation-top">
+        <strong>${homeBriefEscape(item.category || 'Violation')}</strong>
+        <span class="home-pill is-${state.tone}">${state.label}</span>
+      </span>
+      <span class="home-violation-summary">${homeBriefEscape(item.summary || '')}</span>
+      <span class="home-violation-meta">${homeBriefEscape(meta)}</span>
+    </button>`;
+  }).join('');
+}
+
+function homeViolationsDialog() {
+  const items = homeViolations();
+  if (!items.length) return '<p>No violations are on file for your suite.</p>';
+  const account = getCurrentResident();
+  const suite = account?.suite ? ` against Suite ${homeBriefEscape(account.suite)}` : '';
+  return `<div class="dialog-info">Violations recorded${suite}</div>
+    <ul class="home-feed">${items.map(item => {
+      const state = homeViolationState(item.status);
+      const meta = [
+        item.reference,
+        homeBriefShortDate(item.issuedOn),
+        item.fineCents ? homeBriefMoney(item.fineCents) : ''
+      ].filter(Boolean).join(' · ');
+      return `<li class="home-feed-row">
+        <span class="home-feed-icon"><i data-icon="alert"></i></span>
+        <span class="home-feed-copy"><strong>${homeBriefEscape(item.category || 'Violation')}</strong><span>${homeBriefEscape(meta)}</span></span>
+        <span class="home-pill is-${state.tone}">${state.label}</span>
+      </li>`;
+    }).join('')}</ul>
+    <p>Fines are settled at the front desk. Online payment and formal disputes are not connected in this preview.</p>`;
+}
+
+function openViolationDialog(id) {
+  const item = homeViolations().find(row => row.id === id);
+  if (!item) return;
+  const state = homeViolationState(item.status);
+  const issued = homeBriefShortDate(item.issuedOn);
+  const fine = item.fineCents
+    ? `<p><span class="home-pill is-${state.tone}">${state.label}</span> <strong>${homeBriefEscape(homeBriefMoney(item.fineCents))}</strong>${item.dueOn ? ` due ${homeBriefEscape(homeBriefShortDate(item.dueOn))}` : ''}</p>`
+    : `<p><span class="home-pill is-${state.tone}">${state.label}</span></p>`;
+  openModal(item.category || 'Violation', `<div class="dialog-info">${homeBriefEscape([item.reference, issued ? `Issued ${issued}` : ''].filter(Boolean).join(' · '))}</div>
+    <p>${homeBriefEscape(item.summary || '')}</p>
+    ${fine}
+    <p><a class="button compact" href="contact-directory.html">Contact the front desk</a></p>`);
+}
+
+/* ── Dialogs used by the topbar bell and the payments link ── */
 function homePaymentsDialog() {
   try {
     const rows = homePaymentsList().slice().reverse().map(payment => {
@@ -243,55 +290,62 @@ function homePaymentsDialog() {
 
 function homeNotificationsDialog() {
   const items = [];
+  const push = (icon, title, meta) => items.push({ icon, title, meta: meta.filter(Boolean).join(' · ') });
   try {
     const payment = homeNextPayment();
     if (payment) {
-      items.push({
-        icon: 'dollar',
-        title: `Condo fee due ${homeBriefShortDate(payment.dueDate)}`,
-        meta: `${homeBriefMoney(payment.amountCents)} · ${homeBriefRelativeDay(payment.dueDate)}`
-      });
+      push('dollar', `Condo fee due ${homeBriefShortDate(payment.dueDate)}`, [homeBriefMoney(payment.amountCents), homeBriefRelativeDay(payment.dueDate)]);
     }
-    sortPackagesNewestFirst(getPackages().filter(pkg => pkg.status === 'pending')).slice(0, 3).forEach(pkg => {
-      items.push({
-        icon: 'package',
-        title: `Package for Suite ${pkg.suite}`,
-        meta: [pkg.carrier || 'Other', pkg.parcelType || 'Package', formatPackageTime(pkg.receivedAt)].filter(Boolean).join(' · ')
-      });
+    homePendingNotices().forEach(notice => {
+      push('megaphone', notice.title, [notice.category, 'needs acknowledgement']);
     });
-    sortMaintenanceNewestFirst(getMaintenance()).filter(item => item.status !== 'completed').slice(0, 3).forEach(item => {
-      items.push({
-        icon: 'wrench',
-        title: maintenanceSummary(item),
-        meta: [`Suite ${item.suite}`, formatMaintenanceWhen(item.reportedAt)].filter(Boolean).join(' · ')
-      });
+    homeViolations().filter(item => item.status !== 'paid').forEach(item => {
+      push('alert', `${item.category || 'Violation'} · ${item.reference || ''}`.trim(), [homeBriefShortDate(item.issuedOn), homeViolationState(item.status).label]);
     });
-    sortAnnouncementsNewestFirst(getAnnouncements()).slice(0, 3).forEach(item => {
-      items.push({
-        icon: 'megaphone',
-        title: item.title,
-        meta: [item.category, formatAnnouncementWhen(item.postedAt)].filter(Boolean).join(' · ')
-      });
+    sortPackagesNewestFirst(getPackages().filter(pkg => pkg.status === 'pending')).slice(0, 2).forEach(pkg => {
+      push('package', `Package for Suite ${pkg.suite}`, [pkg.carrier || 'Other', formatPackageTime(pkg.receivedAt)]);
+    });
+    sortMaintenanceNewestFirst(getMaintenance()).filter(item => item.status !== 'completed').slice(0, 2).forEach(item => {
+      push('wrench', maintenanceSummary(item), [`Suite ${item.suite}`, formatMaintenanceWhen(item.reportedAt)]);
     });
   } catch { /* Show whatever did load. */ }
 
   if (!items.length) return '<p>Nothing new right now.</p>';
-  return `<div class="dialog-info">Recent activity across packages, requests, and notices</div>
+  return `<div class="dialog-info">Recent activity across notices, payments, requests, and packages</div>
     <ul class="home-feed">${items.map(item => `<li class="home-feed-row">
       <span class="home-feed-icon"><i data-icon="${homeBriefEscape(item.icon)}"></i></span>
       <span class="home-feed-copy"><strong>${homeBriefEscape(item.title)}</strong><span>${homeBriefEscape(item.meta)}</span></span>
     </li>`).join('')}</ul>`;
 }
 
+/* ── Events ───────────────────────────────────────────────── */
+document.addEventListener('click', event => {
+  const ack = event.target.closest('[data-ack]');
+  if (ack) {
+    acknowledgeNotice(ack.dataset.ack);
+    return;
+  }
+  const violation = event.target.closest('[data-violation]');
+  if (violation) {
+    openViolationDialog(violation.dataset.violation);
+    return;
+  }
+  if (event.target.closest('[data-violations-all]')) {
+    openModal('Violations', homeViolationsDialog());
+  }
+});
+
 /* ── Init ─────────────────────────────────────────────────── */
 function homeBriefRefresh() {
-  renderHomeBrief();
+  renderHomeNotices();
   renderHomePayments();
+  renderHomeAcknowledgements();
+  renderHomeViolations();
 }
 
 renderHomeBriefDate();
-renderHomeStatus();
+renderHomeSuiteRecord();
 homeBriefRefresh();
 window.addEventListener('focus', homeBriefRefresh);
 window.addEventListener('storage', homeBriefRefresh);
-setInterval(renderHomeBrief, 60 * 1000);
+setInterval(renderHomeNotices, 60 * 1000);
