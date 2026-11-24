@@ -104,12 +104,74 @@ function liveAmenityBookings(now = new Date()) {
     .sort((a, b) => a.start - b.start);
 }
 
+const HOME_DAY_START_MINUTES = 8 * 60;
+const HOME_DAY_END_MINUTES = 22 * 60;
+const HOME_SUGGESTION_MINUTES = 90;
+
+function homeMinutesLabel(minutes) {
+  const hour24 = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  const hour = hour24 % 12 || 12;
+  return `${hour}:${String(minute).padStart(2, '0')} ${hour24 >= 12 ? 'PM' : 'AM'}`;
+}
+
+/** First free 90-minute window left today, so an empty card still offers a next step. */
+function nextFreeWindow(now = new Date()) {
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  const from = Math.max(HOME_DAY_START_MINUTES, Math.ceil((nowMinutes + 14) / 15) * 15);
+  if (from + HOME_SUGGESTION_MINUTES > HOME_DAY_END_MINUTES) return null;
+  const today = new Date(now);
+  today.setHours(12, 0, 0, 0);
+  for (const name of ['Pool', 'Common room', 'Gym']) {
+    const busy = [];
+    for (const row of MOCK_DATA.amenitySchedule || []) {
+      if (String(row.amenity || '').toLowerCase() !== name.toLowerCase()) continue;
+      const window = bookingWindow(row);
+      if (!window) continue;
+      const day = new Date(window.start);
+      day.setHours(12, 0, 0, 0);
+      if (day.getTime() !== today.getTime()) continue;
+      busy.push([
+        window.start.getHours() * 60 + window.start.getMinutes(),
+        window.end.getHours() * 60 + window.end.getMinutes()
+      ]);
+    }
+    busy.sort((a, b) => a[0] - b[0]);
+    let cursor = from;
+    for (const [start, end] of busy) {
+      if (cursor + HOME_SUGGESTION_MINUTES <= start) break;
+      cursor = Math.max(cursor, end);
+    }
+    if (cursor + HOME_SUGGESTION_MINUTES <= HOME_DAY_END_MINUTES) {
+      return { name, start: cursor, end: cursor + HOME_SUGGESTION_MINUTES };
+    }
+  }
+  return null;
+}
+
+function freeWindowSuggestionHtml(now = new Date()) {
+  const slot = nextFreeWindow(now);
+  const partOfDay = now.getHours() >= 17 ? 'tonight' : 'today';
+  const detail = slot
+    ? `${slot.name} is free ${partOfDay} ${homeMinutesLabel(slot.start)} – ${homeMinutesLabel(slot.end)}.`
+    : 'Choose a space and time that suits you.';
+  return `<div class="home-suggest">
+    <span class="home-suggest-icon"><i data-icon="calendar"></i></span>
+    <span class="home-suggest-copy">
+      <strong>No upcoming bookings</strong>
+      <span>${detail}</span>
+    </span>
+    <a class="home-suggest-action" href="amenities.html">Book a space</a>
+  </div>`;
+}
+
 function renderSchedule() {
   const listEl = document.querySelector('#schedule-list');
   if (!listEl) return;
   const items = liveAmenityBookings().slice(0, 3);
   if (items.length === 0) {
-    listEl.innerHTML = '<p class="muted" style="padding:12px 0 0;font-size:14px">No upcoming bookings right now.</p>';
+    listEl.innerHTML = freeWindowSuggestionHtml();
+    renderIcons(listEl);
     return;
   }
   listEl.innerHTML = items.map(({ row, status, end }) => {
@@ -200,8 +262,8 @@ const actions = {
   'close-menu': closeMenu,
   'close-modal': () => modal.close(),
 
-  'view-payments': () => openModal('Payments', '<p>No payments to display.</p>'),
-  notifications: () => openModal('Notifications', '<p>No new notifications.</p>'),
+  'view-payments': () => openModal('Payments', typeof homePaymentsDialog === 'function' ? homePaymentsDialog() : '<p>Payments are unavailable right now.</p>'),
+  notifications: () => openModal('Notifications', typeof homeNotificationsDialog === 'function' ? homeNotificationsDialog() : '<p>Nothing new right now.</p>'),
   profile: () => {
     const resident = getCurrentResident();
     const suite = resident?.suite ? `Suite ${resident.suite}` : '';

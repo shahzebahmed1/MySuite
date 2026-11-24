@@ -23,6 +23,7 @@
   <link href="home-dark-mode.css?v=d929640f6459" rel="stylesheet"/>
   <link href="resident-supplied-logo.css?v=cc2687299f4b" rel="stylesheet"/>
   <link href="home-fit-overview.css?v=a54a2b9e8d12" rel="stylesheet"/>
+  <link href="home-priority.css?v=home-brief-1" rel="stylesheet"/>
   <script defer="" src="../shared/icons.js?v=1849b2733794">
   </script>
   <script defer="" src="../shared/utils.js?v=4e85d6218aa8">
@@ -35,7 +36,9 @@
   </script>
   <script defer="" src="announcements-data.js?v=fda79a22829d">
   </script>
-  <script defer="" src="app.js?v=f7357ec5e909">
+  <script defer="" src="app.js?v=home-brief-1">
+  </script>
+  <script defer="" src="home-priority.js?v=home-brief-1">
   </script>
   <script defer="" src="home-topbar.js?v=835be6c92dd9">
   </script>
@@ -62,28 +65,27 @@
      </i>
      Home
     </a>
-    <a class="nav-item" href="contact-directory.html">
-     <i data-icon="users">
+    <p class="nav-group">
+     Your building
+    </p>
+    <a class="nav-item" href="announcements.html">
+     <i data-icon="megaphone">
      </i>
-     Contact directory
+     Announcements
     </a>
     <a class="nav-item" href="packages.html">
      <i data-icon="package">
      </i>
      Packages
     </a>
-    <a class="nav-item" href="incident-report.html">
-     <i data-icon="alert">
+    <a class="nav-item" href="contact-directory.html">
+     <i data-icon="users">
      </i>
-     Incident Reports
+     Contact directory
     </a>
-    <a class="nav-item" href="daily-log.html">
-     <i data-icon="clipboard">
-     </i>
-     Activity Log
-    </a>
-    <div class="nav-divider">
-    </div>
+    <p class="nav-group">
+     Home services
+    </p>
     <a class="nav-item" href="amenities.html">
      <i data-icon="pool">
      </i>
@@ -94,20 +96,28 @@
      </i>
      Book elevator
     </a>
-    <a class="nav-item" href="long-term-absence.html">
-     <i data-icon="suitcase">
-     </i>
-     Long-term absence
-    </a>
     <a class="nav-item" href="maintenance.html">
      <i data-icon="wrench">
      </i>
      Maintenance
     </a>
-    <a class="nav-item" href="announcements.html">
-     <i data-icon="megaphone">
+    <a class="nav-item" href="long-term-absence.html">
+     <i data-icon="suitcase">
      </i>
-     Announcements
+     Long-term absence
+    </a>
+    <p class="nav-group">
+     Records
+    </p>
+    <a class="nav-item" href="incident-report.html">
+     <i data-icon="alert">
+     </i>
+     Incident Reports
+    </a>
+    <a class="nav-item" href="daily-log.html">
+     <i data-icon="clipboard">
+     </i>
+     Activity Log
     </a>
    </nav>
    <div class="sidebar-bottom">
@@ -119,6 +129,33 @@
    </div>
   </aside>
   <main>
+   <section aria-labelledby="home-brief-title" class="home-brief">
+    <div class="home-brief-head">
+     <h2 id="home-brief-title">
+      Today
+     </h2>
+     <span class="home-brief-date" id="home-brief-date">
+     </span>
+    </div>
+    <div class="home-brief-panel">
+     <div class="home-brief-needs">
+      <h3 class="home-brief-subtitle">
+       Needs you
+      </h3>
+      <ul class="home-brief-list" id="home-brief-list">
+      </ul>
+     </div>
+     <aside aria-labelledby="home-status-title" class="home-status">
+      <h3 class="home-brief-subtitle" id="home-status-title">
+       Building status
+      </h3>
+      <ul class="home-status-list" id="home-status-list">
+      </ul>
+      <p class="home-desk" id="home-desk-line">
+      </p>
+     </aside>
+    </div>
+   </section>
    <section aria-label="Resident dashboard" class="dashboard">
     <article class="card announcements" id="announcements">
      <div class="card-heading">
@@ -153,10 +190,7 @@
        View Payments
       </button>
      </div>
-     <div class="dashboard-payments-panel">
-      <span>
-       No upcoming payments to display.
-      </span>
+     <div id="home-payments-panel">
      </div>
     </article>
     <article class="card maint-queue" id="maint-queue">

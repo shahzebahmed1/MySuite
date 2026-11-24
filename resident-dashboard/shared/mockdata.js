@@ -328,6 +328,23 @@ const MOCK_DATA = {
     { id: 'vis-2', name: 'Sarah Park', suite: '1108', signedInAt: '11:02 AM' }
   ],
 
+  /* Resident ledger. Money stays in integer cents; due dates are generated
+     relative to today so the overview always has a genuine next payment. */
+  payments: demoResidentPayments(),
+
+  /* Planned work and closures shown in the home overview status panel. */
+  buildingStatus: [
+    { id: 'bs-elevator', title: 'Elevator B offline', detail: 'Monday, 8–11 a.m. · safety inspection', icon: 'elevator' },
+    { id: 'bs-water', title: 'Water shut off', detail: 'Thursday, 9–11 a.m. · whole building', icon: 'alert' },
+    { id: 'bs-gym', title: 'Gym closed tonight', detail: 'Deep clean 10 p.m. – 6 a.m.', icon: 'wrench' }
+  ],
+
+  frontDesk: {
+    hours: '7 a.m. – 10 p.m. daily',
+    phone: '(403) 555-0142',
+    afterHours: '(403) 555-0199'
+  },
+
   /* Status is derived from the clock in resident/app.js — do not hardcode labels */
   amenitySchedule: [
     { date: '2026-11-13', time: '2:00 PM', amenity: 'Pool', suite: '501', residentName: 'Emily Larsson', duration: '1 hour' },
@@ -443,6 +460,51 @@ function applyPortalAccounts() {
     if (!account) return;
     fillText(el, accountPortalLine(account));
   });
+}
+
+/* ── Resident home demo helpers ───────────────────────────── */
+function demoIsoDate(date) {
+  const pad = value => String(value).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+/* A day in a month relative to today; 0 is the current month. */
+function demoMonthDay(monthOffset, day) {
+  const now = new Date();
+  return demoIsoDate(new Date(now.getFullYear(), now.getMonth() + monthOffset, day));
+}
+
+/* Replace with the real statement endpoint; keep the same shape. */
+function demoResidentPayments() {
+  return [
+    {
+      id: 'pay-fee-next',
+      label: 'Monthly condo fee',
+      amountCents: 61200,
+      dueDate: demoMonthDay(1, 1),
+      status: 'due',
+      autopay: false,
+      covers: 'Suite 101 fees, parking P2, and locker 2B'
+    },
+    {
+      id: 'pay-fee-last',
+      label: 'Monthly condo fee',
+      amountCents: 61200,
+      dueDate: demoMonthDay(0, 1),
+      status: 'paid',
+      autopay: false,
+      paidOn: demoMonthDay(-1, 28)
+    },
+    {
+      id: 'pay-fee-prior',
+      label: 'Monthly condo fee',
+      amountCents: 61200,
+      dueDate: demoMonthDay(-1, 1),
+      status: 'paid',
+      autopay: false,
+      paidOn: demoMonthDay(-2, 28)
+    }
+  ];
 }
 
 /* Back-compat aliases used by existing resident scripts */
