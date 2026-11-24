@@ -1,0 +1,339 @@
+/* MySuite shared base styles — used by all role dashboards (resident, concierge, manager).
+   Import tokens.css before this file. Do not add role-specific card styles here. */
+
+/* ── Reset & base ─────────────────────────────────────────── */
+* { box-sizing:border-box }
+html { scroll-behavior:smooth; scroll-padding-top:24px }
+body { margin:0; background:var(--cream); color:var(--espresso); font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif }
+button,input,select { font:inherit }
+button,a,input,select { -webkit-tap-highlight-color:transparent }
+button { cursor:pointer }
+a { color:inherit; text-decoration:none }
+button { color:inherit }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #b87c48; outline-offset:4px }
+svg { width:23px; height:23px; stroke:currentColor; stroke-width:1.7; fill:none; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0 }
+button { transition:background .18s,transform .18s }
+button:active { transform:translateY(1px) }
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+.sidebar {
+  width:250px;
+  background:linear-gradient(155deg,#39281e,#2f241e);
+  color:#f8f1e8;
+  position:fixed;
+  inset:0 auto 0 0;
+  display:flex;
+  flex-direction:column;
+  padding:22px 16px;
+  z-index:30;
+  overflow:hidden
+}
+.brand {
+  font:700 43px/1.3 Georgia,serif;
+  padding:0 14px 16px;
+  margin:0 9px 12px;
+  letter-spacing:-1.8px;
+  flex-shrink:0;
+  border-bottom:1px solid #ffffff24
+}
+.brand-dot { color:#c58e59 }
+.building { display:flex; align-items:center; gap:12px; border-block:1px solid #ffffff24; padding:22px 12px; margin:0 9px 22px; font-size:13px; font-weight:600 }
+.building svg { width:22px }
+.building small { display:block; font-size:10px; color:#c7b9ac; font-weight:400; margin-top:4px }
+.sidebar > nav {
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding-right:2px;
+  margin-bottom:8px
+}
+.nav-item { width:100%; display:flex; align-items:center; gap:14px; border:0; background:none; color:#e9dfd6; text-align:left; padding:11px 15px; border-radius:11px; font-size:14px; margin:2px 0 }
+.nav-item svg { width:21px; height:21px }
+.nav-item:hover { background:#ffffff0c }
+.nav-item.active { background:linear-gradient(105deg,#986536,#aa713c); color:#fff; box-shadow:0 4px 12px #1c110c22 }
+.nav-divider { height:1px; background:#ffffff20; margin:14px 14px }
+.sidebar-bottom {
+  margin-top:auto;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  border-top:1px solid #ffffff24;
+  padding:16px 7px 0;
+  font-size:14px
+}
+.sidebar-user { display:flex; align-items:center; gap:10px }
+.sidebar-bottom small { display:block; color:#c7b9ac; font-size:14px }
+.logout { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:#e9dfd6; font-size:14px; font-weight:550 }
+.logout svg { width:18px; height:18px }
+.logout:hover { background:#ffffff0c }
+
+/* ── Shared atoms ─────────────────────────────────────────── */
+.avatar { height:46px; width:46px; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:50%; background:#975a2d; color:white; font-size:14px; letter-spacing:.5px }
+.avatar.small { height:35px; width:35px; font-size:11px; background:#ffffff16 }
+.sidebar .avatar.small { font-size:14px }
+.icon-button { border:0; background:transparent; padding:8px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px }
+.icon-button:hover { background:#a66b3810 }
+.badge { background:#ffd49b; display:inline-flex; align-items:center; border-radius:30px; padding:4px 13px; color:#51351d; font-size:11px; line-height:1.5; font-weight:650 }
+.tile-icon { height:43px; width:43px; background:#f6ecdf; display:flex; align-items:center; justify-content:center; color:var(--caramel); border-radius:13px; flex-shrink:0 }
+.tiny-label { font-size:7px; letter-spacing:1px; color:#ad835c; white-space:nowrap }
+.muted { font-size:11px; color:#887767; line-height:1.6 }
+.overline { font-size:10px; letter-spacing:.7px; color:#8c7967; margin-bottom:6px }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+.mobile-toggle,.scrim { display:none }
+
+/* ── Main layout ──────────────────────────────────────────── */
+main { margin-left:250px; padding:0 28px; max-width:1920px }
+
+/* ── Breadcrumb — mobile only (≤800px); hidden on desktop ─── */
+.breadcrumb { display:none }
+
+/* ── Welcome header ───────────────────────────────────────── */
+.welcome {
+  position:relative;
+  isolation:isolate;
+  min-height:242px;
+  margin:0 -28px 11px;
+  padding:42px 28px 28px;
+  background:url('../assets/header-afternoon.png') center 35% / cover;
+  display:flex;
+  align-items:center
+}
+/* Soft cream fade — blends banner into page background */
+.welcome::after {
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:110px;
+  background:linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--cream) 12%, transparent) 28%,
+    color-mix(in srgb, var(--cream) 35%, transparent) 48%,
+    color-mix(in srgb, var(--cream) 62%, transparent) 68%,
+    color-mix(in srgb, var(--cream) 88%, transparent) 86%,
+    var(--cream) 100%
+  );
+  pointer-events:none;
+  z-index:1
+}
+.welcome-copy { position:relative; z-index:2; transform:translateY(-20px) }
+/* Pull cards into the cream fade so the gap reads tighter */
+.welcome + .dashboard { position:relative; z-index:2; margin-top:-55px }
+.eyebrow { font-size:9px; letter-spacing:2px; font-weight:650; color:var(--caramel); margin:0 0 10px }
+.resident-meta { display:flex; align-items:center; gap:15px; font-size:13px; font-weight:550 }
+.meta-dot { color:#a79687 }
+.welcome-note { font-size:14px; color:#3d2a1c; line-height:1.45; margin-top:14px }
+/* Inner pages (cream background) — always dark; lighting never restyles text */
+.page-header .welcome-note {
+  font-size:14px;
+  color:#3d2a1c;
+  margin:0;
+  line-height:1.45
+}
+.header-actions { display:flex; align-items:center; gap:18px; position:absolute; top:28px; right:28px; z-index:2 }
+.notification { position:relative; background:#fffaf3b8; border:1px solid #ede0d2; width:43px; height:43px; box-shadow:var(--shadow) }
+.notification>span { position:absolute; right:6px; top:6px; width:7px; height:7px; background:var(--caramel); border-radius:50%; border:1px solid #fff }
+
+/* ── Weather widget ───────────────────────────────────────── */
+.window-weather { position:absolute; top:100px; right:28px; z-index:2; display:flex; flex-direction:column; align-items:flex-end; gap:2px; color:var(--espresso); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-variant-numeric:tabular-nums; line-height:1.25 }
+.window-weather-temperature { font-size:19px; font-weight:400; letter-spacing:-0.5px }
+.window-weather-condition { font-size:11px; font-weight:400 }
+
+/* ── Typography ───────────────────────────────────────────── */
+h1 { font:500 clamp(33px,3.2vw,54px)/1.12 Georgia,serif; letter-spacing:-1.8px; margin:0 0 17px }
+.page-header h1 { margin-bottom:8px }
+h2 { font-size:17px; letter-spacing:-.45px; line-height:1.3; margin:0; font-weight:650; display:flex; align-items:center; gap:11px }
+h2 svg { color:var(--caramel); width:25px; height:25px }
+h3 { font-size:17px; letter-spacing:-.3px; line-height:1.4; margin:0 0 8px; font-weight:600 }
+p { margin:0 }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.button { background:var(--caramel); border:1px solid var(--caramel); color:white; padding:9px 15px; border-radius:9px; font-size:12px; font-weight:550; display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:39px }
+.button:hover { background:var(--caramel-dark); border-color:var(--caramel-dark) }
+.button svg { width:17px; height:17px }
+.button.compact { padding:7px 12px; font-size:11px; min-height:33px }
+.button.outline { background:transparent; color:#553824; border-color:#b88b68 }
+.button.outline:hover { background:#f0e5d8 }
+.button.full { width:100% }
+
+/* ── Shared card shell ────────────────────────────────────── */
+.card { border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(135deg,#fffdf9,#fbf7f2); padding:23px; box-shadow:var(--shadow); min-width:0; scroll-margin-top:24px }
+.card-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:20px; min-height:26px }
+.card-footer { border-top:1px solid var(--line); font-size:10px; color:#9b8d80; padding-top:17px; margin-top:3px }
+.card-bottom { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:20px }
+.count { color:#91643e; background:#f5ebde; padding:3px 8px; font-size:9px; border-radius:20px; white-space:nowrap }
+.status { background:#ffe0b0; font-size:10px }
+
+/* ── Dialog ───────────────────────────────────────────────── */
+dialog { border:1px solid var(--line); border-radius:22px; padding:26px; max-width:470px; width:calc(100% - 32px); color:var(--espresso); background:var(--paper); box-shadow:0 25px 100px #25170f33 }
+dialog::backdrop { background:#25170f66; backdrop-filter:blur(4px) }
+.dialog-top { display:flex; justify-content:space-between; align-items:center }
+.dialog-top .eyebrow { margin:0 }
+dialog h2 { font:500 29px/1.2 Georgia,serif; margin:14px 0 20px }
+dialog p { font-size:13px; color:#7b6a59; margin:10px 0; line-height:1.7 }
+dialog label { display:block; font-size:12px; margin:15px 0 }
+dialog input,dialog select { display:block; width:100%; border:1px solid #d6c2af; background:white; border-radius:8px; padding:10px; margin-top:6px; color:var(--espresso) }
+.dialog-info { padding:12px 15px; background:#f1e8dc; border-radius:12px; font-size:12px; margin:15px 0 }
+.dialog-options { display:grid; gap:10px }
+.dialog-options .button { justify-content:flex-start; padding:12px 16px }
+
+/* ── Toast — always top of the viewport (all roles) ───────── */
+.toast {
+  position: fixed;
+  top: 16px;
+  bottom: unset;
+  left: calc(50% + 125px);
+  right: auto;
+  transform: translate(-50%, -10px);
+  background: var(--espresso);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: .2s;
+  font-size: 12px;
+  z-index: 1000;
+  max-width: calc(100vw - 30px);
+  box-shadow: 0 5px 25px #35261e30;
+}
+.toast.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ── Page footer ──────────────────────────────────────────── */
+.page-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:22px 2px; color:#9a8a7b; font-size:10px }
+.page-footer button { border:0; background:none; color:#8c684b; font-size:10px }
+.lighting-picker { display:inline-flex; align-items:center; gap:9px; font-size:10px }
+.lighting-picker select { border:1px solid var(--line); border-radius:8px; color:var(--espresso); background:var(--paper); padding:6px 9px; font:inherit; cursor:pointer }
+
+/* ── Lighting states — image only; never restyle text ─────── */
+body[data-time="morning"]   .welcome { background-image:url('../assets/header-morning.png') }
+body[data-time="afternoon"] .welcome { background-image:url('../assets/header-afternoon.png') }
+body[data-time="evening"]   .welcome { background-image:url('../assets/header-evening.png') }
+body[data-time="night"]     .welcome { background-image:url('../assets/header-night.png') }
+
+/* ── Responsive: 1600px+ ──────────────────────────────────── */
+@media(min-width:1600px) {
+  main { padding-inline:40px }
+  .welcome { margin-inline:-40px; padding-inline:40px; min-height:270px }
+  .card { padding:27px }
+}
+
+/* ── Responsive: ≤1200px ──────────────────────────────────── */
+@media(max-width:1200px) {
+  .sidebar { width:213px; padding-inline:12px }
+  .brand { font-size:38px }
+  .building { padding-inline:3px; font-size:12px }
+  .nav-item { font-size:14px; padding:12px; gap:11px }
+  main { margin-left:213px; padding-inline:20px }
+  .welcome { margin-inline:-20px; padding-inline:20px; min-height:230px }
+  .toast { left:calc(50% + 106px) }
+  h1 { font-size:40px }
+  .header-actions { right:20px; top:20px }
+  .card-heading h2 { font-size:16px }
+  .window-weather { right:20px; top:83px }
+}
+
+/* ── Responsive: ≤800px (mobile sidebar) ─────────────────── */
+@media(max-width:800px) {
+  .sidebar { transform:translateX(-100%); transition:transform .25s; width:250px }
+  .sidebar.open { transform:translateX(0) }
+  .mobile-toggle { display:flex; position:absolute; top:20px; left:20px; z-index:20; background:#fffaf3c9; border:1px solid var(--line) }
+  .scrim.visible { display:block; position:fixed; inset:0; background:#35261e66; z-index:25 }
+  main { margin-left:0; padding-inline:20px }
+  .welcome { min-height:262px; padding-top:87px; margin-bottom:8px }
+  .welcome::after { height:80px }
+  .welcome + .dashboard { margin-top:-36px }
+  .welcome-copy { transform:translateY(-16px) }
+  .welcome-copy { max-width:85% }
+  h1 { font-size:38px }
+  .header-actions .avatar { height:39px; width:39px; font-size:12px }
+  .header-actions { gap:10px }
+  .toast { left:50% }
+  .window-weather { top:70px }
+  .window-weather-temperature { font-size:17px }
+  .window-weather-condition { font-size:10px }
+
+  .breadcrumb {
+    display:flex;
+    align-items:center;
+    gap:0;
+    padding:20px 0 0;
+    margin:0;
+    font-size:14px;
+    line-height:1.4;
+    color:#5a4638
+  }
+  .breadcrumb ol {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:0;
+    list-style:none;
+    margin:0;
+    padding:0
+  }
+  .breadcrumb li {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px
+  }
+  .breadcrumb li + li::before {
+    content:">";
+    margin:0 10px 0 8px;
+    color:#8a7a6c;
+    font-weight:500
+  }
+  .breadcrumb a {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--caramel);
+    text-decoration:underline;
+    text-underline-offset:3px;
+    font-weight:550
+  }
+  .breadcrumb a:hover { color:var(--caramel-dark) }
+  .breadcrumb a svg {
+    width:16px;
+    height:16px;
+    flex-shrink:0
+  }
+  .breadcrumb [aria-current="page"] {
+    color:#3d2a1c;
+    font-weight:550
+  }
+  .breadcrumb + .page-header { padding-top:12px }
+}
+
+/* ── Responsive: ≤560px ───────────────────────────────────── */
+@media(max-width:560px) {
+  main { padding-inline:15px }
+  .welcome { margin-inline:-15px; margin-bottom:8px; padding-inline:15px; background-position:60% center; min-height:255px }
+  .welcome::after { height:80px }
+  .welcome-copy { max-width:100% }
+  .eyebrow { font-size:8px }
+  h1 { font-size:34px; letter-spacing:-1.2px }
+  .welcome-note { max-width:240px }
+  .card { padding:21px; border-radius:17px }
+  .card-heading h2 { font-size:17px }
+  .card-footer { font-size:11px }
+  .page-footer { font-size:9px }
+  .welcome .eyebrow { max-width:200px }
+  .card-bottom { margin-top:16px }
+  .lighting-picker { order:3; width:100%; justify-content:center; padding-top:5px }
+  .header-actions { right:15px }
+  .window-weather { right:15px }
+}
+
+/* ── Reduced motion ───────────────────────────────────────── */
+@media(prefers-reduced-motion:reduce) {
+  * { scroll-behavior:auto!important; transition:none!important }
+}

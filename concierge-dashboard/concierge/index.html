@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="#fafafa" name="theme-color"/>
+  <title>
+   MySuite ? Concierge
+  </title>
+  <script src="concierge-shared-appearance.js?v=bbf62bc37dee">
+  </script>
+  <script src="home-preferences.js?v=01fd9f25cf9b">
+  </script>
+  <script src="home-dark-mode.js?v=f4466eadf92e">
+  </script>
+  <script src="home-start-position.js?v=9f5832c5b76d">
+  </script>
+  <link href="../shared/tokens.css?v=e0df8a2e8a54" rel="stylesheet"/>
+  <link href="../shared/base.css?v=695979e8e412" rel="stylesheet"/>
+  <link href="home-fonts.css?v=a29019b07f42" rel="stylesheet"/>
+  <link href="home-dashboard.css?v=31481a3b5af7" rel="stylesheet"/>
+  <link href="home-topbar.css?v=63746e04e918" rel="stylesheet"/>
+  <link href="home-dark-mode.css?v=d929640f6459" rel="stylesheet"/>
+  <link href="concierge-supplied-logo.css?v=cc2687299f4b" rel="stylesheet"/>
+  <link href="home-fit-overview.css?v=a54a2b9e8d12" rel="stylesheet"/>
+  <script defer="" src="../shared/icons.js?v=1849b2733794">
+  </script>
+  <script defer="" src="../shared/utils.js?v=4e85d6218aa8">
+  </script>
+  <script defer="" src="../shared/mockdata.js?v=f77e64469fcb">
+  </script>
+  <script defer="" src="packages-data.js?v=31a21dc7e6c3">
+  </script>
+  <script defer="" src="maintenance-data.js?v=79b1be6bb392">
+  </script>
+  <script defer="" src="announcements-data.js?v=fda79a22829d">
+  </script>
+  <script defer="" src="app.js?v=f7357ec5e909">
+  </script>
+  <script defer="" src="home-topbar.js?v=835be6c92dd9">
+  </script>
+  <script defer="" src="concierge-supplied-logo.js?v=da567e51a7c7">
+  </script>
+ </head>
+ <body class="sidebar-merge concierge-sidebar" data-dashboard-card-layout="" data-sidebar-palette="original-cream" data-time="afternoon">
+  <button aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation" class="mobile-toggle icon-button" data-action="menu">
+   <i data-icon="menu">
+   </i>
+  </button>
+  <div class="scrim" data-action="close-menu">
+  </div>
+  <aside aria-label="Main navigation" class="sidebar" id="sidebar">
+   <a class="brand" href="./">
+    MySuite
+    <span class="brand-dot">
+     .
+    </span>
+   </a>
+   <nav>
+    <a aria-current="page" class="nav-item active" href="./">
+     <i data-icon="home">
+     </i>
+     Home
+    </a>
+    <a class="nav-item" href="contact-directory.html">
+     <i data-icon="users">
+     </i>
+     Contact directory
+    </a>
+    <a class="nav-item" href="packages.html">
+     <i data-icon="package">
+     </i>
+     Packages
+    </a>
+    <a class="nav-item" href="incident-report.html">
+     <i data-icon="alert">
+     </i>
+     Incident Reports
+    </a>
+    <a class="nav-item" href="daily-log.html">
+     <i data-icon="clipboard">
+     </i>
+     Activity Log
+    </a>
+    <div class="nav-divider">
+    </div>
+    <a class="nav-item" href="amenities.html">
+     <i data-icon="pool">
+     </i>
+     Amenities
+    </a>
+    <a class="nav-item" href="elevator-bookings.html">
+     <i data-icon="elevator">
+     </i>
+     Book elevator
+    </a>
+    <a class="nav-item" href="long-term-absence.html">
+     <i data-icon="suitcase">
+     </i>
+     Long-term absence
+    </a>
+    <a class="nav-item" href="maintenance.html">
+     <i data-icon="wrench">
+     </i>
+     Maintenance
+    </a>
+    <a class="nav-item" href="announcements.html">
+     <i data-icon="megaphone">
+     </i>
+     Announcements
+    </a>
+   </nav>
+   <div class="sidebar-bottom">
+    <a class="logout" href="../">
+     <i data-icon="logout">
+     </i>
+     Log out
+    </a>
+   </div>
+  </aside>
+  <main>
+   <section aria-label="Concierge dashboard" class="dashboard">
+    <article class="card announcements" id="announcements">
+     <div class="card-heading">
+      <h2>
+       Announcements
+      </h2>
+      <a class="button outline compact" href="announcements.html">
+       View All
+      </a>
+     </div>
+     <div id="home-announcement-list">
+     </div>
+    </article>
+    <article class="card schedule" id="schedule">
+     <div class="card-heading">
+      <h2>
+       Upcoming Bookings
+      </h2>
+      <a class="button outline compact" href="amenities.html">
+       View Bookings
+      </a>
+     </div>
+     <div id="schedule-list">
+     </div>
+    </article>
+    <article aria-labelledby="dashboard-payments-title" class="card dashboard-payments" id="payments">
+     <div class="card-heading">
+      <h2 id="dashboard-payments-title">
+       Upcoming Payments
+      </h2>
+      <button class="button outline compact" data-action="view-payments" type="button">
+       View Payments
+      </button>
+     </div>
+     <div class="dashboard-payments-panel">
+      <span>
+       No upcoming payments to display.
+      </span>
+     </div>
+    </article>
+    <article class="card maint-queue" id="maint-queue">
+     <div class="card-heading">
+      <h2>
+       Maintenance Requests
+      </h2>
+      <a class="button outline compact" href="maintenance.html" id="home-maint-view-all">
+       View All
+      </a>
+     </div>
+     <div id="maint-list">
+     </div>
+    </article>
+    <article aria-labelledby="booking-promo-title" class="card booking-promo" id="booking-promo">
+     <div class="card-heading">
+      <h2 id="booking-promo-title">
+       Book a Space
+      </h2>
+     </div>
+     <div class="booking-promo-panel">
+      <div class="booking-promo-content">
+       <h3>
+        Find a space.
+        <br/>
+        Make a booking.
+       </h3>
+       <p>
+        Reserve amenities for residents.
+       </p>
+       <a class="button" href="amenities.html">
+        Create Booking
+        <i data-icon="arrow">
+        </i>
+       </a>
+      </div>
+     </div>
+    </article>
+    <article aria-labelledby="shop-title" class="card shop" id="shop">
+     <div class="card-heading">
+      <h2 id="shop-title">
+       Shop
+      </h2>
+     </div>
+     <div class="monochrome-shop-panel">
+      <div class="shop-content">
+       <h3>
+        Little essentials.
+        <br/>
+        One convenient place.
+       </h3>
+       <p class="muted">
+        Fobs, batteries &amp; everyday supplies.
+       </p>
+       <button class="button" data-action="shop" type="button">
+        Browse Shop
+        <i data-icon="arrow">
+        </i>
+       </button>
+      </div>
+     </div>
+    </article>
+    <article class="card packages" id="packages">
+     <div class="card-heading">
+      <h2>
+       Recent Packages
+      </h2>
+      <a class="button outline compact" href="packages.html" id="home-package-view-all">
+       View All
+      </a>
+     </div>
+     <div id="home-package-list">
+     </div>
+    </article>
+   </section>
+   <footer class="page-footer">
+    <span>
+     MySuite · Concierge portal.
+    </span>
+    <button data-action="help">
+     Need a hand?
+    </button>
+   </footer>
+  </main>
+  <dialog id="modal">
+   <div class="dialog-top">
+    <p class="eyebrow">
+     MYSUITE
+    </p>
+    <button aria-label="Close dialog" class="icon-button" data-action="close-modal">
+     <i data-icon="close">
+     </i>
+    </button>
+   </div>
+   <h2 id="modal-title">
+   </h2>
+   <div id="modal-body">
+   </div>
+  </dialog>
+  <div class="toast" id="toast" role="status">
+  </div>
+ </body>
+</html>

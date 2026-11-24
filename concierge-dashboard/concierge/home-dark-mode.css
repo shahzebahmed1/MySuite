@@ -1,0 +1,14 @@
+/* Theme variables change surfaces together; layout and typography stay shared. */
+html[data-home-mode="dark"] {color-scheme:dark;background:#11151c;}
+html[data-home-mode="dark"] body.sidebar-merge {
+ --home-surface:#1b222d;--home-ink:#edf0f5;--home-muted:#b1bdcd;--home-line:#343e4c;
+ --home-icon-tint:#293548;--home-nav-ink:#b8c3d1;--home-nav-active:#78adff;--home-hover:#1d2633;
+ --concierge-canvas:#11151c;color-scheme:dark;
+}
+html[data-home-mode="dark"] .topbar-community-line {color:#83b4ff;}
+html[data-home-mode="dark"] .monochrome-shop-panel {background:linear-gradient(90deg,#1b222d 0%,#1b222deb 40%,#1b222d44 100%),url('../assets/fob.png') center/cover;}
+html[data-home-mode="dark"] .booking-promo-panel {background:linear-gradient(90deg,#1b222d 0%,#1b222ded 36%,#1b222d99 58%,#1b222d33 100%),url('../assets/amenity-booking-promo.png') center 55%/cover;}
+html[data-home-mode="dark"] body.sidebar-merge dialog::backdrop {background:#05090fb3;}
+html[data-home-mode="dark"] body.sidebar-merge dialog :is(input,select,textarea) {background:#111923;color:var(--home-ink);border-color:#45546a;}
+html[data-home-mode="dark"] body.sidebar-merge dialog .button.outline {background:transparent;color:#c6dbff;border-color:#45546a;}
+html[data-home-mode="dark"] body.sidebar-merge .toast {background:#293548;color:#edf0f5;}

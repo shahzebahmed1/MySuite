@@ -1,0 +1,14 @@
+/* MySuite design tokens — single source of truth for all role dashboards. */
+:root {
+  --cream:#f8f4ee;
+  --paper:#fffcf8;
+  --sand:#e9ded0;
+  --caramel:#a66b38;
+  --caramel-dark:#855027;
+  --espresso:#35261e;
+  --muted:#827467;
+  --line:#e8ded4;
+  --amber:#ffd49b;
+  --shadow:0 2px 4px #35261e06,0 5px 18px #35261e04;
+  --radius:20px
+}
